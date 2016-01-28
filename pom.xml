@@ -266,6 +266,30 @@
            </properties>
        </profile>
 
+       <profile>
+           <id>atmire-dev</id>
+           <properties>
+               <dspace.dir>/home/$PROJECT_NAME$/dspace</dspace.dir>
+               <dspace.name>DSpace at $INSTITUTION$</dspace.name>
+               <dspace.hostname>dev.atmire.com</dspace.hostname>
+               <dspace.baseUrl>https://dev.atmire.com</dspace.baseUrl>
+               <dspace.url>https://dev.atmire.com/dspace-$PROJECT_NAME$</dspace.url>
+               <!-- <dspace.oai.url>https://dev.atmire.com/dspace-$PROJECT_NAME$-oai</dspace.oai.url> -->
+               <db.name>postgres</db.name>
+               <db.driver>org.postgresql.Driver</db.driver>
+               <db.url>jdbc:postgresql://localhost:5432/dspace-$PROJECT_NAME$</db.url>
+               <db.username>dspace</db.username>
+               <db.password>dspace</db.password>
+               <mail.server>no-mail-server</mail.server>
+               <mail.from.address>noreply@atmire.com</mail.from.address>
+               <feedback.recipient>noreply@atmire.com</feedback.recipient>
+               <mail.admin>noreply@atmire.com</mail.admin>
+               <alert.recipient>noreply@atmire.com</alert.recipient>
+               <mail.server.disabled>true</mail.server.disabled>
+               <solr.server>http://localhost:$SOLR_PORT$/solr</solr.server>
+           </properties>
+       </profile>
+
        <!-- Users can pass in an environment flag "-Denv" to tell DSpace to use
             a different properties file during its build process. 
             For example: "mvn package -Denv=test" would build DSpace using the
