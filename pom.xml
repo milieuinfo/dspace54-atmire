@@ -269,15 +269,17 @@
        <profile>
            <id>atmire-dev</id>
            <properties>
-               <dspace.dir>/home/$PROJECT_NAME$/dspace</dspace.dir>
-               <dspace.name>DSpace at $INSTITUTION$</dspace.name>
+               <clientname>lne54</clientname>
+               <tomcat.port>12190</tomcat.port>
+               <dspace.dir>/home/${clientname}/dspace</dspace.dir>
+               <dspace.name>DSpace at lne</dspace.name>
                <dspace.hostname>dev.atmire.com</dspace.hostname>
                <dspace.baseUrl>https://dev.atmire.com</dspace.baseUrl>
-               <dspace.url>https://dev.atmire.com/dspace-$PROJECT_NAME$</dspace.url>
+               <dspace.url>https://dev.atmire.com/dspace-${clientname}</dspace.url>
                <!-- <dspace.oai.url>https://dev.atmire.com/dspace-$PROJECT_NAME$-oai</dspace.oai.url> -->
                <db.name>postgres</db.name>
                <db.driver>org.postgresql.Driver</db.driver>
-               <db.url>jdbc:postgresql://localhost:5432/dspace-$PROJECT_NAME$</db.url>
+               <db.url>jdbc:postgresql://localhost:5432/dspace-${clientname}</db.url>
                <db.username>dspace</db.username>
                <db.password>dspace</db.password>
                <mail.server>no-mail-server</mail.server>
@@ -286,7 +288,7 @@
                <mail.admin>noreply@atmire.com</mail.admin>
                <alert.recipient>noreply@atmire.com</alert.recipient>
                <mail.server.disabled>true</mail.server.disabled>
-               <solr.server>http://localhost:$SOLR_PORT$/solr</solr.server>
+               <solr.server>http://localhost:${tomcat.port}/solr</solr.server>
            </properties>
        </profile>
 
