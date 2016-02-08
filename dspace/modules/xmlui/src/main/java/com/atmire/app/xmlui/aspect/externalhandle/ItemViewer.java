@@ -1,6 +1,8 @@
 package com.atmire.app.xmlui.aspect.externalhandle;
 
-import org.apache.avalon.framework.parameters.ParameterException;
+import com.atmire.lne.content.ItemService;
+import com.atmire.lne.content.ItemServiceBean;
+import com.atmire.lne.exception.MetaDataFieldNotSetException;
 import org.apache.cocoon.ProcessingException;
 import org.apache.cocoon.environment.ObjectModelHelper;
 import org.apache.cocoon.environment.Request;
@@ -9,62 +11,68 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.dspace.app.xmlui.cocoon.AbstractDSpaceTransformer;
 import org.dspace.app.xmlui.utils.UIException;
+import org.dspace.app.xmlui.wing.Message;
 import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.app.xmlui.wing.element.Body;
+import org.dspace.app.xmlui.wing.element.Division;
 import org.dspace.authorize.AuthorizeException;
-import org.dspace.core.Constants;
-import org.dspace.discovery.*;
+import org.dspace.content.Item;
+import org.dspace.discovery.SearchServiceException;
+import org.springframework.web.util.HtmlUtils;
 import org.xml.sax.SAXException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
+//TODO TOM UNIT TEST
 public class ItemViewer extends AbstractDSpaceTransformer {
-
-    private static final String METADATA_FIELD_PARAMETER = "metadata-field";
-    private static final String HANDLE_SEARCH_FIELD = "handle";
 
     private static final Logger log = Logger.getLogger(ItemViewer.class);
 
-    private SearchService searchService = null;
+    private static final Message T_error_page = message("xmlui.externalhandle.error_page");
+    private static final Message T_metadata_field_problem = message("xmlui.externalhandle.metadata_field_problem");
+    private static final Message T_discovery_query_problem = message("xmlui.externalhandle.discovery_query_problem");
 
+    private static final Message T_not_found_page = message("xmlui.externalhandle.not_found_page");
+    private static final Message T_requested_item_not_found = message("xmlui.externalhandle.item_not_found");
+
+    private static final Message T_too_many_items = message("xmlui.externalhandle.too_many_items_page");
+    private static final Message T_external_handle_not_unique = message("xmlui.externalhandle.external_handle_not_unique");
+
+    private ItemService itemService;
+
+    public ItemViewer() {
+        //TODO TOM can this be autowired?
+        itemService = new ItemServiceBean();
+    }
 
     public void addBody(final Body body) throws SAXException, WingException, UIException, SQLException, IOException, AuthorizeException, ProcessingException {
 
         HttpServletResponse response = (HttpServletResponse) objectModel.get(HttpEnvironment.HTTP_RESPONSE_OBJECT);
 
         try {
-            String metadataField = getMetadataField();
-            String metadataValue = getMetaDataValue();
+            String externalHandle = getExternalHandle();
 
-            DiscoverResult result = getSearchService().search(context, buildDiscoveryQuery(metadataField, metadataValue));
+            List<Item> result = itemService.findItemsByExternalHandle(context, externalHandle);
 
-            renderCorrectPage(response, result);
+            renderCorrectPage(body, response, result);
 
-        } catch (ParameterException e) {
-            String description = "There was a problem reading the external handle metadata field name from the sitemap configuration: "
-                    + e.getMessage();
-            renderError(description, e);
+        } catch (MetaDataFieldNotSetException e) {
+            renderErrorPage(body, response, T_metadata_field_problem, e);
         } catch (SearchServiceException e) {
-            String description = "There was a problem executing the discovery query: "
-                    + e.getMessage();
-            renderError(description, e);
+            renderErrorPage(body, response, T_discovery_query_problem, e);
         }
     }
 
-    private void renderError(final String description, final Exception e) {
-        log.error(description, e);
-        //TODO
-    }
-
-    private void renderCorrectPage(final HttpServletResponse response, final DiscoverResult result) throws IOException {
-        if (result.getTotalSearchResults() <= 0) {
-            renderNotFoundPage(response);
-        } else if(result.getTotalSearchResults() > 1) {
-            renderTooManyResultsPage(response);
+    private void renderCorrectPage(final Body body, final HttpServletResponse response, final List<Item> result) throws IOException, WingException {
+        if (result.size() <= 0) {
+            renderNotFoundPage(body, response);
+        } else if(result.size() > 1) {
+            renderTooManyResultsPage(body, response);
         } else {
-            String handle = result.getDspaceObjects().get(0).getHandle();
+            String handle = result.get(0).getHandle();
             renderItemPage(response, handle);
         }
     }
@@ -73,38 +81,36 @@ public class ItemViewer extends AbstractDSpaceTransformer {
         response.sendRedirect(buildRedirectUrl(handle));
     }
 
-    private void renderTooManyResultsPage(final HttpServletResponse response) {
-        //TODO add error message to body
+    private void renderTooManyResultsPage(final Body body, final HttpServletResponse response) throws WingException {
+        Division errorMessage = body.addDivision("too-many-items-for-external-handle");
+        errorMessage.setHead(T_too_many_items);
+        errorMessage.addPara(T_external_handle_not_unique);
+
         response.setStatus(HttpServletResponse.SC_CONFLICT);
     }
 
-    private void renderNotFoundPage(final HttpServletResponse response) {
+    private void renderNotFoundPage(final Body body, final HttpServletResponse response) throws WingException {
+        Division errorMessage = body.addDivision("external-handle-not-found");
+        errorMessage.setHead(T_not_found_page);
+        errorMessage.addPara(T_requested_item_not_found);
+
         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
     }
 
-    private DiscoverQuery buildDiscoveryQuery(final String metadataField, final String metadataValue) {
-        DiscoverQuery query = new DiscoverQuery();
-        query.setDSpaceObjectFilter(Constants.ITEM);
-        query.setQuery(metadataField + " : " + metadataValue);
-        query.addSearchField(HANDLE_SEARCH_FIELD);
+    private void renderErrorPage(final Body body, final HttpServletResponse response, final Message messageKey, final Exception e) throws WingException {
+        log.error(messageKey.getKey(), e);
 
-        return query;
+        Division errorMessage = body.addDivision("error-message");
+        errorMessage.setHead(T_error_page);
+        errorMessage.addPara(messageKey);
+
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
 
-    public SearchService getSearchService() {
-        if(searchService == null) {
-            searchService = SearchUtils.getSearchService();
-        }
-        return searchService;
-    }
-
-    private String getMetadataField() throws ParameterException {
-        return parameters.getParameter(METADATA_FIELD_PARAMETER);
-    }
-
-    protected String getMetaDataValue() {
+    private String getExternalHandle() {
         Request request = ObjectModelHelper.getRequest(objectModel);
-        return StringUtils.substringAfter(request.getSitemapURI(), "external-handle/");
+        String rawValue = StringUtils.substringAfter(request.getSitemapURI(), "external-handle/");
+        return HtmlUtils.htmlUnescape(rawValue);
     }
 
     private String buildRedirectUrl(final String dsItemHandle) {
