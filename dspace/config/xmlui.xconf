@@ -148,6 +148,12 @@
             It's accessible for admins in the XMLTest menu or via the /XMLTest/ URL.
         -->
         <!-- <aspect name="XML Tests" path="resource://aspects/XMLTest/"/> -->
+
+        <!-- =====================
+              LNE Aspects
+             ===================== -->
+        <!-- Base DSpace XMLUI Aspects for Display, Browse, Search, Admin, Login and Submission -->
+        <aspect name="External Handle Item Resolution" path="resource://aspects/ExternalHandle/" />
     </aspects>
 
     <!--

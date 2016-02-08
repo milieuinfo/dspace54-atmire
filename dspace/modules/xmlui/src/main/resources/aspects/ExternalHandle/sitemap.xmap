@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+The Item Resolution aspect is responsbile for resolving items on an external handle.
+
+-->
+<map:sitemap xmlns:map="http://apache.org/cocoon/sitemap/1.0">
+    <map:components>
+
+        
+        <map:transformers>
+            <map:transformer name="ItemViewer" src="com.atmire.app.xmlui.aspect.externalhandle.ItemViewer"/>
+        </map:transformers>
+
+    </map:components>
+    <map:pipelines>
+        <map:pipeline>
+
+            <map:generate/>
+
+            <map:match pattern="external-handle/*">
+                <map:transform type="ItemViewer">
+                    <map:parameter name="metadata-field" value="dc.identifier.other"/>
+                </map:transform>
+
+                <map:serialize type="xml"/>
+            </map:match>
+
+            <!-- Not a URL we care about, so just pass it on. -->
+            <map:serialize type="xml"/>
+
+        </map:pipeline>
+
+    </map:pipelines>
+</map:sitemap>
