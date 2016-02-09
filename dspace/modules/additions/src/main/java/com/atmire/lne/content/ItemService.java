@@ -1,6 +1,5 @@
 package com.atmire.lne.content;
 
-import com.atmire.lne.exception.MetaDataFieldNotSetException;
 import org.dspace.content.Item;
 import org.dspace.core.Context;
 import org.dspace.discovery.SearchServiceException;
@@ -12,6 +11,6 @@ import java.util.List;
  */
 public interface ItemService {
 
-    List<Item> findItemsByExternalHandle(final Context context, String externalHandle) throws SearchServiceException, MetaDataFieldNotSetException;
+    List<Item> findItemsByExternalHandle(final Context context, String externalHandle) throws SearchServiceException;
 
 }

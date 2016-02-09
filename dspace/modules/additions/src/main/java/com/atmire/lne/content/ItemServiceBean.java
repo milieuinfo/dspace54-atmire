@@ -1,6 +1,5 @@
 package com.atmire.lne.content;
 
-import com.atmire.lne.exception.MetaDataFieldNotSetException;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
@@ -19,11 +18,11 @@ import java.util.List;
 public class ItemServiceBean implements ItemService {
 
     private static final String HANDLE_SEARCH_FIELD = "handle";
-    private static final String EXTERNAL_HANDLE_DISCOVERY_FIELD = "externalHandle";
+    public static final String EXTERNAL_HANDLE_DISCOVERY_FIELD = "externalHandle";
 
     private SearchService searchService = null;
 
-    public List<Item> findItemsByExternalHandle(final Context context, final String externalHandle) throws SearchServiceException, MetaDataFieldNotSetException {
+    public List<Item> findItemsByExternalHandle(final Context context, final String externalHandle) throws SearchServiceException {
 
         DiscoverResult result = getSearchService().search(context, buildDiscoveryQuery(EXTERNAL_HANDLE_DISCOVERY_FIELD,
                 externalHandle));

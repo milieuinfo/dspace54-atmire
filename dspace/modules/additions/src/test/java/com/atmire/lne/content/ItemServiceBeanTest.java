@@ -1,6 +1,5 @@
 package com.atmire.lne.content;
 
-import com.atmire.lne.exception.MetaDataFieldNotSetException;
 import org.apache.commons.lang3.StringUtils;
 import org.dspace.content.Collection;
 import org.dspace.content.Item;
@@ -28,14 +27,8 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class ItemServiceBeanTest {
 
-    private static final String METADATA_FIELD = "metadata.field";
-
     @InjectMocks
-    private ItemServiceBean serviceBean = new ItemServiceBean() {
-        protected String getMetadataField() throws MetaDataFieldNotSetException {
-            return METADATA_FIELD;
-        }
-    };
+    private ItemServiceBean serviceBean = new ItemServiceBean();
 
     @Mock
     private SearchService searchService;
@@ -60,7 +53,8 @@ public class ItemServiceBeanTest {
                 Matchers.argThat(new ArgumentMatcher<DiscoverQuery>() {
                                      public boolean matches(final Object argument) {
                                          DiscoverQuery query = (DiscoverQuery) argument;
-                                         return StringUtils.equals(METADATA_FIELD + " : " + "1234", query.getQuery())
+                                         return StringUtils.equals(ItemServiceBean.EXTERNAL_HANDLE_DISCOVERY_FIELD
+                                                 + "_keyword : " + "1234", query.getQuery())
                                                  && Constants.ITEM == query.getDSpaceObjectFilter();
                                      }
                                  }
@@ -79,7 +73,8 @@ public class ItemServiceBeanTest {
                 Matchers.argThat(new ArgumentMatcher<DiscoverQuery>() {
                                      public boolean matches(final Object argument) {
                                          DiscoverQuery query = (DiscoverQuery) argument;
-                                         return StringUtils.equals(METADATA_FIELD + " : " + "1234", query.getQuery())
+                                         return StringUtils.equals(ItemServiceBean.EXTERNAL_HANDLE_DISCOVERY_FIELD
+                                                 + "_keyword : " + "1234", query.getQuery())
                                                  && Constants.ITEM == query.getDSpaceObjectFilter();
                                      }
                                  }
