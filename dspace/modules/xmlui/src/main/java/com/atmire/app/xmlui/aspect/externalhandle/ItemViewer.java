@@ -18,15 +18,15 @@ import org.dspace.app.xmlui.wing.element.Division;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.content.Item;
 import org.dspace.discovery.SearchServiceException;
-import org.springframework.web.util.HtmlUtils;
 import org.xml.sax.SAXException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.sql.SQLException;
 import java.util.List;
 
-//TODO TOM UNIT TEST
 public class ItemViewer extends AbstractDSpaceTransformer {
 
     private static final Logger log = Logger.getLogger(ItemViewer.class);
@@ -44,7 +44,6 @@ public class ItemViewer extends AbstractDSpaceTransformer {
     private ItemService itemService;
 
     public ItemViewer() {
-        //TODO TOM can this be autowired?
         itemService = new ItemServiceBean();
     }
 
@@ -107,10 +106,10 @@ public class ItemViewer extends AbstractDSpaceTransformer {
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
 
-    private String getExternalHandle() {
+    private String getExternalHandle() throws UnsupportedEncodingException {
         Request request = ObjectModelHelper.getRequest(objectModel);
         String rawValue = StringUtils.substringAfter(request.getSitemapURI(), "external-handle/");
-        return HtmlUtils.htmlUnescape(rawValue);
+        return URLDecoder.decode(rawValue, "UTF-8");
     }
 
     private String buildRedirectUrl(final String dsItemHandle) {
