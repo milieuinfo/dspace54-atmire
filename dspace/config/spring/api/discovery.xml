@@ -109,6 +109,7 @@
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
+                <ref bean="searchFilterExternalHandle" />
             </list>
         </property>
         <!--The sort filters for the discovery search-->
@@ -214,6 +215,7 @@
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
+                <ref bean="searchFilterExternalHandle" />
             </list>
         </property>
         <!--The sort filters for the discovery search (same as defaultConfiguration above)-->
@@ -403,6 +405,16 @@
         </property>
         <property name="type" value="date"/>
         <property name="sortOrder" value="VALUE"/>
+    </bean>
+
+    <!-- LNE external handle meta data field mapping -->
+    <bean id="searchFilterExternalHandle" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="externalHandle"/>
+        <property name="metadataFields">
+            <list>
+                <value>dc.identifier.other</value>
+            </list>
+        </property>
     </bean>
 
     <!--Sort properties-->
