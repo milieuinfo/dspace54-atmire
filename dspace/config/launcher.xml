@@ -409,4 +409,11 @@
             <class>org.dspace.app.util.Version</class>
         </step>
     </command>
+    <command>
+        <name>clear-items</name>
+        <description>Display the version of DSpace and other troubleshooting information</description>
+        <step>
+            <class>com.atmire.utils.DatabaseCleanScript</class>
+        </step>
+    </command>
 </commands>
