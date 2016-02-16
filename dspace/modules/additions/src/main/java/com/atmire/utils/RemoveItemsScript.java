@@ -17,25 +17,32 @@ import org.dspace.content.Item;
  *
  */
 
-public class DatabaseCleanScript
+public class RemoveItemsScript
 {
 
     private static EPerson eperson; // person running the script.
-    private static Logger log = Logger.getLogger(DatabaseCleanScript.class);
+    private static Logger log = Logger.getLogger(RemoveItemsScript.class);
     private static Context context;
     public static void main(String[] args)
     {
+
         try
         {
+            context = new Context();
             CommandLineParser parser = new PosixParser();
             CommandLine line = parser.parse(createCommandLineOptions(),args);
+
+            String EPersonMail = line.hasOption("e") ? line.getOptionValue("e") : null;
+            eperson = EPersonMail.indexOf("@") != -1 ? EPerson.findByEmail(context,EPersonMail) : EPerson.find(context, Integer.parseInt(EPersonMail));
+            context.setCurrentUser(eperson);
+
         }
         catch(Exception exception)
         {
             log.error("The DatabaseCleanScript encountered problems when running.",exception);
         }
 
-        DatabaseCleanScript cleanScript = new DatabaseCleanScript();
+        RemoveItemsScript cleanScript = new RemoveItemsScript();
     }
 
 
@@ -46,12 +53,12 @@ public class DatabaseCleanScript
 
         Option ePerson = OptionBuilder.withArgName("eperson").hasArg().withDescription("EPerson executing this task").isRequired().create("e");
         options.addOption(ePerson);
-        options.addOption("h","help",false,"show help");
+        options.addOption("h", "help", false, "show help");
 
         return options;
     }
 
-    public DatabaseCleanScript()
+    public RemoveItemsScript()
     {
         // just call a method to delete all the items.
         deleteAllItems();
@@ -62,7 +69,6 @@ public class DatabaseCleanScript
         System.out.println("deleting items");
         try
         {
-            context = new Context();
             ItemIterator it = Item.findAll(context);
             while(it.hasNext())
             {
@@ -71,11 +77,22 @@ public class DatabaseCleanScript
                 collection.removeItem(item);
                 collection.update();
             }
-            context.complete();
+            context.commit();
         }
         catch(Exception e)
         {
             log.error("During deletion of the items something went wrong.");
+        }
+        finally
+        {
+            try
+            {
+                context.complete();
+            }
+            catch(Exception ex)
+            {
+                log.error("could not close context whilst running database script.");
+            }
         }
 
     }

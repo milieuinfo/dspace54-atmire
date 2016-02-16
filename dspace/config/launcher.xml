@@ -410,10 +410,10 @@
         </step>
     </command>
     <command>
-        <name>clear-items</name>
+        <name>remove-items</name>
         <description>Display the version of DSpace and other troubleshooting information</description>
         <step>
-            <class>com.atmire.utils.DatabaseCleanScript</class>
+            <class>com.atmire.utils.RemoveItemsScript</class>
         </step>
     </command>
 </commands>
