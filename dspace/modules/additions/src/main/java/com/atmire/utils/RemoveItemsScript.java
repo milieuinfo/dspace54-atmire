@@ -36,7 +36,7 @@ public class RemoveItemsScript
         }
         catch(Exception exception)
         {
-            log.error("The DatabaseCleanScript encountered problems when running.",exception);
+            log.error("The remove-item script encountered problems whilst running.",exception);
         }
 
         RemoveItemsScript cleanScript = new RemoveItemsScript();
