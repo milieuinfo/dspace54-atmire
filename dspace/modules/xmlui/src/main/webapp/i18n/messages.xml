@@ -2501,4 +2501,58 @@
     <message key="xmlui.mirage2.choice-authority-control.loading">Loading...</message>
 
     <message key="xmlui.mirage2.item-list.thumbnail">Thumbnail</message>
+
+    <!-- LNE: custom messages -->
+
+    <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_aangifteType">Aangifte Type</message>
+    <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_rapporteringsJaar">Rapporteringsjaar</message>
+    <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_exploitatieLocatieStad">Exploitatie Stad</message>
+    <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_exploitatieLocatiePostcode">Exploitatie Postcode</message>
+    <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_type">Record Type</message>
+
+    <message key="xmlui.ArtifactBrowser.SimpleSearch.filter.aangifteType">Aangifte Type</message>
+    <message key="xmlui.ArtifactBrowser.SimpleSearch.filter.rapporteringsJaar">Rapporteringsjaar</message>
+    <message key="xmlui.ArtifactBrowser.SimpleSearch.filter.exploitatieLocatieStad">Exploitatie Stad</message>
+    <message key="xmlui.ArtifactBrowser.SimpleSearch.filter.exploitatieLocatiePostcode">Exploitatie Postcode</message>
+    <message key="xmlui.ArtifactBrowser.SimpleSearch.filter.type">Record Type</message>
+
+    <message key="xmlui.Discovery.AbstractSearch.type_aangifteType">Filter by: Aangifte Type</message>
+    <message key="xmlui.Discovery.AbstractSearch.type_rapporteringsJaar">Filter by: Rapporteringsjaar</message>
+    <message key="xmlui.Discovery.AbstractSearch.type_exploitatieLocatieStad">Filter by: Exploitatie Stad</message>
+    <message key="xmlui.Discovery.AbstractSearch.type_exploitatieLocatiePostcode">Filter by: Exploitatie Postcode</message>
+    <message key="xmlui.Discovery.AbstractSearch.type_type">Filter by: Record Type</message>
+
+
+    <message key="xmlui.dri2xhtml.METS-1.0.imjv-Rapporteringsjaar">Rapporterings Jaar</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.imjv-ExploitatieCBBNummer">Exploitatie CBB Nummer</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.imjv-ExploitatieNummer">Exploitatie Nummer</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.imjv-ExploitatieDossiernummer">Exploitatie Dossier Nummer</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.imjv-ExploitantCBBNummer">Exploitant CBB Nummer</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.imjv-ExploitatieNaam">Exploitatie Naam</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.imjv-ExploitantOndernemingsNummer">Exploitant Ondernemingsnummer</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.imjv-ExploitatieLocatie">Exploitatie Locatie</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.imjv-ExploitatieGemeente">Exploitatie Locatie Gemeente</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.imjv-ExploitatieLocatieStad">Exploitatie Locatie Stad</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.imjv-ExploitatiePostcode">Exploitatie Locatie Postcode</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.imjv-ExploitatieLocatiePostcode">Exploitatie Locatie Postcode</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.imjv-ExploitatieStraat">Exploitatie Locatie Straat</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.imjv-ExploitatieHuisnummer">Exploitatie Locatie Huisnummer</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.imjv-ExploitantAdres">Exploitant Adres</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.imjv-ExploitantAdresStad">Exploitant Adres Stad</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.imjv-ExploitantAdresPostcode">Exploitant Adres Postcode</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.imjv-MilieuVerslagVerzendAdres">Milieuverslag Verzendadres</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.imjv-MilieuVerslagFeit">Milieuverslag Feit</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.imjv-MilieuVerslagFeitTijdstip">Milieuverslag Feit Tijdstip</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.imjv-MilieuVerslagFeitGebruikerVoornaam">Milieuverslag Feit Gebruiker Voornaam</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.imjv-MilieuVerslagFeitGebruikerNaam">Milieuverslag Feit Gebruiker Naam</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.imjv-MilieuVerslagFeitActie">Milieuverslag Feit Actie</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.imjv-AangifteType">Aangifte Type</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-type">Type</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-source">Source</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-identifier">Identifier</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-title-alternative">Alternative Title</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.document-title">Document Title</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.imjv-dmsexportnotes">Export notes</message>
+
+    <!-- end custom messages -->
 </catalogue>
