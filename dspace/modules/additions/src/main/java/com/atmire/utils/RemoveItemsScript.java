@@ -13,19 +13,17 @@ import org.dspace.eperson.EPerson;
 import org.dspace.content.Item;
 
 /**
- * Script to delete all items from dspace. (workspace, workflow, archived).
+ * Script to delete all items from dspace.
  *
  */
 
 public class RemoveItemsScript
 {
-
     private static EPerson eperson; // person running the script.
     private static Logger log = Logger.getLogger(RemoveItemsScript.class);
     private static Context context;
     public static void main(String[] args)
     {
-
         try
         {
             context = new Context();
@@ -35,7 +33,6 @@ public class RemoveItemsScript
             String EPersonMail = line.hasOption("e") ? line.getOptionValue("e") : null;
             eperson = EPersonMail.indexOf("@") != -1 ? EPerson.findByEmail(context,EPersonMail) : EPerson.find(context, Integer.parseInt(EPersonMail));
             context.setCurrentUser(eperson);
-
         }
         catch(Exception exception)
         {
@@ -43,6 +40,7 @@ public class RemoveItemsScript
         }
 
         RemoveItemsScript cleanScript = new RemoveItemsScript();
+        System.out.println("Items deleted");
     }
 
 
@@ -91,7 +89,7 @@ public class RemoveItemsScript
             }
             catch(Exception ex)
             {
-                log.error("could not close context whilst running database script.");
+                log.error("An error occurred when trying to finalize the current operation.");
             }
         }
 
