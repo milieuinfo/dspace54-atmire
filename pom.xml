@@ -290,7 +290,7 @@
                <mail.server.disabled>true</mail.server.disabled>
                <solr.server>http://localhost:${tomcat.port}/solr</solr.server>
                <db.maxidle>1</db.maxidle>
-               <lne.rest.secured.urlpattern>/*</lne.rest.secured.urlpattern>
+               <lne.rest.secured.urlpattern></lne.rest.secured.urlpattern>
            </properties>
        </profile>
 
