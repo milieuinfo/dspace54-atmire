@@ -289,6 +289,7 @@
                <alert.recipient>noreply@atmire.com</alert.recipient>
                <mail.server.disabled>true</mail.server.disabled>
                <solr.server>http://localhost:${tomcat.port}/solr</solr.server>
+               <lne.rest.secured.urlpattern>/*</lne.rest.secured.urlpattern>
            </properties>
        </profile>
 

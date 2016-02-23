@@ -46,7 +46,7 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>DSpace REST API</web-resource-name>
-            <url-pattern>/*</url-pattern>
+            <url-pattern>${lne.rest.secured.urlpattern}</url-pattern>
         </web-resource-collection>
         <user-data-constraint>
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>

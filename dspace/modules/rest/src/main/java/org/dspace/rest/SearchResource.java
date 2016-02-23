@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Path("/search")
-public class SearchResource {
+public class SearchResource extends Resource {
 	
 	/** log4j category */
 	private static final Logger log = Logger.getLogger(SearchResource.class);
