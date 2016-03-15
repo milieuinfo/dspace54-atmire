@@ -47,8 +47,8 @@ public class ItemServiceBean implements ItemService {
     private DiscoverQuery buildDiscoveryQuery(final String metadataField, final String metadataValue) {
         DiscoverQuery query = new DiscoverQuery();
         query.setDSpaceObjectFilter(Constants.ITEM);
-        query.setQuery(metadataField + "_keyword : " + metadataValue);
-        query.addSearchField(HANDLE_SEARCH_FIELD);
+        query.setQuery(metadataField + "_keyword:\"" + metadataValue + "\"");
+        query.setMaxResults(10000);
 
         return query;
     }
