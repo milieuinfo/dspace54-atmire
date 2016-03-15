@@ -2554,5 +2554,19 @@
     <message key="xmlui.dri2xhtml.METS-1.0.document-title">Document Title</message>
     <message key="xmlui.dri2xhtml.METS-1.0.imjv-dmsexportnotes">Export notes</message>
 
+    <!--!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+		            External Handle Aspect
+
+		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+
+    <message key="xmlui.externalhandle.error_page">Error when resolving external handle</message>
+    <message key="xmlui.externalhandle.discovery_query_problem">There was a problem executing the discovery query to lookup the Item handle.</message>
+    <message key="xmlui.externalhandle.not_found_page">Item not found</message>
+    <message key="xmlui.externalhandle.item_not_found">No item was found for the provided external handle</message>
+    <message key="xmlui.externalhandle.too_many_items_page">Too many items for external handle</message>
+    <message key="xmlui.externalhandle.external_handle_not_unique">It appears that this external handle is not unique. Therefore it cannot be resolved to a single item.</message>
+    <message key="xmlui.externalhandle.related_items">The following items are related to this external handle:</message>
+
     <!-- end custom messages -->
 </catalogue>
