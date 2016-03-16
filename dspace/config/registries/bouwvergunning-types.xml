@@ -1,18 +1,18 @@
 <dspace-dc-types>
 
     <dspace-header>
-        <title>Bouwvergunning metadata types</title>
+        <title>dba metadata types</title>
         <contributor.author>Dylan Meeus</contributor.author>
     </dspace-header>
 
     <dc-schema>
         <name>dba</name>
-        <namespace>http://atmire.com/lne/bouwvergunning</namespace>
+        <namespace>http://atmire.com/lne/dba</namespace>
     </dc-schema>
 
 
     <dc-type>
-        <schema>bouwvergunning</schema>
+        <schema>dba</schema>
         <element>procedure</element>
         <scope_note></scope_note>
     </dc-type>
@@ -20,7 +20,7 @@
 
 
     <dc-type>
-        <schema>bouwvergunning</schema>
+        <schema>dba</schema>
         <element>procedurestap</element>
         <scope_note></scope_note>
     </dc-type>
@@ -28,7 +28,7 @@
 
 
     <dc-type>
-        <schema>bouwvergunning</schema>
+        <schema>dba</schema>
         <element>dossier</element>
         <qualifier>identifier</qualifier>
         <scope_note></scope_note>
@@ -36,7 +36,7 @@
 
 
     <dc-type>
-        <schema>bouwvergunning</schema>
+        <schema>dba</schema>
         <element>goed</element>
         <qualifier>gemeente</qualifier>
         <scope_note></scope_note>
@@ -45,7 +45,7 @@
 
 
     <dc-type>
-        <schema>bouwvergunning</schema>
+        <schema>dba</schema>
         <element>goed</element>
         <qualifier>nis</qualifier>
         <scope_note></scope_note>
@@ -53,20 +53,20 @@
 
 
     <dc-type>
-        <schema>bouwvergunning</schema>
+        <schema>dba</schema>
         <element>dossierfase</element>
         <scope_note></scope_note>
     </dc-type>
 
     <dc-type>
-        <schema>bouwvergunning</schema>
+        <schema>dba</schema>
         <element>dossierstuk</element>
         <scope_note></scope_note>
     </dc-type>
 
 
     <dc-type>
-        <schema>bouwvergunning</schema>
+        <schema>dba</schema>
         <element>vergunning</element>
         <qualifier>jaar</qualifier>
         <scope_note></scope_note>
@@ -74,7 +74,7 @@
 
 
     <dc-type>
-        <schema>bouwvergunning</schema>
+        <schema>dba</schema>
         <element>vergunning</element>
         <qualifier>jaar</qualifier>
         <scope_note></scope_note>
@@ -82,7 +82,7 @@
 
 
     <dc-type>
-        <schema>bouwvergunning</schema>
+        <schema>dba</schema>
         <element>vergunning</element>
         <qualifier>overheid</qualifier>
         <scope_note></scope_note>
