@@ -68,8 +68,8 @@ public class DatabaseRegistryUpdater implements FlywayCallback
             MetadataImporter.loadRegistry(base + "dcterms-types.xml", true);
             MetadataImporter.loadRegistry(base + "eperson-types.xml", true);
             MetadataImporter.loadRegistry(base + "sword-metadata.xml", true);
-            MetadataImporter.loadRegistry(base + "vlaanderen.xml", true);
-            MetadataImporter.loadRegistry(base + "dba.xml", true);
+            MetadataImporter.loadRegistry(base + "vlaanderen-types.xml", true);
+            MetadataImporter.loadRegistry(base + "bouwvergunning-types.xml", true);
 
             // Check if XML Workflow is enabled in workflow.cfg
             if (ConfigurationManager.getProperty("workflow", "workflow.framework").equals("xmlworkflow"))

@@ -6,7 +6,7 @@
     </dspace-header>
 
     <dc-schema>
-        <name>bouwvergunning</name>
+        <name>dba</name>
         <namespace>http://atmire.com/lne/bouwvergunning</namespace>
     </dc-schema>
 
