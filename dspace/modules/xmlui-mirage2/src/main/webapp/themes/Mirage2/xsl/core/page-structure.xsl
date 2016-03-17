@@ -324,9 +324,9 @@
         <header>
             <div class="navbar navbar-default navbar-static-top" role="navigation">
                 <div class="container">
-                    <a href="www.vlaanderen.be" class="topheaderlinks">VLAANDEREN.be</a>
+                    <a href="http://www.vlaanderen.be" class="topheaderlinks">VLAANDEREN.be</a>
                     <span> | </span>
-                    <a href="www.lne.be" class="topheaderlinks">LNE.be</a>
+                    <a href="http://www.lne.be" class="topheaderlinks">LNE.be</a>
 
                     <div class="navbar-header">
 
@@ -338,11 +338,34 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
+
+
                         <div id="logodiv">
+                            <div id="skewedlogo">
                             <a href="{$context-path}/" class="navbar-brand">
                                 <img src="{$theme-path}/images/lne_logo.svg" />
                             </a>
+                            </div>
+                            <!-- tryout for a skewed logo
+                            <div id="subheaderlogo">
+                                <div class="boxlogo subheadercontentlogo" id="subheadercontentlogo">
+
+                                </div>
+
+                                <div class="sliderlogo">
+                                    <div class="boxlogo contentlogo">
+                                        <a href="{$context-path}/" class="navbar-brand">
+                                            <img src="{$theme-path}/images/lne_logo.svg" />
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            -->
                         </div>
+
+
+
 
                         <div class="navbar-header pull-right visible-xs hidden-sm hidden-md hidden-lg">
                             <ul class="nav nav-pills pull-left ">
@@ -439,7 +462,7 @@
             </div>
 
 
-              <div class="container" id="subheader">
+              <div id="subheader" class="container">
                   <div class="box subheadercontent" id="subheadercontent">
 
                   </div>
