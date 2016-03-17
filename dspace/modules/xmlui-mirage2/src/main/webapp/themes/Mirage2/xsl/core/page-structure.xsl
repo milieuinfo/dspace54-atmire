@@ -827,6 +827,18 @@
 
     <xsl:template name="addJavascript">
 
+
+        <!-- vlaanderen header/footer -->
+
+        <script src="//widgets.vlaanderen.be/widget/live/702ba471ac164186a5066e3a409a4364" type="text/javascript"> </script>
+        <script type="text/javascript">
+            window.WidgetApi = window.WidgetApi || {};
+            window.WidgetApi.Language = window.WidgetApi.Language || {};
+            window.WidgetApi.Language.getCurrentLanguage = function() { return "nl"; };
+            window.WidgetApi.Language.getDefaultLanguage = function() { return "nl"; };
+        </script>
+
+        <!-- end vlaanderen -->
         <!--TODO concat & minify!-->
 
         <script>
