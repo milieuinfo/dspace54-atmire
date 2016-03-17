@@ -469,11 +469,9 @@
 
                   <div class="slider">
                       <div class="box content">
-                          <div id="actualcontent">
                           <span id="archiefspan">ARCHIEF</span><br></br>
                           <span>BELEIDSDOMEIN</span><br></br>
                           <span id="lnespan">LEEFMILIEU, NATUUR EN ENERGIE</span>
-                          </div>
                       </div>
                   </div>
               </div>

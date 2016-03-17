@@ -13,10 +13,11 @@
 
 
 
-@import "fonts/FlandersArtSans";
+@import "fonts/sans/FlandersArtSans";
+
 
 body{
-    font-family: flanders_art_serifmedium;
+    font-family: flanders_art_sans;
 }
 
 .breadcrumb li{
@@ -99,6 +100,9 @@ a.list-group-item{
     line-height:50px;
 }
 
+.box .content{
+    font-size:20px;
+}
 
 .box {
     width: 100%;
@@ -106,7 +110,7 @@ a.list-group-item{
 }
 
 .subheadercontent {
-    position: absolute;  /* remove from flow so sunset is placed on top */
+    position: fixed;  /* remove from flow so sunset is placed on top */
     background-color:#4A766D;
 }
 
@@ -209,7 +213,7 @@ a.list-group-item{
 }
 
 #archiefspan{
-    font-size:25px;
+    font-size:35px;
 }
 
 #footerdiv{
