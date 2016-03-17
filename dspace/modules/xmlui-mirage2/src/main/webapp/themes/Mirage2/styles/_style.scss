@@ -120,8 +120,47 @@ a.list-group-item{
 }
 
 .slider {
+    background-color:white;
     /* set initial width */
     width: 520px;
+
+    /* hide the content that overflows (to allow second box to show through) */
+    overflow: hidden;
+    display: inline-block;
+
+    /* skew container so that it has angled edge, and set up transition */
+    transform: skewX(20deg);
+    transition: width 1.2s ease-in-out;
+    /* give negative margin to remove gap caused by left hand skew */
+    margin-left: -76px;
+
+    /* hide pointer events for unseen content */
+    pointer-events: none;
+}
+
+// for the logo
+.boxlogo {
+    width: 50px;
+    height: 100px;
+}
+
+.subheadercontentlogo {
+    position: absolute;  /* remove from flow so sunset is placed on top */
+  //  background-color:#4A766D;
+}
+
+
+
+.contentlogo{
+    transform: skewX(-20deg);
+    margin-left: 76px; /* give margin to push content away from left slanted edge */
+    background-color:white;
+    pointer-events: auto;
+}
+
+.sliderlogo {
+    /* set initial width */
+   // width: 520px;
 
     /* hide the content that overflows (to allow second box to show through) */
     overflow: hidden;
@@ -144,11 +183,24 @@ a.list-group-item{
     height:50px;
 }
 
+#logodiv a
+{
+    transform:skewX(-20deg);
+}
+
 .subheader{
     color:#B8B8B8;
 }
 
 #subheader{
+    height:130px;
+}
+
+.subheaderlogo{
+    color:#B8B8B8;
+}
+
+#subheaderlogo{
     height:130px;
 }
 
@@ -169,6 +221,16 @@ a.list-group-item{
     color:#7DBDB9;
 }
 
+#skewedlogo
+{
+    transform: skewX(20deg);
+    height:50px;
+    background-color:#E4E4E4;
+    margin-left:20px;
+    width:20px;
+}
 
-
-
+#actualcontent
+{
+    margin-left:300px;
+}
