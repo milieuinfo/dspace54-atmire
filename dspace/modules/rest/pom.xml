@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.dspace.modules</groupId>
     <artifactId>rest</artifactId>
@@ -19,6 +20,8 @@
     <properties>
         <!-- This is the path to the root [dspace-src] directory. -->
         <root.basedir>${basedir}/../../..</root.basedir>
+        <!-- Swagger properties -->
+        <swagger-ui-version>2.1.0</swagger-ui-version>
     </properties>
 
     <build>
@@ -27,6 +30,85 @@
             <filter>${filters.file}</filter>
         </filters>
         <plugins>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <configuration>
+                            <target name="get markdown.mustache">
+                                <!--
+                                 Need to download markdown.mustache first to use strapdown.html.mustache
+                                -->
+                                <get dest="${build.directory}">
+                                    <url url="https://raw.githubusercontent.com/kongchen/api-doc-template/master/v2.0/markdown.mustache"/>
+                                </get>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.github.kongchen</groupId>
+                <artifactId>swagger-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <apiSources>
+                        <apiSource>
+                            <springmvc>false</springmvc>
+                            <locations>org.dspace.rest</locations>
+                            <schemes>${rest.scheme}</schemes>
+                            <host>${rest.basePath}</host>
+                            <basePath>${rest.url.path}</basePath>
+                            <info>
+                                <title>ETHZ rest application</title>
+                                <version>v1</version>
+                                <description>ETHZ rest api.</description>
+                                <license>
+                                    <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+                                    <name>Apache 2.0</name>
+                                </license>
+                            </info>
+                            <templatePath>${basedir}/src/main/resources/strapdown.html.hbs</templatePath>
+                            <outputPath>${build.directory}/api-docs/strapdown.html</outputPath>
+                            <swaggerDirectory>${build.directory}/api-docs</swaggerDirectory>
+                        </apiSource>
+                    </apiSources>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--  Download swagger UI -->
+            <plugin>
+                <groupId>com.googlecode.maven-download-plugin</groupId>
+                <artifactId>download-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    <execution>
+                        <id>swagger-ui</id>
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
+                        <configuration>
+                            <url>
+                                https://github.com/swagger-api/swagger-ui/archive/v${swagger-ui-version}.tar.gz
+                            </url>
+                            <unpack>true</unpack>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -38,7 +120,33 @@
                             <directory>${basedir}/src/main/webapp</directory>
                             <includes>
                                 <include>WEB-INF/web.xml</include>
+                                <include>swagger-ui-${swagger-ui-version}/dist/index.html</include>
                             </includes>
+                        </resource>
+                        <resource>
+                            <filtering>true</filtering>
+                            <targetPath>swagger-ui-${swagger-ui-version}/dist</targetPath>
+                            <directory>
+                                src/main/resources/swagger-ui-${swagger-ui-version}/dist
+                            </directory>
+                            <includes>
+                                <include>index.html</include>
+                            </includes>
+                        </resource>
+                        <!--
+                         Copy swagger generated json file & swagger UI files
+                        -->
+                        <resource>
+                            <filtering>true</filtering>
+                            <directory>${build.directory}</directory>
+                            <includes>
+                                <include>api-docs/**</include>
+                                <include>swagger-ui-${swagger-ui-version}/dist/**</include>
+                            </includes>
+                            <excludes>
+                                <exclude>swagger-ui-${swagger-ui-version}/dist/index.html</exclude>
+                            </excludes>
+                            <targetPath>/</targetPath>
                         </resource>
                     </webResources>
                     <overlays>
@@ -52,6 +160,9 @@
                         <overlay>
                             <groupId>org.dspace</groupId>
                             <artifactId>dspace-rest</artifactId>
+                            <excludes>
+                                <exclude>WEB-INF/lib/**</exclude>
+                            </excludes>
                         </overlay>
                     </overlays>
                 </configuration>
@@ -89,7 +200,27 @@
             <groupId>org.dspace.modules</groupId>
             <artifactId>additions</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.wordnik</groupId>
+            <artifactId>swagger-jersey-jaxrs</artifactId>
+            <version>1.5.1-M2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.4.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.4.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.4.2</version>
+        </dependency>
         <!-- DSpace REST Webapp -->
         <dependency>
             <groupId>org.dspace</groupId>
