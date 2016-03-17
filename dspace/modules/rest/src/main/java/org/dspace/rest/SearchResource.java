@@ -30,58 +30,61 @@ public class SearchResource extends Resource {
 	/** log4j category */
 	private static final Logger log = Logger.getLogger(SearchResource.class);
 
-	@GET
-	@Path("/item")
-	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public List<org.dspace.rest.common.Item> searchItems(
-			@QueryParam("fields") String fields,
-			@QueryParam("expand") String expand,
-			@QueryParam("limit") int limit,
-			@Context HttpHeaders headers, @Context HttpServletRequest request)
-			throws WebApplicationException, Exception {
+    /** log4j category */
+    private static final Logger log = Logger.getLogger(SearchResource.class);
 
-		DiscoverQuery dq = new DiscoverQuery();
-	
-		dq.setDSpaceObjectFilter(org.dspace.core.Constants.ITEM);
-	
-		String cleanFields = StringUtils.trimToNull(fields);
-		String cleanExpand = StringUtils.trimToNull(expand);
-		
-		if (null == cleanExpand){
-			cleanExpand = "metadata";
-		}
+    @GET
+    @Path("/item")
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public List<org.dspace.rest.common.Item> searchItems(
+            @QueryParam("fields") String fields,
+            @QueryParam("expand") String expand,
+            @QueryParam("limit") int limit,
+            @Context HttpHeaders headers, @Context HttpServletRequest request)
+            throws WebApplicationException, Exception {
 
-		if (null != cleanFields) {
-			String[] splitFields = StringUtils.split(cleanFields, ';');
-			String query = StringUtils.join(splitFields , " AND ");
-			dq.setQuery(query);
-		}
-		
-		if (0 == limit) {
-			dq.setMaxResults(10);
-		}else{
-			dq.setMaxResults(limit);
-		}
-		
-		SearchService searchService = SearchUtils.getSearchService();
-	
-		org.dspace.core.Context context = new org.dspace.core.Context();
-		
-		context.turnOffAuthorisationSystem();
-		
-		DiscoverResult result = searchService.search(context, dq);
-		
-		List<DSpaceObject> dspaceObjects = result.getDspaceObjects();
-		
-		List<org.dspace.rest.common.Item> toReturn = new ArrayList<org.dspace.rest.common.Item>();
-		for (DSpaceObject obj : dspaceObjects){
-			Item it = (Item) obj;
-			toReturn.add(new org.dspace.rest.common.Item(it,cleanExpand,context));
-		}
+        DiscoverQuery dq = new DiscoverQuery();
 
-		context.complete();
-		
-		return toReturn;
-	}
+        dq.setDSpaceObjectFilter(org.dspace.core.Constants.ITEM);
+
+        String cleanFields = StringUtils.trimToNull(fields);
+        String cleanExpand = StringUtils.trimToNull(expand);
+
+        if (null == cleanExpand){
+            cleanExpand = "metadata";
+        }
+
+        if (null != cleanFields) {
+            String[] splitFields = StringUtils.split(cleanFields, ';');
+            String query = StringUtils.join(splitFields , " AND ");
+            dq.setQuery(query);
+        }
+
+        if (0 == limit) {
+            dq.setMaxResults(10);
+        }else{
+            dq.setMaxResults(limit);
+        }
+
+        SearchService searchService = SearchUtils.getSearchService();
+
+        org.dspace.core.Context context = new org.dspace.core.Context();
+
+        context.turnOffAuthorisationSystem();
+
+        DiscoverResult result = searchService.search(context, dq);
+
+        List<DSpaceObject> dspaceObjects = result.getDspaceObjects();
+
+        List<org.dspace.rest.common.Item> toReturn = new ArrayList<org.dspace.rest.common.Item>();
+        for (DSpaceObject obj : dspaceObjects){
+            Item it = (Item) obj;
+            toReturn.add(new org.dspace.rest.common.Item(it,cleanExpand,context));
+        }
+
+        context.complete();
+
+        return toReturn;
+    }
 
 }
