@@ -120,7 +120,7 @@
                             <directory>${basedir}/src/main/webapp</directory>
                             <includes>
                                 <include>WEB-INF/web.xml</include>
-                                <include>swagger-ui-${swagger-ui-version}/dist/index.html</include>
+                      <!--          <include>swagger-ui-${swagger-ui-version}/dist/index.html</include> -->
                             </includes>
                         </resource>
                         <resource>
@@ -143,9 +143,9 @@
                                 <include>api-docs/**</include>
                                 <include>swagger-ui-${swagger-ui-version}/dist/**</include>
                             </includes>
-                            <excludes>
+                      <!--      <excludes>
                                 <exclude>swagger-ui-${swagger-ui-version}/dist/index.html</exclude>
-                            </excludes>
+                            </excludes> -->
                             <targetPath>/</targetPath>
                         </resource>
                     </webResources>
