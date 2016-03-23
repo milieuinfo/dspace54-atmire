@@ -289,6 +289,21 @@
                <alert.recipient>noreply@atmire.com</alert.recipient>
                <mail.server.disabled>true</mail.server.disabled>
                <solr.server>http://localhost:${tomcat.port}/solr</solr.server>
+               <xmlui.google.analytics.key>DUMMY_KEY</xmlui.google.analytics.key>
+           </properties>
+       </profile>
+
+       <profile>
+           <id>client-dev</id>
+           <properties>
+               <xmlui.google.analytics.key>DUMMY_KEY</xmlui.google.analytics.key>
+           </properties>
+       </profile>
+
+       <profile>
+           <id>client-prod</id>
+           <properties>
+               <xmlui.google.analytics.key>DUMMY_KEY</xmlui.google.analytics.key>
            </properties>
        </profile>
 
