@@ -296,6 +296,21 @@
                <mail.server.disabled>true</mail.server.disabled>
                <solr.server>http://localhost:${tomcat.port}/solr</solr.server>
                <db.maxidle>1</db.maxidle>
+               <xmlui.google.analytics.key>DUMMY_KEY</xmlui.google.analytics.key>
+           </properties>
+       </profile>
+
+       <profile>
+           <id>client-dev</id>
+           <properties>
+               <xmlui.google.analytics.key>DUMMY_KEY</xmlui.google.analytics.key>
+           </properties>
+       </profile>
+
+       <profile>
+           <id>client-prod</id>
+           <properties>
+               <xmlui.google.analytics.key>DUMMY_KEY</xmlui.google.analytics.key>
            </properties>
        </profile>
 
