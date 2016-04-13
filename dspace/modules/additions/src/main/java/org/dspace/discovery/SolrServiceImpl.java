@@ -7,6 +7,9 @@
  */
 package org.dspace.discovery;
 
+import com.atmire.utils.multithreading.ItemFold;
+import com.atmire.utils.multithreading.ItemIdPayload;
+import org.dspace.content.*;
 import org.dspace.util.MultiFormatDateParser;
 import java.io.IOException;
 import java.io.InputStream;
@@ -60,14 +63,6 @@ import org.apache.solr.common.SolrInputDocument;
 import org.apache.solr.common.params.*;
 import org.apache.solr.common.util.NamedList;
 import org.apache.solr.handler.extraction.ExtractingParams;
-import org.dspace.content.Bitstream;
-import org.dspace.content.Bundle;
-import org.dspace.content.Collection;
-import org.dspace.content.Community;
-import org.dspace.content.Metadatum;
-import org.dspace.content.DSpaceObject;
-import org.dspace.content.Item;
-import org.dspace.content.ItemIterator;
 import org.dspace.content.authority.ChoiceAuthorityManager;
 import org.dspace.content.authority.Choices;
 import org.dspace.content.authority.MetadataAuthorityManager;
@@ -371,7 +366,6 @@ public class SolrServiceImpl implements SearchService, IndexingService {
 
     }
 
-
     /**
      * Iterates over all Items, Collections and Communities. And updates them in
      * the index. Uses decaching to control memory footprint. Uses indexContent
@@ -383,6 +377,36 @@ public class SolrServiceImpl implements SearchService, IndexingService {
     public void updateIndex(Context context)
     {
         updateIndex(context, false);
+    }
+
+    protected class IndexItemPayload extends ItemIdPayload {
+
+        private boolean force;
+
+        public IndexItemPayload(boolean force) {
+            this.force = force;
+        }
+
+        public IndexItemPayload(Integer id, Context context, boolean force) {
+            super(id, context);
+            this.force = force;
+        }
+
+
+
+        @Override
+        protected void doRun(Item item) {
+            try {
+                indexContent(getContext(),item,force);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        @Override
+        public ItemIdPayload create(Integer id, Context context) {
+            return new IndexItemPayload(id,context,force);  //TODO: implement method
+        }
     }
 
     /**
@@ -402,8 +426,12 @@ public class SolrServiceImpl implements SearchService, IndexingService {
     public void updateIndex(Context context, boolean force)
     {
         try {
-            ItemIterator items = null;
-            try {
+            ItemIdIterator items = ItemIdIterator.findAllUnfilteredItemIds(context);
+            ItemFold fold=new ItemFold(ConfigurationManager.getIntProperty("discovery", "index-threads", 4),new IndexItemPayload(force),items);
+            fold.execute(context);
+
+
+/*            try {
                 for (items = Item.findAllUnfiltered(context); items.hasNext();)
                 {
                     Item item = items.next();
@@ -416,6 +444,7 @@ public class SolrServiceImpl implements SearchService, IndexingService {
                     items.close();
                 }
             }
+*/
 
             Collection[] collections = Collection.findAll(context);
             for (Collection collection : collections)
@@ -1526,6 +1555,10 @@ public class SolrServiceImpl implements SearchService, IndexingService {
                 break;
             case 11:
                 dfArr = new SimpleDateFormat[]{new SimpleDateFormat("yyyy MMM dd")};
+                break;
+            case 19:
+                dfArr = new SimpleDateFormat[]{new SimpleDateFormat(
+                        "yyyy-MM-dd HH:mm:ss")};
                 break;
             case 20:
                 dfArr = new SimpleDateFormat[]{new SimpleDateFormat(
