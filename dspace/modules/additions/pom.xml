@@ -97,6 +97,11 @@
          </exclusions>
       </dependency>
 
+      <dependency>
+         <groupId>be.milieuinfo.security</groupId>
+         <artifactId>acd-openam-oauth-client</artifactId>
+      </dependency>
+
    </dependencies>
 
 </project>
