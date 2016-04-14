@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<relationships>
+    <type>
+        <leftType>com.atmire.dspace.content.Record</leftType>
+        <rightType>com.atmire.dspace.content.Record</rightType>
+        <leftLabel>Parent</leftLabel>
+        <rightLabel>Child</rightLabel>
+        <leftCardinality>
+            <min>0</min>
+            <max>1</max>
+        </leftCardinality>
+        <rightCardinality>
+            <min>0</min>
+            <!--<max></max>-->
+        </rightCardinality>
+    </type>
+</relationships>
