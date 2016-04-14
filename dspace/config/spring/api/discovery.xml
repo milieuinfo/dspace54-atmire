@@ -44,7 +44,7 @@
                <entry key="default" value-ref="defaultConfiguration" />
 
                <!--Use site to override the default configuration for the home page & default discovery page-->
-               <entry key="site" value-ref="homepageConfiguration" />
+               <!--<entry key="site" value-ref="homepageConfiguration" />-->
                <!--<entry key="123456789/7621" value-ref="defaultConfiguration"/>-->
             </map>
         </property>
@@ -98,6 +98,11 @@
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
+                <ref bean="searchFilterAangifteType" />
+                <ref bean="searchFilterRapporteringsJaar" />
+                <ref bean="searchFilterExploitatieStad" />
+                <ref bean="searchFilterExploitatiePostCode" />
+                <ref bean="searchFilterType" />
             </list>
         </property>
         <!-- Set TagCloud configuration per discovery configuration -->
@@ -110,6 +115,11 @@
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
                 <ref bean="searchFilterExternalHandle" />
+                <ref bean="searchFilterAangifteType" />
+                <ref bean="searchFilterRapporteringsJaar" />
+                <ref bean="searchFilterExploitatieStad" />
+                <ref bean="searchFilterExploitatiePostCode" />
+                <ref bean="searchFilterType" />
             </list>
         </property>
         <!--The sort filters for the discovery search-->
@@ -415,6 +425,61 @@
                 <value>dc.identifier.other</value>
             </list>
         </property>
+    </bean>
+
+    <bean id="searchFilterAangifteType" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="aangifteType"/>
+        <property name="metadataFields">
+            <list>
+                <value>imjv.aangiftetype</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="10"/>
+        <property name="sortOrder" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterRapporteringsJaar" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="rapporteringsJaar"/>
+        <property name="metadataFields">
+            <list>
+                <value>imjv.rapporteringsjaar</value>
+            </list>
+        </property>
+        <property name="type" value="date"/>
+        <property name="sortOrder" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterExploitatieStad" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="exploitatieLocatieStad"/>
+        <property name="metadataFields">
+            <list>
+                <value>imjv.exploitatie.gemeente</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="10"/>
+        <property name="sortOrder" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterExploitatiePostCode" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="exploitatieLocatiePostcode"/>
+        <property name="metadataFields">
+            <list>
+                <value>imjv.exploitatie.postcode</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="10"/>
+        <property name="sortOrder" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterType" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="type"/>
+        <property name="metadataFields">
+            <list>
+                <value>dc.type</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="10"/>
+        <property name="sortOrder" value="COUNT"/>
     </bean>
 
     <!--Sort properties-->
