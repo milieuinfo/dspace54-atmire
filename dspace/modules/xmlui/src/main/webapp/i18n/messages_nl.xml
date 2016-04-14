@@ -9,7 +9,7 @@
 
 -->
 <catalogue xml:lang="en" xmlns:i18n="http://apache.org/cocoon/i18n/2.1">
-    
+
     <!-- LNE: custom messages -->
 
     <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_aangifteType">Aangifte Type</message>
