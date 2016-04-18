@@ -388,7 +388,6 @@
 
                         <!-- login box -->
                         <div class="navbar-header pull-right hidden-xs">
-
                                 <xsl:choose>
                                     <xsl:when test="/dri:document/dri:meta/dri:userMeta/@authenticated = 'yes'">
                                         <li class="dropdown">
@@ -432,11 +431,22 @@
 
                                     </xsl:otherwise>
                                 </xsl:choose>
+                        </div>
 
+
+
+                        <div class="navbar-header">
+
+                            <button type="button" class="navbar-toggle" data-toggle="offcanvas">
+                                <span class="sr-only">
+                                    <i18n:text>xmlui.mirage2.page-structure.toggleNavigation</i18n:text>
+                                </span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
                         </div>
                         <!-- end login box -->
-
-
                     </div>
                 </div>
             </div>
@@ -617,11 +627,7 @@
         <footer>
             <div class="row">
                 <hr/>
-                <div class="col-xs-12" id="footerdiv">
-                    <div class="pull-right">
-                        <span>copyright &#169; 2002-2012.</span> <a id="dspacelink" href="www.dspace.org"> Duraspace (DSpace software)</a>
-                    </div>
-                </div>
+                <div class="col-xs-12" id="footerdiv"/>
             </div>
             <!--Invisible link to HTML sitemap (for search engines) -->
             <a class="hidden">
