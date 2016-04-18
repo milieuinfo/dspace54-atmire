@@ -253,3 +253,27 @@ a.list-group-item{
 {
     background-color:#4A766D;
 }
+
+@media (min-width: 768px) {
+    .navbar-toggle {
+        display: inline;
+    }
+}
+
+@media (min-width: 991px) {
+    .navbar-toggle {
+        display: none;
+    }
+}
+
+@media (max-width: 991px) {
+    .hidden-xs {
+        display: none !important;
+    }
+}
+
+@media (min-width: 768px){
+    .navbar-header {
+        float: right;
+    }
+}

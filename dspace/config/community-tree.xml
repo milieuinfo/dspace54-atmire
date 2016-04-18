@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<import_structure>
+    <community>
+        <name>IMJV Proof of Concept</name>
+        <collection>
+            <name>Documents</name>
+        </collection>
+        <collection>
+            <name>Dossiers</name>
+        </collection>
+    </community>
+</import_structure>
