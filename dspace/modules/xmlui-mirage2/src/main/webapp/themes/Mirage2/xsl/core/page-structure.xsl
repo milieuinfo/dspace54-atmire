@@ -627,11 +627,7 @@
         <footer>
             <div class="row">
                 <hr/>
-                <div class="col-xs-12" id="footerdiv">
-                    <div class="pull-right">
-                        <span>copyright &#169; 2002-2012.</span> <a id="dspacelink" href="www.dspace.org"> Duraspace (DSpace software)</a>
-                    </div>
-                </div>
+                <div class="col-xs-12" id="footerdiv"/>
             </div>
             <!--Invisible link to HTML sitemap (for search engines) -->
             <a class="hidden">
