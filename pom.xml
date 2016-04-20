@@ -291,6 +291,31 @@
                <solr.server>http://localhost:${tomcat.port}/solr</solr.server>
            </properties>
        </profile>
+       <profile>
+           <id>client-DEV</id>
+           <properties>
+               <clientname>tomcat</clientname>
+               <tomcat.port>8080</tomcat.port>
+               <dspace.dir>/home/${clientname}/dspace</dspace.dir>
+               <dspace.name>DSpace at lne</dspace.name>
+               <dspace.hostname>dev.atmire.com</dspace.hostname>
+               <dspace.baseUrl>https://archief-imjv-on-1.mmis.be</dspace.baseUrl>
+               <dspace.url>https://archief-imjv-on-1.mmis.be</dspace.url>
+               <!-- <dspace.oai.url>https://dev.atmire.com/dspace-$PROJECT_NAME$-oai</dspace.oai.url> -->
+               <db.name>postgres</db.name>
+               <db.driver>org.postgresql.Driver</db.driver>
+               <db.url>jdbc:postgresql://localhost:5432/</db.url>
+               <db.username>dspace</db.username>
+               <db.password>dspace</db.password>
+               <mail.server>no-mail-server</mail.server>
+               <mail.from.address>noreply@atmire.com</mail.from.address>
+               <feedback.recipient>noreply@atmire.com</feedback.recipient>
+               <mail.admin>noreply@atmire.com</mail.admin>
+               <alert.recipient>noreply@atmire.com</alert.recipient>
+               <mail.server.disabled>true</mail.server.disabled>
+               <solr.server>http://localhost:${tomcat.port}/solr</solr.server>
+           </properties>
+       </profile>
 
        <!-- Users can pass in an environment flag "-Denv" to tell DSpace to use
             a different properties file during its build process. 
