@@ -296,7 +296,7 @@
            <properties>
                <clientname>tomcat</clientname>
                <tomcat.port>8080</tomcat.port>
-               <dspace.dir>/home/${clientname}/dspace</dspace.dir>
+               <dspace.dir>/opt/tomcat/dspace</dspace.dir>
                <dspace.name>DSpace at lne</dspace.name>
                <dspace.hostname>dev.atmire.com</dspace.hostname>
                <dspace.baseUrl>https://archief-imjv-on-1.mmis.be</dspace.baseUrl>
