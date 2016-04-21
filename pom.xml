@@ -274,14 +274,12 @@
                <dspace.dir>/home/${clientname}/dspace</dspace.dir>
                <dspace.name>DSpace at lne</dspace.name>
                <dspace.hostname>dev.atmire.com</dspace.hostname>
-               <dspace.baseUrl>https://dev.atmire.com</dspace.baseUrl>
-
-
+               <dspace.baseUrl>https://${dspace.hostname}</dspace.baseUrl>
+               <dspace.url>${dspace.baseUrl}/dspace-${clientname}</dspace.url>
+               <sword.url>${dspace.baseUrl}/dspace-${clientname}-sword</sword.url>
                <rest.base.url>${dspace.baseUrl}/dspace-lne54-rest</rest.base.url>
                <rest.url.path>/dspace-lne54-rest/api</rest.url.path>
                <rest.scheme>https</rest.scheme>
-
-               <dspace.url>https://dev.atmire.com/dspace-${clientname}</dspace.url>
                <!-- <dspace.oai.url>https://dev.atmire.com/dspace-$PROJECT_NAME$-oai</dspace.oai.url> -->
                <db.name>postgres</db.name>
                <db.driver>org.postgresql.Driver</db.driver>
