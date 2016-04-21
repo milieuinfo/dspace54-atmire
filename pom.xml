@@ -274,8 +274,9 @@
                <dspace.dir>/home/${clientname}/dspace</dspace.dir>
                <dspace.name>DSpace at lne</dspace.name>
                <dspace.hostname>dev.atmire.com</dspace.hostname>
-               <dspace.baseUrl>https://dev.atmire.com</dspace.baseUrl>
-               <dspace.url>https://dev.atmire.com/dspace-${clientname}</dspace.url>
+               <dspace.baseUrl>https://${dspace.hostname}</dspace.baseUrl>
+               <dspace.url>${dspace.baseUrl}/dspace-${clientname}</dspace.url>
+               <sword.url>${dspace.baseUrl}/dspace-${clientname}-sword</sword.url>
                <!-- <dspace.oai.url>https://dev.atmire.com/dspace-$PROJECT_NAME$-oai</dspace.oai.url> -->
                <db.name>postgres</db.name>
                <db.driver>org.postgresql.Driver</db.driver>
