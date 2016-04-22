@@ -89,26 +89,7 @@
                 </executions>
             </plugin>
             <!--  Download swagger UI -->
-            <plugin>
-                <groupId>com.googlecode.maven-download-plugin</groupId>
-                <artifactId>download-maven-plugin</artifactId>
-                <version>1.2.1</version>
-                <executions>
-                    <execution>
-                        <id>swagger-ui</id>
-                        <goals>
-                            <goal>wget</goal>
-                        </goals>
-                        <configuration>
-                            <url>
-                                https://github.com/swagger-api/swagger-ui/archive/v${swagger-ui-version}.tar.gz
-                            </url>
-                            <unpack>true</unpack>
-                            <outputDirectory>${project.build.directory}</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -133,6 +114,15 @@
                                 <include>index.html</include>
                             </includes>
                         </resource>
+                        <resource>
+                            <filtering>true</filtering>
+                            <targetPath>swagger-ui-${swagger-ui-version}/dist</targetPath>
+                            <directory>
+                                src/
+                            </directory>
+                            <include>swagger-ui-${swagger-ui-version}/dist/**</include>
+                            <targetPath>/</targetPath>
+                        </resource>
                         <!--
                          Copy swagger generated json file & swagger UI files
                         -->
@@ -141,7 +131,7 @@
                             <directory>${build.directory}</directory>
                             <includes>
                                 <include>api-docs/**</include>
-                                <include>swagger-ui-${swagger-ui-version}/dist/**</include>
+
                             </includes>
                       <!--      <excludes>
                                 <exclude>swagger-ui-${swagger-ui-version}/dist/index.html</exclude>
