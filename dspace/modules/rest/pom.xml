@@ -30,28 +30,28 @@
             <filter>${filters.file}</filter>
         </filters>
         <plugins>
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.7</version>
-                <executions>
-                    <execution>
-                        <phase>compile</phase>
-                        <configuration>
-                            <target name="get markdown.mustache">
-                                <!--
-                                 Need to download markdown.mustache first to use strapdown.html.mustache
-                                -->
-                                <get dest="${build.directory}">
-                                    <url url="https://raw.githubusercontent.com/kongchen/api-doc-template/master/v2.0/markdown.mustache"/>
-                                </get>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--<plugin>-->
+                <!--<artifactId>maven-antrun-plugin</artifactId>-->
+                <!--<version>1.7</version>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<phase>compile</phase>-->
+                        <!--<configuration>-->
+                            <!--<target name="get markdown.mustache">-->
+                                <!--&lt;!&ndash;-->
+                                 <!--Need to download markdown.mustache first to use strapdown.html.mustache-->
+                                <!--&ndash;&gt;-->
+                                <!--<get dest="${build.directory}">-->
+                                    <!--<url url="https://raw.githubusercontent.com/kongchen/api-doc-template/master/v2.0/markdown.mustache"/>-->
+                                <!--</get>-->
+                            <!--</target>-->
+                        <!--</configuration>-->
+                        <!--<goals>-->
+                            <!--<goal>run</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
             <plugin>
                 <groupId>com.github.kongchen</groupId>
                 <artifactId>swagger-maven-plugin</artifactId>
