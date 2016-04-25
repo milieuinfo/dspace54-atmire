@@ -323,6 +323,10 @@
                <dspace.hostname>dev.atmire.com</dspace.hostname>
                <dspace.baseUrl>https://archief-imjv-on-1.mmis.be</dspace.baseUrl>
                <dspace.url>https://archief-imjv-on-1.mmis.be</dspace.url>
+               <sword.url>${dspace.baseUrl}/dspace-${clientname}-sword</sword.url>
+               <rest.base.url>${dspace.baseUrl}/dspace-lne54-rest</rest.base.url>
+               <rest.url.path>/dspace-lne54-rest/api</rest.url.path>
+               <rest.scheme>https</rest.scheme>
                <!-- <dspace.oai.url>https://dev.atmire.com/dspace-$PROJECT_NAME$-oai</dspace.oai.url> -->
                <db.name>postgres</db.name>
                <db.driver>org.postgresql.Driver</db.driver>
@@ -336,6 +340,10 @@
                <alert.recipient>noreply@atmire.com</alert.recipient>
                <mail.server.disabled>true</mail.server.disabled>
                <solr.server>http://localhost:${tomcat.port}/solr</solr.server>
+               <assetstore.dir>${dspace.dir}/assetstore</assetstore.dir>
+               <log.dir>${dspace.dir}/log</log.dir>
+               <db.maxidle>1</db.maxidle>
+               <xmlui.google.analytics.key>DUMMY_KEY</xmlui.google.analytics.key>
            </properties>
        </profile>
 
