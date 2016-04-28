@@ -73,6 +73,10 @@
    -->
    <dependencies>
       <dependency>
+         <groupId>be.milieuinfo.security</groupId>
+         <artifactId>acd-openam-oauth-client</artifactId>
+      </dependency>
+      <dependency>
          <groupId>org.dspace</groupId>
          <artifactId>dspace-api</artifactId>
       </dependency>
@@ -95,11 +99,6 @@
                <artifactId>ant</artifactId>
             </exclusion>
          </exclusions>
-      </dependency>
-
-      <dependency>
-         <groupId>be.milieuinfo.security</groupId>
-         <artifactId>acd-openam-oauth-client</artifactId>
       </dependency>
 
    </dependencies>
