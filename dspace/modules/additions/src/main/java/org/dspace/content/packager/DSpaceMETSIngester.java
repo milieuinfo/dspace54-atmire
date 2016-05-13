@@ -7,6 +7,8 @@
  */
 package org.dspace.content.packager;
 
+import com.atmire.sword.result.*;
+import com.atmire.sword.service.*;
 import java.io.*;
 import java.sql.*;
 import org.dspace.app.mediafilter.*;
@@ -14,6 +16,7 @@ import org.dspace.authorize.*;
 import org.dspace.content.*;
 import org.dspace.content.crosswalk.*;
 import org.dspace.core.*;
+import org.dspace.utils.*;
 import org.jdom.*;
 
 /**
@@ -176,7 +179,21 @@ public class DSpaceMETSIngester
         throws PackageValidationException, CrosswalkException,
          AuthorizeException, SQLException, IOException
     {
-        // nothing to do.
+        if(dso instanceof Item) {
+            ComplianceCheckService complianceCheckService = new DSpace().getServiceManager()
+                    .getServiceByName(ComplianceCheckService.class.getName(), ComplianceCheckService.class);
+            ComplianceResult complianceResult = complianceCheckService.checkCompliance(context, (Item) dso);
+
+            if (!complianceResult.isCompliant()) {
+                for (CategoryComplianceResult categoryComplianceResult : complianceResult.getOrderedCategoryResults()) {
+                    if (!categoryComplianceResult.isCompliant()) {
+                        for (RuleComplianceResult ruleComplianceResult : categoryComplianceResult.getViolatedRules()) {
+                            throw new PackageValidationException(ruleComplianceResult.getViolationDescriptions().get(0));
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override

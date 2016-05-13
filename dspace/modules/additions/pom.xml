@@ -76,6 +76,7 @@
          <groupId>org.dspace</groupId>
          <artifactId>dspace-api</artifactId>
       </dependency>
+
       <dependency>
          <groupId>org.dspace</groupId>
          <artifactId>dspace-api-lang</artifactId>
@@ -98,5 +99,29 @@
       </dependency>
 
    </dependencies>
+
+   <build>
+      <plugins>
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>jaxb2-maven-plugin</artifactId>
+            <version>2.2</version>
+            <executions>
+               <execution>
+                  <id>xjc-compliance-definition</id>
+                  <goals>
+                     <goal>xjc</goal>
+                  </goals>
+                  <configuration>
+                     <packageName>com.atmire.sword.validation.model</packageName>
+                     <sources>
+                        <source>../../config/item-validation-rules.xsd</source>
+                     </sources>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+      </plugins>
+   </build>
 
 </project>

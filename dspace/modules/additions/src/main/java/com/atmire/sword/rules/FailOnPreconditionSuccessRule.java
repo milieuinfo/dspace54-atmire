@@ -1,0 +1,27 @@
+package com.atmire.sword.rules;
+
+import org.apache.commons.lang.*;
+import org.dspace.content.*;
+import org.dspace.core.*;
+
+/**
+ * Validation rule that will check if a field has a non-blank value.
+ */
+public class FailOnPreconditionSuccessRule extends AbstractComplianceRule {
+
+    protected String fieldDescription;
+
+    public FailOnPreconditionSuccessRule(final String fieldDescription, final String metadataField) {
+        this.fieldDescription = StringUtils.trimToEmpty(fieldDescription);
+    }
+
+    protected String getRuleDescription() {
+        return "failed on precondition";
+    }
+
+    @Override
+    protected boolean doValidationAndBuildDescription(Context context, Item item) {
+        addViolationDescription("failed on precondition for field %s fields", fieldDescription);
+        return false;
+    }
+}

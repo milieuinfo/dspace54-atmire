@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rule-categories xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="item-validation-rules.xsd">
+
+    <category ordinal="1" name="sword validation"
+              description="sword validation"
+              resolutionHint="">
+        <rules>
+            <rule type="isBlank">
+                <field>dc.haspart</field>
+                <fieldDescription>dc.haspart</fieldDescription>
+            </rule>
+            <rule type="isBlank">
+                <field>dc.isreplacedby</field>
+                <fieldDescription>dc.isreplacedby</fieldDescription>
+            </rule>
+            <rule type="countLesserThan">
+                <field>dc.relation.replaces</field>
+                <fieldDescription>dc.relation.replaces</fieldDescription>
+                <fieldValue>
+                    <value>2</value>
+                </fieldValue>
+            </rule>
+            <rule type="countLesserThan">
+                <field>dc.relation.ispartof</field>
+                <fieldDescription>dc.relation.ispartof</fieldDescription>
+                <fieldValue>
+                    <value>2</value>
+                </fieldValue>
+            </rule>
+            <rule type="failOnPreconditionSuccess">
+                <preconditions>
+                    <rule type="isNotBlank">
+                        <field>dc.relation.replaces</field>
+                        <fieldDescription>dc.relation.replaces</fieldDescription>
+                    </rule>
+                    <rule type="isNotBlank">
+                        <field>dc.relation.ispartof</field>
+                        <fieldDescription>dc.relation.ispartof</fieldDescription>
+                    </rule>
+                </preconditions>
+                <field>null</field>
+                <fieldDescription>dc.relation.replaces and dc.relation.ispartof</fieldDescription>
+            </rule>
+        </rules>
+    </category>
+</rule-categories>
+
+
