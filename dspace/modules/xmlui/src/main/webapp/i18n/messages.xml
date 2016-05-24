@@ -2570,5 +2570,8 @@
     <message key="xmlui.externalhandle.external_handle_not_unique">It appears that this external handle is not unique. Therefore it cannot be resolved to a single item.</message>
     <message key="xmlui.externalhandle.related_items">The following items are related to this external handle:</message>
 
+
+    <message key="xmlui.Discovery.ConfigurableRelatedItems.help">Showing items related by configured metadatafields.</message>
+
     <!-- end custom messages -->
 </catalogue>
