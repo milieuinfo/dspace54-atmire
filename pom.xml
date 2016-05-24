@@ -324,8 +324,8 @@
                <dspace.baseUrl>https://${dspace.hostname}/archief-imjv</dspace.baseUrl>
                <dspace.url>${dspace.baseUrl}</dspace.url>
                <sword.url>${dspace.baseUrl}/swordv2</sword.url>
-               <rest.base.url>${dspace.hostname}/archief-imjv/rest</rest.base.url>
-               <rest.url.path>/api</rest.url.path>
+               <rest.base.url>${dspace.hostname}/archief-imjv</rest.base.url>
+               <rest.url.path>/rest/api</rest.url.path>
                <rest.scheme>https</rest.scheme>
                <!-- <dspace.oai.url>https://dev.atmire.com/dspace-$PROJECT_NAME$-oai</dspace.oai.url> -->
                <db.name>postgres</db.name>
