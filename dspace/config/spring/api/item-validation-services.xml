@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2002-2010, DuraSpace.  All rights reserved
+    Licensed under the DuraSpace License.
+
+    A copy of the DuraSpace License has been included in this
+    distribution and is available at: http://www.dspace.org/license
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+
+    <context:annotation-config /> <!-- allows us to use spring annotations in beans -->
+
+    <!-- Compliance check service -->
+    <bean class="com.atmire.sword.service.ComplianceCheckServiceBean" id="com.atmire.sword.service.ComplianceCheckService" autowire-candidate="true">
+    </bean>
+
+
+    <!-- Compliance rules factory -->
+    <bean class="com.atmire.sword.rules.factory.ComplianceCategoryRulesFactoryBean" id="org.dspace.ref.compliance.rules.factory.ComplianceRulesFactory" autowire-candidate="true">
+        <property name="builderMap">
+            <map>
+                <entry key="value">
+                    <bean class="com.atmire.sword.rules.factory.ValueRuleBuilder"/>
+                </entry>
+                <entry key="isNotBlank">
+                    <bean class="com.atmire.sword.rules.factory.NotBlankRuleBuilder"/>
+                </entry>
+                <entry key="isBlank">
+                    <bean class="com.atmire.sword.rules.factory.IsBlankRuleBuilder"/>
+                </entry>
+                <entry key="discoverable">
+                    <bean class="com.atmire.sword.rules.factory.DiscoverableRuleBuilder" autowire-candidate="true"/>
+                </entry>
+                <entry key="countGreaterThan">
+                    <bean class="com.atmire.sword.rules.factory.CountGreaterThanRuleBuilder"/>
+                </entry>
+                <entry key="dateRangeSmallerThanMonths">
+                    <bean class="com.atmire.sword.rules.factory.DateRangeSmallerThanRuleBuilder"/>
+                </entry>
+                <entry key="dateSmallerThan">
+                    <bean class="com.atmire.sword.rules.factory.DateSmallerThanRuleBuilder"/>
+                </entry>
+                <entry key="countLesserThan">
+                    <bean class="com.atmire.sword.rules.factory.CountLesserThanRuleBuilder"/>
+                </entry>
+                <entry key="failOnPreconditionSuccess">
+                    <bean class="com.atmire.sword.rules.factory.FailOnPreconditionSuccessRuleBuilder"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+</beans>

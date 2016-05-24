@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="rule-categories" type="categorySet" />
+
+  <xs:complexType name="categorySet">
+    <xs:sequence>
+      <xs:element type="ruleCategory" name="category" minOccurs="1" maxOccurs="unbounded"/>
+      <xs:element type="ruleSet" name="exceptions" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ruleCategory">
+    <xs:sequence>
+      <xs:element type="ruleSet" name="rules" maxOccurs="1" minOccurs="0"/>
+      <xs:element type="ruleSet" name="exceptions" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute type="xs:int" name="ordinal" use="required"/>
+    <xs:attribute type="xs:string" name="name" use="required"/>
+    <xs:attribute type="xs:string" name="description"/>
+    <xs:attribute type="xs:string" name="resolutionHint"/>
+  </xs:complexType>
+
+  <xs:complexType name="ruleDefinition">
+    <xs:sequence>
+      <xs:element type="ruleSet" name="preconditions" minOccurs="0" maxOccurs="1"/>
+      <xs:element type="xs:string" name="field" minOccurs="0" maxOccurs="1"/>
+      <xs:element type="xs:string" name="from" minOccurs="0" maxOccurs="1"/>
+      <xs:element type="xs:string" name="to" minOccurs="0" maxOccurs="1"/>
+      <xs:element type="xs:string" name="fieldDescription" minOccurs="0" maxOccurs="1"/>
+      <xs:element type="value" name="fieldValue" maxOccurs="unbounded" minOccurs="0"/>
+      <xs:element type="ruleSet" name="exceptions" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="type" use="required"/>
+    <xs:attribute type="xs:string" name="description"/>
+    <xs:attribute type="xs:string" name="resolutionHint"/>
+  </xs:complexType>
+
+  <xs:complexType name="ruleSet">
+    <xs:sequence>
+      <xs:element type="ruleDefinition" name="rule" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="value">
+    <xs:sequence>
+      <xs:element type="xs:string" name="value" minOccurs="1" maxOccurs="1"/>
+      <xs:element type="xs:string" name="description" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
