@@ -20,7 +20,7 @@ The Item Resolution aspect is responsbile for resolving items on an external han
 
             <map:match pattern="external-handle/*">
                 <map:transform type="ItemViewer">
-                    <map:parameter name="metadata-field" value="dc.identifier.other"/>
+                    <map:parameter name="metadata-field" value="vlaanderen.identifier"/>
                 </map:transform>
 
                 <map:serialize type="xml"/>
