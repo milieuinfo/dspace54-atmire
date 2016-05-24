@@ -65,9 +65,9 @@
                             <host>${dspace.hostname}</host>
                             <basePath>${rest.url.path}</basePath>
                             <info>
-                                <title>ETHZ rest application</title>
+                                <title>LNE rest application</title>
                                 <version>v1</version>
-                                <description>ETHZ rest api.</description>
+                                <description>LNE rest api.</description>
                                 <license>
                                     <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
                                     <name>Apache 2.0</name>
