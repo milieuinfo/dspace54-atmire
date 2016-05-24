@@ -87,6 +87,11 @@
          <outputDirectory>config</outputDirectory>
          <filtered>true</filtered>
       </file>
+      <file>
+         <source>${basedir}/src/main/resources/postinstall.sh</source>
+         <outputDirectory>apps</outputDirectory>
+         <fileMode>0755</fileMode>
+      </file>
    </files>
 
    <!--

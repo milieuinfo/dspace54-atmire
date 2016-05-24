@@ -943,6 +943,13 @@
          </dependency>
          <!-- DSpace third Party Dependencies -->
 
+         <!-- ACD dependencies -->
+         <dependency>
+             <groupId>be.milieuinfo.security</groupId>
+             <artifactId>acd-openam-oauth-client</artifactId>
+             <version>11.0.0.12</version>
+         </dependency>
+
          <dependency>
             <groupId>org.swordapp</groupId>
             <artifactId>sword-common</artifactId>

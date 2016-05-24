@@ -1,0 +1,36 @@
+#
+# Initiele DSpace LDAP structuur
+#
+dn: ou=dspace,ou=groups,dc=milieuinfo,dc=be
+changetype: add
+objectClass: organizationalunit
+objectClass: top
+ou: dspace
+
+
+### R O L L E N ###
+dn: cn=DSpaceAdmin,ou=dspace,ou=groups,dc=milieuinfo,dc=be
+changetype: add
+objectClass: rol
+objectClass: top
+cn: DSpaceAdmin
+
+### R O L L E N  SPECIFIEK VOOR IMJV ###
+
+dn: cn=DSpaceIMJV_Beheerder,ou=dspace,ou=groups,dc=milieuinfo,dc=be
+changetype: add
+objectClass: rol
+objectClass: top
+cn: DSpaceIMJV_Beheerder
+
+dn: cn=DSpaceIMJV_Lezen,ou=dspace,ou=groups,dc=milieuinfo,dc=be
+changetype: add
+objectClass: rol
+objectClass: top
+cn: DSpaceIMJV_Lezen
+
+dn: cn=DSpaceIMJV_Eigen_Dossiers,ou=dspace,ou=groups,dc=milieuinfo,dc=be
+changetype: add
+objectClass: rol
+objectClass: top
+cn: DSpaceIMJV_Eigen_Dossiers
