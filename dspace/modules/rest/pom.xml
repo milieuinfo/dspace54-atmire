@@ -55,14 +55,14 @@
             <plugin>
                 <groupId>com.github.kongchen</groupId>
                 <artifactId>swagger-maven-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.1.2</version>
                 <configuration>
                     <apiSources>
                         <apiSource>
                             <springmvc>false</springmvc>
                             <locations>org.dspace.rest</locations>
                             <schemes>${rest.scheme}</schemes>
-                            <host>${rest.base.url}</host>
+                            <host>${dspace.hostname}</host>
                             <basePath>${rest.url.path}</basePath>
                             <info>
                                 <title>ETHZ rest application</title>
