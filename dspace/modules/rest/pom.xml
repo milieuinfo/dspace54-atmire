@@ -62,7 +62,7 @@
                             <springmvc>false</springmvc>
                             <locations>org.dspace.rest</locations>
                             <schemes>${rest.scheme}</schemes>
-                            <host>${rest.base.url}</host>
+                            <host>${rest.basePath}</host>
                             <basePath>${rest.url.path}</basePath>
                             <info>
                                 <title>LNE rest application</title>
