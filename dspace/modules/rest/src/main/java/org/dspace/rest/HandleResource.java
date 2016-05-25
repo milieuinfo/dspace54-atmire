@@ -99,6 +99,10 @@ public class HandleResource extends Resource
             log.error("Exception in HandleResource ",e);
             throw e;
         }
+        catch (Throwable e){
+            log.error("Exception in HandleResource ",e);
+            throw e;
+        }
 
         finally
         {
