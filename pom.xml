@@ -344,6 +344,7 @@
                <log.dir>${dspace.dir}/log</log.dir>
                <db.maxidle>1</db.maxidle>
                <xmlui.google.analytics.key>DUMMY_KEY</xmlui.google.analytics.key>
+            <authentication.method>org.dspace.authenticate.PasswordAuthentication,org.dspace.authenticate.OpenAMCookieAuthentication,org.dspace.authenticate.OpenAMHeaderAuthentication,org.dspace.authenticate.OpenAMPasswordAuthentication</authentication.method>
            </properties>
        </profile>
 
