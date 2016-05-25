@@ -38,7 +38,7 @@ public class SearchResource extends Resource {
 
     @GET
     @Path("/item")
-    @ApiOperation(value = "Retrieve a single item based on given pairs of metadatafields and values.",
+    @ApiOperation(value = "Retrieve items based on given pairs of metadatafields and values.",
             response = Item.class
     )
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
