@@ -94,7 +94,13 @@ public class HandleResource extends Resource
         } catch (ContextException e)
         {
             processException("Could not read handle(" + prefix + "/" + suffix + "), ContextException. Message: " + e.getMessage(), context);
-        } finally
+        }
+        catch (WebApplicationException e){
+            log.error("Exception in HandleResource ",e);
+            throw e;
+        }
+
+        finally
         {
             processFinally(context);
         }
