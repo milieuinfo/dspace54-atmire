@@ -60,6 +60,8 @@ public class HandleResource extends Resource
             @Context HttpHeaders headers) throws WebApplicationException
     {
         org.dspace.core.Context context = null;
+        DSpaceObject result = null;
+
         try
         {
             context = createContext(getUser(headers));
@@ -71,23 +73,28 @@ public class HandleResource extends Resource
             }
             log.info("DSO Lookup by handle: [" + prefix + "] / [" + suffix + "] got result of: " + dso.getTypeText() + "_" + dso.getID());
 
-            if (AuthorizeManager.authorizeActionBoolean(context, dso, Constants.READ))
-            {
+            if(AuthorizeManager.authorizeActionBoolean(context, dso, org.dspace.core.Constants.READ)) {
                 switch (dso.getType())
                 {
                     case Constants.COMMUNITY:
-                        return new Community((org.dspace.content.Community) dso, expand, context);
+                        result = new Community((org.dspace.content.Community) dso, expand, context);
+                        break;
                     case Constants.COLLECTION:
-                        return new Collection((org.dspace.content.Collection) dso, expand, context, null, null);
+                        result =  new Collection((org.dspace.content.Collection) dso, expand, context, null, null);
+                        break;
                     case Constants.ITEM:
-                        return new Item((org.dspace.content.Item) dso, expand, context);
+                        result =  new Item((org.dspace.content.Item) dso, expand, context);
+                        break;
                     default:
-                        return new DSpaceObject(dso);
+                        result = new DSpaceObject(dso);
                 }
             } else
             {
                 throw new WebApplicationException(Response.Status.UNAUTHORIZED);
             }
+
+            context.complete();
+
         } catch (SQLException e)
         {
             processException("Could not read handle(" + prefix + "/" + suffix + "), SQLException. Message: " + e.getMessage(), context);
@@ -109,6 +116,6 @@ public class HandleResource extends Resource
             processFinally(context);
         }
 
-        return null;
+        return result;
     }
 }
