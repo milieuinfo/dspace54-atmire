@@ -7,86 +7,633 @@
 
     <dc-schema>
         <name>dba</name>
-        <namespace>http://atmire.com/lne/dba</namespace>
+        <namespace>http://dba.milieuinfo.be</namespace>
     </dc-schema>
 
+    <dc-type>
+        <schema>dba</schema>
+        <element>aanvrager</element>
+        <qualifier>adres</qualifier>
+        <scope_note>adres aanvrager</scope_note>
+    </dc-type>
 
     <dc-type>
         <schema>dba</schema>
-        <element>procedure</element>
-        <scope_note></scope_note>
+        <element>aanvrager</element>
+        <qualifier>kbo</qualifier>
+        <scope_note>ondernemingsnummer aanvrager</scope_note>
     </dc-type>
-
-
 
     <dc-type>
         <schema>dba</schema>
-        <element>procedurestap</element>
-        <scope_note></scope_note>
+        <element>aanvrager</element>
+        <qualifier>naam</qualifier>
+        <scope_note>naam aanvrager</scope_note>
     </dc-type>
 
+    <dc-type>
+        <schema>dba</schema>
+        <element>aanvrager</element>
+        <qualifier>nis</qualifier>
+        <scope_note>nis aanvrager</scope_note>
+    </dc-type>
 
+    <dc-type>
+        <schema>dba</schema>
+        <element>aanvrager</element>
+        <qualifier>omv</qualifier>
+        <scope_note>omv aanvrager</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>aanvrager</element>
+        <qualifier>onbekend</qualifier>
+        <scope_note>aanvrager onbekende oorsprong id</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>aanvrager</element>
+        <qualifier>personid</qualifier>
+        <scope_note>personid aanvrager</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>aanvrager-vrijgesteld</element>
+        <qualifier>adres</qualifier>
+        <scope_note>adres aanvrager_vrijgesteld</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>aanvrager-vrijgesteld</element>
+        <qualifier>kbo</qualifier>
+        <scope_note>ondernemingsnummer aanvrager_vrijgesteld</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>aanvrager-vrijgesteld</element>
+        <qualifier>naam</qualifier>
+        <scope_note>naam aanvrager_vrijgesteld</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>aanvrager-vrijgesteld</element>
+        <qualifier>nis</qualifier>
+        <scope_note>nis aanvrager_vrijgesteld</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>aanvrager-vrijgesteld</element>
+        <qualifier>omv</qualifier>
+        <scope_note>omv aanvrager_vrijgesteld</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>aanvrager-vrijgesteld</element>
+        <qualifier>onbekend</qualifier>
+        <scope_note>aanvrager_vrijgesteld onbekende oorsprong id</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>aanvrager-vrijgesteld</element>
+        <qualifier>personid</qualifier>
+        <scope_note>personid aanvrager_vrijgesteld</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>adviesverlener</element>
+        <qualifier>adres</qualifier>
+        <scope_note>adres adviesverlener</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>adviesverlener</element>
+        <qualifier>kbo</qualifier>
+        <scope_note>ondernemingsnummer adviesverlener</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>adviesverlener</element>
+        <qualifier>naam</qualifier>
+        <scope_note>naam adviesverlener</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>adviesverlener</element>
+        <qualifier>nis</qualifier>
+        <scope_note>nis adviesverlener</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>adviesverlener</element>
+        <qualifier>omv</qualifier>
+        <scope_note>omv adviesverlener</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>adviesverlener</element>
+        <qualifier>onbekend</qualifier>
+        <scope_note>adviesverlener onbekende oorsprong id</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>adviesverlener</element>
+        <qualifier>personid</qualifier>
+        <scope_note>personid adviesverlener</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>adviesverlener-gemeente</element>
+        <qualifier>adres</qualifier>
+        <scope_note>adres adviesverlener gemeente</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>adviesverlener-gemeente</element>
+        <qualifier>kbo</qualifier>
+        <scope_note>ondernemingsnummer adviesverlener gemeente</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>adviesverlener-gemeente</element>
+        <qualifier>naam</qualifier>
+        <scope_note>naam adviesverlener gemeente</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>adviesverlener-gemeente</element>
+        <qualifier>nis</qualifier>
+        <scope_note>nis adviesverlener gemeente</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>adviesverlener-gemeente</element>
+        <qualifier>omv</qualifier>
+        <scope_note>omv adviesverlener gemeente</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>adviesverlener-gemeente</element>
+        <qualifier>onbekend</qualifier>
+        <scope_note>adviesverlener gemeente onbekende oorsprong id</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>adviesverlener-gemeente</element>
+        <qualifier>personid</qualifier>
+        <scope_note>personid adviesverlener gemeente</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>architect-ontw</element>
+        <qualifier>adres</qualifier>
+        <scope_note>adres architect ontwerper</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>architect-ontw</element>
+        <qualifier>kbo</qualifier>
+        <scope_note>ondernemingsnummer architect ontwerper</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>architect-ontw</element>
+        <qualifier>naam</qualifier>
+        <scope_note>naam architect ontwerper</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>architect-ontw</element>
+        <qualifier>nis</qualifier>
+        <scope_note>nis architect ontwerper</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>architect-ontw</element>
+        <qualifier>omv</qualifier>
+        <scope_note>omv architect ontwerper</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>architect-ontw</element>
+        <qualifier>onbekend</qualifier>
+        <scope_note>architect ontwerper onbekende oorsprong id</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>architect-ontw</element>
+        <qualifier>personid</qualifier>
+        <scope_note>personid architect ontwerper</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>architect-uitv</element>
+        <qualifier>adres</qualifier>
+        <scope_note>adres architect uitvoerder</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>architect-uitv</element>
+        <qualifier>kbo</qualifier>
+        <scope_note>ondernemingsnummer architect uitvoerder</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>architect-uitv</element>
+        <qualifier>naam</qualifier>
+        <scope_note>naam architect uitvoerder</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>architect-uitv</element>
+        <qualifier>nis</qualifier>
+        <scope_note>nis architect uitvoerder</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>architect-uitv</element>
+        <qualifier>omv</qualifier>
+        <scope_note>omv architect uitvoerder</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>architect-uitv</element>
+        <qualifier>onbekend</qualifier>
+        <scope_note>architect uitvoerder onbekende oorsprong id</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>architect-uitv</element>
+        <qualifier>personid</qualifier>
+        <scope_note>personid architect uitvoerder</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>assistent-aanvrager</element>
+        <qualifier>adres</qualifier>
+        <scope_note>adres assistent aanvrager</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>assistent-aanvrager</element>
+        <qualifier>kbo</qualifier>
+        <scope_note>ondernemingsnummer assistent aanvrager</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>assistent-aanvrager</element>
+        <qualifier>naam</qualifier>
+        <scope_note>naam assistent aanvrager</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>assistent-aanvrager</element>
+        <qualifier>nis</qualifier>
+        <scope_note>nis assistent aanvrager</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>assistent-aanvrager</element>
+        <qualifier>omv</qualifier>
+        <scope_note>omv assistent aanvrager</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>assistent-aanvrager</element>
+        <qualifier>onbekend</qualifier>
+        <scope_note>assistent aanvrager onbekende oorsprong id</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>assistent-aanvrager</element>
+        <qualifier>personid</qualifier>
+        <scope_note>personid assistent aanvrager</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>assistent-architect</element>
+        <qualifier>adres</qualifier>
+        <scope_note>adres assistent architect</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>assistent-architect</element>
+        <qualifier>kbo</qualifier>
+        <scope_note>ondernemingsnummer assistent architect</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>assistent-architect</element>
+        <qualifier>naam</qualifier>
+        <scope_note>naam assistent architect</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>assistent-architect</element>
+        <qualifier>nis</qualifier>
+        <scope_note>nis assistent architect</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>assistent-architect</element>
+        <qualifier>omv</qualifier>
+        <scope_note>omv assistent architect</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>assistent-architect</element>
+        <qualifier>onbekend</qualifier>
+        <scope_note>assistent architect onbekende oorsprong id</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>assistent-architect</element>
+        <qualifier>personid</qualifier>
+        <scope_note>personid assistent architect</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>dossier</element>
+        <qualifier>beslissing</qualifier>
+        <scope_note>Beslissing</scope_note>
+    </dc-type>
 
     <dc-type>
         <schema>dba</schema>
         <element>dossier</element>
         <qualifier>identifier</qualifier>
-        <scope_note></scope_note>
+        <scope_note>Dossiernummer</scope_note>
     </dc-type>
-
-
-    <dc-type>
-        <schema>dba</schema>
-        <element>goed</element>
-        <qualifier>gemeente</qualifier>
-        <scope_note></scope_note>
-    </dc-type>
-
-
-
-    <dc-type>
-        <schema>dba</schema>
-        <element>goed</element>
-        <qualifier>nis</qualifier>
-        <scope_note></scope_note>
-    </dc-type>
-
 
     <dc-type>
         <schema>dba</schema>
         <element>dossierfase</element>
-        <scope_note></scope_note>
+        <scope_note>Dossierfase</scope_note>
     </dc-type>
 
     <dc-type>
         <schema>dba</schema>
         <element>dossierstuk</element>
+        <scope_note>Dossierstuk</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>gebeurtenis</element>
+        <scope_note>Gebeurtenis</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>goed</element>
+        <qualifier>adres</qualifier>
+        <scope_note>adres van het goed</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>goed</element>
+        <qualifier>gemeente</qualifier>
+        <scope_note>Gemeentenaam</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>goed</element>
+        <qualifier>nis</qualifier>
+        <scope_note>Niscode van de gemeente</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>incidenteel</element>
+        <qualifier>adres</qualifier>
         <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>incidenteel</element>
+        <qualifier>kbo</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>incidenteel</element>
+        <qualifier>naam</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>incidenteel</element>
+        <qualifier>nis</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>incidenteel</element>
+        <qualifier>omv</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>incidenteel</element>
+        <qualifier>onbekend</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>ondertekenaanvraag</element>
+        <qualifier>adres</qualifier>
+        <scope_note>adres ondertekenaar aanvraag</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>ondertekenaanvraag</element>
+        <qualifier>kbo</qualifier>
+        <scope_note>ondernemingsnummer ondertekenaar aanvraag</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>ondertekenaanvraag</element>
+        <qualifier>naam</qualifier>
+        <scope_note>naam ondertekenaar aanvraag</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>ondertekenaanvraag</element>
+        <qualifier>nis</qualifier>
+        <scope_note>nis ondertekenaar aanvraag</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>ondertekenaanvraag</element>
+        <qualifier>omv</qualifier>
+        <scope_note>omv ondertekenaar aanvraag</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>ondertekenaanvraag</element>
+        <qualifier>onbekend</qualifier>
+        <scope_note>ondertekenaar aanvraag onbekende oorsprong id</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>ondertekenaanvraag</element>
+        <qualifier>personid</qualifier>
+        <scope_note>personid ondertekenaar aanvraag</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>perceel</element>
+        <qualifier>capakey</qualifier>
+        <scope_note>capakeys, vermeld in het dossier</scope_note>
     </dc-type>
 
 
     <dc-type>
         <schema>dba</schema>
-        <element>vergunning</element>
-        <qualifier>jaar</qualifier>
-        <scope_note></scope_note>
+        <element>procedure</element>
+        <scope_note>Procedure</scope_note>
     </dc-type>
 
+    <dc-type>
+        <schema>dba</schema>
+        <element>procedurestap</element>
+        <scope_note>Procedurestap</scope_note>
+    </dc-type>
 
     <dc-type>
         <schema>dba</schema>
         <element>vergunning</element>
         <qualifier>jaar</qualifier>
-        <scope_note></scope_note>
+        <scope_note>Jaar van vergunning</scope_note>
     </dc-type>
-
 
     <dc-type>
         <schema>dba</schema>
         <element>vergunning</element>
         <qualifier>overheid</qualifier>
-        <scope_note></scope_note>
+        <scope_note>VVO</scope_note>
     </dc-type>
 
+    <dc-type>
+        <schema>dba</schema>
+        <element>voorwerp</element>
+        <qualifier>functie</qualifier>
+        <scope_note>functie van een voorwerp in het dossier</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>vvo</element>
+        <qualifier>adres</qualifier>
+        <scope_note>adres vergunning verlenende overheid</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>vvo</element>
+        <qualifier>kbo</qualifier>
+        <scope_note>kbo vergunning verlenende overheid</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>vvo</element>
+        <qualifier>naam</qualifier>
+        <scope_note>naam vergunning verlenende overheid</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>vvo</element>
+        <qualifier>nis</qualifier>
+        <scope_note>nis vergunning verlenende overheid</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>vvo</element>
+        <qualifier>omv</qualifier>
+        <scope_note>omv vergunning verlenende overheid</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>vvo</element>
+        <qualifier>onbekend</qualifier>
+        <scope_note>vergunning verlenende overheid onbekende oorsprong id</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>vvo</element>
+        <qualifier>personid</qualifier>
+        <scope_note>personid vergunning verlenende overheid</scope_note>
+    </dc-type>
 
 </dspace-dc-types>
