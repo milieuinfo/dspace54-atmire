@@ -17,20 +17,23 @@
         <scope_note></scope_note>
     </dc-type>
 
-
-
     <dc-type>
         <schema>dba</schema>
         <element>procedurestap</element>
         <scope_note></scope_note>
     </dc-type>
 
-
-
     <dc-type>
         <schema>dba</schema>
         <element>dossier</element>
         <qualifier>identifier</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>dossier</element>
+        <qualifier>beslissing</qualifier>
         <scope_note></scope_note>
     </dc-type>
 
@@ -42,7 +45,12 @@
         <scope_note></scope_note>
     </dc-type>
 
-
+    <dc-type>
+        <schema>dba</schema>
+        <element>goed</element>
+        <qualifier>adres</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
 
     <dc-type>
         <schema>dba</schema>
@@ -51,6 +59,19 @@
         <scope_note></scope_note>
     </dc-type>
 
+    <dc-type>
+        <schema>dba</schema>
+        <element>voorwerp</element>
+        <qualifier>functie</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>perceel</element>
+        <qualifier>capakey</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
 
     <dc-type>
         <schema>dba</schema>
@@ -64,22 +85,124 @@
         <scope_note></scope_note>
     </dc-type>
 
-
     <dc-type>
         <schema>dba</schema>
-        <element>vergunning</element>
-        <qualifier>jaar</qualifier>
+        <element>aanvrager</element>
+        <qualifier>personid</qualifier>
         <scope_note></scope_note>
     </dc-type>
 
-
     <dc-type>
         <schema>dba</schema>
-        <element>vergunning</element>
-        <qualifier>jaar</qualifier>
+        <element>aanvrager</element>
+        <qualifier>naam</qualifier>
         <scope_note></scope_note>
     </dc-type>
 
+    <dc-type>
+        <schema>dba</schema>
+        <element>aanvrager</element>
+        <qualifier>adres</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>vvo</element>
+        <qualifier>naam</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>vvo</element>
+        <qualifier>nis</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>vvo</element>
+        <qualifier>adres</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>adviesverlener</element>
+        <qualifier>naam</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>adviesverlener</element>
+        <qualifier>omv</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>adviesverlener</element>
+        <qualifier>adres</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>architect-ontw</element>
+        <qualifier>naam</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>architect-ontw</element>
+        <qualifier>kbo</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>architect-ontw</element>
+        <qualifier>personid</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>architect-ontw</element>
+        <qualifier>adres</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>architect-uitv</element>
+        <qualifier>personid</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>architect-uitv</element>
+        <qualifier>naam</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>architect-uitv</element>
+        <qualifier>onbekend</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dba</schema>
+        <element>architect-uitv</element>
+        <qualifier>adres</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
 
     <dc-type>
         <schema>dba</schema>

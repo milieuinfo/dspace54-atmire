@@ -631,9 +631,9 @@ public class ItemImport
         }
     }
 
-    public void addItemsAtomic(Context c, Collection[] mycollections, String sourceDir, String mapFile, boolean template) throws Exception {
+    public List<Item> addItemsAtomic(Context c, Collection[] mycollections, String sourceDir, String mapFile, boolean template) throws Exception {
         try {
-            addItems(c, mycollections, sourceDir, mapFile, template);
+            return addItems(c, mycollections, sourceDir, mapFile, template);
         } catch (Exception addException) {
             log.error("AddItems encountered an error, will try to revert. Error: " + addException.getMessage());
             deleteItems(c, mapFile);
@@ -643,9 +643,10 @@ public class ItemImport
         }
     }
 
-    public void addItems(Context c, Collection[] mycollections,
+    public List<Item> addItems(Context c, Collection[] mycollections,
             String sourceDir, String mapFile, boolean template) throws Exception
     {
+        List<Item> result = new LinkedList<Item>();
         // create the mapfile
         File outFile = null;
 
@@ -722,7 +723,7 @@ public class ItemImport
                 {
                     clist = mycollections;
                 }
-                addItem(c, mycollections, sourceDir, dircontents[i], mapOut, template);
+                result.add(addItem(c, mycollections, sourceDir, dircontents[i], mapOut, template));
                 System.out.println(i + " " + dircontents[i]);
                 c.clearCache();
             }
@@ -734,6 +735,8 @@ public class ItemImport
                 mapOut.close();
             }
         }
+
+        return result;
     }
 
     private void replaceItems(Context c, Collection[] mycollections,

@@ -8,14 +8,17 @@
 package org.dspace.sword2;
 
 import org.apache.abdera.i18n.iri.IRI;
+import org.apache.commons.io.Charsets;
 import org.dspace.content.*;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
 import org.dspace.handle.HandleManager;
 import org.swordapp.server.SwordError;
 
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.sql.SQLException;
 
 /**
@@ -434,11 +437,11 @@ public class SwordUrlManager
 
 			if (handle != null && !"".equals(handle))
 			{
-				bsLink = bsLink + "/bitstream/" + handle + "/" + bitstream.getSequenceID() + "/" + bitstream.getName();
+				bsLink = bsLink + "/bitstream/" + handle + "/" + bitstream.getSequenceID() + "/" + URLEncoder.encode(bitstream.getName(), Charsets.UTF_8.name());
 			}
 			else
 			{
-				bsLink = bsLink + "/retrieve/" + bitstream.getID() + "/" + bitstream.getName();
+				bsLink = bsLink + "/retrieve/" + bitstream.getID() + "/" + URLEncoder.encode(bitstream.getName(), Charsets.UTF_8.name());
 			}
 
 			return bsLink;
@@ -446,13 +449,19 @@ public class SwordUrlManager
 		catch (SQLException e)
 		{
 			throw new DSpaceSwordException(e);
+		} catch (UnsupportedEncodingException e) {
+			throw new DSpaceSwordException("Unable to encode URL", e);
 		}
 	}
 
 	public String getActionableBitstreamUrl(Bitstream bitstream)
 			throws DSpaceSwordException
 	{
-		return this.getSwordBaseUrl() + "/edit-media/bitstream/" + bitstream.getID() + "/" + bitstream.getName();
+		try {
+			return this.getSwordBaseUrl() + "/edit-media/bitstream/" + bitstream.getID() + "/" + URLEncoder.encode(bitstream.getName(), Charsets.UTF_8.name());
+		} catch (UnsupportedEncodingException e) {
+			return this.getSwordBaseUrl() + "/edit-media/bitstream/" + bitstream.getID() + "/" + bitstream.getName();
+		}
 	}
 
 	public boolean isActionableBitstreamUrl(Context context, String url)
