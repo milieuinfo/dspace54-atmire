@@ -24,8 +24,12 @@
     <bean id="searchService" class="org.dspace.discovery.SolrServiceImpl"/>
 
     <util:set id="item-relations">
-        <value>dc.relation.ispartof</value>
-        <value>dc.relation.replaces</value>
+        <ref bean="dc.relation.ispartof-TO-dc.relation.replaces"/>
     </util:set>
+
+    <bean id="dc.relation.ispartof-TO-dc.relation.replaces" class="com.atmire.discovery.ItemMetadataRelation">
+        <property name="sourceMetadataField" value="dc.relation.ispartof"/>
+        <property name="destinationMetadataField" value="dc.relation.replaces"/>
+    </bean>
 
 </beans>
