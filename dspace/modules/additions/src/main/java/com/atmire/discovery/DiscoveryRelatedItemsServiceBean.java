@@ -28,16 +28,19 @@ public class DiscoveryRelatedItemsServiceBean implements DiscoveryRelatedItemsSe
     public Map<Metadatum, Collection> retrieveRelatedItems(Item item, Context context) throws SearchServiceException {
         Map<Metadatum, Collection> matchingItems = new HashMap<>();
 
-        Set<String> configuredMetadata = new DSpace().getServiceManager().getServiceByName("item-relations", Set.class);
+        Set<ItemMetadataRelation> configuredRelations = new DSpace().getServiceManager().getServiceByName("item-relations", Set.class);
 
-        for (String metadatum : configuredMetadata) {
+        for (ItemMetadataRelation metadatum : configuredRelations) {
             DiscoverQuery query = new DiscoverQuery();
-            Metadatum[] metadataFromItem = item.getMetadataByMetadataString(metadatum);
-            String queryString = "";
-            for (int  i = 0 ; i < metadataFromItem.length;i++){
-                queryString+=metadatum+":\""+metadataFromItem[i].value+"\"";
-                if(i+1 < metadataFromItem.length){
-                    queryString+=" OR ";
+
+            String destinationMetadataField = metadatum.getDestinationMetadataField();
+            String sourceMetadataField = metadatum.getSourceMetadataField();
+
+            String queryString = generateQueryString(item, sourceMetadataField, destinationMetadataField);
+            if(metadatum.isInverseRelationSearchEnabled()){
+                String reverseRelationQueryString = generateQueryString(item, destinationMetadataField, sourceMetadataField);
+                if (StringUtils.isNotBlank(reverseRelationQueryString)) {
+                    queryString += (StringUtils.isNotBlank(queryString)) ? " OR " : "" + reverseRelationQueryString;
                 }
             }
             List<DSpaceObject> relatedItems=null;
@@ -51,12 +54,24 @@ public class DiscoveryRelatedItemsServiceBean implements DiscoveryRelatedItemsSe
 
             if (CollectionUtils.isNotEmpty(relatedItems)) {
 
-                Metadatum newMetadatum = createMetadatumFromString(metadatum);
+                Metadatum newMetadatum = createMetadatumFromString(destinationMetadataField);
                 matchingItems.put(newMetadatum, relatedItems);
             }
 
         }
         return matchingItems;
+    }
+
+    private String generateQueryString(Item item, String sourceMetadatafield, String destinationMetadatafield) {
+        Metadatum[] metadataFromItem = item.getMetadataByMetadataString(sourceMetadatafield);
+        StringBuffer stringBuffer = new StringBuffer();
+        for (int  i = 0 ; i < metadataFromItem.length;i++){
+            stringBuffer.append(destinationMetadatafield+":\""+metadataFromItem[i].value+"\"");
+            if(i+1 < metadataFromItem.length){
+                stringBuffer.append(" OR ");
+            }
+        }
+        return stringBuffer.toString();
     }
 
     private Metadatum createMetadatumFromString(String metadatum) {
