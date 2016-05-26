@@ -7,6 +7,9 @@
  */
 package org.dspace.rest;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.dspace.content.DSpaceObject;
@@ -25,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Path("/search")
+@Api(value = "/search", description = "Search for objects", position = 6)
+
 public class SearchResource extends Resource {
 
 
@@ -33,10 +38,19 @@ public class SearchResource extends Resource {
 
     @GET
     @Path("/item")
+    @ApiOperation(value = "Retrieve items based on given pairs of metadatafields and values.",
+            response = Item.class
+    )
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public List<org.dspace.rest.common.Item> searchItems(
+
+            @ApiParam( value = "The metadatafields to use in the search, colon (;) separated, in the form of \"metadatafield:value\"", required = true)
             @QueryParam("fields") String fields,
+
+            @ApiParam( value = "Show additional data for the item.", required = false, allowMultiple = true, allowableValues = "all,metadata,parentCollection,parentCollectionList,parentCommunityList,bitstreams")
             @QueryParam("expand") String expand,
+
+            @ApiParam( value = "The maximum amount of items shown.", required = false)
             @QueryParam("limit") int limit,
             @Context HttpHeaders headers, @Context HttpServletRequest request)
             throws WebApplicationException, Exception {
