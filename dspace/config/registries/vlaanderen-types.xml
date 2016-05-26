@@ -7,7 +7,7 @@
 
     <dc-schema>
         <name>vlaanderen</name>
-        <namespace>http://atmire.com/lne/vlaanderen</namespace>
+        <namespace>http://www.vlaanderen.be/</namespace>
     </dc-schema>
 
 
@@ -21,7 +21,7 @@
     <dc-type>
         <schema>vlaanderen</schema>
         <element>identifier</element>
-        <scope_note></scope_note>
+        <scope_note>unieke identifier van een item</scope_note>
     </dc-type>
 
 
