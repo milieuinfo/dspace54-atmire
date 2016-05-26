@@ -311,6 +311,7 @@
            <id>client-prod</id>
            <properties>
                <xmlui.google.analytics.key>DUMMY_KEY</xmlui.google.analytics.key>
+            <openam.server.url>http://msb-on-1153.mmis.be:9880/sso</openam.server.url>
            </properties>
        </profile>
        <profile>
@@ -346,6 +347,7 @@
                <xmlui.google.analytics.key>DUMMY_KEY</xmlui.google.analytics.key>
             <authentication.method>org.dspace.authenticate.PasswordAuthentication,org.dspace.authenticate.OpenAMCookieAuthentication,org.dspace.authenticate.OpenAMHeaderAuthentication,org.dspace.authenticate.OpenAMPasswordAuthentication</authentication.method>
             <handle.canonical.prefix>${dspace.baseUrl}/</handle.canonical.prefix>
+            <openam.server.url>http://msb-on-750.mmis.be:9880/sso</openam.server.url>
            </properties>
        </profile>
 
