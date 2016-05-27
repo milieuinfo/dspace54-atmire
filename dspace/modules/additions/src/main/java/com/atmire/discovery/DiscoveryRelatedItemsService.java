@@ -1,7 +1,6 @@
 package com.atmire.discovery;
 
 import org.dspace.content.Item;
-import org.dspace.content.Metadatum;
 import org.dspace.core.Context;
 import org.dspace.discovery.SearchServiceException;
 
@@ -13,5 +12,5 @@ import java.util.Map;
  */
 public interface DiscoveryRelatedItemsService {
 
-    Map<Metadatum,Collection> retrieveRelatedItems(Item item, Context context) throws SearchServiceException;
+    Map<String,Collection> retrieveRelatedItems(Item item, Context context) throws SearchServiceException;
 }

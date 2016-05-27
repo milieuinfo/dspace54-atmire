@@ -2471,6 +2471,7 @@
 
         <message key="xmlui.Discovery.ConfigurableRelatedItems.help_dc.relation.ispartof">Item is deel van</message>
         <message key="xmlui.Discovery.ConfigurableRelatedItems.help_dc.relation.replaces">Item vervangt</message>
+        <message key="xmlui.Discovery.ConfigurableRelatedItems.help_vlaanderen.identifier">Item heeft delen</message>
 
 
 </catalogue>

@@ -14,7 +14,6 @@ import org.dspace.app.xmlui.wing.element.ReferenceSet;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
-import org.dspace.content.Metadatum;
 import org.dspace.discovery.SearchServiceException;
 import org.dspace.utils.DSpace;
 import org.xml.sax.SAXException;
@@ -50,7 +49,7 @@ public class ConfigurableRelatedItems extends AbstractDSpaceTransformer{
         Item item = (Item) dspaceObject;
 
         DiscoveryRelatedItemsService relatedItemsService = new DSpace().getServiceManager().getServiceByName("DiscoveryRelatedItemsService", DiscoveryRelatedItemsService.class);
-        Map<Metadatum,Collection> relatedMetadata = null;
+        Map<String,Collection> relatedMetadata = null;
         try {
             relatedMetadata = relatedItemsService.retrieveRelatedItems(item, context);
         } catch (SearchServiceException e) {
@@ -67,14 +66,14 @@ public class ConfigurableRelatedItems extends AbstractDSpaceTransformer{
             Division relatedItemsDiv = body.addDivision("item-related-container").addDivision("item-related", "secondary related");
             relatedItemsDiv.setHead(T_head);
 
-            Iterator<Map.Entry<Metadatum,Collection>> it = relatedMetadata.entrySet().iterator();
+            Iterator<Map.Entry<String,Collection>> it = relatedMetadata.entrySet().iterator();
             while(it.hasNext()){
-                Map.Entry<Metadatum,Collection> pair = it.next();
+                Map.Entry<String,Collection> pair = it.next();
 
                 Collection collection = pair.getValue();
                 relatedItems.clear();
                 relatedItems.addAll(collection);
-                addRelatedItemsDiv(relatedItemsDiv , relatedItems, pair.getKey().getField());
+                addRelatedItemsDiv(relatedItemsDiv , relatedItems, pair.getKey());
             }
         }
     }
