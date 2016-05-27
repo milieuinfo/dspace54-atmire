@@ -1,9 +1,11 @@
 package com.atmire.sword.rules;
 
-import java.util.*;
-import static org.apache.commons.collections.CollectionUtils.*;
-import org.apache.commons.lang3.*;
-import org.dspace.content.*;
+import org.apache.commons.lang3.StringUtils;
+import org.dspace.content.Metadatum;
+
+import java.util.List;
+
+import static org.apache.commons.collections.CollectionUtils.isEmpty;
 
 /**
  * Validation rule that will check if a field has a non-blank value.
@@ -21,7 +23,7 @@ public class FieldIsBlankRule extends AbstractFieldCheckRule {
         if (isEmpty(fieldValueList) || isBlank(fieldValueList.get(0))) {
             return true;
         } else {
-            addViolationDescription("Field has a value", fieldDescription);
+            addViolationDescription("Field %s has a value", fieldDescription);
             checkedValue = fieldValueList.get(0).value;
             return false;
         }

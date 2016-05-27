@@ -6,12 +6,12 @@
               resolutionHint="">
         <rules>
             <rule type="isBlank">
-                <field>dc.haspart</field>
-                <fieldDescription>dc.haspart</fieldDescription>
+                <field>dc.relation.haspart</field>
+                <fieldDescription>dc.relation.haspart</fieldDescription>
             </rule>
             <rule type="isBlank">
-                <field>dc.isreplacedby</field>
-                <fieldDescription>dc.isreplacedby</fieldDescription>
+                <field>dc.relation.isreplacedby</field>
+                <fieldDescription>dc.relation.isreplacedby</fieldDescription>
             </rule>
             <rule type="countLesserThan">
                 <field>dc.relation.replaces</field>

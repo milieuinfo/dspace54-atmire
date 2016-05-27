@@ -57,7 +57,7 @@ public class SwordSAFSIPIngester extends AbstractSwordContentIngester {
                 List<Item> importedItems = itemImport.addItemsAtomic(context, new Collection[]{collection}, unzippedPackage.getAbsolutePath(), mapFile.getAbsolutePath(), true);
 
                 if (CollectionUtils.isEmpty(importedItems)) {
-                    return null;
+                    throw new DSpaceSwordException("The SWORD archive did not contain any valid items");
                 } else {
                     DepositResult depositResult = new DepositResult();
                     depositResult.setItem(importedItems.get(0));
