@@ -41,13 +41,13 @@ public class DiscoveryRelatedItemsServiceBean implements DiscoveryRelatedItemsSe
         for (ItemMetadataRelation metadatum : searchableRelations) {
             DiscoverQuery query = new DiscoverQuery();
 
-            String destinationMetadataField = metadatum.getDestinationMetadataField();
+            String destinationMetadataField = metadatum.getDestinationFilterFacet().getIndexFieldName()+"_keyword";
             String sourceMetadataField = metadatum.getSourceMetadataField();
 
             String queryString = generateQueryString(item, sourceMetadataField, destinationMetadataField);
 
             List<DSpaceObject> relatedItems=null;
-            if(StringUtils.isNotBlank(queryString)){
+            if(StringUtils.isNotBlank(queryString)) {
                 query.setQuery(queryString);
                 query.addFilterQueries("-search.resourceid:" + item.getID(),"search.resourcetype:2");
                 DiscoverResult result = searchService.search(context, query);
@@ -57,8 +57,7 @@ public class DiscoveryRelatedItemsServiceBean implements DiscoveryRelatedItemsSe
 
             if (CollectionUtils.isNotEmpty(relatedItems)) {
 
-                Metadatum newMetadatum = createMetadatumFromString(sourceMetadataField);
-                matchingItems.put(newMetadatum.getField(), relatedItems);
+                matchingItems.put(metadatum.getSourceMetadataField()+"-TO-"+metadatum.getDestinationMetadataField(), relatedItems);
             }
 
         }
