@@ -2571,9 +2571,11 @@
     <message key="xmlui.externalhandle.related_items">The following items are related to this external handle:</message>
 
 
-    <message key="xmlui.Discovery.ConfigurableRelatedItems.help_dc.relation.ispartof">Item is part of the following item(s)</message>
-    <message key="xmlui.Discovery.ConfigurableRelatedItems.help_dc.relation.replaces">Item replaces the following item(s)</message>
-    <message key="xmlui.Discovery.ConfigurableRelatedItems.help_vlaanderen.identifier">Item has part(s)</message>
+    <message key="xmlui.Discovery.ConfigurableRelatedItems.help_dc.relation.ispartof-TO-vlaanderen.identifier">Parent</message>
+    <message key="xmlui.Discovery.ConfigurableRelatedItems.help_vlaanderen.identifier-TO-dc.relation.ispartof">Children</message>
+
+    <message key="xmlui.Discovery.ConfigurableRelatedItems.help_dc.relation.replaces-TO-vlaanderen.identifier">Replaces</message>
+    <message key="xmlui.Discovery.ConfigurableRelatedItems.help_vlaanderen.identifier-TO-dc.relation.replaces">Is replaced by</message>
 
     <!-- end custom messages -->
 </catalogue>

@@ -98,6 +98,12 @@ public class SearchUtils {
         if(!result.containsKey(configuration.getId())){
             result.put(configuration.getId(), configuration);
         }
+        for(String keys:getConfigurationService().getMap().keySet()) {
+            if(keys.contains("general_")){
+                DiscoveryConfiguration discoveryConfiguration = getConfigurationService().getMap().get(keys);
+                result.put(discoveryConfiguration.getId(),discoveryConfiguration);
+            }
+        }
 
         return Arrays.asList(result.values().toArray(new DiscoveryConfiguration[result.size()]));
     }

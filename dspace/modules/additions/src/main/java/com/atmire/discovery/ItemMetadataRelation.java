@@ -1,11 +1,16 @@
 package com.atmire.discovery;
 
+import org.dspace.discovery.configuration.DiscoverySearchFilterFacet;
 import org.springframework.beans.factory.annotation.Required;
 
 /**
  * Created by jonas - jonas@atmire.com on 26/05/16.
  */
 public class ItemMetadataRelation {
+
+    private DiscoverySearchFilterFacet sourceFilterFacet;
+
+    private DiscoverySearchFilterFacet destinationFilterFacet;
 
     private String sourceMetadataField;
 
@@ -18,6 +23,8 @@ public class ItemMetadataRelation {
 
         metadataRelation.setSourceMetadataField(getDestinationMetadataField());
         metadataRelation.setDestinationMetadataField(getSourceMetadataField());
+        metadataRelation.setDestinationFilterFacet(getSourceFilterFacet());
+        metadataRelation.setSourceFilterFacet(getDestinationFilterFacet());
         metadataRelation.setInverseRelationSearchEnabled(this.isInverseRelationSearchEnabled());
 
         return metadataRelation;
@@ -46,6 +53,22 @@ public class ItemMetadataRelation {
 
     public boolean isInverseRelationSearchEnabled() {
         return inverseRelationSearchEnabled;
+    }
+
+    public DiscoverySearchFilterFacet getDestinationFilterFacet() {
+        return destinationFilterFacet;
+    }
+    @Required
+    public void setDestinationFilterFacet(DiscoverySearchFilterFacet destinationFilterFacet) {
+        this.destinationFilterFacet = destinationFilterFacet;
+    }
+
+    public DiscoverySearchFilterFacet getSourceFilterFacet() {
+        return sourceFilterFacet;
+    }
+    @Required
+    public void setSourceFilterFacet(DiscoverySearchFilterFacet sourceFilterFacet) {
+        this.sourceFilterFacet = sourceFilterFacet;
     }
 
 }

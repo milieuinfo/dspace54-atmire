@@ -31,10 +31,14 @@
     <bean id="dc.relation.ispartof-TO-vlaanderen.identifier" class="com.atmire.discovery.ItemMetadataRelation">
         <property name="sourceMetadataField" value="dc.relation.ispartof"/>
         <property name="destinationMetadataField" value="vlaanderen.identifier"/>
+        <property name="sourceFilterFacet" ref="searchFilterIsPartOf"/>
+        <property name="destinationFilterFacet" ref="searchFilterVlaanderenIdentifier"/>
     </bean>
     <bean id="dc.relation.replaces-TO-vlaanderen.identifier" class="com.atmire.discovery.ItemMetadataRelation">
         <property name="sourceMetadataField" value="dc.relation.replaces"/>
         <property name="destinationMetadataField" value="vlaanderen.identifier"/>
+        <property name="sourceFilterFacet" ref="searchFilterReplaces"/>
+        <property name="destinationFilterFacet" ref="searchFilterVlaanderenIdentifier"/>
     </bean>
 
 </beans>

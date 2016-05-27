@@ -42,6 +42,7 @@
                     -->
                 <!--The default entry, DO NOT REMOVE the system requires this-->
                <entry key="default" value-ref="defaultConfiguration" />
+               <entry key="general_relatedItems" value-ref="relatedItemsConfiguration" />
 
                <!--Use site to override the default configuration for the home page & default discovery page-->
                <!--<entry key="site" value-ref="homepageConfiguration" />-->
@@ -203,6 +204,39 @@
         </property>
         <!-- When true a "did you mean" example will be displayed, value can be true or false -->
         <property name="spellCheckEnabled" value="true"/>
+    </bean>
+    <!--The related items configuration settings for discovery-->
+    <bean id="relatedItemsConfiguration" class="org.dspace.discovery.configuration.DiscoveryConfiguration" scope="prototype">
+        <!--Which sidebar facets are to be displayed-->
+        <property name="sidebarFacets">
+            <list>
+                <ref bean="searchFilterIsPartOf"/>
+                <ref bean="searchFilterReplaces"/>
+                <ref bean="searchFilterVlaanderenIdentifier"/>
+            </list>
+        </property>
+        <!--The search filters which can be used on the discovery search page-->
+        <property name="searchFilters">
+            <list>
+                <ref bean="searchFilterIsPartOf"/>
+                <ref bean="searchFilterReplaces"/>
+                <ref bean="searchFilterVlaanderenIdentifier"/>
+            </list>
+        </property>
+        <!--The sort filters for the discovery search-->
+        <property name="searchSortConfiguration">
+            <bean class="org.dspace.discovery.configuration.DiscoverySortConfiguration">
+                <!--<property name="defaultSort" ref="sortDateIssued"/>-->
+                <!--DefaultSortOrder can either be desc or asc (desc is default)-->
+                <property name="defaultSortOrder" value="desc"/>
+                <property name="sortFields">
+                    <list>
+                        <ref bean="sortTitle" />
+                        <ref bean="sortDateIssued" />
+                    </list>
+                </property>
+            </bean>
+        </property>
     </bean>
 
 
@@ -491,5 +525,37 @@
         <property name="metadataField" value="dc.date.issued"/>
         <property name="type" value="date"/>
     </bean>
-    
+
+    <!-- Item relation fields-->
+    <bean id="searchFilterIsPartOf" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="relationispartof"/>
+        <property name="metadataFields">
+            <list>
+                <value>dc.relation.ispartof</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="10"/>
+        <property name="sortOrder" value="COUNT"/>
+    </bean>
+    <bean id="searchFilterReplaces" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="relationreplaces"/>
+        <property name="metadataFields">
+            <list>
+                <value>dc.relation.replaces</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="10"/>
+        <property name="sortOrder" value="COUNT"/>
+    </bean>
+    <bean id="searchFilterVlaanderenIdentifier" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="vlaanderenidentifier"/>
+        <property name="metadataFields">
+            <list>
+                <value>vlaanderen.identifier</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="10"/>
+        <property name="sortOrder" value="COUNT"/>
+    </bean>
+
 </beans>
