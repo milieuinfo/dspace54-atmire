@@ -213,6 +213,14 @@
                 <ref bean="searchFilterIsPartOf"/>
                 <ref bean="searchFilterReplaces"/>
                 <ref bean="searchFilterVlaanderenIdentifier"/>
+                  <ref bean="searchFilterAuthor" />
+                <ref bean="searchFilterSubject" />
+                <ref bean="searchFilterIssued" />
+                <ref bean="searchFilterAangifteType" />
+                <ref bean="searchFilterRapporteringsJaar" />
+                <ref bean="searchFilterExploitatieStad" />
+                <ref bean="searchFilterExploitatiePostCode" />
+                <ref bean="searchFilterType" />
             </list>
         </property>
         <!--The search filters which can be used on the discovery search page-->
@@ -221,6 +229,16 @@
                 <ref bean="searchFilterIsPartOf"/>
                 <ref bean="searchFilterReplaces"/>
                 <ref bean="searchFilterVlaanderenIdentifier"/>
+                <ref bean="searchFilterTitle" />
+                <ref bean="searchFilterAuthor" />
+                <ref bean="searchFilterSubject" />
+                <ref bean="searchFilterIssued" />
+                <ref bean="searchFilterExternalHandle" />
+                <ref bean="searchFilterAangifteType" />
+                <ref bean="searchFilterRapporteringsJaar" />
+                <ref bean="searchFilterExploitatieStad" />
+                <ref bean="searchFilterExploitatiePostCode" />
+                <ref bean="searchFilterType" />
             </list>
         </property>
         <!--The sort filters for the discovery search-->
