@@ -33,7 +33,7 @@ public class ConfigurableRelatedItems extends AbstractDSpaceTransformer{
     private static final Logger log =  Logger.getLogger(ConfigurableRelatedItems.class);
 
     private static final Message T_head = message("xmlui.Discovery.RelatedItems.head");
-    private static final Message T_related_help = message("xmlui.Discovery.ConfigurableRelatedItems.help");
+    private static final String METADATAFIELD_MESSAGE_BASE = "xmlui.Discovery.ConfigurableRelatedItems.help_";
 
     /**
      * Display items related to the given item
@@ -61,29 +61,37 @@ public class ConfigurableRelatedItems extends AbstractDSpaceTransformer{
         if(MapUtils.isNotEmpty(relatedMetadata))
         {
             java.util.List<Item> relatedItems =new ArrayList<>();
+            if(relatedMetadata.isEmpty()){
+                return;
+            }
+            Division relatedItemsDiv = body.addDivision("item-related-container").addDivision("item-related", "secondary related");
+            relatedItemsDiv.setHead(T_head);
+
             Iterator<Map.Entry<Metadatum,Collection>> it = relatedMetadata.entrySet().iterator();
             while(it.hasNext()){
                 Map.Entry<Metadatum,Collection> pair = it.next();
 
                 Collection collection = pair.getValue();
+                relatedItems.clear();
                 relatedItems.addAll(collection);
+                addRelatedItemsDiv(relatedItemsDiv , relatedItems, pair.getKey().getField());
             }
+        }
+    }
 
-            if(CollectionUtils.isNotEmpty(relatedItems))
+    private void addRelatedItemsDiv(Division division, List<Item> relatedItems, String metadataField) throws WingException {
+        if(CollectionUtils.isNotEmpty(relatedItems))
+        {
+
+            division.addPara(null,"relation-headers").addContent(message(METADATAFIELD_MESSAGE_BASE +metadataField));
+
+            ReferenceSet set = division.addReferenceSet(
+                    "item-related-items", ReferenceSet.TYPE_SUMMARY_LIST,
+                    null, "related-items");
+
+            for (DSpaceObject dso : relatedItems)
             {
-                Division mltDiv = body.addDivision("item-related-container").addDivision("item-related", "secondary related");
-                mltDiv.setHead(T_head);
-
-                mltDiv.addPara(T_related_help);
-
-                ReferenceSet set = mltDiv.addReferenceSet(
-                        "item-related-items", ReferenceSet.TYPE_SUMMARY_LIST,
-                        null, "related-items");
-
-                for (DSpaceObject dso : relatedItems)
-                {
-                    set.addReference(dso);
-                }
+                set.addReference(dso);
             }
         }
     }

@@ -281,3 +281,8 @@ a.list-group-item{
 li.dropdown {
     list-style: none;
 }
+
+p.ds-paragraph.relation-headers {
+  padding: 10px;
+  background: $navbar-inverse-link-color;
+}

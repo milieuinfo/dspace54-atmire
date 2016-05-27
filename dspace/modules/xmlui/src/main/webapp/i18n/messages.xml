@@ -2571,7 +2571,8 @@
     <message key="xmlui.externalhandle.related_items">The following items are related to this external handle:</message>
 
 
-    <message key="xmlui.Discovery.ConfigurableRelatedItems.help">Showing items related by configured metadatafields.</message>
+    <message key="xmlui.Discovery.ConfigurableRelatedItems.help_dc.relation.ispartof">Item is part of the following item(s)</message>
+    <message key="xmlui.Discovery.ConfigurableRelatedItems.help_dc.relation.replaces">Item replaces the following item(s)</message>
 
     <!-- end custom messages -->
 </catalogue>

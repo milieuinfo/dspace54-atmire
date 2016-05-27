@@ -40,7 +40,7 @@ public class DiscoveryRelatedItemsServiceBean implements DiscoveryRelatedItemsSe
             if(metadatum.isInverseRelationSearchEnabled()){
                 String reverseRelationQueryString = generateQueryString(item, destinationMetadataField, sourceMetadataField);
                 if (StringUtils.isNotBlank(reverseRelationQueryString)) {
-                    queryString += (StringUtils.isNotBlank(queryString)) ? " OR " : "" + reverseRelationQueryString;
+                    queryString += ((StringUtils.isNotBlank(queryString)) ? " OR " : "")+reverseRelationQueryString;
                 }
             }
             List<DSpaceObject> relatedItems=null;
@@ -54,7 +54,7 @@ public class DiscoveryRelatedItemsServiceBean implements DiscoveryRelatedItemsSe
 
             if (CollectionUtils.isNotEmpty(relatedItems)) {
 
-                Metadatum newMetadatum = createMetadatumFromString(destinationMetadataField);
+                Metadatum newMetadatum = createMetadatumFromString(sourceMetadataField);
                 matchingItems.put(newMetadatum, relatedItems);
             }
 

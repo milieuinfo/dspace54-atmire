@@ -2469,7 +2469,8 @@
         <message key="xmlui.dri2xhtml.METS-1.0.document-title">Document Title</message>
         <message key="xmlui.dri2xhtml.METS-1.0.imjv-dmsexportnotes">Export notes</message>
 
-
+        <message key="xmlui.Discovery.ConfigurableRelatedItems.help_dc.relation.ispartof">Item is deel van</message>
+        <message key="xmlui.Discovery.ConfigurableRelatedItems.help_dc.relation.replaces">Item vervangt</message>
 
 
 </catalogue>
