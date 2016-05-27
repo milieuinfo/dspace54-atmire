@@ -33,7 +33,7 @@ public class ConfigurableRelatedItems extends AbstractDSpaceTransformer{
     private static final Logger log =  Logger.getLogger(ConfigurableRelatedItems.class);
 
     private static final Message T_head = message("xmlui.Discovery.RelatedItems.head");
-    private static final Message T_related_help = message("xmlui.Discovery.ConfigurableRelatedItems.help");
+    private static final String METADATAFIELD_MESSAGE_BASE = "xmlui.Discovery.ConfigurableRelatedItems.help_";
 
     /**
      * Display items related to the given item
@@ -83,7 +83,7 @@ public class ConfigurableRelatedItems extends AbstractDSpaceTransformer{
         if(CollectionUtils.isNotEmpty(relatedItems))
         {
 
-            division.addPara(null,"relation-headers").addContent(T_related_help.parameterize(metadataField));
+            division.addPara(null,"relation-headers").addContent(message(METADATAFIELD_MESSAGE_BASE +metadataField));
 
             ReferenceSet set = division.addReferenceSet(
                     "item-related-items", ReferenceSet.TYPE_SUMMARY_LIST,
