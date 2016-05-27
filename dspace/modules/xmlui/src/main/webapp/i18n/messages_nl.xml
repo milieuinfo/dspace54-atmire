@@ -2475,7 +2475,9 @@
         <message key="xmlui.Discovery.ConfigurableRelatedItems.help_dc.relation.replaces-TO-vlaanderen.identifier">Vervangt</message>
         <message key="xmlui.Discovery.ConfigurableRelatedItems.help_vlaanderen.identifier-TO-dc.relation.replaces">Is vervangen door</message>
 
-    <message key="xmlui.dri2xhtml.METS-1.0.item-vlaandentifier">Vlaanderen identifier</message>
+        <message key="xmlui.dri2xhtml.METS-1.0.item-vlaandentifier">Vlaanderen identifier</message>
+        <message key="xmlui.dri2xhtml.METS-1.0.item-ispartof">Deel van</message>
+        <message key="xmlui.dri2xhtml.METS-1.0.item-replaces">Vervangt</message>
 
 
 </catalogue>
