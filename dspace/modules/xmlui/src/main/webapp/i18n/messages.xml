@@ -2573,6 +2573,7 @@
 
     <message key="xmlui.Discovery.ConfigurableRelatedItems.help_dc.relation.ispartof">Item is part of the following item(s)</message>
     <message key="xmlui.Discovery.ConfigurableRelatedItems.help_dc.relation.replaces">Item replaces the following item(s)</message>
+    <message key="xmlui.Discovery.ConfigurableRelatedItems.help_vlaanderen.identifier">Item has part(s)</message>
 
     <!-- end custom messages -->
 </catalogue>

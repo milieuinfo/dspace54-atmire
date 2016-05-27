@@ -13,6 +13,16 @@ public class ItemMetadataRelation {
 
     private boolean inverseRelationSearchEnabled = true;
 
+    public ItemMetadataRelation createInverseMetadataRelation(){
+        ItemMetadataRelation metadataRelation = new ItemMetadataRelation();
+
+        metadataRelation.setSourceMetadataField(getDestinationMetadataField());
+        metadataRelation.setDestinationMetadataField(getSourceMetadataField());
+        metadataRelation.setInverseRelationSearchEnabled(this.isInverseRelationSearchEnabled());
+
+        return metadataRelation;
+    }
+
     @Required
     public void setSourceMetadataField(String sourceMetadataField) {
         this.sourceMetadataField = sourceMetadataField;

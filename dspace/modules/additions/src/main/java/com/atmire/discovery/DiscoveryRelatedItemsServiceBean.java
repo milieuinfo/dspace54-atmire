@@ -25,24 +25,27 @@ public class DiscoveryRelatedItemsServiceBean implements DiscoveryRelatedItemsSe
     private SearchService searchService;
 
     @Override
-    public Map<Metadatum, Collection> retrieveRelatedItems(Item item, Context context) throws SearchServiceException {
-        Map<Metadatum, Collection> matchingItems = new HashMap<>();
+    public Map<String, Collection> retrieveRelatedItems(Item item, Context context) throws SearchServiceException {
+        Map<String, Collection> matchingItems = new HashMap<>();
 
         Set<ItemMetadataRelation> configuredRelations = new DSpace().getServiceManager().getServiceByName("item-relations", Set.class);
 
+        Set<ItemMetadataRelation> searchableRelations= new LinkedHashSet<>();
         for (ItemMetadataRelation metadatum : configuredRelations) {
+            searchableRelations.add(metadatum);
+            if(metadatum.isInverseRelationSearchEnabled()){
+                searchableRelations.add(metadatum.createInverseMetadataRelation());
+            }
+        }
+
+        for (ItemMetadataRelation metadatum : searchableRelations) {
             DiscoverQuery query = new DiscoverQuery();
 
             String destinationMetadataField = metadatum.getDestinationMetadataField();
             String sourceMetadataField = metadatum.getSourceMetadataField();
 
             String queryString = generateQueryString(item, sourceMetadataField, destinationMetadataField);
-            if(metadatum.isInverseRelationSearchEnabled()){
-                String reverseRelationQueryString = generateQueryString(item, destinationMetadataField, sourceMetadataField);
-                if (StringUtils.isNotBlank(reverseRelationQueryString)) {
-                    queryString += ((StringUtils.isNotBlank(queryString)) ? " OR " : "")+reverseRelationQueryString;
-                }
-            }
+
             List<DSpaceObject> relatedItems=null;
             if(StringUtils.isNotBlank(queryString)){
                 query.setQuery(queryString);
@@ -55,7 +58,7 @@ public class DiscoveryRelatedItemsServiceBean implements DiscoveryRelatedItemsSe
             if (CollectionUtils.isNotEmpty(relatedItems)) {
 
                 Metadatum newMetadatum = createMetadatumFromString(sourceMetadataField);
-                matchingItems.put(newMetadatum, relatedItems);
+                matchingItems.put(newMetadatum.getField(), relatedItems);
             }
 
         }
