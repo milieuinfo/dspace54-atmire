@@ -313,12 +313,27 @@
                             </xsl:attribute>
                             <xsl:copy-of select="./node()"/>
                         </a>
-                        <xsl:if test="count(following-sibling::dim:field[@element='identifier' and @qualifier='uri']) != 0">
+                        <xsl:if test="count(following-sibling::dim:field[@element='identifier' and @qualifier='uri']) != 0 or count(dim:field[@mdschema='vlaanderen' and @element='identifier' and not(@qualifier) and descendant::text()]) !=0">
                             <br/>
                         </xsl:if>
                     </xsl:for-each>
+                <xsl:if test="dim:field[@mdschema='vlaanderen' and @element='identifier' and not(@qualifier) and descendant::text()]">
+
+                    <xsl:for-each select="dim:field[@mdschema='vlaanderen' and @element='identifier' and not(@qualifier) and descendant::text()]">
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:value-of select="concat(confman:getProperty('dspace.url'),'/external-handle/',text())"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="concat(confman:getProperty('dspace.url'),'/external-handle/',text())"/>
+                        </a>
+
+                    </xsl:for-each>
+                </xsl:if>
                 </span>
             </div>
+
+
+
         </xsl:if>
     </xsl:template>
 
