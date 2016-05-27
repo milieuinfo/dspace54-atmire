@@ -78,10 +78,10 @@
          -->
 
         <!-- General keys -->
-        <message key="xmlui.general.dspace_home">DSpace Home</message>
+        <message key="xmlui.general.dspace_home">Archief IMJV Home</message>
         <message key="xmlui.general.search">Zoek</message>
         <message key="xmlui.general.go">Ga</message>
-        <message key="xmlui.general.go_home">Ga naar DSpace home</message>
+        <message key="xmlui.general.go_home">Ga naar Archief IMJV home</message>
         <message key="xmlui.general.save">Bewaar</message>
         <message key="xmlui.general.cancel">Annuleer</message>
         <message key="xmlui.general.return">Terug</message>
@@ -114,7 +114,7 @@
         <!--
          This section is for feed syndications (RSS, atom, etc)
         -->
-        <message key="xmlui.feed.general_description">Het DSpace digitale repository systeem registreert, bewaart, indexeert, conserveert en distribueert digitaal onderzoeksmateriaal.</message>
+        <message key="xmlui.feed.general_description">Het Archief IMJV digitale repository systeem registreert, bewaart, indexeert, conserveert en distribueert digitaal onderzoeksmateriaal.</message>
         <message key="xmlui.feed.header">RSS Feeds</message>
         <message key="xmlui.feed.logo_title">De Kanaal Afbeelding</message>
         <message key="xmlui.feed.untitled">Naamloos</message>
@@ -146,7 +146,7 @@
         <message key="xmlui.ArtifactBrowser.AbstractSearch.head2">Communities of Collecties die voldoen aan uw zoekopdracht</message>
         <message key="xmlui.ArtifactBrowser.AbstractSearch.head3">Items die voldoen aan uw zoekopdracht</message>
         <message key="xmlui.ArtifactBrowser.AbstractSearch.no_results">Zoekopdracht gaf geen resultaat.</message>
-        <message key="xmlui.ArtifactBrowser.AbstractSearch.all_of_dspace">Geheel DSpace</message>
+        <message key="xmlui.ArtifactBrowser.AbstractSearch.all_of_dspace">Geheel Archief IMJV</message>
 
         <message key="xmlui.ArtifactBrowser.AbstractSearch.sort_by.title">titel</message>
         <message key="xmlui.ArtifactBrowser.AbstractSearch.sort_by.dateissued">datum uitgave</message>
@@ -239,7 +239,7 @@
 
         <!-- org.dspace.app.xmlui.artifactbrowser.CollectionViewer.java -->
         <message key="xmlui.ArtifactBrowser.CollectionViewer.search_scope">Search Scope</message>
-        <message key="xmlui.ArtifactBrowser.CollectionViewer.all_of_dspace">Geheel DSpace</message>
+        <message key="xmlui.ArtifactBrowser.CollectionViewer.all_of_dspace">Geheel Archief IMJV</message>
         <message key="xmlui.ArtifactBrowser.CollectionViewer.full_text_search">Zoek binnen deze collectie:</message>
         <message key="xmlui.ArtifactBrowser.CollectionViewer.head_browse">Browse op</message>
         <message key="xmlui.ArtifactBrowser.CollectionViewer.browse_titles">Titels</message>
@@ -251,12 +251,12 @@
         <!-- org.dspace.app.xmlui.artifactbrowser.CommunityBrowser.java -->
         <message key="xmlui.ArtifactBrowser.CommunityBrowser.title">Lijst van communities</message>
         <message key="xmlui.ArtifactBrowser.CommunityBrowser.trail">Lijst van communities</message>
-        <message key="xmlui.ArtifactBrowser.CommunityBrowser.head">Communities in DSpace</message>
+        <message key="xmlui.ArtifactBrowser.CommunityBrowser.head">Communities in Archief IMJV</message>
         <message key="xmlui.ArtifactBrowser.CommunityBrowser.select">Selecteer een community om in haar collecties te bladeren.</message>
 
         <!-- org.dspace.app.xmlui.artifactbrowser.CommunityViewer.java -->
         <message key="xmlui.ArtifactBrowser.CommunityViewer.search_scope">Search Scope</message>
-        <message key="xmlui.ArtifactBrowser.CommunityViewer.all_of_dspace">Geheel DSpace</message>
+        <message key="xmlui.ArtifactBrowser.CommunityViewer.all_of_dspace">Geheel Archief IMJV</message>
         <message key="xmlui.ArtifactBrowser.CommunityViewer.full_text_search">Zoek binnen deze community en haar collecties:</message>
         <message key="xmlui.ArtifactBrowser.CommunityViewer.head_browse">Browse op</message>
         <message key="xmlui.ArtifactBrowser.CommunityViewer.browse_titles">Titels</message>
@@ -281,7 +281,7 @@
         <message key="xmlui.ArtifactBrowser.FeedbackForm.title">Geef feedback</message>
         <message key="xmlui.ArtifactBrowser.FeedbackForm.trail">Geef feedback</message>
         <message key="xmlui.ArtifactBrowser.FeedbackForm.head">Geef feedback</message>
-        <message key="xmlui.ArtifactBrowser.FeedbackForm.para1">Dank voor uw feedback over het DSpace systeem. Uw opmerkingen worden zeer gewaardeerd!</message>
+        <message key="xmlui.ArtifactBrowser.FeedbackForm.para1">Dank voor uw feedback over het Archief IMJV systeem. Uw opmerkingen worden zeer gewaardeerd!</message>
         <message key="xmlui.ArtifactBrowser.FeedbackForm.email">Uw email</message>
         <message key="xmlui.ArtifactBrowser.FeedbackForm.email_help">Dit adres zal worden gebruikt om op uw feedback te reageren.</message>
         <message key="xmlui.ArtifactBrowser.FeedbackForm.comments">Opmerkingen</message>
@@ -303,7 +303,7 @@
 
         <!-- org.dspace.app.xmlui.artifactbrowser.Navigation.java -->
         <message key="xmlui.ArtifactBrowser.Navigation.head_browse">Browse</message>
-        <message key="xmlui.ArtifactBrowser.Navigation.head_all_of_dspace">Geheel DSpace</message>
+        <message key="xmlui.ArtifactBrowser.Navigation.head_all_of_dspace">Geheel Archief IMJV</message>
         <message key="xmlui.ArtifactBrowser.Navigation.communities_and_collections">Communities &amp; Collecties</message>
         <message key="xmlui.ArtifactBrowser.Navigation.browse_title">Titels</message>
         <message key="xmlui.ArtifactBrowser.Navigation.browse_author">Auteurs</message>
@@ -455,7 +455,7 @@
         <!-- org.dspace.app.xmlui.eperson.CannotRegister.java -->
         <message key="xmlui.EPerson.CannotRegister.title">Registratie niet beschikbaar</message>
         <message key="xmlui.EPerson.CannotRegister.head">Registratie niet beschikbaar</message>
-        <message key="xmlui.EPerson.CannotRegister.para1">De configuratie van deze DSpace repository staat registratie in deze context niet toe. Neem contact op met de <a href="../contact">site administrator</a> met vragen of opmerkingen.</message>
+        <message key="xmlui.EPerson.CannotRegister.para1">De configuratie van deze Archief IMJV repository staat registratie in deze context niet toe. Neem contact op met de <a href="../contact">site administrator</a> met vragen of opmerkingen.</message>
 
         <!-- org.dspace.app.xmlui.eperson.EditProfile.java -->
         <message key="xmlui.EPerson.EditProfile.title_update">Update profiel</message>
@@ -515,7 +515,7 @@
         <!-- org.dspace.app.xmlui.eperson.PasswordLogin.java -->
         <message key="xmlui.EPerson.PasswordLogin.title">Inloggen</message>
         <message key="xmlui.EPerson.PasswordLogin.trail">Inloggen</message>
-        <message key="xmlui.EPerson.PasswordLogin.head1">Inloggen in DSpace</message>
+        <message key="xmlui.EPerson.PasswordLogin.head1">Inloggen in Archief IMJV</message>
         <message key="xmlui.EPerson.PasswordLogin.title">Inloggen</message>
         <message key="xmlui.EPerson.PasswordLogin.email_address">Emailadres</message>
         <message key="xmlui.EPerson.PasswordLogin.error_bad_login">Het opgegeven emailadres en/of wachtwoord zijn ongeldig.</message>
@@ -524,13 +524,13 @@
         <message key="xmlui.EPerson.PasswordLogin.token_eid_link"> Log in met Token of eID</message>
         <message key="xmlui.EPerson.PasswordLogin.submit">Inloggen</message>
         <message key="xmlui.EPerson.PasswordLogin.head2">Nieuwe gebruiker registreren</message>
-        <message key="xmlui.EPerson.PasswordLogin.para1">Maak een account om nieuwe items in DSpace te kunnen toevoegen, en om u te kunnen abonneren op collecties voor email updates.</message>
+        <message key="xmlui.EPerson.PasswordLogin.para1">Maak een account om nieuwe items in Archief IMJV te kunnen toevoegen, en om u te kunnen abonneren op collecties voor email updates.</message>
         <message key="xmlui.EPerson.PasswordLogin.register_link">Klik hier om te registreren.</message>
 
         <!-- org.dspace.app.xmlui.eperson.LDAPLogin.java -->
         <message key="xmlui.EPerson.LDAPLogin.title">Inloggen</message>
         <message key="xmlui.EPerson.LDAPLogin.trail">Inloggen</message>
-        <message key="xmlui.EPerson.LDAPLogin.head1">Inloggen in DSpace</message>
+        <message key="xmlui.EPerson.LDAPLogin.head1">Inloggen in Archief IMJV</message>
         <message key="xmlui.EPerson.LDAPLogin.title">Inloggen</message>
         <message key="xmlui.EPerson.LDAPLogin.username">Gebruikersnaam</message>
         <message key="xmlui.EPerson.LDAPLogin.error_bad_login">Het opgegeven emailadres en/of wachtwoord zijn ongeldig.</message>
@@ -572,7 +572,7 @@
         <!-- org.dspace.app.xmlui.eperson.RegistrationFinished.java -->
         <message key="xmlui.EPerson.RegistrationFinished.title">Registratie voltooid</message>
         <message key="xmlui.EPerson.RegistrationFinished.head">Registratie voltooid</message>
-        <message key="xmlui.EPerson.RegistrationFinished.para1">U bent nu geregistreerd in het DSpace systeem.  U kunt zich abonneren op collecties om email updates over nieuw toegevoegde items te ontvangen.</message>
+        <message key="xmlui.EPerson.RegistrationFinished.para1">U bent nu geregistreerd in het Archief IMJV systeem.  U kunt zich abonneren op collecties om email updates over nieuw toegevoegde items te ontvangen.</message>
 
         <!-- org.dspace.app.xmlui.eperson.ResetPassword.java -->
         <message key="xmlui.EPerson.ResetPassword.title">Reset wachtwoord</message>
@@ -588,7 +588,7 @@
         <!-- org.dspace.app.xmlui.eperson.StartForgotPassword.java -->
         <message key="xmlui.EPerson.StartForgotPassword.title">Wachtwoord vergeten</message>
         <message key="xmlui.EPerson.StartForgotPassword.head">Wachtwoord vergeten</message>
-        <message key="xmlui.EPerson.StartForgotPassword.para1">Geef het emailadres op dat u bij uw DSpace-registratie gebruikt hebt. U ontvangt op dat adres een email met verdere instructies.</message>
+        <message key="xmlui.EPerson.StartForgotPassword.para1">Geef het emailadres op dat u bij uw Archief IMJV-registratie gebruikt hebt. U ontvangt op dat adres een email met verdere instructies.</message>
         <message key="xmlui.EPerson.StartForgotPassword.email_address">Emailadres</message>
         <message key="xmlui.EPerson.StartForgotPassword.email_address_help">Geef hetzelfde emailadres op als tijdens uw registratie.</message>
         <message key="xmlui.EPerson.StartForgotPassword.error_not_found">Emailadres niet gevonden.</message>
@@ -601,7 +601,7 @@
         <message key="xmlui.EPerson.StartRegistration.reset_password_for">Reset wachtwoord voor</message>
         <message key="xmlui.EPerson.StartRegistration.submit_reset">Reset wachtwoord</message>
         <message key="xmlui.EPerson.StartRegistration.head2">Registratie nieuwe gebruiker</message>
-        <message key="xmlui.EPerson.StartRegistration.para2">Maak een account om nieuwe items in DSpace te kunnen toevoegen, en om u te kunnen abonneren op collecties voor email updates.</message>
+        <message key="xmlui.EPerson.StartRegistration.para2">Maak een account om nieuwe items in Archief IMJV te kunnen toevoegen, en om u te kunnen abonneren op collecties voor email updates.</message>
         <message key="xmlui.EPerson.StartRegistration.email_address">Emailadres</message>
         <message key="xmlui.EPerson.StartRegistration.email_address_help">Dit adres zal geverifieerd worden en zal als uw login naam dienen.</message>
         <message key="xmlui.EPerson.StartRegistration.error_bad_email">Kan geen mail naar dit adres sturen.</message>
@@ -630,8 +630,8 @@
 
 
         <!-- general submission aspect messages -->
-        <message key="xmlui.Submission.general.mydspace_home">MyDSpace Home</message>
-        <message key="xmlui.Submission.general.go_mydspace">Ga naar MyDSpace Home</message>
+        <message key="xmlui.Submission.general.mydspace_home">MyArchief IMJV Home</message>
+        <message key="xmlui.Submission.general.go_mydspace">Ga naar MyArchief IMJV Home</message>
         <message key="xmlui.Submission.general.submission.title">Item invoer</message>
         <message key="xmlui.Submission.general.submission.trail">Item invoer</message>
         <message key="xmlui.Submission.general.submission.head">Item invoer</message>
@@ -709,7 +709,7 @@
         <message key="xmlui.Submission.Submissions.status_unknown">Onbekende status</message>
         <!-- Same transformer, completed submissions section -->
         <message key="xmlui.Submission.Submissions.completed.head">Gearchiveerde bijdragen</message>
-        <message key="xmlui.Submission.Submissions.completed.info">Dit zijn uw voltooide bijdragen die in DSpace geaccepteerd zijn.</message>
+        <message key="xmlui.Submission.Submissions.completed.info">Dit zijn uw voltooide bijdragen die in Archief IMJV geaccepteerd zijn.</message>
         <message key="xmlui.Submission.Submissions.completed.column1">Datum geaccepteerd</message>
         <message key="xmlui.Submission.Submissions.completed.column2">Titel</message>
         <message key="xmlui.Submission.Submissions.completed.column3">Collectie</message>
@@ -1314,7 +1314,7 @@
         <!-- org.dspace.app.xmlui.administrative.registries.MetadatRegistryMain.java -->
         <message key="xmlui.administrative.registries.MetadataRegistryMain.title">Metadata Registry</message>
         <message key="xmlui.administrative.registries.MetadataRegistryMain.head1">Metadata registry</message>
-        <message key="xmlui.administrative.registries.MetadataRegistryMain.para1">The metadata registry maintains a list of all metadata fields available in the repository. These fields may be divided amongst multiple schemas.  However, DSpace requires the qualified Dublin Core schema. You may extend the Dublin Core schema with additional fields or add new schemas to the registry.</message>
+        <message key="xmlui.administrative.registries.MetadataRegistryMain.para1">The metadata registry maintains a list of all metadata fields available in the repository. These fields may be divided amongst multiple schemas.  However, Archief IMJV requires the qualified Dublin Core schema. You may extend the Dublin Core schema with additional fields or add new schemas to the registry.</message>
         <message key="xmlui.administrative.registries.MetadataRegistryMain.column1"></message>
         <message key="xmlui.administrative.registries.MetadataRegistryMain.column2">ID</message>
         <message key="xmlui.administrative.registries.MetadataRegistryMain.column3">Namespace</message>
@@ -1798,7 +1798,7 @@
         <message key="xmlui.administrative.collection.GeneralCollectionHarvestingForm.trail">Harvesting</message>
         <message key="xmlui.administrative.collection.GeneralCollectionHarvestingForm.options_harvest">Content Source</message>
         <message key="xmlui.administrative.collection.GeneralCollectionHarvestingForm.label_source">Content source</message>
-        <message key="xmlui.administrative.collection.GeneralCollectionHarvestingForm.source_normal">This is a standard DSpace collection</message>
+        <message key="xmlui.administrative.collection.GeneralCollectionHarvestingForm.source_normal">This is a standard Archief IMJV collection</message>
         <message key="xmlui.administrative.collection.GeneralCollectionHarvestingForm.source_harvested">This collection harvests its content from an external source</message>
         <message key="xmlui.administrative.collection.GeneralCollectionHarvestingForm.submit_save">Save</message>
 
@@ -1932,7 +1932,7 @@
         <message key="xmlui.administrative.ControlPanel.trail">Control panel</message>
         <message key="xmlui.administrative.ControlPanel.head">Control Panel</message>
         <message key="xmlui.administrative.ControlPanel.option_java">Java Information</message>
-        <message key="xmlui.administrative.ControlPanel.option_dspace">DSpace Configuration</message>
+        <message key="xmlui.administrative.ControlPanel.option_dspace">Archief IMJV Configuration</message>
         <message key="xmlui.administrative.ControlPanel.option_alerts">System-wide Alerts</message>
         <message key="xmlui.administrative.ControlPanel.hours">{0} h</message>
         <message key="xmlui.administrative.ControlPanel.minutes">{0} m</message>
@@ -1957,11 +1957,11 @@
         <message key="xmlui.administrative.ControlPanel.cocoon_cache_clear">(Clear Cache Immediately)</message>
         <message key="xmlui.administrative.ControlPanel.cocoon_persistent_cache_size">Persistent Cache Size ({0})</message>
         <message key="xmlui.administrative.ControlPanel.cocoon_transient_cache_size">Transient Cache Size ({0})</message>
-        <message key="xmlui.administrative.ControlPanel.dspace_head">DSpace Settings</message>
-        <message key="xmlui.administrative.ControlPanel.dspace_version">DSpace Version</message>
-        <message key="xmlui.administrative.ControlPanel.dspace_dir">DSpace Installation Directory</message>
-        <message key="xmlui.administrative.ControlPanel.dspace_url">DSpace Base URL</message>
-        <message key="xmlui.administrative.ControlPanel.dspace_hostname">DSpace Host Name</message>
+        <message key="xmlui.administrative.ControlPanel.dspace_head">Archief IMJV Settings</message>
+        <message key="xmlui.administrative.ControlPanel.dspace_version">Archief IMJV Version</message>
+        <message key="xmlui.administrative.ControlPanel.dspace_dir">Archief IMJV Installation Directory</message>
+        <message key="xmlui.administrative.ControlPanel.dspace_url">Archief IMJV Base URL</message>
+        <message key="xmlui.administrative.ControlPanel.dspace_hostname">Archief IMJV Host Name</message>
         <message key="xmlui.administrative.ControlPanel.dspace_name">Name of the Site</message>
         <message key="xmlui.administrative.ControlPanel.db_name">Database Name</message>
         <message key="xmlui.administrative.ControlPanel.db_url">Database URL</message>
@@ -2021,7 +2021,7 @@
         <!-- System-wide Curation Tasks form (org.dspace.app.xmlui.aspect.administrative.CurateForm) -->
         <message key="xmlui.administrative.CurateForm.title">Systeem Curator Taken</message>
         <message key="xmlui.administrative.CurateForm.trail">Curator Taken</message>
-        <message key="xmlui.administrative.CurateForm.object_label_name">Handle of DSpace Object</message>
+        <message key="xmlui.administrative.CurateForm.object_label_name">Handle of Archief IMJV Object</message>
         <message key="xmlui.administrative.CurateForm.object_hint">Hint: Enter [your-handle-prefix]/0 to run a task across entire site (not all tasks may support this capability)</message>
         <message key="xmlui.administrative.CurateForm.task_label_name">Taak</message>
         <!-- Used by Curate<DSO>Form classes also -->
@@ -2119,7 +2119,7 @@
                 <span id="ds-footer-logo">&#160;</span>
             </a>
             <p>
-                This website is using Manakin, a new front end for DSpace created by Texas A&amp;M University
+                This website is using Manakin, a new front end for Archief IMJV created by Texas A&amp;M University
                 Libraries. The interface can be extensively modified through Manakin Aspects and XSL based Themes.
                 For more information visit
                 <a href="http://di.tamu.edu">http://di.tamu.edu</a> and
@@ -2129,13 +2129,13 @@
         <message key="xmlui.dri2xhtml.structural.contact-link">Neem contact op</message>
         <message key="xmlui.dri2xhtml.structural.feedback-link">Geef Feedback</message>
 
-        <message key="xmlui.dri2xhtml.structural.head-subtitle">DSpace Repository</message>
+        <message key="xmlui.dri2xhtml.structural.head-subtitle">Archief IMJV Repository</message>
 
         <message key="xmlui.dri2xhtml.structural.profile">Profile: </message>
         <message key="xmlui.dri2xhtml.structural.logout">Logout</message>
         <message key="xmlui.dri2xhtml.structural.login">Login</message>
 
-        <message key="xmlui.dri2xhtml.structural.search">DSpace Doorzoeken</message>
+        <message key="xmlui.dri2xhtml.structural.search">Archief IMJV Doorzoeken</message>
         <message key="xmlui.dri2xhtml.structural.search-advanced">Uitgebreid zoeken</message>
         <message key="xmlui.dri2xhtml.structural.search-in-community">This Community</message>
         <message key="xmlui.dri2xhtml.structural.search-in-collection">This Collection</message>
@@ -2155,7 +2155,7 @@
         <message key="xmlui.dri2xhtml.METS-1.0.no-title">Untitled</message>
         <message key="xmlui.dri2xhtml.METS-1.0.no-author">Unknown author</message>
         <message key="xmlui.dri2xhtml.METS-1.0.non-conformant">
-            This is not a DSpace object conformant to the METS 1.0 profile and as such cannot be
+            This is not a Archief IMJV object conformant to the METS 1.0 profile and as such cannot be
             rendered effectively. You can override either the template that handles the general
             case in dri2xhtml to perform the needed function, or create your template to match
             whatever profile you use.
@@ -2207,8 +2207,8 @@
         <!-- Internationalization elements specific to the Qualified Dublin Core metadata handler.
          DS-METS-1.0-QDC.xsl -->
         <message key="xmlui.dri2xhtml.METS-1.0.qdc-not-applicable">
-            Qualified Dublin Core (QDC) is not applicable to DSpace communities and collections at
-            this time. When using QDC, you should use the QDC crosswalk for DSpace items and either
+            Qualified Dublin Core (QDC) is not applicable to Archief IMJV communities and collections at
+            this time. When using QDC, you should use the QDC crosswalk for Archief IMJV items and either
             DIM or MODS for processing of communities and collections.
         </message>
 
@@ -2320,7 +2320,7 @@
            - JavaScript (AJAX) that completes the lookup popup window.
            - So, positional parameters are @1@, @2@, etc.
           -->
-        <message key="xmlui.ChoiceLookupTransformer.title">DSpace Value Lookup</message>
+        <message key="xmlui.ChoiceLookupTransformer.title">Archief IMJV Value Lookup</message>
         <message key="xmlui.ChoiceLookupTransformer.accept">Accept</message>
         <message key="xmlui.ChoiceLookupTransformer.add">Add</message>
         <message key="xmlui.ChoiceLookupTransformer.cancel">Cancel</message>
@@ -2343,7 +2343,7 @@
         <message key="xmlui.ChoiceLookupTransformer.field.dc_contributor_author.nonauthority">Local value "@1@" (not in Naming Authority)</message>
 
         <!-- mobile theme -->
-        <message key="xmlui.mobile.home_mobile">DSpace Mobile</message>
+        <message key="xmlui.mobile.home_mobile">Archief IMJV Mobile</message>
         <message key="xmlui.mobile.search_all">Search ALL</message>
         <message key="xmlui.mobile.browse_all">Browse ALL by</message>
         <message key="xmlui.mobile.browse_date">Date</message>
