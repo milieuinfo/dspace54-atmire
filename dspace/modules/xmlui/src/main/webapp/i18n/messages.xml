@@ -2576,5 +2576,8 @@
     <message key="xmlui.Discovery.ConfigurableRelatedItems.help_vlaanderen.identifier">Item has part(s)</message>
     <message key="xmlui.dri2xhtml.METS-1.0.item-vlaandentifier">Vlaanderen identifier</message>
 
+    <message key="xmlui.dri2xhtml.METS-1.0.item-ispartof">Vlaanderen identifier</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-ispartof">Part of</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-replaces">Replaces</message>
     <!-- end custom messages -->
 </catalogue>

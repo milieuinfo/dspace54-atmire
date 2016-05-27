@@ -110,14 +110,13 @@
                 <div class="col-sm-4">
                     <div class="row">
                         <div class="col-xs-6 col-sm-12">
-                            <xsl:call-template name="itemSummaryView-DIM-thumbnail"/>
-                        </div>
-                        <div class="col-xs-6 col-sm-12">
                             <xsl:call-template name="itemSummaryView-DIM-file-section"/>
                         </div>
                     </div>
                     <xsl:call-template name="itemSummaryView-DIM-date"/>
                     <xsl:call-template name="itemSummaryView-DIM-vlaandentifier"/>
+                    <xsl:call-template name="itemSummaryView-DIM-isPartOf"/>
+                    <xsl:call-template name="itemSummaryView-DIM-replaces"/>
 
                     <xsl:call-template name="itemSummaryView-DIM-authors"/>
                     <xsl:if test="$ds_item_view_toggle_url != ''">
@@ -137,7 +136,7 @@
     <!-- hasparent stored in 'dc.relation -->
     <xsl:template name="itemSummaryView-hasparent">
         <xsl:if test="dim:field[@element='relation' and not(@qualifier) and descendant::text()]">
-            <div class="simple-item-view-uri item-page-field-wrapper table">
+            <div class="simple-item-view-uri item-page-field-wrapper table word-break">
                 <h5><i18n:text>xmlui.dri2xhtml.METS-1.0.item-hasparent</i18n:text></h5>
                 <span>
                     <xsl:for-each select="dim:field[@element='relation' and not(@qualifier)]">
@@ -158,10 +157,35 @@
 
     <xsl:template name="itemSummaryView-DIM-vlaandentifier">
         <xsl:if test="dim:field[@mdschema='vlaanderen' and @element='identifier' and not(@qualifier) and descendant::text()]">
-            <div class="simple-item-view-uri item-page-field-wrapper table">
+            <div class="simple-item-view-uri item-page-field-wrapper table word-break">
                 <h5><i18n:text>xmlui.dri2xhtml.METS-1.0.item-vlaandentifier</i18n:text></h5>
                 <span>
                     <xsl:for-each select="dim:field[@element='identifier' and not(@qualifier) and @mdschema='vlaanderen']">
+                        <xsl:value-of select="."/>
+                    </xsl:for-each>
+                </span>
+            </div>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="itemSummaryView-DIM-isPartOf">
+        <xsl:if test="dim:field[@mdschema='dc' and @element='relation' and @qualifier='ispartof' and descendant::text()]">
+            <div class="simple-item-view-uri item-page-field-wrapper table word-break">
+                <h5><i18n:text>xmlui.dri2xhtml.METS-1.0.item-ispartof</i18n:text></h5>
+                <span>
+                    <xsl:for-each select="dim:field[@element='relation' and @qualifier='ispartof' and @mdschema='dc']">
+                        <xsl:value-of select="."/>
+                    </xsl:for-each>
+                </span>
+            </div>
+        </xsl:if>
+    </xsl:template>
+    <xsl:template name="itemSummaryView-DIM-replaces">
+        <xsl:if test="dim:field[@mdschema='dc' and @element='relation' and @qualifier='replaces' and descendant::text()]">
+            <div class="simple-item-view-uri item-page-field-wrapper table">
+                <h5><i18n:text>xmlui.dri2xhtml.METS-1.0.item-replaces</i18n:text></h5>
+                <span>
+                    <xsl:for-each select="dim:field[@element='relation' and @qualifier='replaces' and @mdschema='dc']">
                         <xsl:value-of select="."/>
                     </xsl:for-each>
                 </span>
