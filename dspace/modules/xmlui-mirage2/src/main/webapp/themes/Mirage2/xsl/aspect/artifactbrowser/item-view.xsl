@@ -313,7 +313,7 @@
                             </xsl:attribute>
                             <xsl:copy-of select="./node()"/>
                         </a>
-                        <xsl:if test="count(following-sibling::dim:field[@element='identifier' and @qualifier='uri']) != 0 or count(dim:field[@mdschema='vlaanderen' and @element='identifier' and not(@qualifier) and descendant::text()]) !=0">
+                        <xsl:if test="count(following-sibling::dim:field[@element='identifier' and @qualifier='uri']) != 0 or count(//dim:field[@mdschema='vlaanderen' and @element='identifier' and not(@qualifier) and descendant::text()]) !=0">
                             <br/>
                         </xsl:if>
                     </xsl:for-each>
