@@ -71,16 +71,8 @@
         </xsl:if>
         <xsl:if test="@type != 'select' and @type != 'textarea' and @type != 'checkbox' and @type != 'radio' ">
             <xsl:attribute name="type">
-                <xsl:choose>
-                    <xsl:when test="@n = 'login_email'">
-                        <xsl:text>email</xsl:text>
-                    </xsl:when>
-                    <xsl:otherwise>
                         <xsl:value-of select="@type"/>
-                    </xsl:otherwise>
-                </xsl:choose>
             </xsl:attribute>
-
         </xsl:if>
         <xsl:if test="@type= 'textarea'">
             <xsl:attribute name="onfocus">javascript:tFocus(this);</xsl:attribute>
