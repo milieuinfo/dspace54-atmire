@@ -73,8 +73,7 @@
                             <!-- Don't "attach" the assembly results to this project. As
                                  this assembly builds a directory, setting this to "true"
                                 (default value) will just result in a WARNING message.-->
-                            <attach>false</attach>
-                            <finalName>${project.artifactId}</finalName>
+                            <attach>true</attach>
                             <descriptors>
                                 <descriptor>src/main/assembly/assembly.xml</descriptor>
                             </descriptors>
