@@ -1,0 +1,31 @@
+#!/bin/bash
+set -e
+
+source /etc/cumuli/*.bootstrap
+
+# Tomcat package wordt niet juist geïnstalleerd dus zetten we hier de rechten goed.
+
+chown tomcat:tomcat ${tomcat_dir}
+chown -R tomcat:tomcat ${tomcat_dir}/acdtomcat7/
+chown -R tomcat:tomcat ${tomcat_dir}/acdlib/
+
+su - tomcat -c "ln -sf ${tomcat_dir}/acdtomcat7 ${tomcat_home_dir}"
+
+# Unzip package
+
+rm -rf ${tomcat_dir}/packages
+
+su - tomcat -c "mkdir -p ${tomcat_dir}/packages"
+
+su - tomcat -c "unzip /tmp/dspace-install-pkg.zip -d ${tomcat_dir}/packages"
+
+# dit kan eventueel nog worden aangepast door mvn filtering (versie etc)
+su - tomcat -c "ln -sf ${tomcat_dir}/packages/dspace-${project.version}/apps ${tomcat_apps_dir}"
+
+
+# install ant
+su - tomcat -c "unzip /tmp/apache-ant-1.9.4-bin.zip -d ${tomcat_dir}/"
+su - tomcat -c "ln -sf ${tomcat_dir}/apache-ant-1.9.4 ${tomcat_dir}/apache-ant"
+
+
+exit 0

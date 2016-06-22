@@ -1,0 +1,36 @@
+generatorVersion : 1.0.0
+hostNamePrefix : dspacepkg
+projectInfo:
+  jiraURL: https://www.milieuinfo.be/jira/browse/DSPACE
+  bambooURL: https://www.milieuinfo.be/bamboo/browse/ACDCOMP-DM
+  confluenceURL: https://www.milieuinfo.be/confluence/display/DSPACE/home+page
+  projectLead:
+    name: joske
+    telephoneNb: 02 123 45 67
+    email: jos@mail.com
+machineSpec:
+  nbOfCpus: 2
+  nbOfVCpus: 2
+  amountOfRam: 4096
+  osImage:
+    image: ubuntu-16.04-2016061001
+    size: 50000
+    deviceType: HDD
+  networkSettings:
+    incomingTcpPorts:
+        - 80
+        - 443
+    sshAccessGroups:
+      - cn=ontwikkelaars_acd,ou=posixsshaccess,ou=posix,ou=groups,dc=milieuinfo,dc=be
+      - cn=admins_acd,ou=posixsshaccess,ou=posix,ou=groups,dc=milieuinfo,dc=be
+softwareSpec:
+  debianPackages:
+    - name: oracle-java7
+      version: LATEST
+    - name: acdtomcat7
+      version: LATEST
+externalContext:
+  registerDNS: true
+  monitoringTemplates:
+    - linux
+    - jmx

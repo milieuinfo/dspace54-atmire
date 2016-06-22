@@ -20,7 +20,7 @@
       <format>zip</format>
    </formats>
    <baseDirectory>${artifactId}-${version}</baseDirectory>
-   <includeBaseDirectory>false</includeBaseDirectory>
+   <includeBaseDirectory>true</includeBaseDirectory>
    <fileSets>
       <!-- Copy src/main/config/build.xml to resulting directory -->
       <fileSet>
