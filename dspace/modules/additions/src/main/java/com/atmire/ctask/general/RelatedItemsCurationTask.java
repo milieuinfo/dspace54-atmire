@@ -23,6 +23,7 @@ public class RelatedItemsCurationTask extends AbstractCurationTask {
 
     private Set<ItemMetadataRelation> configuredRelations = new DSpace().getServiceManager().getServiceByName("item-relations", Set.class);
 
+    private List<String> results = new ArrayList<String>();
 
     @Override
     public int perform(DSpaceObject dso) throws IOException {
@@ -39,29 +40,27 @@ public class RelatedItemsCurationTask extends AbstractCurationTask {
                 StringBuilder sb = new StringBuilder();
 
                 for (ItemMetadataRelation configuredRelation : configuredRelations) {
-                String identifier = item.getMetadata(configuredRelation.getSourceMetadataField());
+                    String identifier = item.getMetadata(configuredRelation.getSourceMetadataField());
 
-                if(StringUtils.isNotBlank(identifier)) {
-                    int matches = 0;
+                    if(StringUtils.isNotBlank(identifier)) {
+                        int matches = 0;
 
-                    for (Item relatedItem : relatedItems) {
-                        String metadata = relatedItem.getMetadata(configuredRelation.getDestinationMetadataField());
+                        for (Item relatedItem : relatedItems) {
+                            String metadata = relatedItem.getMetadata(configuredRelation.getDestinationMetadataField());
 
-                        if(identifier.equals(metadata)){
-                            matches+=1;
+                            if(identifier.equals(metadata)){
+                                matches+=1;
+                            }
+                        }
+
+                        if(matches == 0) {
+                            results.add("No item found for identifier " + identifier + " on item " + item.getHandle());
+                        }
+                        if(matches > 1) {
+                            results.add("Multiple items found for identifier " + identifier + " on item " + item.getHandle());
                         }
                     }
-
-                    if(matches == 0) {
-                        sb.append(" No item found for identifier ").append(identifier);
-                    }
-                    if(matches > 1) {
-                        sb.append(" Multiple items found for identifier ").append(identifier);
-                    }
                 }
-            }
-
-                setResult(sb.toString());
             } catch (Exception e) {
                 log.error(e.getMessage(),e);
                 return Curator.CURATE_ERROR;
@@ -73,6 +72,7 @@ public class RelatedItemsCurationTask extends AbstractCurationTask {
 
         }
 
+        processResults();
         return Curator.CURATE_SUCCESS;
     }
 
@@ -93,5 +93,17 @@ public class RelatedItemsCurationTask extends AbstractCurationTask {
         }
 
         return relatedItems;
+    }
+
+    private void processResults() throws IOException
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Related Items Report: \n----------------\n");
+        for(String result : results)
+        {
+            sb.append(result).append("\n");
+        }
+        setResult(sb.toString());
+        report(sb.toString());
     }
 }

@@ -285,3 +285,11 @@ p.ds-paragraph.relation-headers {
   padding: 10px;
   background: $navbar-inverse-link-color;
 }
+
+#aspect_general_NoticeTransformer_div_general-message {
+    padding-top: 0px;
+
+    p {
+        white-space: pre-wrap;
+    }
+}
