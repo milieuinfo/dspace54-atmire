@@ -22,6 +22,7 @@
         <root.basedir>${basedir}/../../..</root.basedir>
         <!-- Swagger properties -->
         <swagger-ui-version>2.1.0</swagger-ui-version>
+        <dspace.rest.url>%dspace.rest.url%</dspace.rest.url>
     </properties>
 
     <build>
@@ -63,7 +64,7 @@
                             <locations>org.dspace.rest</locations>
                             <schemes>${rest.scheme}</schemes>
                             <host></host>
-                            <basePath>%dspace.rest.url%</basePath>
+                            <basePath>${dspace.rest.url}</basePath>
                             <info>
                                 <title>LNE rest application</title>
                                 <version>v1</version>

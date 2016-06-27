@@ -569,6 +569,7 @@
         <!--
            Builds DSpace "Assembly & Configuration" project
         -->
+
         <profile>
             <id>dspace</id>
             <activation>
@@ -762,6 +763,18 @@
             </modules>
         </profile>
 
+        <!-- Debian packaging -->
+        <profile>
+            <id>pkg</id>
+            <activation>
+                <file>
+                    <exists>pkg/pom.xml</exists>
+                </file>
+            </activation>
+            <modules>
+                <module>pkg</module>
+            </modules>
+        </profile>
 
       <!--
          The 'release' profile is used by the 'maven-release-plugin' (see above)

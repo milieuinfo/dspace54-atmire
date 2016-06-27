@@ -27,5 +27,7 @@ su - tomcat -c "ln -sf ${tomcat_dir}/packages/dspace-${project.version}/apps ${t
 su - tomcat -c "unzip /tmp/apache-ant-1.9.4-bin.zip -d ${tomcat_dir}/"
 su - tomcat -c "ln -sf ${tomcat_dir}/apache-ant-1.9.4 ${tomcat_dir}/apache-ant"
 
+${tomcat_apps_dir}/postinstall.sh
+
 
 exit 0

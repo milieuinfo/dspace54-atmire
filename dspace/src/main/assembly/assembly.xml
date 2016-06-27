@@ -9,7 +9,7 @@
 -->
 <!--
     DSpace Directory Assembly
-    This assembly creates the 'target/dspace-installer/' which can
+    This assembly creates the 'target/dspace-[version]-build/' which can
     then be installed via Apache Ant.
 -->
 <assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
@@ -25,7 +25,7 @@
       <!-- Copy src/main/config/build.xml to resulting directory -->
       <fileSet>
          <directory>src/main/config</directory>
-         <outputDirectory>.</outputDirectory>
+         <outputDirectory>apps/dspace</outputDirectory>
          <includes>
             <include>build.xml</include>
          </includes>
@@ -33,7 +33,7 @@
       <!-- Copy README and LICENSE files to resulting directory -->
       <fileSet>
          <directory>..</directory>
-         <outputDirectory>.</outputDirectory>
+         <outputDirectory>apps/dspace</outputDirectory>
          <includes>
             <include>LICENSE*</include>
             <include>README</include>
@@ -44,7 +44,7 @@
       </fileSet>
       <!-- Copy necessary subdirectories to resulting directory -->
       <fileSet>
-         <outputDirectory>.</outputDirectory>
+         <outputDirectory>apps/dspace</outputDirectory>
          <includes>
             <include>bin/**</include>
             <include>config/**</include>
@@ -62,7 +62,7 @@
       </fileSet>
       <!-- Copy over all module configs & filter them -->
       <fileSet>
-         <outputDirectory>.</outputDirectory>
+         <outputDirectory>apps/dspace</outputDirectory>
          <includes>
             <include>config/modules/**</include>
          </includes>
@@ -74,17 +74,17 @@
    <files>
       <file>
          <source>config/dspace.cfg</source>
-         <outputDirectory>config</outputDirectory>
+         <outputDirectory>apps/dspace/config</outputDirectory>
          <filtered>true</filtered>
       </file>
       <file>
          <source>config/log4j.properties</source>
-         <outputDirectory>config</outputDirectory>
+         <outputDirectory>apps/dspace/config</outputDirectory>
          <filtered>true</filtered>
       </file>
       <file>
          <source>config/crosswalks/oai/description.xml</source>
-         <outputDirectory>config</outputDirectory>
+         <outputDirectory>apps/dspace/config</outputDirectory>
          <filtered>true</filtered>
       </file>
       <file>
@@ -92,6 +92,76 @@
          <outputDirectory>apps</outputDirectory>
          <fileMode>0755</fileMode>
       </file>
+      <file>
+            <source>${basedir}/src/main/resources/xmlui.xml</source>
+            <outputDirectory>apps</outputDirectory>
+            <fileMode>0755</fileMode>
+            <filtered>true</filtered>
+        </file>
+        <file>
+            <source>${basedir}/src/main/resources/sword.xml</source>
+            <outputDirectory>apps</outputDirectory>
+            <fileMode>0755</fileMode>
+            <filtered>true</filtered>
+        </file>
+        <file>
+            <source>${basedir}/src/main/resources/swordv2.xml</source>
+            <outputDirectory>apps</outputDirectory>
+            <fileMode>0755</fileMode>
+            <filtered>true</filtered>
+        </file>
+        <file>
+            <source>${basedir}/src/main/resources/oai.xml</source>
+            <outputDirectory>apps</outputDirectory>
+            <fileMode>0755</fileMode>
+            <filtered>true</filtered>
+        </file>
+        <file>
+            <source>${basedir}/src/main/resources/jspui.xml</source>
+            <outputDirectory>apps</outputDirectory>
+            <fileMode>0755</fileMode>
+            <filtered>true</filtered>
+        </file>
+        <file>
+            <source>${basedir}/src/main/resources/lni.xml</source>
+            <outputDirectory>apps</outputDirectory>
+            <fileMode>0755</fileMode>
+            <filtered>true</filtered>
+        </file>
+        <file>
+            <source>${basedir}/src/main/resources/solr.xml</source>
+            <outputDirectory>apps</outputDirectory>
+            <fileMode>0755</fileMode>
+            <filtered>true</filtered>
+        </file>
+        <file>
+            <source>${basedir}/src/main/resources/rest.xml</source>
+            <outputDirectory>apps</outputDirectory>
+            <fileMode>0755</fileMode>
+            <filtered>true</filtered>
+        </file>
+        <file>
+            <source>${basedir}/src/main/resources/cleanup.sh</source>
+            <outputDirectory>apps</outputDirectory>
+            <fileMode>0755</fileMode>
+        </file>
+        <file>
+            <source>${basedir}/src/main/resources/setenv.sh</source>
+            <outputDirectory>apps</outputDirectory>
+            <fileMode>0755</fileMode>
+        </file>
+        <file>
+            <source>${basedir}/src/main/resources/ansible.properties</source>
+            <outputDirectory>apps</outputDirectory>
+            <fileMode>0755</fileMode>
+            <filtered>true</filtered>
+        </file>
+        <file>
+            <source>${basedir}/src/main/resources/import-structure-policies.py</source>
+            <outputDirectory>apps</outputDirectory>
+            <fileMode>0755</fileMode>
+            <filtered>true</filtered>
+        </file>
    </files>
 
    <!--
@@ -103,7 +173,7 @@
          <includes>
             <include>*:jar:*</include>
          </includes>
-         <outputDirectory>lib</outputDirectory>
+         <outputDirectory>apps/dspace/lib</outputDirectory>
       </dependencySet>
    </dependencySets>
 
@@ -118,7 +188,7 @@
          </includes>
          <binaries>
             <includeDependencies>true</includeDependencies>
-            <outputDirectory>lib</outputDirectory>
+            <outputDirectory>apps/dspace/lib</outputDirectory>
             <unpack>false</unpack>
             <!-- Include any dependency JARs as well -->
             <dependencySets>
@@ -126,6 +196,7 @@
                   <includes>
                      <include>*:jar:*</include>
                   </includes>
+                  <outputDirectory>apps/dspace/lib</outputDirectory>
                </dependencySet>
             </dependencySets>
          </binaries>
@@ -145,7 +216,7 @@
          </excludes>
          <binaries>
             <includeDependencies>false</includeDependencies>
-            <outputDirectory>webapps/${module.artifactId}</outputDirectory>
+            <outputDirectory>apps/dspace/webapps/${module.artifactId}</outputDirectory>
             <unpack>true</unpack>
          </binaries>
       </moduleSet>

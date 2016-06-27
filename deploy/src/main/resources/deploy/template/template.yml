@@ -10,16 +10,24 @@ projectInfo:
     email: jos@mail.com
 machineSpec:
   nbOfCpus: 2
-  nbOfVCpus: 2
-  amountOfRam: 4096
+  nbOfVCpus: 4
+  amountOfRam: 8192
   osImage:
     image: ubuntu-16.04-2016061001
-    size: 50000
+    size:  10240
     deviceType: HDD
+  dataDisks:
+      - sequenceNb: 1
+        deviceType: HDD
+        size: 512000
+        fileSystemType: EXT4
+        mountPoint: /opt/tomcat/data
+        user: root
+        group: root
+        permissions: 0750
   networkSettings:
     incomingTcpPorts:
-        - 80
-        - 443
+        - 8080
     sshAccessGroups:
       - cn=ontwikkelaars_acd,ou=posixsshaccess,ou=posix,ou=groups,dc=milieuinfo,dc=be
       - cn=admins_acd,ou=posixsshaccess,ou=posix,ou=groups,dc=milieuinfo,dc=be
