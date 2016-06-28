@@ -7,7 +7,7 @@
     http://www.dspace.org/license/
 
 -->
-<Context path="/archief/rest" docBase="%tomcat_apps_dir%/dspace/webapps/rest" debug="0" useHttpOnly="true" reloadable="true" cachingAllowed="true" >
+<Context path="/%dspace.archief.name%cd/rest" docBase="%tomcat_apps_dir%/dspace/webapps/rest" debug="0" useHttpOnly="true" reloadable="true" cachingAllowed="true" >
 
     <Resource name="jdbc/dspace"
               auth="Container"

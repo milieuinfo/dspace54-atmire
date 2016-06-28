@@ -26,7 +26,7 @@ sed -i \
     -e "s/%dspace.archief.name%/${archief_name}/g" \
     -e "s/%openam.role.prefix%/${openam_role_prefix}/g" \
     -e "s/%openam.admin.role%/${openam_admin_role}/g" \
-    -e "s/%openam.eid.token.goto.url%/${openam_eid_token_goto_url}/g" \
+    -e "s@%openam.eid.token.goto.url%@${openam_eid_token_goto_url}@g" \
     ${tomcat_apps_dir}/*.xml \
     ${tomcat_apps_dir}/cleanup.sh \
     ${tomcat_apps_dir}/setenv.sh \
@@ -48,6 +48,11 @@ sed -i -e "s|^\(dspace.dir[[:blank:]]*=[[:blank:]]*\).*$|\1${tomcat_apps_dir}/ds
 
 sed -i -e "s|\${sword.url}|http://${ZUIL}.milieuinfo.be:8080/${archief_name}/swordv2|g" ${tomcat_apps_dir}/dspace/config/modules/swordv2-server.cfg
 
+sed -i \
+    -e "s|\${solr.server}|http://localhost:8080/${archief_name}/solr|g" \
+    ${tomcat_apps_dir}/dspace/config/modules/oai.cfg \
+    ${tomcat_apps_dir}/dspace/config/modules/discovery.cfg \
+    ${tomcat_apps_dir}/dspace/config/modules/solr-statistics.cfg
 
 # Symlinks into tomcat
 #ln -f -s ${tomcat_apps_dir}/jspui.xml ${tomcat_home_dir}/conf/Catalina/localhost/jspui.xml
@@ -71,29 +76,45 @@ echo "Installeer toepassing"
 cd ${tomcat_apps_dir}/dspace_install && ant -v init_installation init_configs install_code update_webapps clean_backups
 
 
-echo "Maken van symlinks naar de data folders"
+echo "Maken van Data directories"
 chown tomcat:tomcat ${tomcat_data_dir}
 
 mkdir -p ${tomcat_data_dir}/solr 2>/dev/null
 
-cp -r ${tomcat_apps_dir}/dspace/solr/* ${tomcat_data_dir}/solr/
 
-chown -R tomcat:tomcat ${tomcat_data_dir}/solr/
-
-rm -rf ${tomcat_apps_dir}/dspace/solr
-
-
-
-echo "Symlink voor solr source: ${tomcat_data_dir}/solr name: ${tomcat_apps_dir}/dspace/solr"
-ln -s ${tomcat_data_dir}/solr ${tomcat_apps_dir}/dspace/solr
-
-rm -rf ${tomcat_apps_dir}/dspace/assetstore
+mkdir -p ${tomcat_data_dir}/GeoLite 2>/dev/null
 
 mkdir -p ${tomcat_data_dir}/assetstore 2>/dev/null
 
-chown tomcat:tomcat ${tomcat_data_dir}/assetstore/
+# Installatie GeoLite 
+echo "Installatie GeoLite"
+if [ -a ${tomcat_data_dir}/GeoLite/GeoLiteCity.dat ]; then
+    echo "GeoLite al aanwezig niets te doen" 
+else
+    echo "Installatie GeoLite db"
+    gzip -c /tmp/GeoLiteCity.dat.gz > ${tomcat_data_dir}/GeoLite/GeoLiteCity.dat
+    chown -R tomcat:tomcat ${tomcat_data_dir}/GeoLite
+fi
+
+
+# Installatie Solr 
+echo "Installatie Solr"
+if [ "$(ls -A ${tomcat_data_dir}/solr/)" ]; then
+    echo "Solr al aanwezig niets te doen"
+else
+    echo "Installatie Solr"
+    cp -r ${tomcat_apps_dir}/dspace/solr/* ${tomcat_data_dir}/solr/
+    chown -R tomcat:tomcat ${tomcat_data_dir}/solr/
+fi
+
+
+echo "Symlink voor solr source: ${tomcat_data_dir}/solr name: ${tomcat_apps_dir}/dspace/solr"
+rm -rf ${tomcat_apps_dir}/dspace/solr
+ln -s ${tomcat_data_dir}/solr ${tomcat_apps_dir}/dspace/solr
 
 echo "Symlink voor assetstore source: ${tomcat_data_dir}/assetstore name: ${tomcat_apps_dir}/dspace/assetstore"
+rm -rf ${tomcat_apps_dir}/dspace/assetstore
+chown tomcat:tomcat ${tomcat_data_dir}/assetstore/
 ln -s ${tomcat_data_dir}/assetstore ${tomcat_apps_dir}/dspace/assetstore
 
 echo "Symlink maken naar /var/log/dspace"
@@ -114,5 +135,13 @@ echo "Chown dir naar tomcat user : ${tomcat_apps_dir}"
 
 chown -R tomcat:tomcat ${tomcat_apps_dir}
 chown -R tomcat:tomcat ${tomcat_apps_dir}/dspace
+
+
+echo "Cleanup temp dir"
+rm -rf /tmp/apache-ant-1.9.4-bin.zip
+rm -rf /tmp/dspace-install-pkg.zip
+rm -rf /tmp/GeoLiteCity.dat.gz
+
+
 
 
