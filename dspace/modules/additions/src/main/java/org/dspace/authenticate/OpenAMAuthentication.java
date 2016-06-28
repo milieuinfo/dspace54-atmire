@@ -10,8 +10,10 @@ package org.dspace.authenticate;
 import be.milieuinfo.security.openam.api.OpenAMUserdetails;
 import be.milieuinfo.security.openam.oauth.JerseyBasedOAuthIdentityService;
 import be.milieuinfo.security.openam.oauth.OAuthTokenPair;
+
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.dspace.authorize.AuthorizeException;
@@ -24,6 +26,7 @@ import org.dspace.eperson.Group;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.UriBuilder;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
@@ -35,8 +38,8 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
     private static Logger log = Logger.getLogger(OpenAMAuthentication.class);
 
     private static final String ADMINISTRATOR_GROUP = "Administrator";
-    private static final String DSPACE_ADMIN_ROLE = "DSpaceAdmin";
-    private static final String DSPACE_ROLE_PREFIX = "DSpace";
+    private String dSpaceAdminRole;
+    private String dSpaceRolePrefix;
 
     protected DSpaceJerseyBasedOAuthIdentityService openAMIdentityService;
 
@@ -44,6 +47,8 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
         final String openamServerUrl = ConfigurationManager.getProperty("authentication-openam", "openam.server.url");
         final String consumerToken = ConfigurationManager.getProperty("authentication-openam", "openam.consumer.token");
         final String consumerSecret = ConfigurationManager.getProperty("authentication-openam", "openam.consumer.secret");
+        dSpaceRolePrefix = ConfigurationManager.getProperty("authentication-openam", "openam.role.prefix");
+        dSpaceAdminRole = ConfigurationManager.getProperty("authentication-openam", "openam.admin.role");
 
         this.openAMIdentityService = new DSpaceJerseyBasedOAuthIdentityService();
         this.openAMIdentityService.setUrl(openamServerUrl);
@@ -109,12 +114,12 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
 
     
 
-    protected void fixGroups(Context context, Collection<String> roles , EPerson ePerson) throws SQLException, AuthorizeException {
+    protected void fixGroups(Context context, Collection<String> roles , EPerson ePerson) throws SQLException, AuthorizeException{
     	
     	ArrayList<Group> currentGroups = new ArrayList<Group>();
     	
     	for (String role : roles) {
-            if(DSPACE_ADMIN_ROLE.equals(role)) {
+            if(dSpaceAdminRole.equals(role)) {
                 final Group admins = Group.findByName(context, ADMINISTRATOR_GROUP);
                 if (admins != null) {
                     admins.addMember(ePerson);
@@ -125,8 +130,8 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
                 } else {
                     log.warn(LogManager.getHeader(context, "login", "Could not add user as administrator (group not found)!"));
                 }
-            } else if(role.startsWith(DSPACE_ROLE_PREFIX)) {
-                final String groupName = role.replaceAll(DSPACE_ROLE_PREFIX, "");
+            } else if(role.startsWith(dSpaceRolePrefix)) {
+                final String groupName = role.replaceAll(dSpaceRolePrefix, "");
                 final Group group = Group.findByName(context, groupName);
                 if (group != null) {
                     group.addMember(ePerson);

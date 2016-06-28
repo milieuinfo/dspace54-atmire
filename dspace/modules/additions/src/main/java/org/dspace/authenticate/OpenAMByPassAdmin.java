@@ -1,13 +1,17 @@
 package org.dspace.authenticate;
 
-import org.dspace.authorize.AuthorizeException;
-import org.dspace.core.Context;
-import org.dspace.eperson.EPerson;
-
-import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
+import org.dspace.authorize.AuthorizeException;
+import org.dspace.core.Context;
+import org.dspace.core.LogManager;
+import org.dspace.eperson.EPerson;
 
 import be.milieuinfo.core.domain.OrganisatieCode;
 import be.milieuinfo.security.openam.api.OpenAMUserdetails;
@@ -23,7 +27,7 @@ public class OpenAMByPassAdmin extends OpenAMImplicitAuthentication {
 
 	@Override
 	public int authenticate(Context context, String username, String password,
-							String realm, HttpServletRequest request) throws SQLException {
+			String realm, HttpServletRequest request) throws SQLException {
 
 		final String email = "admin@milieuinfo.be";
 		final String sn = "Admin";

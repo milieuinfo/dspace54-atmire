@@ -24,6 +24,9 @@ sed -i \
     -e "s/%dspace.consumer.token%/${dspace_consumer_token}/g" \
     -e "s/%dspace.consumer.secret%/${dspace_consumer_secret}/g" \
     -e "s/%dspace.archief.name%/${archief_name}/g" \
+    -e "s/%openam.role.prefix%/${openam_role_prefix}/g" \
+    -e "s/%openam.admin.role%/${openam_admin_role}/g" \
+    -e "s/%openam.eid.token.goto.url%/${openam_eid_token_goto_url}/g" \
     ${tomcat_apps_dir}/*.xml \
     ${tomcat_apps_dir}/cleanup.sh \
     ${tomcat_apps_dir}/setenv.sh \
