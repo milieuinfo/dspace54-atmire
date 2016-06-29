@@ -313,7 +313,7 @@
                 <dspace.hostname>ontwikkel.milieuinfo.be</dspace.hostname>
                 <dspace.baseUrl>https://${dspace.hostname}/archief-imjv</dspace.baseUrl>
                 <dspace.url>${dspace.baseUrl}</dspace.url>
-                <sword.url>http://archief-imjv-on-1-mgt.mmis.be/swordv2</sword.url>
+                <sword.url>http://archief-imjv-on-1-mgt.mmis.be:8080/swordv2</sword.url>
                 <rest.base.url>/archief-imjv/rest</rest.base.url>
                 <rest.url.path>/archief-imjv/rest/api</rest.url.path>
                 <rest.scheme>https</rest.scheme>
