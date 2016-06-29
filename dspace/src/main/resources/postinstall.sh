@@ -40,7 +40,7 @@ cat ${tomcat_apps_dir}/ansible.properties | cat - ${tomcat_apps_dir}/dspace/conf
 # Fixing some swagger stuff
 sed -i -e "s|%dspace.rest.url%|/${archief_name}/rest|g" ${tomcat_apps_dir}/dspace/webapps/rest/swagger-ui-2.1.0/dist/index.html
 sed -i -e "s|%dspace.rest.url%|${archief_name}/rest|g" ${tomcat_apps_dir}/dspace/webapps/rest/api-docs/strapdown.html
-sed -i -e "s|%dspace.rest.url%|/${archief_name}/rest|g" ${tomcat_apps_dir}/dspace/webapps/rest/api-docs/swagger.json
+sed -i -e "s|%dspace.rest.url%|/${archief_name}/rest/api|g" ${tomcat_apps_dir}/dspace/webapps/rest/api-docs/swagger.json
 
 # Replacing dspace.dir in dspace.cfg file.
 # The Ant script won't run properly as it loads this property through regexp property filtering.
