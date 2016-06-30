@@ -16,7 +16,7 @@ public class ExternalIdentifierAuthority implements ChoiceAuthority
         Choices choices = new Choices(false);
         if(StringUtils.isNotBlank(text))
         {
-            choices = new Choices(new Choice[]{new Choice("value_authority",text+"_value",text+"_label")},0,1,Choices.CF_AMBIGUOUS,false);
+            choices = new Choices(new Choice[]{new Choice(text,text,text)},0,1,Choices.CF_AMBIGUOUS,false,0);
         }
         return choices;
     }
@@ -26,7 +26,7 @@ public class ExternalIdentifierAuthority implements ChoiceAuthority
         Choices choices = new Choices(false);
         if(StringUtils.isNotBlank(text))
         {
-            choices = new Choices(new Choice[]{new Choice("value_authority",text+"_value",text+"_label")},0,1,Choices.CF_AMBIGUOUS,false);
+            choices = new Choices(new Choice[]{new Choice(text,text,text)},0,1,Choices.CF_AMBIGUOUS,false,0);
         }
         return choices;
     }
