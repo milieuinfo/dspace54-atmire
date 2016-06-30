@@ -41,6 +41,10 @@
                 <field>null</field>
                 <fieldDescription>dc.relation.replaces and dc.relation.ispartof</fieldDescription>
             </rule>
+            <rule type="uniqueValueByAuthorityId">
+                <field>vlaanderen.identifier</field>
+                <fieldDescription>vlaanderen.identifier</fieldDescription>
+            </rule>
         </rules>
     </category>
 </rule-categories>
