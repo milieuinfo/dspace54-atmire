@@ -8,13 +8,18 @@
 package org.dspace.rest;
 
 import org.apache.log4j.Logger;
+import org.dspace.authorize.AuthorizeException;
 import org.dspace.content.DSpaceObject;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
 import org.dspace.eperson.EPerson;
+import org.dspace.eperson.Group;
 import org.dspace.rest.exceptions.ContextException;
 import org.dspace.usage.UsageEvent;
 import org.dspace.utils.DSpace;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +28,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -58,8 +64,6 @@ public class Resource
      * a problem with authorization to read from the database. Throws Exception
      * if there was a problem creating context.
      * 
-     * @param person
-     *            User which will be logged in context.
      * @return Newly created context with the logged in user unless the specified user was null.
      *         If user is null, create the context without a logged in user.
      * @throws ContextException
@@ -68,31 +72,47 @@ public class Resource
      *             log in. Can be caused by AuthorizeException if there was a
      *             problem authorizing the found user.
      */
-    protected static Context createContext(EPerson person) throws ContextException
-    {
+    protected static Context createContext() throws ContextException {
+        try {
+            org.dspace.core.Context context = new org.dspace.core.Context();
+            //context.getDBConnection().setAutoCommit(false); // Disable autocommit.
 
-        Context context = null;
-
-        try
-        {
-            context = new Context();
-            context.getDBConnection().setAutoCommit(false); // Disable autocommit.
-
-            if (person != null)
-            {
-                context.setCurrentUser(person);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null) {
+                Collection<SimpleGrantedAuthority> specialGroups = (Collection<SimpleGrantedAuthority>) authentication.getAuthorities();
+                for (SimpleGrantedAuthority grantedAuthority : specialGroups) {
+                    context.setSpecialGroup(Group.findByName(context, grantedAuthority.getAuthority()).getID());
+                }
+                context.setCurrentUser(EPerson.findByEmail(context, authentication.getName()));
             }
 
             return context;
+        } catch (SQLException | AuthorizeException e) {
+            throw new RuntimeException(e);
         }
-        catch (SQLException e)
-        {
-            if ((context != null) && (context.isValid()))
-            {
-                context.abort();
-            }
-            throw new ContextException("Could not create context, SQLException. Message: " + e, e);
-        }
+
+//        Context context = null;
+//
+//        try
+//        {
+//            context = new Context();
+//            context.getDBConnection().setAutoCommit(false); // Disable autocommit.
+//
+//            if (person != null)
+//            {
+//                context.setCurrentUser(person);
+//            }
+//
+//            return context;
+//        }
+//        catch (SQLException e)
+//        {
+//            if ((context != null) && (context.isValid()))
+//            {
+//                context.abort();
+//            }
+//            throw new ContextException("Could not create context, SQLException. Message: " + e, e);
+//        }
     }
 
     /**
