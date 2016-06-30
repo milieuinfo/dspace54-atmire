@@ -38,6 +38,18 @@
 
    <form name="traditional">
      <page number="1">
+
+       <field>
+         <dc-schema>vlaanderen</dc-schema>
+         <dc-element>identifier</dc-element>
+         <dc-qualifier></dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Vlaanderen Identifier</label>
+         <input-type>onebox</input-type>
+         <hint>Enter vlaanderen identifier</hint>
+         <required></required>
+       </field>
+
        <field>
          <dc-schema>dc</dc-schema>
          <dc-element>contributor</dc-element>
