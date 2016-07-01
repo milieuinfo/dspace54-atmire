@@ -606,6 +606,28 @@ public abstract class DSpaceObject
         return valueArray;
     }
 
+    public Metadatum[] getMetadataShallow(String schema, String element, String qualifier,
+                                          String lang)
+    {
+
+        // Build up list of matching values
+        List<Metadatum> values = new ArrayList<Metadatum>();
+        for (Metadatum dcv : getMetadata())
+        {
+            if (match(schema, element, qualifier, lang, dcv))
+            {
+                // We will return a copy of the object in case it is altered
+               values.add(dcv);
+            }
+        }
+
+        // Create an array of matching values
+        Metadatum[] valueArray = new Metadatum[values.size()];
+        valueArray = (Metadatum[]) values.toArray(valueArray);
+
+        return valueArray;
+    }
+
     /**
      * Retrieve metadata field values from a given metadata string
      * of the form <schema prefix>.<element>[.<qualifier>|.*]
