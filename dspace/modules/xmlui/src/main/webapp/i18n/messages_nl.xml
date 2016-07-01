@@ -2480,4 +2480,8 @@
         <message key="xmlui.dri2xhtml.METS-1.0.item-replaces">Vervangt</message>
 
 
+    <message key="xmlui.ChoiceLookupTransformer.field.vlaanderen_identifier.title">Kies een identifier</message>
+    <message key="xmlui.ChoiceLookupTransformer.field.vlaanderen_identifier.help">Geef een nieuwe identifier in</message>
+
+
 </catalogue>
