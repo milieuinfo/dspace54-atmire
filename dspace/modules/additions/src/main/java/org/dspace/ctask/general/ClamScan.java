@@ -9,13 +9,17 @@ package org.dspace.ctask.general;
 // above package assignment temporary pending better aysnch release process
 // package org.dspace.ctask.integrity;
 
+import com.atmire.utils.MetadataUtils;
 import org.apache.log4j.Logger;
+import org.apache.log4j.helpers.ISO8601DateFormat;
 import org.dspace.authorize.AuthorizeException;
+import org.dspace.authorize.AuthorizeManager;
 import org.dspace.content.Bitstream;
 import org.dspace.content.Bundle;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
 import org.dspace.core.ConfigurationManager;
+import org.dspace.core.Context;
 import org.dspace.curate.AbstractCurationTask;
 import org.dspace.curate.Curator;
 import org.dspace.curate.Suspendable;
@@ -27,8 +31,8 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.DateFormat;
+import java.util.*;
 
 /**  ClamScan.java
  *
@@ -55,28 +59,36 @@ public class ClamScan extends AbstractCurationTask
     private static final String CONNECT_FAIL_MESSAGE = "Unable to connect to virus service - check setup";
     private static final String SCAN_FAIL_MESSAGE = "Error encountered using virus service - check setup";
     private static final String NEW_ITEM_HANDLE = "in workflow";
+    private static final int FILE_NOT_FOUND = 10;
 
-    private static Logger log = Logger.getLogger(ClamScan.class);
-    
-    private static String host = null;
-    private static int  port = 0;
-    private static int timeout = 0;
-    private static boolean failfast = true;
-    
+    private static final Logger log = Logger.getLogger(ClamScan.class);
+
     private int status = Curator.CURATE_UNSET;
     private List<String> results = null;
 
     private Socket socket = null;
     private DataOutputStream dataOutputStream = null;
 
+    public static String getHost() {
+        return ConfigurationManager.getProperty(PLUGIN_PREFIX, "service.host");
+    }
+
+    public static int getPort() {
+        return ConfigurationManager.getIntProperty(PLUGIN_PREFIX, "service.port");
+    }
+
+    public static int getTimeout() {
+        return ConfigurationManager.getIntProperty(PLUGIN_PREFIX, "socket.timeout");
+    }
+
+    public static boolean isFailfast() {
+        return ConfigurationManager.getBooleanProperty(PLUGIN_PREFIX, "scan.failfast");
+    }
+
     @Override
     public void init(Curator curator, String taskId) throws IOException
     {
         super.init(curator, taskId);
-        host = ConfigurationManager.getProperty(PLUGIN_PREFIX, "service.host");
-        port = ConfigurationManager.getIntProperty(PLUGIN_PREFIX, "service.port");
-        timeout = ConfigurationManager.getIntProperty(PLUGIN_PREFIX, "socket.timeout");
-        failfast = ConfigurationManager.getBooleanProperty(PLUGIN_PREFIX, "scan.failfast");
     }
 
     @Override
@@ -102,33 +114,45 @@ public class ClamScan extends AbstractCurationTask
             
             try
             {
+                String itemHandle = getItemHandle(item);
                 Bundle bundle = item.getBundles("ORIGINAL")[0];
                 results = new ArrayList<String>();
-                for (Bitstream bitstream : bundle.getBitstreams())
-                {
-                    InputStream inputstream = bitstream.retrieve();
-                    logDebugMessage("Scanning " + bitstream.getName() + " . . . ");
-                    int bstatus = scan(bitstream, inputstream, getItemHandle(item));
-                    inputstream.close();
-                    if (bstatus == Curator.CURATE_ERROR)
-                    {
-                        // no point going further - set result and error out
-                        setResult(SCAN_FAIL_MESSAGE);
-                        status = bstatus;
-                        break;  
+                Bitstream[] bitstreams = bundle.getBitstreams();
+                boolean breakBitstreamIteration = false;
+                for (int i = 0; i < bitstreams.length && !breakBitstreamIteration; i++) {
+                    Bitstream bitstream = bitstreams[i];
+                    int bstatus = -10;
+                    InputStream inputstream = null;
+                    try {
+                        inputstream = bitstream.retrieve();
+                    } catch (IOException ioe) {
+                        bstatus = FILE_NOT_FOUND;
                     }
-                    if (failfast && bstatus == Curator.CURATE_FAIL)
-                    {
-                        status = bstatus;
-                        break;
+
+                    if (inputstream != null) {
+                        logDebugMessage("Scanning " + bitstream.getName() + " . . . ");
+
+                        bstatus = scan(bitstream, inputstream, itemHandle);
+                        inputstream.close();
+
+                        if (bstatus == Curator.CURATE_ERROR) {
+                            // no point going further - set result and error out
+                            setResult(SCAN_FAIL_MESSAGE);
+                            status = bstatus;
+                            breakBitstreamIteration = true;
+                        }
+                        if (isFailfast() && bstatus == Curator.CURATE_FAIL) {
+                            status = bstatus;
+                            breakBitstreamIteration = true;
+                        } else if (bstatus == Curator.CURATE_FAIL &&
+                                status == Curator.CURATE_SUCCESS) {
+                            status = bstatus;
+                        }
                     }
-                    else if (bstatus == Curator.CURATE_FAIL &&
-                             status == Curator.CURATE_SUCCESS)
-                    {
-                        status = bstatus;
-                    }
-                    
-                }             
+
+                    boolean inWorkflow = itemHandle.equals(NEW_ITEM_HANDLE);
+                    postScanOperations(bitstream, inWorkflow, bstatus);
+                }
             }
             catch (AuthorizeException authE)
             {
@@ -150,7 +174,104 @@ public class ClamScan extends AbstractCurationTask
         }
         return status;
     }
-    
+
+    private List<PostScanOperation> getPostScanOperations() {
+        PostScanOperation[] array = {
+                new UpdateMetadata(),
+                new RemoveAllPolicies()
+        };
+        return Arrays.asList(array);
+    }
+
+    protected void postScanOperations(Bitstream bitstream, boolean inWorkflow, int status) {
+        List<PostScanOperation> processors = getPostScanOperations();
+
+        Context context = null;
+        try {
+            context = new Context();
+            context.turnOffAuthorisationSystem();
+            for (PostScanOperation processor : processors) {
+                if(processor.isApplicable(inWorkflow, status)) {
+                    processor.process(bitstream, context, status);
+                }
+            }
+            bitstream.update();
+            context.complete();
+            context.restoreAuthSystemState();
+        } catch (SQLException | AuthorizeException | RuntimeException e) {
+            log.error("Could not update bitstream after the virus scan " + bitstream.getID(), e);
+        } finally {
+            if (context != null) {
+                context.abort();
+            }
+        }
+
+    }
+
+    protected interface PostScanOperation {
+        boolean isApplicable(boolean inWorkflow, int status);
+
+        void process(Bitstream bitstream, Context context, int status);
+    }
+
+    public static class RemoveAllPolicies implements PostScanOperation {
+        @Override
+        public boolean isApplicable(boolean inWorkflow, int status) {
+            return status == Curator.CURATE_FAIL && !inWorkflow;
+        }
+
+        @Override
+        public void process(Bitstream bitstream, Context context, int status) {
+            try {
+                AuthorizeManager.removeAllPolicies(context, bitstream);
+            } catch (SQLException e) {
+                throw new RuntimeException("Could not remove the policies");
+            }
+        }
+    }
+
+    public static class UpdateMetadata implements PostScanOperation {
+
+        protected String dateField = "bitstream.virus.lastScanDate";
+        protected String resultField = "bitstream.virus.lastScanResult";
+
+        protected DateFormat dateFormat = new ISO8601DateFormat();
+        protected Map<Integer, String> results;
+
+        public UpdateMetadata() {
+            this.results = new HashMap<>();
+            results.put(Curator.CURATE_SUCCESS, "CLEAN");
+            results.put(Curator.CURATE_FAIL, "VIRUS");
+            results.put(FILE_NOT_FOUND, "FILE NOT FOUND");
+            results.put(Curator.CURATE_ERROR, "ERROR");
+        }
+
+        @Override
+        public boolean isApplicable(boolean inWorkflow, int status) {
+            return true;
+        }
+
+        @Override
+        public void process(Bitstream bitstream, Context context, int status) {
+            MetadataUtils.clearMetadata(bitstream, dateField);
+            String date = getDate();
+            MetadataUtils.addMetadata(bitstream, dateField, date);
+
+            MetadataUtils.clearMetadata(bitstream, resultField);
+            String result = getResult(status);
+            MetadataUtils.addMetadata(bitstream, resultField, result);
+        }
+
+        private String getDate() {
+            return dateFormat.format(new Date());
+        }
+
+        private String getResult(int status) {
+            return results.get(status);
+        }
+    }
+
+
 
     /** openSession
      *
@@ -162,8 +283,8 @@ public class ClamScan extends AbstractCurationTask
         socket = new Socket();
         try
         {
-            logDebugMessage("Connecting to " + host + ":" + port);
-            socket.connect(new InetSocketAddress(host, port));
+            logDebugMessage("Connecting to " + getHost() + ":" + getPort());
+            socket.connect(new InetSocketAddress(getHost(), getPort()));
         }
         catch (IOException e)
         {
@@ -172,11 +293,11 @@ public class ClamScan extends AbstractCurationTask
         }
         try
         {
-            socket.setSoTimeout(timeout);
+            socket.setSoTimeout(getTimeout());
         }
         catch (SocketException e)
         {
-            log.error("Could not set socket timeout . . .  " + timeout + "ms", e);
+            log.error("Could not set socket timeout . . .  " + getTimeout() + "ms", e);
             throw (new IOException(e));
         }
         try
@@ -336,7 +457,7 @@ public class ClamScan extends AbstractCurationTask
                 count++;
             }
             sb.append(count).append(" virus(es) found. ")
-                            .append(" failfast: ").append(failfast);
+                            .append(" failfast: ").append(isFailfast());
         }
         else
         {

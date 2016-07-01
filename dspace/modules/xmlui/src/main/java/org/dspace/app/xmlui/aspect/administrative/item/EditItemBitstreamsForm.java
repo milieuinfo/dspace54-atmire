@@ -7,15 +7,14 @@
  */
 package org.dspace.app.xmlui.aspect.administrative.item;
 
+import com.atmire.utils.MetadataUtils;
 import org.apache.commons.lang.StringUtils;
 import org.dspace.app.xmlui.cocoon.AbstractDSpaceTransformer;
 import org.dspace.app.xmlui.wing.Message;
 import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.app.xmlui.wing.element.*;
 import org.dspace.authorize.AuthorizeManager;
-import org.dspace.content.Bitstream;
-import org.dspace.content.BitstreamFormat;
-import org.dspace.content.Bundle;
+import org.dspace.content.*;
 import org.dspace.content.Item;
 import org.dspace.core.Constants;
 
@@ -139,6 +138,11 @@ public class EditItemBitstreamsForm extends AbstractDSpaceTransformer {
                     shortName += " ... ";
                     shortName += name.substring(name.length() - 25, name.length());
                     name = shortName;
+                }
+
+                String lastScanResult = MetadataUtils.getMetadataFirstValue(bitstream, "bitstream.virus.lastScanResult");
+                if (StringUtils.isNotBlank(lastScanResult) && !"CLEAN".equals(lastScanResult)) {
+                    name += " (" + lastScanResult + ")";
                 }
 
                 String description = bitstream.getDescription();
