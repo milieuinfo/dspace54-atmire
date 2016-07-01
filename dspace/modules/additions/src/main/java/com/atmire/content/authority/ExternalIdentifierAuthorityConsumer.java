@@ -1,5 +1,6 @@
 package com.atmire.content.authority;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
@@ -21,25 +22,29 @@ public class ExternalIdentifierAuthorityConsumer implements Consumer
 
     public void consume(Context context, Event event) throws Exception
     {
-        System.out.println("consuming some events");
-
         DSpaceObject dso = event.getSubject(context);
         Item submittedItem = (Item) dso;
+        String identifierValue = submittedItem.getMetadata("vlaanderen.identifier");
+        if(StringUtils.isNotEmpty(identifierValue))
+        {
+            submittedItem.getMetadata("vlaanderen", "identifier", null, Item.ANY)[0].authority = identifierValue;
+            for(Metadatum md : submittedItem.getMetadata())
+            {
 
-        submittedItem.getMetadata("vlaanderen.identifier");
-
-
+            }
+            submittedItem.update();
+        }
     }
 
 
     /**
      * Commit here.
-     * @param ctx
+     * @param context
      * @throws Exception
      */
-    public void end(Context ctx) throws Exception
+    public void end(Context context) throws Exception
     {
-
+        context.commit();
     }
 
     public void finish(Context ctx) throws Exception
