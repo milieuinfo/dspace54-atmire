@@ -348,4 +348,22 @@ public class ClamScan extends AbstractCurationTask
             log.debug(message);
         }
     }
+
+    @Override
+    protected void setResult(String result) {
+        if(curator!=null) {
+            super.setResult(result);
+        }
+    }
+
+    @Override
+    protected void report(String message)
+    {
+        if(curator!=null) {
+            super.report(message);
+        }
+
+        log.warn(message);
+    }
+
 }
