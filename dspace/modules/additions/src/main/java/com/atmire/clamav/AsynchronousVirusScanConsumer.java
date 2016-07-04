@@ -24,6 +24,7 @@ public class AsynchronousVirusScanConsumer implements AsynchronousConsumer {
         try {
             if (objectId > 0 && objectType > 0) {
                 context = new Context();
+                context.turnOffAuthorisationSystem();
 
                 switch (objectType) {
                     case Constants.ITEM:
@@ -38,6 +39,7 @@ public class AsynchronousVirusScanConsumer implements AsynchronousConsumer {
                         }
                         break;
                 }
+                context.complete();
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
