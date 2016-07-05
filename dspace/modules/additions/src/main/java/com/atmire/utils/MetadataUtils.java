@@ -3,10 +3,21 @@ package com.atmire.utils;
 import com.atmire.utils.helper.MetadataFieldString;
 import com.atmire.utils.subclasses.MetadatumExtended;
 import org.apache.commons.lang.StringUtils;
-import org.dspace.content.*;
+import org.apache.log4j.Logger;
+import org.apache.log4j.helpers.ISO8601DateFormat;
+import org.dspace.content.Bitstream;
+import org.dspace.content.DSpaceObject;
+import org.dspace.content.Item;
+import org.dspace.content.Metadatum;
 import org.dspace.core.ConfigurationManager;
 
-import java.util.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by: Antoine Snyers (antoine at atmire dot com)
@@ -207,4 +218,31 @@ public class MetadataUtils {
         String doiMdField = ConfigurationManager.getProperty("elsevier-sciencedirect", "metadata.field.doi");
         return MetadataUtils.getMetadataFirstValueAnyLanguage(item, doiMdField);
     }
+
+    public static final String virusCheckDateField = "bitstream.virus.lastScanDate";
+    public static final String virusCheckResultField = "bitstream.virus.lastScanResult";
+
+    public static DateFormat getVirusCheckDateFormat() {
+        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss,SSS'Z'");
+    }
+
+    public static void updateVirusCheckDateField(Bitstream bitstream) {
+        clearMetadata(bitstream, virusCheckDateField);
+        String date = getVirusCheckDateFormat().format(new Date());
+        addMetadata(bitstream, virusCheckDateField, date);
+    }
+
+    public static Date getVirusCheckDate(Bitstream bitstream) {
+        String value = getMetadataFirstValue(bitstream, virusCheckDateField);
+        if (value != null) {
+            try {
+                return getVirusCheckDateFormat().parse(value);
+            } catch (ParseException e) {
+                log.error("bitstream " + bitstream.getID(), e);
+            }
+        }
+        return null;
+    }
+
+    private static Logger log = Logger.getLogger(MetadataUtils.class);
 }
