@@ -101,6 +101,7 @@ a.list-group-item{
 
 .box .content{
     font-size:20px;
+    line-height: 130px;
 }
 
 .box {
@@ -113,6 +114,11 @@ a.list-group-item{
     background-color:#4A766D;
 }
 
+span.contentwrapper{
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+}
 
 
 .content{
@@ -284,4 +290,12 @@ li.dropdown {
 p.ds-paragraph.relation-headers {
   padding: 10px;
   background: $navbar-inverse-link-color;
+}
+
+footer .iw2-wrapper.iw2-default-margin {
+  padding-left: 0;
+}
+
+span.header .iw2-wrapper.iw2-default-margin {
+  padding-right: 0;
 }

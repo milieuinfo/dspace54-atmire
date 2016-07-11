@@ -63,7 +63,7 @@ public class SimpleSearch extends AbstractSearch implements CacheableProcessingC
 //    private static final Message T_search_label =
 //            message("xmlui.discovery.SimpleSearch.search_label");
 
-    private static final Message T_go = message("xmlui.general.go");
+    private static final Message T_search = message("xmlui.general.search");
     private static final Message T_filter_label = message("xmlui.Discovery.SimpleSearch.filter_head");
     private static final Message T_filter_help = message("xmlui.Discovery.SimpleSearch.filter_help");
     private static final Message T_filter_current_filters = message("xmlui.Discovery.AbstractSearch.filters.controls.current-filters.head");
@@ -146,7 +146,7 @@ public class SimpleSearch extends AbstractSearch implements CacheableProcessingC
         Item searchBoxItem = searchList.addItem();
         Text text = searchBoxItem.addText("query");
         text.setValue(queryString);
-        searchBoxItem.addButton("submit", "search-icon").setValue(T_go);
+        searchBoxItem.addButton("submit", "search-icon").setValue(T_search);
         if(queryResults != null && StringUtils.isNotBlank(queryResults.getSpellCheckQuery()))
         {
             Item didYouMeanItem = searchList.addItem("did-you-mean", "didYouMean");
@@ -216,7 +216,7 @@ public class SimpleSearch extends AbstractSearch implements CacheableProcessingC
         }
 
 
-//        query.addPara(null, "button-list").addButton("submit").setValue(T_go);
+//        query.addPara(null, "button-list").addButton("submit").setValue(T_search);
 
         // Build the DRI Body
         //Division results = body.addDivision("results", "primary");
