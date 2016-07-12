@@ -6,7 +6,7 @@
 
     <dc-schema>
         <name>kbo</name>
-        <namespace>http://imjv.milieuinfo.be</namespace>
+        <namespace>http://kbo.milieuinfo.be</namespace>
     </dc-schema>
 
 
