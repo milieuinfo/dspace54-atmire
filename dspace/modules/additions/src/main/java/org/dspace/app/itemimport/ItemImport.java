@@ -627,29 +627,35 @@ public class ItemImport {
             Arrays.sort(dircontents, ComparatorUtils.naturalComparator());
 
             for (int i = 0; i < dircontents.length; i++) {
-                if (skipItems.containsKey(dircontents[i])) {
-                    System.out.println("Skipping import of " + dircontents[i]);
-                } else {
-                    Collection[] clist;
-                    if (directoryFileCollections) {
-                        String path = sourceDir + File.separatorChar + dircontents[i];
-                        try {
-                            Collection[] cols = processCollectionFile(c, path, "collections");
-                            if (cols == null) {
-                                System.out.println("No collections specified for item " + dircontents[i] + ". Skipping.");
+                String topLevelDir = dircontents[i];
+                String directory = sourceDir + File.separator + topLevelDir;
+                List<String> itemDirectories = collectItemDirectories(directory);
+                for (String itemDirectory : itemDirectories) {
+                    String directoryName = StringUtils.substringAfter(itemDirectory, File.separator);
+                    String relativePath = StringUtils.substringAfter(itemDirectory, sourceDir);
+                    if (skipItems.containsKey(directoryName)) {
+                        System.out.println("Skipping import of " + itemDirectory);
+                    } else {
+                        Collection[] clist;
+                        if (directoryFileCollections) {
+                            try {
+                                Collection[] cols = processCollectionFile(c, itemDirectory, "collections");
+                                if (cols == null) {
+                                    System.out.println("No collections specified for item " + directoryName + ". Skipping.");
+                                    continue;
+                                }
+                                clist = cols;
+                            } catch (IllegalArgumentException e) {
+                                System.out.println(e.getMessage() + " Skipping.");
                                 continue;
                             }
-                            clist = cols;
-                        } catch (IllegalArgumentException e) {
-                            System.out.println(e.getMessage() + " Skipping.");
-                            continue;
+                        } else {
+                            clist = mycollections;
                         }
-                    } else {
-                        clist = mycollections;
+                        result.add(addItem(c, mycollections, sourceDir, relativePath, mapOut, template));
+                        System.out.println(i + " " + itemDirectory);
+                        c.clearCache();
                     }
-                    result.add(addItem(c, mycollections, sourceDir, dircontents[i], mapOut, template));
-                    System.out.println(i + " " + dircontents[i]);
-                    c.clearCache();
                 }
             }
 
@@ -661,6 +667,24 @@ public class ItemImport {
         }
 
         return result;
+    }
+
+    private List<String> collectItemDirectories(String directory) {
+        List<String> itemDirectories = new ArrayList<>();
+        if (isItemDirectory(directory)) {
+            itemDirectories.add(directory);
+        } else {
+            String[] childDirectories = new File(directory).list(directoryFilter);
+            for (String childDirectory : childDirectories) {
+                List<String> childItemDirectories = collectItemDirectories(directory + File.separator + childDirectory);
+                itemDirectories.addAll(childItemDirectories);
+            }
+        }
+        return itemDirectories;
+    }
+
+    private boolean isItemDirectory(String directory) {
+        return new File(directory + File.separator + "dublin_core.xml").exists();
     }
 
     private void replaceItems(Context c, Collection[] mycollections,
