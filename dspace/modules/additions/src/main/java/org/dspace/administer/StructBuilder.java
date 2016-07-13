@@ -7,6 +7,7 @@
  */
 package org.dspace.administer;
 
+import com.atmire.administer.plugins.*;
 import java.io.*;
 import java.sql.*;
 import java.util.*;
@@ -19,6 +20,7 @@ import org.dspace.content.Collection;
 import org.dspace.content.*;
 import org.dspace.core.*;
 import org.dspace.eperson.*;
+import org.dspace.utils.*;
 import org.jdom.Element;
 import org.jdom.output.*;
 import org.w3c.dom.Document;
@@ -62,6 +64,8 @@ public class StructBuilder
     /** a hashtable to hold metadata for the community being worked on */
     private static Map<String, String> communityMap = new HashMap<String, String>();
     
+    private static Map<String, CollectionBuilderPlugin> collectionBuilderMap = new DSpace().getServiceManager().getServiceByName("collectionBuilderMap", Map.class);
+
     /**
      * Main method to be run from the command line to import a structure into
      * DSpace
@@ -510,6 +514,15 @@ public class StructBuilder
                 }
             }
             
+            for (String key : collectionBuilderMap.keySet()) {
+                NodeList nl = XPathAPI.selectNodeList(tn, key);
+                if (nl.getLength() > 0)
+                {
+                    CollectionBuilderPlugin collectionBuilderPlugin = collectionBuilderMap.get(key);
+                    collectionBuilderPlugin.updateCollection(context, collection, nl);
+                }
+            }
+
             collection.update();
             
             element.setAttribute("identifier", collection.getHandle());
