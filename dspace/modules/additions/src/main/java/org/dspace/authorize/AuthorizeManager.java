@@ -7,14 +7,18 @@
  */
 package org.dspace.authorize;
 
+import com.atmire.access.service.*;
 import java.sql.*;
 import java.util.*;
 import java.util.Date;
+import org.apache.log4j.*;
 import org.dspace.content.*;
 import org.dspace.content.Collection;
 import org.dspace.core.*;
 import org.dspace.eperson.*;
 import org.dspace.storage.rdbms.*;
+import org.dspace.submit.step.*;
+import org.dspace.utils.*;
 import org.dspace.workflow.*;
 
 /**
@@ -34,6 +38,9 @@ import org.dspace.workflow.*;
  */
 public class AuthorizeManager
 {
+
+    private static Logger log = Logger.getLogger(AuthorizeManager.class);
+
     /**
      * Utility method, checks that the current user of the given context can
      * perform all of the specified actions on the given object. An
@@ -339,6 +346,25 @@ public class AuthorizeManager
                 if ((rp.getGroupID() != -1)
                         && (Group.isMember(c, rp.getGroupID())))
                 {
+                    if (o instanceof Item) {
+                        List<MetadataBasedAuthorizationService> metadataBasedAuthorizationServiceList =
+                                new DSpace().getServiceManager().getServicesByType(MetadataBasedAuthorizationService.class);
+
+                        if(metadataBasedAuthorizationServiceList.size() > 0 && e != null) {
+                            MetadataBasedAuthorizationService metadataBasedAuthorizationService = metadataBasedAuthorizationServiceList.get(0);
+
+                            for (Group group : Group.allMemberGroups(c, e)) {
+                                if(!metadataBasedAuthorizationService.isAuthorized(c, e, group, (Item) o)) {
+                                    log.info(e.getEmail() + " is a member of group " + group.getName() + " but the group’s " +
+                                            "metadata based access control policies prohibit access");
+                                    return false;
+                                }
+                                log.debug(e.getEmail() + " is a member of group " + group.getName() + "  and all metadata " +
+                                        "based access control policies are met");
+                            }
+                        }
+                    }
+
                     // group was set, and eperson is a member
                     // of that group
                     return true;

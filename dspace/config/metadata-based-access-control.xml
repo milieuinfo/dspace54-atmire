@@ -3,12 +3,12 @@
 
         <exact-match-policy>
             <itemField>dba.vvo.nis</itemField>
-            <epersonField>acl.field1</epersonField>
+            <epersonField>eperson.acl.field1</epersonField>
         </exact-match-policy>
 
         <exact-match-policy>
             <itemField>dba.vvo.nis</itemField>
-            <epersonField>acl.field2</epersonField>
+            <epersonField>eperson.acl.field2</epersonField>
         </exact-match-policy>
 
     </group-policy>
@@ -17,12 +17,12 @@
 
         <exact-match-policy>
             <itemField>omv.vvo.nis</itemField>
-            <epersonField>acl.field1</epersonField>
+            <epersonField>eperson.acl.field1</epersonField>
         </exact-match-policy>
 
         <exact-match-policy>
             <itemField>omv.vvo.nis</itemField>
-            <epersonField>acl.field2</epersonField>
+            <epersonField>eperson.acl.field2</epersonField>
         </exact-match-policy>
 
     </group-policy>
