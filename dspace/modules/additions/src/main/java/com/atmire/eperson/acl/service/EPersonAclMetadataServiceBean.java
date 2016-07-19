@@ -32,6 +32,11 @@ public class EPersonAclMetadataServiceBean implements EPersonAclMetadataService 
     }
 
     @Override
+    public void removeAllFields(Context context, EPerson person) throws SQLException, AuthorizeException {
+        removeField(context, person, Item.ANY);
+    }
+
+    @Override
     public boolean fieldContainsSchemaAndElement(String fieldToUpdate) {
         return fieldToUpdate.contains(schema + "." + element);
     }

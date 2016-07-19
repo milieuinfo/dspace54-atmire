@@ -15,5 +15,7 @@ public interface EPersonAclMetadataService {
 
     void removeField(Context context,EPerson person, String qualifier) throws SQLException, AuthorizeException;
 
+    void removeAllFields(Context context,EPerson person) throws SQLException, AuthorizeException;
+
     boolean fieldContainsSchemaAndElement(String fieldToUpdate);
 }
