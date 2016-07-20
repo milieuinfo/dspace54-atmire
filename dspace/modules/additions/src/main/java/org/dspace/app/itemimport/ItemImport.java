@@ -92,9 +92,18 @@ public class ItemImport {
 
     private static boolean template = false;
 
+    private static boolean keepResults = false;
+
     private static PrintWriter mapOut = null;
 
     private static final String tempWorkDir = ConfigurationManager.getProperty("org.dspace.app.batchitemimport.work.dir");
+
+    private ItemImport() {
+    }
+
+    public ItemImport(boolean keepResult) {
+        keepResults = keepResult;
+    }
 
     static {
         //Ensure tempWorkDir exists
@@ -652,7 +661,12 @@ public class ItemImport {
                         } else {
                             clist = mycollections;
                         }
-                        result.add(addItem(c, mycollections, sourceDir, relativePath, mapOut, template));
+                        Item item = addItem(c, mycollections, sourceDir, relativePath, mapOut, template);
+
+                        if(keepResults){
+                            result.add(item);
+                        }
+
                         System.out.println(i + " " + itemDirectory);
                         c.clearCache();
                     }
