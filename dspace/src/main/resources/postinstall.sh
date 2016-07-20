@@ -73,6 +73,7 @@ mv ${tomcat_apps_dir}/dspace ${tomcat_apps_dir}/dspace_install
 
 # Vermits er bij een ansible install alles wordt weg gesmeten moeten we er vanuit gaan dat er een clean install is
 echo "Installeer toepassing"
+export ANT_OPTS="-Dfile.encoding=UTF-8"
 cd ${tomcat_apps_dir}/dspace_install && ant -v init_installation init_configs install_code update_webapps clean_backups
 
 
