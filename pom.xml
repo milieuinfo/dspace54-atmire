@@ -5,7 +5,7 @@
     <groupId>org.dspace</groupId>
     <artifactId>dspace-parent</artifactId>
     <packaging>pom</packaging>
-    <version>5.4</version>
+    <version>5.4.0-SNAPSHOT</version>
     <name>DSpace Parent Project</name>
     <description>
         DSpace open source software is a turnkey institutional repository application.
@@ -18,12 +18,14 @@
     </organization>
 
     <!-- brings the sonatype snapshot repository and signing requirement on board -->
+    <!--
     <parent>
         <groupId>org.sonatype.oss</groupId>
         <artifactId>oss-parent</artifactId>
         <version>9</version>
         <relativePath/>
     </parent>
+    -->
 
     <prerequisites>
         <maven>3.0</maven>
@@ -804,14 +806,14 @@
         <!--
            The 'release' profile is used by the 'maven-release-plugin' (see above)
            to actually perform a DSpace software release to Maven central.
-         -->
+         --><!-- 
         <profile>
             <id>release</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
             </activation>
-            <!-- Activate all modules *except* for the 'dspace' module,
-                 as it does not include any Java source code to release. -->
+            Activate all modules *except* for the 'dspace' module,
+                 as it does not include any Java source code to release. 
             <modules>
                 <module>dspace-api</module>
                 <module>dspace-jspui</module>
@@ -827,8 +829,27 @@
                 <module>dspace-xmlui</module>
             </modules>
         </profile>
-
+-->
     </profiles>
+
+    <distributionManagement>
+        <repository>
+            <id>release</id>
+            <url>${acd.repository.release.url}</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshot</id>
+            <url>${acd.repository.snapshot.url}</url>
+        </snapshotRepository>
+    </distributionManagement>
+    <issueManagement>
+        <system>${acd.issueManagement.system}</system>
+        <url>${acd.issueManagement.url}</url>
+    </issueManagement>
+    <ciManagement>
+        <system>${acd.ciManagement.system}</system>
+        <url>${acd.ciManagement.url}</url>
+    </ciManagement>
 
     <!--
        Dependency management provides a means to control which
@@ -1437,11 +1458,12 @@
             </comments>
         </license>
     </licenses>
-
+    <!--
     <issueManagement>
         <system>JIRA</system>
         <url>https://jira.duraspace.org/browse/DS</url>
     </issueManagement>
+    -->
 
     <mailingLists>
         <mailingList>
@@ -1725,22 +1747,21 @@
         on release to deploy release versions to the repository by the
         release manager.
     -->
-    <distributionManagement>
+    <!--<distributionManagement>-->
         <!-- further distribution management is found upstream in the sonatype parent -->
-    </distributionManagement>
-
+    <!--</distributionManagement>-->
+    <!--
     <repositories>
         <repository>
             <id>sonatype-releases</id>
             <name>Sonatype Releases Repository</name>
             <url>https://oss.sonatype.org/content/repositories/releases/</url>
         </repository>
-        <!--Nor sonatype nor maven central appear to still contain org.restlet.jee:org.restlet.ext.servlet:jar:2.1.1 any more. No problem if it is in your local repo. Build fail if it isn't-->
         <repository>
             <id>restlet</id>
             <name>restlet</name>
             <url>http://maven.restlet.org</url>
         </repository>
     </repositories>
-
+    -->
 </project>
