@@ -100,7 +100,7 @@ public class BitstreamResource extends Resource
 
         try
         {
-            context = createContext(getUser(headers));
+            context = createContext();
             org.dspace.content.Bitstream dspaceBitstream = findBitstream(context, bitstreamId, org.dspace.core.Constants.READ);
 
             writeStats(dspaceBitstream, UsageEvent.Action.VIEW, user_ip, user_agent, xforwardedfor, headers,
@@ -160,7 +160,7 @@ public class BitstreamResource extends Resource
 
         try
         {
-            context = createContext(getUser(headers));
+            context = createContext();
             org.dspace.content.Bitstream dspaceBitstream = findBitstream(context, bitstreamId, org.dspace.core.Constants.READ);
             AuthorizeManager.getPolicies(context, dspaceBitstream);
 
@@ -234,7 +234,7 @@ public class BitstreamResource extends Resource
 
         try
         {
-            context = createContext(getUser(headers));
+            context = createContext();
             org.dspace.content.Bitstream[] dspaceBitstreams = org.dspace.content.Bitstream.findAll(context);
 
             if (!((limit != null) && (limit >= 0) && (offset != null) && (offset >= 0)))
@@ -322,7 +322,7 @@ public class BitstreamResource extends Resource
 
         try
         {
-            context = createContext(getUser(headers));
+            context = createContext();
             org.dspace.content.Bitstream dspaceBitstream = findBitstream(context, bitstreamId, org.dspace.core.Constants.READ);
 
             writeStats(dspaceBitstream, UsageEvent.Action.VIEW, user_ip, user_agent, xforwardedfor, headers,
@@ -400,7 +400,7 @@ public class BitstreamResource extends Resource
 
         try
         {
-            context = createContext(getUser(headers));
+            context = createContext();
             org.dspace.content.Bitstream dspaceBitstream = findBitstream(context, bitstreamId, org.dspace.core.Constants.WRITE);
 
             writeStats(dspaceBitstream, UsageEvent.Action.UPDATE, user_ip, user_agent, xforwardedfor, headers,
@@ -479,7 +479,7 @@ public class BitstreamResource extends Resource
 
         try
         {
-            context = createContext(getUser(headers));
+            context = createContext();
             org.dspace.content.Bitstream dspaceBitstream = findBitstream(context, bitstreamId, org.dspace.core.Constants.WRITE);
 
             writeStats(dspaceBitstream, UsageEvent.Action.UPDATE, user_ip, user_agent, xforwardedfor,
@@ -590,7 +590,7 @@ public class BitstreamResource extends Resource
 
         try
         {
-            context = createContext(getUser(headers));
+            context = createContext();
             org.dspace.content.Bitstream dspaceBitstream = findBitstream(context, bitstreamId, org.dspace.core.Constants.WRITE);
 
             writeStats(dspaceBitstream, UsageEvent.Action.UPDATE, user_ip, user_agent, xforwardedfor,
@@ -681,7 +681,7 @@ public class BitstreamResource extends Resource
 
         try
         {
-            context = createContext(getUser(headers));
+            context = createContext();
             org.dspace.content.Bitstream dspaceBitstream = findBitstream(context, bitstreamId, org.dspace.core.Constants.DELETE);
 
             writeStats(dspaceBitstream, UsageEvent.Action.DELETE, user_ip, user_agent, xforwardedfor,
@@ -756,7 +756,7 @@ public class BitstreamResource extends Resource
 
         try
         {
-            context = createContext(getUser(headers));
+            context = createContext();
             org.dspace.content.Bitstream dspaceBitstream = findBitstream(context, bitstreamId, org.dspace.core.Constants.WRITE);
 
             writeStats(dspaceBitstream, UsageEvent.Action.UPDATE, user_ip, user_agent, xforwardedfor, headers,
