@@ -354,14 +354,16 @@ public class AuthorizeManager
                             MetadataBasedAuthorizationService metadataBasedAuthorizationService = metadataBasedAuthorizationServiceList.get(0);
 
                             for (Group group : Group.allMemberGroups(c, e)) {
-                                if(!metadataBasedAuthorizationService.isAuthorized(c, e, group, (Item) o)) {
-                                    log.info(e.getEmail() + " is a member of group " + group.getName() + " but the group’s " +
-                                            "metadata based access control policies prohibit access");
-                                    return false;
+                                if(metadataBasedAuthorizationService.isAuthorized(c, e, group, (Item) o)) {
+                                    log.debug(e.getEmail() + " is a member of group " + group.getName() + "  and all metadata " +
+                                            "based access control policies are met");
+                                    return true;
                                 }
-                                log.debug(e.getEmail() + " is a member of group " + group.getName() + "  and all metadata " +
-                                        "based access control policies are met");
+                                log.info(e.getEmail() + " is a member of group " + group.getName() + " but the group’s " +
+                                        "metadata based access control policies prohibit access");
+
                             }
+                            return false;
                         }
                     }
 
