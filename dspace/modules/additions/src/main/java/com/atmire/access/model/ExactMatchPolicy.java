@@ -107,4 +107,18 @@ public class ExactMatchPolicy implements Policy {
         }
         return null;
     }
+
+    public String getSolrQueryCriteria(EPerson ePerson){
+
+        Metadatum[] metadata =getEpersonMetadata(ePerson);
+        String solrQueryCriteria="";
+
+        for(Metadatum metadatum : metadata){
+            if(StringUtils.isNotBlank(solrQueryCriteria)){
+                solrQueryCriteria+=" OR ";
+            }
+            solrQueryCriteria+= getSolrIndexField()+":"+metadatum.value;
+        }
+        return solrQueryCriteria;
+    }
 }

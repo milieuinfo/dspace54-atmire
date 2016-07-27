@@ -14,4 +14,6 @@ public interface Policy {
     String getSolrIndexField();
 
     String getSolrIndexValue(Context context, DSpaceObject dSpaceObject);
+
+    String getSolrQueryCriteria(EPerson ePerson);
 }

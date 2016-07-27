@@ -7,6 +7,9 @@
  */
 package org.dspace.discovery;
 
+import com.atmire.access.model.Policy;
+import com.atmire.access.service.MetadataBasedAuthorizationService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.common.SolrInputDocument;
@@ -18,6 +21,7 @@ import org.dspace.core.Context;
 import org.dspace.core.LogManager;
 import org.dspace.eperson.EPerson;
 import org.dspace.eperson.Group;
+import org.dspace.utils.DSpace;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -71,11 +75,38 @@ public class SolrServiceResourceRestrictionPlugin implements SolrServiceIndexPlu
 
                 //Retrieve all the groups the current user is a member of !
                 Set<Integer> groupIds = Group.allMemberGroupIDs(context, currentUser);
-                for (Integer groupId : groupIds) {
-                    resourceQuery.append(" OR g").append(groupId);
+
+                List<MetadataBasedAuthorizationService> metadataBasedAuthorizationServiceList =
+                        new DSpace().getServiceManager().getServicesByType(MetadataBasedAuthorizationService.class);
+                StringBuilder policyQuery = null;
+
+                if (metadataBasedAuthorizationServiceList.size() > 0 ) {
+                    MetadataBasedAuthorizationService metadataBasedAuthorizationService = metadataBasedAuthorizationServiceList.get(0);
+
+                    policyQuery = new StringBuilder();
+                    for (Integer groupId : groupIds) {
+                        resourceQuery.append(" OR g").append(groupId);
+                        Group group = Group.find(context, groupId);
+
+                        List<Policy> policiesFromGroup =retrievePoliciesFromGroupAndMembers(metadataBasedAuthorizationService,group);
+                        for(Policy policy:policiesFromGroup){
+                            if(StringUtils.isNotBlank(policyQuery)){
+                                policyQuery.append(" OR ");
+                            }
+                            policyQuery.append(" (read:g"+group.getID()+" AND "+policy.getSolrQueryCriteria(currentUser)+")");
+                        }
+                    }
+                }else{
+                    for (Integer groupId : groupIds) {
+                        resourceQuery.append(" OR g").append(groupId);
+                    }
                 }
 
                 resourceQuery.append(")");
+
+                if(StringUtils.isNotBlank(policyQuery)){
+                    resourceQuery.append(" AND ("+ policyQuery.toString() +")");
+                }
 
                 solrQuery.addFilterQuery(resourceQuery.toString());
             }
@@ -83,4 +114,15 @@ public class SolrServiceResourceRestrictionPlugin implements SolrServiceIndexPlu
             log.error(LogManager.getHeader(context, "Error while adding resource policy information to query", ""), e);
         }
     }
+
+    private List<Policy> retrievePoliciesFromGroupAndMembers(MetadataBasedAuthorizationService metadataBasedAuthorizationService, Group group) throws SQLException {
+        Group[] memberGroups = group.getMemberGroups();
+
+        List<Policy> policiesFromGroup =metadataBasedAuthorizationService.retrievePoliciesForGroup(group);
+        for(Group memberGroup: memberGroups){
+            policiesFromGroup.addAll(metadataBasedAuthorizationService.retrievePoliciesForGroup(memberGroup));
+        }
+        return policiesFromGroup;
+    }
+
 }
