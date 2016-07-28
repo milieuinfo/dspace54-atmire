@@ -19,6 +19,7 @@ sed -i \
     -e "s/%db_password%/${db_password}/g" \
     -e "s/%db_name%/${db_name}/g" \
     -e "s/%db_port%/${db_port}/g" \
+    -e "s/%db_host%/${db_host}/g" \
     -e "s/%mailrelay_host%/${mailrelay_host}/g" \
     -e "s/%mailrelay_port%/${mailrelay_port}/g" \
     -e "s/%dspace.consumer.token%/${dspace_consumer_token}/g" \
