@@ -24,6 +24,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,9 +81,10 @@ public class SearchResource extends Resource {
 
         SearchService searchService = SearchUtils.getSearchService();
 
-        org.dspace.core.Context context = new org.dspace.core.Context();
-
-        context.turnOffAuthorisationSystem();
+        org.dspace.core.Context context = createContext();
+        if(context.getCurrentUser()==null){
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
 
         DiscoverResult result = searchService.search(context, dq);
 
