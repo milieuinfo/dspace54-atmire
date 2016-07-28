@@ -239,6 +239,17 @@
             <map:parameter name="outputBufferSize" value="8192"/>
             <map:parameter name="expires" value="now"/>
 
+            <!-- Additional matcher to catch the required authentication aspect in the bitstream pipeline-->
+            <map:match pattern="bitstream/**">
+                <map:select type="AuthenticatedSelector">
+                <map:when test="eperson">
+                    <!-- User is authenticated so continue, don't load the aspects to force redundant authentication -->
+                </map:when>
+                    <map:otherwise>
+                        <map:mount check-reload="" src="aspects/aspects.xmap" uri-prefix=""/>
+                    </map:otherwise>
+                </map:select>
+            </map:match>
 
             <!--
                     Bitstreams for items that have a handle assigned. If the
