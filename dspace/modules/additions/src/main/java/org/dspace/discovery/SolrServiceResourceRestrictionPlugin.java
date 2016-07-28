@@ -93,7 +93,13 @@ public class SolrServiceResourceRestrictionPlugin implements SolrServiceIndexPlu
                             if(StringUtils.isNotBlank(policyQuery)){
                                 policyQuery.append(" OR ");
                             }
-                            policyQuery.append(" (read:g"+group.getID()+" AND "+policy.getSolrQueryCriteria(currentUser)+")");
+                            String solrQueryCriteria = policy.getSolrQueryCriteria(currentUser);
+
+                            policyQuery.append(" (read:g"+group.getID());
+                            if(StringUtils.isNotBlank(solrQueryCriteria)){
+                                policyQuery.append(" AND "+ solrQueryCriteria );
+                            }
+                            policyQuery.append(")");
                         }
                     }
                 }else{
