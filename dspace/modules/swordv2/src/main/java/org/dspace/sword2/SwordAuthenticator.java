@@ -7,6 +7,7 @@
  */
 package org.dspace.sword2;
 
+import com.atmire.dspace.core.TransactionalContext;
 import org.dspace.core.Context;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.LogManager;
@@ -67,12 +68,12 @@ public class SwordAuthenticator
      *
      * @throws org.dspace.sword2.DSpaceSwordException
      */
-    private Context constructContext()
+    private TransactionalContext constructContext()
             throws DSpaceSwordException
     {
         try
         {
-            Context context = new Context();
+            TransactionalContext context = new TransactionalContext();
             // Set the session ID and IP address
             context.setExtraLogInfo("session_id=0");
 
@@ -99,7 +100,7 @@ public class SwordAuthenticator
     public SwordContext authenticate(AuthCredentials auth)
             throws DSpaceSwordException, SwordError, SwordAuthException
     {
-        Context context = this.constructContext();
+        TransactionalContext context = this.constructContext();
         SwordContext sc = null;
         try
         {
@@ -153,7 +154,7 @@ public class SwordAuthenticator
      * @throws SwordError
      * @throws DSpaceSwordException
      */
-    private SwordContext authenticate(Context context, AuthCredentials auth)
+    private SwordContext authenticate(TransactionalContext context, AuthCredentials auth)
             throws SwordAuthException, SwordError, DSpaceSwordException
     {
         String obo = auth.getOnBehalfOf();
@@ -221,7 +222,7 @@ public class SwordAuthenticator
                     if (epObo != null)
                     {
                         sc.setOnBehalfOf(epObo);
-                        Context oboContext = this.constructContext();
+                        TransactionalContext oboContext = this.constructContext();
                         oboContext.setCurrentUser(epObo);
                         // Set any special groups - invoke the authentication mgr.
                         int[] groupIDs = AuthenticationManager.getSpecialGroups(oboContext, null);

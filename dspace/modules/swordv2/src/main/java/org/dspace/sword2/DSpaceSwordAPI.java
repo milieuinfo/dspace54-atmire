@@ -8,6 +8,7 @@
 package org.dspace.sword2;
 
 
+import com.atmire.dspace.core.TransactionalContext;
 import org.apache.log4j.Logger;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.content.Bitstream;
@@ -56,7 +57,7 @@ public class DSpaceSwordAPI
         try
         {
             SwordContext sc = new SwordContext();
-            Context context = new Context();
+            TransactionalContext context = new TransactionalContext();
             sc.setContext(context);
             return sc;
         }

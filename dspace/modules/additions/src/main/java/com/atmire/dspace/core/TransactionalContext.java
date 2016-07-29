@@ -53,11 +53,11 @@ public class TransactionalContext extends Context {
         if (wasAbortInvoked()) {
             log.debug("Aborted, not proceeding with the real commit");
         } else {
-            log.debug("Not aborted, proceeding with the real commit");
+            log.info("Not aborted, proceeding with the real commit");
             long t0 = System.currentTimeMillis();
             super.commit();
             long t1 = System.currentTimeMillis();
-            log.debug("Execution time: " + executionTimeFormatted(t0, t1));
+            log.info("Commit completed, execution time: ... " + executionTimeFormatted(t0, t1));
         }
     }
 
@@ -65,7 +65,7 @@ public class TransactionalContext extends Context {
         log.info("Number of completes:" + numberComplete);
         log.debug(toString());
         if (wasAbortInvoked()) {
-            log.debug("Aborted, not proceeding with the real complete");
+            log.info("Aborted, not proceeding with the real complete");
         } else {
             log.debug("Not aborted, proceeding with the real complete");
             long t0 = System.currentTimeMillis();
@@ -73,7 +73,7 @@ public class TransactionalContext extends Context {
             super.complete();
             doRealCommit = false;
             long t1 = System.currentTimeMillis();
-            log.debug("Execution time: " + executionTimeFormatted(t0, t1));
+            log.info("Complete completed, execution time: ... " + executionTimeFormatted(t0, t1));
         }
     }
 
@@ -84,7 +84,7 @@ public class TransactionalContext extends Context {
         long t0 = System.currentTimeMillis();
         super.abort();
         long t1 = System.currentTimeMillis();
-        log.debug("Execution time: " + executionTimeFormatted(t0, t1));
+        log.info("Abort completed, execution time: ... " + executionTimeFormatted(t0, t1));
     }
 
     public boolean wasCommitInvoked() {

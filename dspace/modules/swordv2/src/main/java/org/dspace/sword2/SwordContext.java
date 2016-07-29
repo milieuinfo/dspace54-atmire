@@ -9,6 +9,7 @@ package org.dspace.sword2;
 
 import java.sql.SQLException;
 
+import com.atmire.dspace.core.TransactionalContext;
 import org.dspace.core.Context;
 import org.dspace.eperson.EPerson;
 
@@ -44,10 +45,10 @@ public class SwordContext
     private EPerson onBehalfOf = null;
 
     /** The primary context, representing the on behalf of user if exists, and the authenticated user if not */
-    private Context context;
+    private TransactionalContext context;
 
     /** the context for the authenticated user, which may not, therefore, be the primary context also */
-    private Context authenticatorContext;
+    private TransactionalContext authenticatorContext;
 
     /**
      * @return	the authenticated user
@@ -91,7 +92,7 @@ public class SwordContext
         return context;
     }
 
-    public void setContext(Context context)
+    public void setContext(TransactionalContext context)
     {
         this.context = context;
     }
@@ -105,12 +106,12 @@ public class SwordContext
      *
      * on this class instead.
      */
-    public Context getAuthenticatorContext()
+    public TransactionalContext getAuthenticatorContext()
     {
         return authenticatorContext;
     }
 
-    public void setAuthenticatorContext(Context authenticatorContext)
+    public void setAuthenticatorContext(TransactionalContext authenticatorContext)
     {
         this.authenticatorContext = authenticatorContext;
     }
@@ -124,7 +125,7 @@ public class SwordContext
      * on this class instead.  If there is no on-behalf-of user, this
      * method will return null.
      */
-    public Context getOnBehalfOfContext()
+    public TransactionalContext getOnBehalfOfContext()
     {
         // return the obo context if this is an obo deposit, else return null
         if (this.onBehalfOf != null)
@@ -140,15 +141,18 @@ public class SwordContext
      */
     public void abort()
     {
-        // abort both contexts
-        if (context != null && context.isValid())
-        {
-            context.abort();
-        }
+        try {
 
-        if (authenticatorContext != null && authenticatorContext.isValid())
-        {
-            authenticatorContext.abort();
+            // abort both contexts
+            if (context != null && context.isValid()) {
+                context.realAbort();
+            }
+
+            if (authenticatorContext != null && authenticatorContext.isValid()) {
+                authenticatorContext.realAbort();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -169,14 +173,14 @@ public class SwordContext
             // commit the primary context
             if (context != null && context.isValid())
             {
-                context.commit();
+                context.realComplete();
             }
 
             // the secondary context is for filtering permissions by only, and is
             // never committed, so we abort here
             if (authenticatorContext != null && authenticatorContext.isValid())
             {
-                authenticatorContext.abort();
+                authenticatorContext.realAbort();
             }
         }
         catch (SQLException e)
