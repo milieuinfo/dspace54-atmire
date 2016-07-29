@@ -509,7 +509,7 @@
         <dependency>
             <groupId>org.dspace</groupId>
             <artifactId>dspace-xmlui-mirage2</artifactId>
-            <version>${project.version}</version>
+            <version>5.4</version>
             <type>war</type>
         </dependency>
     </dependencies>
