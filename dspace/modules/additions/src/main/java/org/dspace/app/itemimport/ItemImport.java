@@ -22,6 +22,7 @@ import org.apache.commons.cli.*;
 import org.apache.commons.collections.ComparatorUtils;
 import org.apache.commons.io.FileDeleteStrategy;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -1395,13 +1396,13 @@ public class ItemImport {
     private void processContentFileEntry(Context c, Item i, String path,
                                          String fileName, String bundleName, boolean primary) throws SQLException,
             IOException, AuthorizeException {
-        String fullpath = path + File.separatorChar + fileName;
+        String fullpath = FilenameUtils.concat(path, fileName);
+        fileName = fileName.substring(fileName.lastIndexOf(File.separator)+1);
 
         // get an input stream
         BufferedInputStream bis = new BufferedInputStream(new FileInputStream(
                 fullpath));
 
-        Bitstream bs = null;
         String newBundleName = bundleName;
 
         if (bundleName == null) {
@@ -1428,7 +1429,7 @@ public class ItemImport {
             }
 
             // now add the bitstream
-            bs = targetBundle.createBitstream(bis);
+            Bitstream bs = targetBundle.createBitstream(bis);
 
             bs.setName(fileName);
 
@@ -1468,7 +1469,6 @@ public class ItemImport {
         // TODO validate assetstore number
         // TODO make sure the bitstream is there
 
-        Bitstream bs = null;
         String newBundleName = bundleName;
 
         if (bundleName == null) {
@@ -1495,7 +1495,7 @@ public class ItemImport {
             }
 
             // now add the bitstream
-            bs = targetBundle.registerBitstream(assetstore, bitstreamPath);
+            Bitstream bs = targetBundle.registerBitstream(assetstore, bitstreamPath);
 
             // set the name to just the filename
             int iLastSlash = bitstreamPath.lastIndexOf('/');
