@@ -278,7 +278,8 @@
                 <dspace.hostname>dev2.atmire.com</dspace.hostname>
                 <dspace.baseUrl>https://${dspace.hostname}</dspace.baseUrl>
                 <dspace.url>${dspace.baseUrl}/dspace-${clientname}</dspace.url>
-                <sword.url>http://${dspace.hostname}/dspace-${clientname}-sword</sword.url>
+                <sword.url>${dspace.baseUrl}/dspace-${clientname}-sword</sword.url>
+                <http.sword.url>http://${dspace.hostname}/dspace-${clientname}-sword</http.sword.url>
                 <rest.base.url>${dspace.baseUrl}/dspace-lne54-rest</rest.base.url>
                 <rest.url.path>/dspace-lne54-rest/api</rest.url.path>
                 <rest.scheme>https</rest.scheme>
