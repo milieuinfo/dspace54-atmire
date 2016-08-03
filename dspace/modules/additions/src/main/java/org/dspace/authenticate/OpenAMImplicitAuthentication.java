@@ -31,7 +31,7 @@ public abstract class OpenAMImplicitAuthentication extends OpenAMAuthentication 
      * @param username
      *            Username, if available.  May be null.
      * @return in any case false
-     * @throws SQLException
+     * @throws java.sql.SQLException
      */
     @Override
     public boolean canSelfRegister(Context context, HttpServletRequest request, String username) throws SQLException {
@@ -47,7 +47,7 @@ public abstract class OpenAMImplicitAuthentication extends OpenAMAuthentication 
      *            HTTP request, in case it's needed. May be null.
      * @param eperson
      *            newly created EPerson record - email + information from the
-     * @throws SQLException
+     * @throws java.sql.SQLException
      */
     @Override
     public void initEPerson(Context context, HttpServletRequest request, EPerson eperson) throws SQLException {
@@ -64,7 +64,7 @@ public abstract class OpenAMImplicitAuthentication extends OpenAMAuthentication 
      * @param username
      *            Username, if available.  May be null.
      * @return in any case false
-     * @throws SQLException
+     * @throws java.sql.SQLException
      */
     @Override
     public boolean allowSetPassword(Context context, HttpServletRequest request, String username) throws SQLException {
@@ -93,7 +93,7 @@ public abstract class OpenAMImplicitAuthentication extends OpenAMAuthentication 
      *
      * @return an empty array
      *
-     * @throws SQLException
+     * @throws java.sql.SQLException
      */
     @Override
     public int[] getSpecialGroups(Context context, HttpServletRequest request) throws SQLException {

@@ -9,9 +9,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import be.milieuinfo.core.domain.OrganisatieCode;
-import be.milieuinfo.security.openam.api.OpenAMUserdetails;
-
 /**
  * Bypass openam authentication (put it as first in the authentication chain and
  * you will login automatically as admin)

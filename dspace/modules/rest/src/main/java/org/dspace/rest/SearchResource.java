@@ -52,6 +52,8 @@ public class SearchResource extends Resource {
 
             @ApiParam( value = "The maximum amount of items shown.", required = false)
             @QueryParam("limit") int limit,
+            @ApiParam( value = "The amount of items to skip.", required = false)
+            @QueryParam("offset") int offset,
             @Context HttpHeaders headers, @Context HttpServletRequest request)
             throws WebApplicationException, Exception {
 
@@ -77,6 +79,8 @@ public class SearchResource extends Resource {
         }else{
             dq.setMaxResults(limit);
         }
+
+        dq.setStart(offset);
 
         SearchService searchService = SearchUtils.getSearchService();
 
