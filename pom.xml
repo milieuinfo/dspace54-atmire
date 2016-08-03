@@ -271,88 +271,6 @@
             </properties>
         </profile>
 
-        <profile>
-            <id>atmire-dev</id>
-            <properties>
-                <clientname>lne54</clientname>
-                <tomcat.port>12190</tomcat.port>
-                <dspace.dir>/home/${clientname}/dspace</dspace.dir>
-                <dspace.name>DSpace at lne</dspace.name>
-                <dspace.hostname>dev.atmire.com</dspace.hostname>
-                <dspace.baseUrl>https://${dspace.hostname}</dspace.baseUrl>
-                <dspace.url>${dspace.baseUrl}/dspace-${clientname}</dspace.url>
-                <sword.url>${dspace.baseUrl}/dspace-${clientname}-sword</sword.url>
-                <rest.base.url>${dspace.baseUrl}/dspace-lne54-rest</rest.base.url>
-                <rest.url.path>/dspace-lne54-rest/api</rest.url.path>
-                <rest.scheme>https</rest.scheme>
-                <!-- <dspace.oai.url>https://dev.atmire.com/dspace-$PROJECT_NAME$-oai</dspace.oai.url> -->
-                <db.name>postgres</db.name>
-                <db.driver>org.postgresql.Driver</db.driver>
-                <db.url>jdbc:postgresql://localhost:5432/dspace-${clientname}</db.url>
-                <db.username>dspace</db.username>
-                <db.password>dspace</db.password>
-                <mail.server>no-mail-server</mail.server>
-                <mail.from.address>noreply@atmire.com</mail.from.address>
-                <feedback.recipient>noreply@atmire.com</feedback.recipient>
-                <mail.admin>noreply@atmire.com</mail.admin>
-                <alert.recipient>noreply@atmire.com</alert.recipient>
-                <mail.server.disabled>true</mail.server.disabled>
-                <solr.server>http://localhost:${tomcat.port}/solr</solr.server>
-                <assetstore.dir>${dspace.dir}/assetstore</assetstore.dir>
-                <log.dir>${dspace.dir}/log</log.dir>
-                <db.maxidle>1</db.maxidle>
-                <xmlui.google.analytics.key>DUMMY_KEY</xmlui.google.analytics.key>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>client-DEV</id>
-            <properties>
-                <clientname>tomcat</clientname>
-                <tomcat.port>8080</tomcat.port>
-                <dspace.dir>/opt/tomcat/dspace</dspace.dir>
-                <dspace.name>DSpace at lne</dspace.name>
-                <dspace.hostname>ontwikkel.milieuinfo.be</dspace.hostname>
-                <dspace.baseUrl>https://${dspace.hostname}/archief-imjv</dspace.baseUrl>
-                <dspace.url>${dspace.baseUrl}</dspace.url>
-                <sword.url>http://archief-imjv-on-1-mgt.mmis.be:8080/swordv2</sword.url>
-                <rest.base.url>/archief-imjv/rest</rest.base.url>
-                <rest.url.path>/archief-imjv/rest/api</rest.url.path>
-                <rest.scheme>https</rest.scheme>
-                <!-- <dspace.oai.url>https://dev.atmire.com/dspace-$PROJECT_NAME$-oai</dspace.oai.url> -->
-                <db.name>postgres</db.name>
-                <db.driver>org.postgresql.Driver</db.driver>
-                <db.url>jdbc:postgresql://localhost:5432/</db.url>
-                <db.username>dspace</db.username>
-                <db.password>dspace</db.password>
-                <mail.server>no-mail-server</mail.server>
-                <mail.from.address>noreply@atmire.com</mail.from.address>
-                <feedback.recipient>noreply@atmire.com</feedback.recipient>
-                <mail.admin>noreply@atmire.com</mail.admin>
-                <alert.recipient>noreply@atmire.com</alert.recipient>
-                <mail.server.disabled>true</mail.server.disabled>
-                <solr.server>http://localhost:${tomcat.port}/archief-imjv/solr</solr.server>
-                <assetstore.dir>${dspace.dir}/assetstore</assetstore.dir>
-                <log.dir>${dspace.dir}/log</log.dir>
-                <db.maxidle>1</db.maxidle>
-                <xmlui.google.analytics.key>DUMMY_KEY</xmlui.google.analytics.key>
-                <authentication.method>
-                    org.dspace.authenticate.PasswordAuthentication,org.dspace.authenticate.OpenAMCookieAuthentication,org.dspace.authenticate.OpenAMHeaderAuthentication,org.dspace.authenticate.OpenAMPasswordAuthentication
-                </authentication.method>
-                <handle.canonical.prefix>${dspace.baseUrl}/</handle.canonical.prefix>
-                <handle.prefix>acd</handle.prefix>
-                <openam.server.url>http://msb-on-750.mmis.be:9880/sso</openam.server.url>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>client-prod</id>
-            <properties>
-                <xmlui.google.analytics.key>DUMMY_KEY</xmlui.google.analytics.key>
-                <openam.server.url>http://msb-on-1153.mmis.be:9880/sso</openam.server.url>
-            </properties>
-        </profile>
-
         <!-- Users can pass in an environment flag "-Denv" to tell DSpace to use
              a different properties file during its build process.
              For example: "mvn package -Denv=test" would build DSpace using the
@@ -806,14 +724,14 @@
         <!--
            The 'release' profile is used by the 'maven-release-plugin' (see above)
            to actually perform a DSpace software release to Maven central.
-         --><!-- 
+         --><!--
         <profile>
             <id>release</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
             </activation>
             Activate all modules *except* for the 'dspace' module,
-                 as it does not include any Java source code to release. 
+                 as it does not include any Java source code to release.
             <modules>
                 <module>dspace-api</module>
                 <module>dspace-jspui</module>
