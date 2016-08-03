@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
+>
+
+    <context:annotation-config /> <!-- allows us to use spring annotations in beans -->
+
+    <util:map id="collectionBuilderMap">
+        <entry key="administrators/subgroup" value-ref="addAdministratorGroupCollectionBuilderPlugin"/>
+        <entry key="workflow1/subgroup" value-ref="addReviewerGroupCollectionBuilderPlugin"/>
+        <entry key="workflow2/subgroup" value-ref="addEditorGroupCollectionBuilderPlugin"/>
+        <entry key="workflow3/subgroup" value-ref="addFinalEditorGroupCollectionBuilderPlugin"/>
+        <entry key="readers/subgroup" value-ref="addReaderGroupCollectionBuilderPlugin"/>
+        <entry key="submitters/subgroup" value-ref="addSubmitterGroupCollectionBuilderPlugin"/>
+    </util:map>
+
+    <bean id="addAdministratorGroupCollectionBuilderPlugin" class="com.atmire.administer.plugins.AddAdministratorGroupCollectionBuilderPlugin"/>
+    <bean id="addReaderGroupCollectionBuilderPlugin" class="com.atmire.administer.plugins.AddReaderGroupCollectionBuilderPlugin"/>
+    <bean id="addSubmitterGroupCollectionBuilderPlugin" class="com.atmire.administer.plugins.AddSubmitterGroupCollectionBuilderPlugin"/>
+
+    <bean id="addReviewerGroupCollectionBuilderPlugin" class="com.atmire.administer.plugins.AddWorkflowGroupCollectionBuilderPlugin">
+        <property name="roleName" value="reviewer"/>
+    </bean>
+    <bean id="addEditorGroupCollectionBuilderPlugin" class="com.atmire.administer.plugins.AddWorkflowGroupCollectionBuilderPlugin">
+        <property name="roleName" value="editor"/>
+    </bean>
+    <bean id="addFinalEditorGroupCollectionBuilderPlugin" class="com.atmire.administer.plugins.AddWorkflowGroupCollectionBuilderPlugin">
+        <property name="roleName" value="finaleditor"/>
+    </bean>
+
+</beans>
