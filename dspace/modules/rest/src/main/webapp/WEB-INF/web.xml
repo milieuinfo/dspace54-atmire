@@ -8,7 +8,7 @@
             http://www.dspace.org/license/
 
         -->
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+        <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
     <servlet>
         <servlet-name>DSpace REST API</servlet-name>
         <servlet-class>
@@ -42,9 +42,10 @@
         -->
         <load-on-startup>1</load-on-startup>
     </servlet>
+
     <servlet-mapping>
         <servlet-name>DSpace REST API</servlet-name>
-<url-pattern>/api/*</url-pattern>
+    <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
 
     <!-- swagger welcome -->
@@ -52,6 +53,17 @@
         <welcome-file>swagger-ui-2.1.0/dist/index.html</welcome-file>
     </welcome-file-list>
 
+    <!-- Security settings and mapping -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>DSpace REST API</web-resource-name>
+            <url-pattern>/api/*</url-pattern>
+        </web-resource-collection>
+        <user-data-constraint>
+            <!--<transport-guarantee>CONFIDENTIAL</transport-guarantee>-->
+            <transport-guarantee>NONE</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
 
     <!--  DSpace Configuration Information  -->
     <context-param>
@@ -68,7 +80,7 @@
     </context-param>
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/applicationContext.xml</param-value>
+        <param-value>/WEB-INF/applicationContext.xml,/WEB-INF/security-applicationContext.xml</param-value>
         <!--
 
                     Add this context if using Spring Security
@@ -97,4 +109,35 @@
             org.springframework.web.context.ContextLoaderListener
         </listener-class>
     </listener>
+
+<!--
+    The DSpaceWebappListener is not necessary, DSpaceContextListener already does everything
+    <listener>
+        <listener-class>org.dspace.app.util.DSpaceWebappListener</listener-class>
+    </listener>
+-->
+
+    <filter>
+        <filter-name>dspace.request</filter-name>
+        <filter-class>org.dspace.utils.servlet.DSpaceWebappServletFilter</filter-class>
+    </filter>
+
+
+    <filter-mapping>
+        <filter-name>dspace.request</filter-name>
+        <url-pattern>/api/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>
+            org.springframework.web.filter.DelegatingFilterProxy
+        </filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/api/*</url-pattern>
+    </filter-mapping>
+
 </web-app>
