@@ -2583,8 +2583,8 @@
     <message key="xmlui.dri2xhtml.METS-1.0.item-replaces">Replaces</message>
 
 
-    <message key="xmlui.ChoiceLookupTransformer.field.vlaanderen_identifier.title">Select identifier</message>
-    <message key="xmlui.ChoiceLookupTransformer.field.vlaanderen_identifier.help">Enter custom identifier</message>
+    <message key="xmlui.ChoiceLookupTransformer.field.vlaanderen_identifier.title">Select vlaanderen identifier</message>
+    <message key="xmlui.ChoiceLookupTransformer.field.vlaanderen_identifier.help">Enter vlaanderen identifier</message>
 
     <!-- end custom messages -->
 </catalogue>

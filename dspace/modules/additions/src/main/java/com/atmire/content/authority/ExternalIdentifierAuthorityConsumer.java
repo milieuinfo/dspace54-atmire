@@ -26,7 +26,7 @@ public class ExternalIdentifierAuthorityConsumer implements Consumer
     {
 
         // get the field
-        String authorityField = ConfigurationManager.getProperty("authority.field");
+        String authorityField = ConfigurationManager.getProperty("authority.externalidentifier.field");
 
         String[] splitField = authorityField.split("\\.");
 
