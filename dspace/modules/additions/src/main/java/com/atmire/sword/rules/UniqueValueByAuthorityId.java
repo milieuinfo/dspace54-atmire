@@ -1,9 +1,12 @@
 package com.atmire.sword.rules;
 
-import java.util.*;
-import org.apache.commons.lang.*;
-import org.dspace.content.*;
-import org.dspace.core.*;
+import org.apache.commons.lang.StringUtils;
+import org.dspace.content.Item;
+import org.dspace.content.ItemIterator;
+import org.dspace.content.Metadatum;
+import org.dspace.core.Context;
+
+import java.util.List;
 
 /**
  * @author philip at atmire.com
@@ -25,7 +28,7 @@ public class UniqueValueByAuthorityId extends AbstractFieldCheckRule {
                 context = new Context();
                 context.turnOffAuthorisationSystem();
 
-                if(StringUtils.isNotBlank(metadatum.value)) {
+                if(StringUtils.isNotBlank(metadatum.authority)) {
                     String[] split = StringUtils.split(metadataFieldToCheck, ".");
 
                     if(split.length>=2) {
@@ -37,7 +40,7 @@ public class UniqueValueByAuthorityId extends AbstractFieldCheckRule {
                             qualifier = split[3];
                         }
 
-                        ItemIterator itemIterator = Item.findByAuthorityValue(context, schema, element, qualifier, metadatum.value);
+                        ItemIterator itemIterator = Item.findByAuthorityValue(context, schema, element, qualifier, metadatum.authority);
 
                         if (itemIterator.hasNext()) {
                             valid = false;
