@@ -1,0 +1,17 @@
+<import_structure>
+    <community>
+        <name>Archief Omgevingsvergunning</name>
+        <collection>
+            <name>IMJV</name>
+            <administrators>
+                <subgroup>Administrator</subgroup>
+            </administrators>
+            <submitters>
+                <subgroup>Schrijven</subgroup>
+            </submitters>
+            <readers>
+                <subgroup>Lezen</subgroup>
+            </readers>
+        </collection>
+    </community>
+</import_structure>
