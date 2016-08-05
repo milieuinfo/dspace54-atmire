@@ -305,16 +305,15 @@
         <profile>
             <id>client-DEV</id>
             <properties>
-                <clientname>tomcat</clientname>
                 <tomcat.port>8080</tomcat.port>
                 <dspace.dir>/opt/tomcat/dspace</dspace.dir>
                 <dspace.name>DSpace at lne</dspace.name>
-                <dspace.hostname>ontwikkel.milieuinfo.be</dspace.hostname>
-                <dspace.baseUrl>https://${dspace.hostname}/archief-imjv</dspace.baseUrl>
+                <dspace.hostname>archief-test-on-1.vm.cumuli.be</dspace.hostname>
+                <dspace.baseUrl>https://${dspace.hostname}/xmlui</dspace.baseUrl>
                 <dspace.url>${dspace.baseUrl}</dspace.url>
-                <sword.url>http://archief-imjv-on-1-mgt.mmis.be:8080/swordv2</sword.url>
-                <rest.base.url>/archief-imjv/rest</rest.base.url>
-                <rest.url.path>/archief-imjv/rest/api</rest.url.path>
+                <sword.url>http://archief-test-on-1.vm.cumuli.be:8080/swordv2</sword.url>
+                <rest.base.url>/rest</rest.base.url>
+                <rest.url.path>/rest/api</rest.url.path>
                 <rest.scheme>https</rest.scheme>
                 <!-- <dspace.oai.url>https://dev.atmire.com/dspace-$PROJECT_NAME$-oai</dspace.oai.url> -->
                 <db.name>postgres</db.name>
@@ -332,7 +331,7 @@
                 <assetstore.dir>${dspace.dir}/assetstore</assetstore.dir>
                 <log.dir>${dspace.dir}/log</log.dir>
                 <db.maxidle>1</db.maxidle>
-                <xmlui.google.analytics.key>DUMMY_KEY</xmlui.google.analytics.key>
+                <xmlui.google.analytics.key></xmlui.google.analytics.key>
                 <authentication.method>
                     org.dspace.authenticate.PasswordAuthentication,org.dspace.authenticate.OpenAMCookieAuthentication,org.dspace.authenticate.OpenAMHeaderAuthentication,org.dspace.authenticate.OpenAMPasswordAuthentication
                 </authentication.method>
