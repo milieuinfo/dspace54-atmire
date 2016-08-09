@@ -7,12 +7,14 @@
  */
 package org.dspace.rest.authentication;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.dspace.authenticate.AuthenticationMethod;
 import org.dspace.authenticate.factory.AuthenticateServiceFactory;
 import org.dspace.authenticate.service.AuthenticationService;
 import org.dspace.core.Context;
 import org.dspace.core.LogManager;
+import org.dspace.eperson.EPerson;
 import org.dspace.eperson.Group;
 import org.dspace.utils.DSpace;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -69,7 +71,15 @@ public class DSpaceAuthenticationProvider implements AuthenticationProvider {
                     log.info(LogManager
                             .getHeader(context, "login", "type=explicit"));
 
-                    return new UsernamePasswordAuthenticationToken(name, password, grantedAuthorities);
+                    EPerson ePerson = context.getCurrentUser();
+                    if(ePerson != null && StringUtils.isNotBlank(ePerson.getEmail())) {
+                        return new UsernamePasswordAuthenticationToken(ePerson.getEmail(), password, grantedAuthorities);
+
+                    } else {
+                        log.info(LogManager.getHeader(context, "failed_login", "No eperson with an non-blank e-mail address found"));
+                        throw new BadCredentialsException("Login failed");
+                    }
+                    
                 } else {
                     log.info(LogManager.getHeader(context, "failed_login", "email="
                             + name + ", result="
