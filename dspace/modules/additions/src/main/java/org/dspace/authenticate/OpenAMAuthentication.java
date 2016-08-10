@@ -116,6 +116,8 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
     	ArrayList<Group> currentGroups = new ArrayList<Group>();
     	
     	for (String role : roles) {
+    	    log.info("User " + ePerson.getEmail() + " has OpenAM role " + role);
+
             if(dSpaceAdminRole.equals(role)) {
                 final Group admins = Group.findByName(context, ADMINISTRATOR_GROUP);
                 if (admins != null) {
@@ -123,7 +125,11 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
                     admins.update();
                     
                     currentGroups.add(admins);
-                    
+
+                    if(log.isDebugEnabled()) {
+                        log.debug("User " + ePerson.getEmail() + " was added to the " + admins.getName() + " group");
+                    }
+
                 } else {
                     log.warn(LogManager.getHeader(context, "login", "Could not add user as administrator (group not found)!"));
                 }
@@ -135,7 +141,11 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
                     group.update();
                     
                     currentGroups.add(group);
-                    
+
+                    if(log.isDebugEnabled()) {
+                        log.debug("User " + ePerson.getEmail() + " was added to the " + group.getName() + " group");
+                    }
+
                 } else {
                     log.warn(LogManager.getHeader(context, "login", "Could not add user to group:" + groupName + " (group not found)!"));
                 }
