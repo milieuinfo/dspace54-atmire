@@ -53,7 +53,7 @@ public class SwordSAFSIPIngester extends AbstractSwordContentIngester {
                 throw new DSpaceSwordException("A package should contain at most one item");
 
             } else {
-                ItemImport itemImport = new ItemImport();
+                ItemImport itemImport = new ItemImport(true);
                 List<Item> importedItems = itemImport.addItemsAtomic(context, new Collection[]{collection}, unzippedPackage.getAbsolutePath(), mapFile.getAbsolutePath(), true);
 
                 if (CollectionUtils.isEmpty(importedItems)) {
