@@ -7,6 +7,7 @@
  */
 package org.dspace.app.itemimport;
 
+import com.atmire.dspace.core.TransactionalContext;
 import com.atmire.sword.result.CategoryComplianceResult;
 import com.atmire.sword.result.ComplianceResult;
 import com.atmire.sword.result.RuleComplianceResult;
@@ -163,6 +164,7 @@ public class ItemImport {
             options.addOption("R", "resume", false,
                     "resume a failed import (add only)");
             options.addOption("q", "quiet", false, "don't display metadata");
+            options.addOption("x", "transactional", false, "");
 
             options.addOption("h", "help", false, "help");
 
@@ -174,6 +176,7 @@ public class ItemImport {
             String mapfile = null;
             String eperson = null; // db ID or email
             String[] collections = null; // db ID or handles
+            boolean isTransactional = false;
 
             if (line.hasOption('h')) {
                 HelpFormatter myhelp = new HelpFormatter();
@@ -246,6 +249,10 @@ public class ItemImport {
             if (line.hasOption('c')) // collections
             {
                 collections = line.getOptionValues('c');
+            }
+
+            if (line.hasOption('x')) {
+                isTransactional = true;
             }
 
             if (line.hasOption('R')) {
@@ -362,7 +369,7 @@ public class ItemImport {
             ItemImport myloader = new ItemImport();
 
             // create a context
-            Context c = new Context();
+            Context c = isTransactional ? new TransactionalContext() : new Context();
 
             // find the EPerson, assign to context
             EPerson myEPerson = null;
@@ -473,6 +480,15 @@ public class ItemImport {
 
             if (isTest) {
                 System.out.println("***End of Test Run***");
+            }
+
+            if (isTransactional) {
+                TransactionalContext tc = (TransactionalContext) c;
+                if (tc.wasAbortInvoked()) {
+                    tc.realAbort();
+                } else {
+                    tc.realComplete();
+                }
             }
         } finally {
             DSIndexer.setBatchProcessingMode(false);
