@@ -359,7 +359,7 @@
                     <plugin>
                         <groupId>com.github.eirslett</groupId>
                         <artifactId>frontend-maven-plugin</artifactId>
-                        <version>0.0.23</version>
+                        <version>1.0</version>
                     </plugin>
                 </plugins>
             </pluginManagement>
@@ -451,6 +451,19 @@
                                             <artifactId>frontend-maven-plugin</artifactId>
                                         </plugin>
                                         <goal>npm</goal>
+                                        <!--<phase>prepare-package</phase>-->
+                                        <configuration>
+                                            <arguments>install</arguments>
+                                            <workingDirectory>${project.build.directory}/themes/@item@</workingDirectory>
+                                        </configuration>
+                                    </pluginExecutor>
+                                    <pluginExecutor>
+                                        <!--<id>npm install &amp;&amp; bower install</id>-->
+                                        <plugin>
+                                            <groupId>com.github.eirslett</groupId>
+                                            <artifactId>frontend-maven-plugin</artifactId>
+                                        </plugin>
+                                        <goal>bower</goal>
                                         <!--<phase>prepare-package</phase>-->
                                         <configuration>
                                             <arguments>install</arguments>
