@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.*;
 import org.apache.commons.lang3.*;
 import org.apache.log4j.*;
 import org.dspace.content.*;
+import org.dspace.core.Context;
 import org.dspace.eperson.*;
 
 /**
@@ -94,5 +95,30 @@ public class ExactMatchPolicy implements Policy {
         }
 
         return item.getMetadata(schema, element, qualifier, Item.ANY);
+    }
+
+    public String getSolrIndexField(){
+        return itemField.getValue()+"_keyword";
+    }
+
+    public String getSolrIndexValue(Context context, DSpaceObject dSpaceObject) {
+        if (dSpaceObject != null) {
+            return dSpaceObject.getMetadata(itemField.getValue());
+        }
+        return null;
+    }
+
+    public String getSolrQueryCriteria(EPerson ePerson){
+
+        Metadatum[] metadata =getEpersonMetadata(ePerson);
+        String solrQueryCriteria="";
+
+        for(Metadatum metadatum : metadata){
+            if(StringUtils.isNotBlank(solrQueryCriteria)){
+                solrQueryCriteria+=" OR ";
+            }
+            solrQueryCriteria+= getSolrIndexField()+":"+metadatum.value;
+        }
+        return solrQueryCriteria;
     }
 }

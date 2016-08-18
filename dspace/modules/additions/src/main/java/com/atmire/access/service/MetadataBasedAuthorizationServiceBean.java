@@ -22,7 +22,7 @@ public class MetadataBasedAuthorizationServiceBean implements MetadataBasedAutho
         try {
             context.turnOffAuthorisationSystem();
 
-            List<? extends Policy> policies = metdataBasedAccessControlPoliciesFactory.getPolicies(group.getName());
+            List<? extends Policy> policies = retrievePoliciesForGroup(group);
 
             for (Policy policy : policies) {
                 if (!policy.isAuthorized(eperson, item)) {
@@ -39,6 +39,10 @@ public class MetadataBasedAuthorizationServiceBean implements MetadataBasedAutho
         }
 
         return true;
+    }
+
+    public List<? extends Policy> retrievePoliciesForGroup(Group group) {
+        return metdataBasedAccessControlPoliciesFactory.getPolicies(group.getName());
     }
 
     public void setMetdataBasedAccessControlPoliciesFactory(MetdataBasedAccessControlPoliciesFactory metdataBasedAccessControlPoliciesFactory) {
