@@ -1,0 +1,30 @@
+<metadata-based-access-control-policies>
+    <group-policy groupName="DBA_Eigen_Dossiers_Lezen">
+
+        <exact-match-policy>
+            <itemField>dba.vvo.nis</itemField>
+            <epersonField>acl.field1</epersonField>
+        </exact-match-policy>
+
+        <exact-match-policy>
+            <itemField>dba.vvo.nis</itemField>
+            <epersonField>acl.field2</epersonField>
+        </exact-match-policy>
+
+    </group-policy>
+
+    <group-policy groupName="OMV_Eigen_Dossiers_Lezen">
+
+        <exact-match-policy>
+            <itemField>omv.vvo.nis</itemField>
+            <epersonField>acl.field1</epersonField>
+        </exact-match-policy>
+
+        <exact-match-policy>
+            <itemField>omv.vvo.nis</itemField>
+            <epersonField>acl.field2</epersonField>
+        </exact-match-policy>
+
+    </group-policy>
+
+</metadata-based-access-control-policies>

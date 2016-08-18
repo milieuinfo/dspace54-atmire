@@ -10,49 +10,10 @@
         <namespace>http://www.vlaanderen.be/</namespace>
     </dc-schema>
 
-
-    <dc-type>
-        <schema>vlaanderen</schema>
-        <element>acl</element>
-        <qualifier>persoonid</qualifier>
-        <scope_note></scope_note>
-    </dc-type>
-
     <dc-type>
         <schema>vlaanderen</schema>
         <element>identifier</element>
         <scope_note>unieke identifier van een item</scope_note>
     </dc-type>
-
-
-
-    <dc-type>
-        <schema>vlaanderen</schema>
-        <element>acl</element>
-        <qualifier>kbonummer</qualifier>
-        <scope_note></scope_note>
-    </dc-type>
-
-
-
-    <dc-type>
-        <schema>vlaanderen</schema>
-        <element>acl</element>
-        <qualifier>niscode</qualifier>
-        <scope_note></scope_note>
-    </dc-type>
-
-
-
-    <dc-type>
-        <schema>vlaanderen</schema>
-        <element>acl</element>
-        <qualifier>provincie</qualifier>
-        <scope_note></scope_note>
-    </dc-type>
-
-
-
-
 
 </dspace-dc-types>

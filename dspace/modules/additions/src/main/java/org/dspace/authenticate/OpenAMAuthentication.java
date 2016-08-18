@@ -7,39 +7,38 @@
  */
 package org.dspace.authenticate;
 
-import be.milieuinfo.security.openam.api.OpenAMUserdetails;
-import be.milieuinfo.security.openam.oauth.JerseyBasedOAuthIdentityService;
-import be.milieuinfo.security.openam.oauth.OAuthTokenPair;
+import be.milieuinfo.security.openam.api.*;
+import be.milieuinfo.security.openam.oauth.*;
+import com.atmire.authenticate.*;
+import com.atmire.eperson.acl.service.*;
+import com.sun.jersey.api.client.*;
+import java.net.*;
+import java.sql.*;
+import java.util.*;
+import javax.servlet.http.*;
+import javax.ws.rs.core.*;
 
-import com.sun.jersey.api.client.ClientRequest;
-import com.sun.jersey.api.client.ClientResponse;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.dspace.authorize.AuthorizeException;
-import org.dspace.core.ConfigurationManager;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.*;
+import org.apache.log4j.*;
+import org.dspace.authorize.*;
+import org.dspace.core.*;
 import org.dspace.core.Context;
 import org.dspace.core.LogManager;
-import org.dspace.eperson.EPerson;
-import org.dspace.eperson.Group;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.UriBuilder;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
+import org.dspace.eperson.*;
+import org.dspace.utils.*;
 
 public abstract class OpenAMAuthentication implements AuthenticationMethod {
 
     private static Logger log = Logger.getLogger(OpenAMAuthentication.class);
 
+    public final static String SPECIAL_GROUP_REQUEST_ATTRIBUTE = "openam.specialgroup";
     private static final String ADMINISTRATOR_GROUP = "Administrator";
     private String dSpaceAdminRole;
     private String dSpaceRolePrefix;
+
+    private EPersonAclMetadataService ePersonAclMetadataService =
+            new DSpace().getServiceManager().getServicesByType(EPersonAclMetadataService.class).get(0);
 
     protected DSpaceJerseyBasedOAuthIdentityService openAMIdentityService;
 
@@ -68,20 +67,21 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
                 final Collection<String> roles = userDetails.getRoles();
                 if (!StringUtils.isBlank(email)) {
                     try {
+                        loadGroups(context, roles, request, email);
                         final EPerson knownEPerson = EPerson.findByEmail(context, email);
                         if (knownEPerson == null) {
                             // TEMPORARILY turn off authorisation
                             context.turnOffAuthorisationSystem();
                             final EPerson eperson = createEPerson(context, request, email, sn, givenName);
                             eperson.update();
-                            fixGroups(context, roles, eperson);
+                            updateEpersonAclMetadata(context, eperson, userDetails);
                             context.commit();
                             context.restoreAuthSystemState();
                             context.setCurrentUser(eperson);
                             log.info(LogManager.getHeader(context, "login", "type=openam-interactive"));
                             return SUCCESS;
                         } else {
-                        	fixGroups(context, roles, knownEPerson);
+                            updateEpersonAclMetadata(context, knownEPerson, userDetails);
                             context.setCurrentUser(knownEPerson);
                             return SUCCESS;
                         }
@@ -100,6 +100,20 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
         }
     }
 
+    private void updateEpersonAclMetadata(Context context, EPerson eperson, OpenAMUserdetails userDetails) {
+        try {
+            ePersonAclMetadataService.removeAllFields(context, eperson);
+
+            List<OpenAMEpersonMetadataMapper> openAMEpersonMetadataMappers = new DSpace().getServiceManager().getServicesByType(OpenAMEpersonMetadataMapper.class);
+
+            for (OpenAMEpersonMetadataMapper openAMEpersonMetadataMapper : openAMEpersonMetadataMappers) {
+                openAMEpersonMetadataMapper.mapToMetadata(context, eperson, userDetails);
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
     protected EPerson createEPerson(Context context, HttpServletRequest request, String email, String sn, String givenName) throws SQLException, AuthorizeException {
         final EPerson eperson = EPerson.create(context);
         eperson.setFirstName(sn);
@@ -114,23 +128,21 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
 
     
 
-    protected void fixGroups(Context context, Collection<String> roles , EPerson ePerson) throws SQLException, AuthorizeException{
+    protected void loadGroups(Context context, Collection<String> roles, HttpServletRequest request, String email) throws SQLException, AuthorizeException {
     	
-    	ArrayList<Group> currentGroups = new ArrayList<Group>();
+    	ArrayList<Integer> currentGroups = new ArrayList<>();
     	
     	for (String role : roles) {
-    	    log.info("User " + ePerson.getEmail() + " has OpenAM role " + role);
+    	    log.info("User " + email + " has OpenAM role " + role);
 
             if(dSpaceAdminRole.equals(role)) {
                 final Group admins = Group.findByName(context, ADMINISTRATOR_GROUP);
+
                 if (admins != null) {
-                    admins.addMember(ePerson);
-                    admins.update();
-                    
-                    currentGroups.add(admins);
+                    currentGroups.add(admins.getID());
 
                     if(log.isDebugEnabled()) {
-                        log.debug("User " + ePerson.getEmail() + " was added to the " + admins.getName() + " group");
+                        log.debug("User " + email + " was added to the " + admins.getName() + " group");
                     }
 
                 } else {
@@ -140,33 +152,20 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
                 final String groupName = role.replaceAll(dSpaceRolePrefix, "");
                 final Group group = Group.findByName(context, groupName);
                 if (group != null) {
-                    group.addMember(ePerson);
-                    group.update();
-                    
-                    currentGroups.add(group);
-
+                    currentGroups.add(group.getID());
                     if(log.isDebugEnabled()) {
-                        log.debug("User " + ePerson.getEmail() + " was added to the " + group.getName() + " group");
+                        log.debug("User " + email + " was added to the " + group.getName() + " group");
                     }
-
                 } else {
                     log.warn(LogManager.getHeader(context, "login", "Could not add user to group:" + groupName + " (group not found)!"));
                 }
             }
         }
-    	
-    	
-    	Group[] dbGroups = Group.allMemberGroups(context, ePerson);
-    	for (Group dbGroup : dbGroups ){
-    		if (dbGroup.getID() == 0 ){
-    			log.debug("Everybody belongs to the anonymous group");
-    		}else if (!currentGroups.contains(dbGroup)){
-    			log.info(ePerson.getName() + " belongs to group: "+ dbGroup.getName() + " in the database but not in LDAP, removing person from group");
-    			dbGroup.removeMember(ePerson);
-    			dbGroup.update();
-    		}
-    	}
-       	
+
+        if(CollectionUtils.isNotEmpty(currentGroups)){
+            int[] groupIdArray = ArrayUtils.toPrimitive(currentGroups.toArray(new Integer[currentGroups.size()]));
+            request.getSession().setAttribute(SPECIAL_GROUP_REQUEST_ATTRIBUTE, groupIdArray);
+        }
     }
     
     protected class DSpaceJerseyBasedOAuthIdentityService extends JerseyBasedOAuthIdentityService {
@@ -198,4 +197,14 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
         }
     }
 
+    @Override
+    public int[] getSpecialGroups(Context context, HttpServletRequest request) throws SQLException {
+        int[] groupIds = (int[]) request.getSession().getAttribute(SPECIAL_GROUP_REQUEST_ATTRIBUTE);
+
+        if(ArrayUtils.isNotEmpty(groupIds)){
+            return groupIds;
+        }
+
+        return new int[0];
+    }
 }
