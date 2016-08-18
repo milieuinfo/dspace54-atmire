@@ -7,28 +7,24 @@
  */
 package org.dspace.authenticate;
 
-import be.milieuinfo.security.openam.api.OpenAMUserdetails;
-import be.milieuinfo.security.openam.oauth.JerseyBasedOAuthIdentityService;
-import be.milieuinfo.security.openam.oauth.OAuthTokenPair;
-import com.sun.jersey.api.client.ClientRequest;
-import com.sun.jersey.api.client.ClientResponse;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.dspace.authorize.AuthorizeException;
-import org.dspace.core.ConfigurationManager;
+import be.milieuinfo.security.openam.api.*;
+import be.milieuinfo.security.openam.oauth.*;
+import com.atmire.authenticate.*;
+import com.atmire.eperson.acl.service.*;
+import com.sun.jersey.api.client.*;
+import java.net.*;
+import java.sql.*;
+import java.util.*;
+import javax.servlet.http.*;
+import javax.ws.rs.core.*;
+import org.apache.commons.lang.*;
+import org.apache.log4j.*;
+import org.dspace.authorize.*;
+import org.dspace.core.*;
 import org.dspace.core.Context;
 import org.dspace.core.LogManager;
-import org.dspace.eperson.EPerson;
-import org.dspace.eperson.Group;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.UriBuilder;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
+import org.dspace.eperson.*;
+import org.dspace.utils.*;
 
 public abstract class OpenAMAuthentication implements AuthenticationMethod {
 
@@ -37,6 +33,9 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
     private static final String ADMINISTRATOR_GROUP = "Administrator";
     private String dSpaceAdminRole;
     private String dSpaceRolePrefix;
+
+    private EPersonAclMetadataService ePersonAclMetadataService =
+            new DSpace().getServiceManager().getServicesByType(EPersonAclMetadataService.class).get(0);
 
     protected DSpaceJerseyBasedOAuthIdentityService openAMIdentityService;
 
@@ -72,6 +71,7 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
                             final EPerson eperson = createEPerson(context, request, email, sn, givenName);
                             eperson.update();
                             fixGroups(context, roles, eperson);
+                            updateEpersonAclMetadata(context, eperson, userDetails);
                             context.commit();
                             context.restoreAuthSystemState();
                             context.setCurrentUser(eperson);
@@ -79,6 +79,7 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
                             return SUCCESS;
                         } else {
                         	fixGroups(context, roles, knownEPerson);
+                            updateEpersonAclMetadata(context, knownEPerson, userDetails);
                             context.setCurrentUser(knownEPerson);
                             return SUCCESS;
                         }
@@ -94,6 +95,20 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
             }
         } else {
             return NO_SUCH_USER;
+        }
+    }
+
+    private void updateEpersonAclMetadata(Context context, EPerson eperson, OpenAMUserdetails userDetails) {
+        try {
+            ePersonAclMetadataService.removeAllFields(context, eperson);
+
+            List<OpenAMEpersonMetadataMapper> openAMEpersonMetadataMappers = new DSpace().getServiceManager().getServicesByType(OpenAMEpersonMetadataMapper.class);
+
+            for (OpenAMEpersonMetadataMapper openAMEpersonMetadataMapper : openAMEpersonMetadataMappers) {
+                openAMEpersonMetadataMapper.mapToMetadata(context, eperson, userDetails);
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
         }
     }
 
