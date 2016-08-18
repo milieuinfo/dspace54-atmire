@@ -10,9 +10,9 @@ import java.util.List;
 /**
  * @author philip at atmire.com
  */
-public interface MetadataBasedAuthorizationService <T extends Policy> {
+public interface MetadataBasedAuthorizationService {
 
-    boolean isAuthorized(Context context, EPerson eperson, Group group, Item item);
+    boolean isAuthorized(Context context, EPerson eperson, Group group, DSpaceObject item);
 
-    List<T> retrievePoliciesForGroup(Group group);
+    List<Policy> retrievePoliciesForGroup(Group group);
 }

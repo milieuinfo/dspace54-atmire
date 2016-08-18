@@ -1,10 +1,17 @@
 package com.atmire.access.factory;
 
-import com.atmire.access.*;
-import com.atmire.access.model.*;
-import java.io.*;
+import com.atmire.access.MetadataAccessControlPoliciesMarshaller;
+import com.atmire.access.model.ExactMatchPolicy;
+import com.atmire.access.model.GroupPolicy;
+import com.atmire.access.model.MetadataBasedAccessControlPolicies;
+import com.atmire.access.model.Policy;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.log4j.Logger;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.*;
-import org.apache.log4j.*;
 
 /**
  * @author philip at atmire.com
@@ -15,10 +22,10 @@ public class MetdataBasedAccessControlPoliciesFactoryBean implements MetdataBase
 
     private String filePath;
 
-    private Map<String, List<? extends Policy>> policies;
+    private Map<String, List<Policy>> policies;
     private long lastModified;
 
-    public List<? extends Policy> getPolicies(String groupName) {
+    public List<Policy> getPolicies(String groupName) {
         updatePolicies();
 
         if(policies.containsKey(groupName)) {
@@ -40,7 +47,7 @@ public class MetdataBasedAccessControlPoliciesFactoryBean implements MetdataBase
                 MetadataBasedAccessControlPolicies metadataBasedAccessControlPolicies = marshaller.unmarshal(inputStream);
 
                 for (GroupPolicy groupPolicy : metadataBasedAccessControlPolicies.getGroupPolicies()) {
-                    policies.put(groupPolicy.getGroupName(), groupPolicy.getExactMatchPolicies());
+                    policies.put(groupPolicy.getGroupName(), toPolicyList(groupPolicy.getExactMatchPolicies()));
                 }
 
                 lastModified = file.lastModified();
@@ -58,6 +65,17 @@ public class MetdataBasedAccessControlPoliciesFactoryBean implements MetdataBase
                 }
             }
         }
+    }
+
+    private List<Policy> toPolicyList(final List<ExactMatchPolicy> exactMatchPolicies) {
+        List<Policy> output = new LinkedList<>();
+        if(CollectionUtils.isNotEmpty(exactMatchPolicies)) {
+            for (ExactMatchPolicy exactMatchPolicy : exactMatchPolicies) {
+                output.add(exactMatchPolicy);
+            }
+        }
+
+        return output;
     }
 
     public void setFilePath(String filePath) {

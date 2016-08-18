@@ -8,5 +8,5 @@ import java.util.*;
  */
 public interface MetdataBasedAccessControlPoliciesFactory {
 
-    List<? extends Policy> getPolicies(String groupName);
+    List<Policy> getPolicies(String groupName);
 }

@@ -399,6 +399,54 @@ public class Group extends DSpaceObject
     }
 
     /**
+     * Get all of the sub groups of a given group.
+     *
+     * @param c context
+     * @param g The parent group
+     * @throws SQLException
+     */
+    public static List<Group> allMemberGroups(Context c, Group g)
+            throws SQLException
+    {
+        List<Group> groupList = new ArrayList<Group>();
+
+        //Every group has "Anonymous" as a subgroup
+        groupList.add(Group.find(c, ANONYMOUS_ID));
+
+        StringBuilder groupQuery = new StringBuilder();
+        groupQuery.append("SELECT * FROM group2groupcache WHERE parent_id = ?");
+
+        // was member of at least one group
+        // NOTE: even through the query is built dynamically, all data is
+        // separated into the parameters array.
+        TableRowIterator tri = DatabaseManager.queryTable(c, "group2groupcache",
+                groupQuery.toString(),
+                g.getID());
+
+        try
+        {
+            while (tri.hasNext())
+            {
+                TableRow row = tri.next();
+
+                int parentID = row.getIntColumn("child_id");
+
+                groupList.add(Group.find(c, Integer.valueOf(parentID)));
+            }
+        }
+        finally
+        {
+            // close the TableRowIterator to free up resources
+            if (tri != null)
+            {
+                tri.close();
+            }
+        }
+
+        return groupList;
+    }
+
+    /**
      * get Set of Integers all of the group memberships for an eperson
      *
      * @param c

@@ -1,12 +1,17 @@
 package com.atmire.access.service;
 
-import com.atmire.access.factory.*;
-import com.atmire.access.model.*;
-import java.util.*;
-import org.apache.log4j.*;
-import org.dspace.content.*;
-import org.dspace.core.*;
-import org.dspace.eperson.*;
+import com.atmire.access.factory.MetdataBasedAccessControlPoliciesFactory;
+import com.atmire.access.model.Policy;
+import org.apache.log4j.Logger;
+import org.dspace.content.Bitstream;
+import org.dspace.content.DSpaceObject;
+import org.dspace.content.Item;
+import org.dspace.core.Context;
+import org.dspace.eperson.EPerson;
+import org.dspace.eperson.Group;
+
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  * @author philip at atmire.com
@@ -18,7 +23,22 @@ public class MetadataBasedAuthorizationServiceBean implements MetadataBasedAutho
     private MetdataBasedAccessControlPoliciesFactory metdataBasedAccessControlPoliciesFactory;
 
     @Override
-    public boolean isAuthorized(Context context, EPerson eperson, Group group, Item item) {
+    public boolean isAuthorized(Context context, EPerson eperson, Group group, DSpaceObject object) {
+        try {
+            if (object instanceof Item) {
+                return isAuthorized(context, eperson, group, (Item) object);
+            } else if (object instanceof Bitstream && object.getParentObject() instanceof Item) {
+                return isAuthorized(context, eperson, group, (Item) object.getParentObject());
+            }
+
+        } catch (SQLException e) {
+            log.warn("Unable to read bitstream information: " + e.getMessage(), e);
+        }
+
+        return true;
+    }
+
+    private boolean isAuthorized(Context context, EPerson eperson, Group group, Item item) {
         try {
             context.turnOffAuthorisationSystem();
 
@@ -29,19 +49,16 @@ public class MetadataBasedAuthorizationServiceBean implements MetadataBasedAutho
                     return false;
                 }
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
-        }
-        finally {
+        } finally {
             context.restoreAuthSystemState();
         }
 
         return true;
     }
 
-    public List<? extends Policy> retrievePoliciesForGroup(Group group) {
+    public List<Policy> retrievePoliciesForGroup(Group group) {
         return metdataBasedAccessControlPoliciesFactory.getPolicies(group.getName());
     }
 

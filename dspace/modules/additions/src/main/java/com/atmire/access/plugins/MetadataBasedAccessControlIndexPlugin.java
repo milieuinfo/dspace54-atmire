@@ -53,12 +53,15 @@ public class MetadataBasedAccessControlIndexPlugin implements SolrServiceIndexPl
     private List<Policy> retrievePoliciesFromGroupAndMembers(Context context, MetadataBasedAuthorizationService metadataBasedAuthorizationService, ResourcePolicy resourcePolicy) throws SQLException {
         int groupId= resourcePolicy.getGroupID();
         Group group = Group.find(context, groupId);
-        Group[] memberGroups = group.getMemberGroups();
 
-        List<Policy> policiesFromGroup =metadataBasedAuthorizationService.retrievePoliciesForGroup(group);
-        for(Group memberGroup: memberGroups){
+        List<Group> memberGroups = Group.allMemberGroups(context, group);
+
+        List<Policy> policiesFromGroup = metadataBasedAuthorizationService.retrievePoliciesForGroup(group);
+
+        for(Group memberGroup : memberGroups){
             policiesFromGroup.addAll(metadataBasedAuthorizationService.retrievePoliciesForGroup(memberGroup));
         }
+
         return policiesFromGroup;
     }
 }
