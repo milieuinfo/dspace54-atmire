@@ -138,6 +138,19 @@
                      </sources>
                   </configuration>
                </execution>
+               <execution>
+                  <id>schemagen</id>
+                  <goals>
+                     <goal>schemagen</goal>
+                  </goals>
+                  <configuration>
+                     <sources>
+                        <source>src/main/java/com/atmire/access/model</source>
+                     </sources>
+                     <outputDirectory>${root.basedir}/dspace/config/jaxb</outputDirectory>
+                     <createJavaDocAnnotations>false</createJavaDocAnnotations>
+                  </configuration>
+               </execution>
             </executions>
          </plugin>
       </plugins>

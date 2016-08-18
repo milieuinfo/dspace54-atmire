@@ -154,6 +154,8 @@
              ===================== -->
         <!-- Base DSpace XMLUI Aspects for Display, Browse, Search, Admin, Login and Submission -->
         <aspect name="External Handle Item Resolution" path="resource://aspects/ExternalHandle/" />
+
+        <aspect name="RequireUserAuthentication" path="resource://aspects/RequireUserAuthentication/" />
     </aspects>
 
     <!--

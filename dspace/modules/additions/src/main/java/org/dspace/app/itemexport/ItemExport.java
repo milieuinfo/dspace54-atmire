@@ -290,7 +290,7 @@ public class ItemExport
             if (myItem != null)
             {
                 // it's only a single item
-                exportItem(c, myItem, destDirName, seqStart, migrate);
+                exportItem(c, myItem, destDirName, seqStart, migrate, handleBasedDirectoryStructure);
             }
             else
             {
@@ -338,7 +338,7 @@ public class ItemExport
             } else {
                 System.out.println("Exporting item to " + fullPath);
 
-                exportItem(c, next, fullPath, mySequenceNumber, migrate);
+                exportItem(c, next, fullPath, mySequenceNumber, migrate, handleBasedDirectoryStructure);
             mySequenceNumber++;
         }
     }
@@ -347,24 +347,30 @@ public class ItemExport
 
 
     private static void exportItem(Context c, Item myItem, String destDirName,
-                                   int seqStart, boolean migrate) throws Exception
+                                   int seqStart, boolean migrate, boolean handleBasedDirectoryStructure) throws Exception
     {
+        // now create a subdirectory
+        if(seqStart==-1){
+            seqStart++;
+        }
         File destDir = new File(destDirName);
 
         if (destDir.exists())
         {
-            // now create a subdirectory
-            if(seqStart==-1){
-                seqStart++;
+
+            File itemDir = null;
+            if(handleBasedDirectoryStructure) {
+                itemDir = new File(destDir + "/item");
+            } else {
+                itemDir = new File(destDir + "/" + seqStart);
             }
-            File itemDir = new File(destDir + "/" + seqStart);
 
             System.out.println("Exporting Item " + myItem.getID() + " to "
                     + itemDir);
 
             if (itemDir.exists())
             {
-                throw new Exception("Directory " + destDir + "/" + seqStart
+                throw new Exception("Directory " + itemDir.getAbsolutePath()
                         + " already exists!");
             }
 
@@ -387,6 +393,9 @@ public class ItemExport
         {
             throw new Exception("Error, directory " + destDirName
                     + " doesn't exist!");
+        }
+        if(seqStart % 100 == 0) {
+            c.clearCache();
         }
     }
 
@@ -588,9 +597,10 @@ public class ItemExport
             for (int j = 0; j < bundles.length; j++)
             {
                 // bundles can have multiple bitstreams now...
-                Bitstream[] bitstreams = bundles[j].getBitstreams();
+                Bundle currentBundle = bundles[j];
+                Bitstream[] bitstreams = currentBundle.getBitstreams();
 
-                String bundleName = bundles[j].getName();
+                String bundleName = currentBundle.getName();
 
                 for (int k = 0; k < bitstreams.length; k++)
                 {
@@ -609,16 +619,20 @@ public class ItemExport
                     }
 
                     String primary = "";
-                    if (bundles[j].getPrimaryBitstreamID() == b.getID()) {
+                    if (currentBundle.getPrimaryBitstreamID() == b.getID()) {
                         primary = "\tprimary:true ";
                     }
 
                     int myPrefix = 1; // only used with name conflict
 
-                    InputStream is = b.retrieve();
-
-                    boolean isDone = false; // done when bitstream is finally
-                    // written
+                    boolean isDone = false; // done when bitstream is finally written
+                    InputStream is = null;
+                    try {
+                        is = b.retrieve();
+                    } catch (FileNotFoundException ex) {
+                        log.warn("File not found exception, excluding this bitstream from the export: " + ex.getMessage());
+                        isDone = true;
+                    }
 
                     while (!isDone)
                     {
