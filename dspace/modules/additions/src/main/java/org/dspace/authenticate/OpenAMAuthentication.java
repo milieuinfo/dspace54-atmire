@@ -35,8 +35,8 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
     private static Logger log = Logger.getLogger(OpenAMAuthentication.class);
 
     private static final String ADMINISTRATOR_GROUP = "Administrator";
-    private static final String DSPACE_ADMIN_ROLE = "DSpaceAdmin";
-    private static final String DSPACE_ROLE_PREFIX = "DSpace";
+    private String dSpaceAdminRole;
+    private String dSpaceRolePrefix;
 
     protected DSpaceJerseyBasedOAuthIdentityService openAMIdentityService;
 
@@ -44,6 +44,8 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
         final String openamServerUrl = ConfigurationManager.getProperty("authentication-openam", "openam.server.url");
         final String consumerToken = ConfigurationManager.getProperty("authentication-openam", "openam.consumer.token");
         final String consumerSecret = ConfigurationManager.getProperty("authentication-openam", "openam.consumer.secret");
+        dSpaceRolePrefix = ConfigurationManager.getProperty("authentication-openam", "openam.role.prefix");
+        dSpaceAdminRole = ConfigurationManager.getProperty("authentication-openam", "openam.admin.role");
 
         this.openAMIdentityService = new DSpaceJerseyBasedOAuthIdentityService();
         this.openAMIdentityService.setUrl(openamServerUrl);
@@ -114,26 +116,36 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
     	ArrayList<Group> currentGroups = new ArrayList<Group>();
     	
     	for (String role : roles) {
-            if(DSPACE_ADMIN_ROLE.equals(role)) {
+    	    log.info("User " + ePerson.getEmail() + " has OpenAM role " + role);
+
+            if(dSpaceAdminRole.equals(role)) {
                 final Group admins = Group.findByName(context, ADMINISTRATOR_GROUP);
                 if (admins != null) {
                     admins.addMember(ePerson);
                     admins.update();
                     
                     currentGroups.add(admins);
-                    
+
+                    if(log.isDebugEnabled()) {
+                        log.debug("User " + ePerson.getEmail() + " was added to the " + admins.getName() + " group");
+                    }
+
                 } else {
                     log.warn(LogManager.getHeader(context, "login", "Could not add user as administrator (group not found)!"));
                 }
-            } else if(role.startsWith(DSPACE_ROLE_PREFIX)) {
-                final String groupName = role.replaceAll(DSPACE_ROLE_PREFIX, "");
+            } else if(role.startsWith(dSpaceRolePrefix)) {
+                final String groupName = role.replaceAll(dSpaceRolePrefix, "");
                 final Group group = Group.findByName(context, groupName);
                 if (group != null) {
                     group.addMember(ePerson);
                     group.update();
                     
                     currentGroups.add(group);
-                    
+
+                    if(log.isDebugEnabled()) {
+                        log.debug("User " + ePerson.getEmail() + " was added to the " + group.getName() + " group");
+                    }
+
                 } else {
                     log.warn(LogManager.getHeader(context, "login", "Could not add user to group:" + groupName + " (group not found)!"));
                 }

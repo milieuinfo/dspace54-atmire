@@ -24,6 +24,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +53,8 @@ public class SearchResource extends Resource {
 
             @ApiParam( value = "The maximum amount of items shown.", required = false)
             @QueryParam("limit") int limit,
+            @ApiParam( value = "The amount of items to skip.", required = false)
+            @QueryParam("offset") int offset,
             @Context HttpHeaders headers, @Context HttpServletRequest request)
             throws WebApplicationException, Exception {
 
@@ -78,11 +81,14 @@ public class SearchResource extends Resource {
             dq.setMaxResults(limit);
         }
 
+        dq.setStart(offset);
+
         SearchService searchService = SearchUtils.getSearchService();
 
-        org.dspace.core.Context context = new org.dspace.core.Context();
-
-        context.turnOffAuthorisationSystem();
+        org.dspace.core.Context context = createContext();
+        if(context.getCurrentUser()==null){
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
 
         DiscoverResult result = searchService.search(context, dq);
 

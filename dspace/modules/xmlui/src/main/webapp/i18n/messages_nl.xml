@@ -241,7 +241,7 @@
         <message key="xmlui.ArtifactBrowser.CollectionViewer.search_scope">Search Scope</message>
         <message key="xmlui.ArtifactBrowser.CollectionViewer.all_of_dspace">Geheel Archief IMJV</message>
         <message key="xmlui.ArtifactBrowser.CollectionViewer.full_text_search">Zoek binnen deze collectie:</message>
-        <message key="xmlui.ArtifactBrowser.CollectionViewer.head_browse">Browse op</message>
+        <message key="xmlui.ArtifactBrowser.CollectionViewer.head_browse">Zoek op</message>
         <message key="xmlui.ArtifactBrowser.CollectionViewer.browse_titles">Titels</message>
         <message key="xmlui.ArtifactBrowser.CollectionViewer.browse_authors">Auteurs</message>
         <message key="xmlui.ArtifactBrowser.CollectionViewer.browse_dates">Data</message>
@@ -258,7 +258,7 @@
         <message key="xmlui.ArtifactBrowser.CommunityViewer.search_scope">Search Scope</message>
         <message key="xmlui.ArtifactBrowser.CommunityViewer.all_of_dspace">Geheel Archief IMJV</message>
         <message key="xmlui.ArtifactBrowser.CommunityViewer.full_text_search">Zoek binnen deze community en haar collecties:</message>
-        <message key="xmlui.ArtifactBrowser.CommunityViewer.head_browse">Browse op</message>
+        <message key="xmlui.ArtifactBrowser.CommunityViewer.head_browse">Zoek op</message>
         <message key="xmlui.ArtifactBrowser.CommunityViewer.browse_titles">Titels</message>
         <message key="xmlui.ArtifactBrowser.CommunityViewer.browse_authors">Auteurs</message>
         <message key="xmlui.ArtifactBrowser.CommunityViewer.browse_dates">Data</message>
@@ -2478,6 +2478,10 @@
         <message key="xmlui.dri2xhtml.METS-1.0.item-vlaandentifier">Vlaanderen identifier</message>
         <message key="xmlui.dri2xhtml.METS-1.0.item-ispartof">Deel van</message>
         <message key="xmlui.dri2xhtml.METS-1.0.item-replaces">Vervangt</message>
+
+
+    <message key="xmlui.ChoiceLookupTransformer.field.vlaanderen_identifier.title">Kies een vlaanderen identifier</message>
+    <message key="xmlui.ChoiceLookupTransformer.field.vlaanderen_identifier.help">Geef een nieuwe vlaanderen identifier in</message>
 
 
 </catalogue>

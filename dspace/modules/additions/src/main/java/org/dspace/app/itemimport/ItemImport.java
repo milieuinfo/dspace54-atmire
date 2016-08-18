@@ -7,6 +7,7 @@
  */
 package org.dspace.app.itemimport;
 
+import com.atmire.dspace.core.TransactionalContext;
 import com.atmire.sword.result.CategoryComplianceResult;
 import com.atmire.sword.result.ComplianceResult;
 import com.atmire.sword.result.RuleComplianceResult;
@@ -22,6 +23,7 @@ import org.apache.commons.cli.*;
 import org.apache.commons.collections.ComparatorUtils;
 import org.apache.commons.io.FileDeleteStrategy;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -92,9 +94,18 @@ public class ItemImport {
 
     private static boolean template = false;
 
+    private static boolean keepResults = false;
+
     private static PrintWriter mapOut = null;
 
     private static final String tempWorkDir = ConfigurationManager.getProperty("org.dspace.app.batchitemimport.work.dir");
+
+    private ItemImport() {
+    }
+
+    public ItemImport(boolean keepResult) {
+        keepResults = keepResult;
+    }
 
     static {
         //Ensure tempWorkDir exists
@@ -163,6 +174,7 @@ public class ItemImport {
             options.addOption("R", "resume", false,
                     "resume a failed import (add only)");
             options.addOption("q", "quiet", false, "don't display metadata");
+            options.addOption("x", "transactional", false, "");
 
             options.addOption("h", "help", false, "help");
 
@@ -174,6 +186,7 @@ public class ItemImport {
             String mapfile = null;
             String eperson = null; // db ID or email
             String[] collections = null; // db ID or handles
+            boolean isTransactional = false;
 
             if (line.hasOption('h')) {
                 HelpFormatter myhelp = new HelpFormatter();
@@ -246,6 +259,10 @@ public class ItemImport {
             if (line.hasOption('c')) // collections
             {
                 collections = line.getOptionValues('c');
+            }
+
+            if (line.hasOption('x')) {
+                isTransactional = true;
             }
 
             if (line.hasOption('R')) {
@@ -362,7 +379,7 @@ public class ItemImport {
             ItemImport myloader = new ItemImport();
 
             // create a context
-            Context c = new Context();
+            Context c = isTransactional ? new TransactionalContext() : new Context();
 
             // find the EPerson, assign to context
             EPerson myEPerson = null;
@@ -473,6 +490,15 @@ public class ItemImport {
 
             if (isTest) {
                 System.out.println("***End of Test Run***");
+            }
+
+            if (isTransactional) {
+                TransactionalContext tc = (TransactionalContext) c;
+                if (tc.wasAbortInvoked()) {
+                    tc.realAbort();
+                } else {
+                    tc.realComplete();
+                }
             }
         } finally {
             DSIndexer.setBatchProcessingMode(false);
@@ -627,29 +653,40 @@ public class ItemImport {
             Arrays.sort(dircontents, ComparatorUtils.naturalComparator());
 
             for (int i = 0; i < dircontents.length; i++) {
-                if (skipItems.containsKey(dircontents[i])) {
-                    System.out.println("Skipping import of " + dircontents[i]);
-                } else {
-                    Collection[] clist;
-                    if (directoryFileCollections) {
-                        String path = sourceDir + File.separatorChar + dircontents[i];
-                        try {
-                            Collection[] cols = processCollectionFile(c, path, "collections");
-                            if (cols == null) {
-                                System.out.println("No collections specified for item " + dircontents[i] + ". Skipping.");
+                String topLevelDir = dircontents[i];
+                String directory = sourceDir + File.separator + topLevelDir;
+                List<String> itemDirectories = collectItemDirectories(directory);
+                for (String itemDirectory : itemDirectories) {
+                    String directoryName = StringUtils.substringAfter(itemDirectory, File.separator);
+                    String relativePath = StringUtils.substringAfter(itemDirectory, sourceDir);
+                    if (skipItems.containsKey(directoryName)) {
+                        System.out.println("Skipping import of " + itemDirectory);
+                    } else {
+                        Collection[] clist;
+                        if (directoryFileCollections) {
+                            try {
+                                Collection[] cols = processCollectionFile(c, itemDirectory, "collections");
+                                if (cols == null) {
+                                    System.out.println("No collections specified for item " + directoryName + ". Skipping.");
+                                    continue;
+                                }
+                                clist = cols;
+                            } catch (IllegalArgumentException e) {
+                                System.out.println(e.getMessage() + " Skipping.");
                                 continue;
                             }
-                            clist = cols;
-                        } catch (IllegalArgumentException e) {
-                            System.out.println(e.getMessage() + " Skipping.");
-                            continue;
+                        } else {
+                            clist = mycollections;
                         }
-                    } else {
-                        clist = mycollections;
+                        Item item = addItem(c, mycollections, sourceDir, relativePath, mapOut, template);
+
+                        if(keepResults){
+                            result.add(item);
+                        }
+
+                        System.out.println(i + " " + itemDirectory);
+                        c.clearCache();
                     }
-                    result.add(addItem(c, mycollections, sourceDir, dircontents[i], mapOut, template));
-                    System.out.println(i + " " + dircontents[i]);
-                    c.clearCache();
                 }
             }
 
@@ -661,6 +698,24 @@ public class ItemImport {
         }
 
         return result;
+    }
+
+    private List<String> collectItemDirectories(String directory) {
+        List<String> itemDirectories = new ArrayList<>();
+        if (isItemDirectory(directory)) {
+            itemDirectories.add(directory);
+        } else {
+            String[] childDirectories = new File(directory).list(directoryFilter);
+            for (String childDirectory : childDirectories) {
+                List<String> childItemDirectories = collectItemDirectories(directory + File.separator + childDirectory);
+                itemDirectories.addAll(childItemDirectories);
+            }
+        }
+        return itemDirectories;
+    }
+
+    private boolean isItemDirectory(String directory) {
+        return new File(directory + File.separator + "dublin_core.xml").exists();
     }
 
     private void replaceItems(Context c, Collection[] mycollections,
@@ -1357,13 +1412,13 @@ public class ItemImport {
     private void processContentFileEntry(Context c, Item i, String path,
                                          String fileName, String bundleName, boolean primary) throws SQLException,
             IOException, AuthorizeException {
-        String fullpath = path + File.separatorChar + fileName;
+        String fullpath = FilenameUtils.concat(path, fileName);
+        fileName = fileName.substring(fileName.lastIndexOf(File.separator)+1);
 
         // get an input stream
         BufferedInputStream bis = new BufferedInputStream(new FileInputStream(
                 fullpath));
 
-        Bitstream bs = null;
         String newBundleName = bundleName;
 
         if (bundleName == null) {
@@ -1390,7 +1445,7 @@ public class ItemImport {
             }
 
             // now add the bitstream
-            bs = targetBundle.createBitstream(bis);
+            Bitstream bs = targetBundle.createBitstream(bis);
 
             bs.setName(fileName);
 
@@ -1430,7 +1485,6 @@ public class ItemImport {
         // TODO validate assetstore number
         // TODO make sure the bitstream is there
 
-        Bitstream bs = null;
         String newBundleName = bundleName;
 
         if (bundleName == null) {
@@ -1457,7 +1511,7 @@ public class ItemImport {
             }
 
             // now add the bitstream
-            bs = targetBundle.registerBitstream(assetstore, bitstreamPath);
+            Bitstream bs = targetBundle.registerBitstream(assetstore, bitstreamPath);
 
             // set the name to just the filename
             int iLastSlash = bitstreamPath.lastIndexOf('/');
