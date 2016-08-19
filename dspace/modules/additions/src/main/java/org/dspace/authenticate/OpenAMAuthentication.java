@@ -131,7 +131,9 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
     protected void loadGroups(Context context, Collection<String> roles, HttpServletRequest request, String email) throws SQLException, AuthorizeException {
     	
     	ArrayList<Integer> currentGroups = new ArrayList<>();
-    	
+
+        log.info("Number of OpenAM roles received for user " + email + " is " + CollectionUtils.size(roles));
+
     	for (String role : roles) {
     	    log.info("User " + email + " has OpenAM role " + role);
 
