@@ -37,9 +37,14 @@ public class MetadataBasedAccessControlIndexPlugin implements SolrServiceIndexPl
                 MetadataBasedAuthorizationService metadataBasedAuthorizationService = metadataBasedAuthorizationServiceList.get(0);
                 for (ResourcePolicy resourcePolicy: policies) {
                     List<Policy> policiesFromGroupAndMembers = retrievePoliciesFromGroupAndMembers(context, metadataBasedAuthorizationService, resourcePolicy);
-                    for(Policy policy:policiesFromGroupAndMembers){
-                        if(!document.containsKey(policy.getSolrIndexField())){
-                            document.addField(policy.getSolrIndexField(),policy.getSolrIndexValue(context,dso));
+
+                    for(Policy policy : policiesFromGroupAndMembers){
+                        String indexField = policy.getSolrIndexField();
+                        if(!document.containsKey(indexField)){
+
+                            for (String value : policy.getSolrIndexValues(context, dso)) {
+                                document.addField(indexField, value);
+                            }
                         }
                     }
                 }
