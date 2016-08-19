@@ -25,6 +25,8 @@ import org.dspace.eperson.Group;
 import org.dspace.utils.DSpace;
 
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -127,15 +129,23 @@ public class SolrServiceResourceRestrictionPlugin implements SolrServiceIndexPlu
     }
 
     private List<Policy> retrievePoliciesForGroupAndMembers(Context context, MetadataBasedAuthorizationService metadataBasedAuthorizationService, Group group) throws SQLException {
-        List<Group> memberGroups = Group.allMemberGroups(context, group);
+        EPerson currentUser = context.getCurrentUser();
+        if (currentUser != null) {
+            List<Group> groupsToCheck = Group.allMemberGroups(context, group);
+            groupsToCheck.add(group);
 
-        List<Policy> policiesFromGroup = metadataBasedAuthorizationService.retrievePoliciesForGroup(group);
+            List<Policy> policiesFromGroup = new LinkedList<>();
 
-        for (Group memberGroup : memberGroups) {
-            policiesFromGroup.addAll(metadataBasedAuthorizationService.retrievePoliciesForGroup(memberGroup));
+            for (Group memberGroup : groupsToCheck) {
+                if(memberGroup.isMember(currentUser)) {
+                    policiesFromGroup.addAll(metadataBasedAuthorizationService.retrievePoliciesForGroup(memberGroup));
+                }
+            }
+
+            return policiesFromGroup;
+        } else {
+            return Collections.emptyList();
         }
-
-        return policiesFromGroup;
     }
 
 }

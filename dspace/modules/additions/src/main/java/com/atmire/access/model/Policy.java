@@ -4,6 +4,8 @@ import org.dspace.content.*;
 import org.dspace.core.Context;
 import org.dspace.eperson.*;
 
+import java.util.List;
+
 /**
  * @author philip at atmire.com
  */
@@ -13,7 +15,7 @@ public interface Policy {
 
     String getSolrIndexField();
 
-    String getSolrIndexValue(Context context, DSpaceObject dSpaceObject);
+    List<String> getSolrIndexValues(Context context, DSpaceObject dSpaceObject);
 
     String getSolrQueryCriteria(EPerson ePerson);
 }

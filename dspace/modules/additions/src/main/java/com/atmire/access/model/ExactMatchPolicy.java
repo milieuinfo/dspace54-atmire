@@ -1,12 +1,21 @@
 package com.atmire.access.model;
 
 
-import javax.xml.bind.annotation.*;
-import org.apache.commons.lang3.*;
-import org.apache.log4j.*;
-import org.dspace.content.*;
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+import org.dspace.content.DSpaceObject;
+import org.dspace.content.Item;
+import org.dspace.content.Metadatum;
 import org.dspace.core.Context;
-import org.dspace.eperson.*;
+import org.dspace.eperson.EPerson;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author philip at atmire.com
@@ -101,24 +110,40 @@ public class ExactMatchPolicy implements Policy {
         return itemField.getValue()+"_keyword";
     }
 
-    public String getSolrIndexValue(Context context, DSpaceObject dSpaceObject) {
+    public List<String> getSolrIndexValues(Context context, DSpaceObject dSpaceObject) {
+        List<String> output = null;
+
         if (dSpaceObject != null) {
-            return dSpaceObject.getMetadata(itemField.getValue());
+            output = new LinkedList<>();
+            String[] elements = DSpaceObject.getElementsFilled(itemField.getValue());
+            List<Metadatum> metadata = dSpaceObject.getMetadata(elements[0], elements[1], elements[2], elements[3], Item.ANY);
+            for(Metadatum value : metadata) {
+                output.add(value.value);
+            }
         }
-        return null;
+
+        return output;
     }
 
     public String getSolrQueryCriteria(EPerson ePerson){
 
-        Metadatum[] metadata =getEpersonMetadata(ePerson);
-        String solrQueryCriteria="";
+        Metadatum[] metadata = getEpersonMetadata(ePerson);
+        StringBuilder solrQueryCriteria = new StringBuilder();
 
-        for(Metadatum metadatum : metadata){
-            if(StringUtils.isNotBlank(solrQueryCriteria)){
-                solrQueryCriteria+=" OR ";
+        if(ArrayUtils.isNotEmpty(metadata)) {
+            solrQueryCriteria.append("(");
+
+            for (Metadatum metadatum : metadata) {
+                if (solrQueryCriteria.length() > 1) {
+                    solrQueryCriteria.append(" OR ");
+                }
+
+                solrQueryCriteria.append(getSolrIndexField() + ":" + metadatum.value);
             }
-            solrQueryCriteria+= getSolrIndexField()+":"+metadatum.value;
+
+            solrQueryCriteria.append(")");
         }
-        return solrQueryCriteria;
+
+        return solrQueryCriteria.toString();
     }
 }
