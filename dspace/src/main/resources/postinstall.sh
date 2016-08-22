@@ -47,7 +47,11 @@ sed -i -e "s|%dspace.rest.url%|/${archief_name}/rest/api|g" ${tomcat_apps_dir}/d
 # The Ant script won't run properly as it loads this property through regexp property filtering.
 sed -i -e "s|^\(dspace.dir[[:blank:]]*=[[:blank:]]*\).*$|\1${tomcat_apps_dir}/dspace|g" ${tomcat_apps_dir}/dspace/config/dspace.cfg
 
+sed -i -e "s/%google_analytics_key%/${info_gaId}/g" ${tomcat_apps_dir}/dspace/config/dspace.cfg
+
 sed -i -e "s|\${sword.url}|http://${ZUIL}.milieuinfo.be:8080/${archief_name}/swordv2|g" ${tomcat_apps_dir}/dspace/config/modules/swordv2-server.cfg
+
+
 
 sed -i \
     -e "s|\${solr.server}|http://localhost:8080/${archief_name}/solr|g" \
