@@ -25,6 +25,12 @@ public class ComplianceCategoryRulesFactoryBean implements ComplianceCategoryRul
         this.builderMap = builderMap;
     }
 
+    private CategorySet categorySet;
+
+    private long lastCategorySetUpdate;
+
+    private int minutesBetweentCategorySetupdate;
+
     public CompliancePolicy createComplianceRulePolicy() throws ValidationRuleDefinitionException {
         CompliancePolicy output = new CompliancePolicy();
 
@@ -126,23 +132,34 @@ public class ComplianceCategoryRulesFactoryBean implements ComplianceCategoryRul
     }
 
     private CategorySet loadRuleDefinitionSet() throws ValidationRuleDefinitionException {
-        CategorySet result = null;
-        File file = new File(ConfigurationManager.getProperty("dspace.dir") + File.separator + "config" + File.separator + RULE_DEF_FILE);
+        // minutes to milliseconds
+        long millisecondsBetweentCategorySetupdate = minutesBetweentCategorySetupdate * 60 * 1000;
 
-        FileInputStream inputStream = null;
-        try {
-            inputStream = new FileInputStream(file);
-            result = marshaller.unmarshal(inputStream);
-            inputStream.close();
+        // update if null or if the last update was longer ago then the configured time between updates
+        if(categorySet == null || lastCategorySetUpdate < (System.currentTimeMillis() - millisecondsBetweentCategorySetupdate)) {
+            File file = new File(ConfigurationManager.getProperty("dspace.dir") + File.separator + "config" + File.separator + RULE_DEF_FILE);
 
-        } catch (FileNotFoundException e) {
-            throw new ValidationRuleDefinitionException("The validation rule definition file " + RULE_DEF_FILE + " was not found.", e);
-        } catch (IOException e) {
-            throw new ValidationRuleDefinitionException("There was a problem reading the validation rule definition file " + RULE_DEF_FILE + ".", e);
-        } catch (JAXBException e) {
-            throw new ValidationRuleDefinitionException("There was a problem unmarshalling the validation rule definitions from file " + RULE_DEF_FILE + ".", e);
+            FileInputStream inputStream = null;
+            try {
+                inputStream = new FileInputStream(file);
+                categorySet = marshaller.unmarshal(inputStream);
+                inputStream.close();
+
+                lastCategorySetUpdate = System.currentTimeMillis();
+
+            } catch (FileNotFoundException e) {
+                throw new ValidationRuleDefinitionException("The validation rule definition file " + RULE_DEF_FILE + " was not found.", e);
+            } catch (IOException e) {
+                throw new ValidationRuleDefinitionException("There was a problem reading the validation rule definition file " + RULE_DEF_FILE + ".", e);
+            } catch (JAXBException e) {
+                throw new ValidationRuleDefinitionException("There was a problem unmarshalling the validation rule definitions from file " + RULE_DEF_FILE + ".", e);
+            }
         }
 
-        return result;
+        return categorySet;
+    }
+
+    public void setMinutesBetweentCategorySetupdate(int minutesBetweentCategorySetupdate) {
+        this.minutesBetweentCategorySetupdate = minutesBetweentCategorySetupdate;
     }
 }

@@ -61,6 +61,8 @@
                 </entry>
             </map>
         </property>
+        <!-- minutes to wait between category set updates -->
+        <property name="minutesBetweentCategorySetupdate" value="30"/>
     </bean>
 
 </beans>
