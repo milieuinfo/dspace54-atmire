@@ -29,8 +29,7 @@ sed -i \
     -e "s/%openam.admin.role%/${openam_admin_role}/g" \
     -e "s@%openam.eid.token.goto.url%@${openam_eid_token_goto_url}@g" \
     ${tomcat_apps_dir}/*.xml \
-    ${tomcat_apps_dir}/cleanup.sh \
-    ${tomcat_apps_dir}/setenv.sh \
+    ${tomcat_apps_dir}/*.sh \
     ${tomcat_apps_dir}/ansible.properties \
     ${tomcat_apps_dir}/dspace/config/modules/authentication-openam.cfg
 
@@ -149,5 +148,6 @@ rm -rf /tmp/dspace-install-pkg.zip
 rm -rf /tmp/GeoLiteCity.dat.gz
 
 
+crontab -u tomcat ${tomcat_apps_dir}/crontab.sh
 
 
