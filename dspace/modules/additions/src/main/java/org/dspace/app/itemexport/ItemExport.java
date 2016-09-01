@@ -75,10 +75,10 @@ public class ItemExport
         options.addOption("i", "id", true, "ID or handle of thing to export");
         options.addOption("d", "dest", true, "destination where you want items to go");
         options.addOption("m", "migrate", false, "export for migration (remove handle and metadata that will be re-created in new system)");
-        options.addOption("n", "number", true, "sequence number to begin exporting items with (not with -g)");
+        options.addOption("n", "number", true, "sequence number to begin exporting items with. optional when with -g, otherwise mandatory");
         options.addOption("z", "zip", true, "export as zip file (specify filename e.g. export.zip)");
         options.addOption("h", "help", false, "help");
-        options.addOption("g", "generate-directory-structure", false, "Generate directory structure based on handle (not with -n)");
+        options.addOption("g", "generate-directory-structure", false, "Generate directory structure based on handle");
         options.addOption("c", "updated-items-only", false, "Only exports items that have been updated since the last time this option was used");
 
         CommandLine line = parser.parse(options, argv);
