@@ -1,16 +1,20 @@
 package com.atmire.ctask.general;
 
-import com.atmire.discovery.*;
-import java.io.*;
+import com.atmire.discovery.DiscoveryRelatedItemsService;
+import com.atmire.discovery.ItemMetadataRelation;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.dspace.content.DSpaceObject;
+import org.dspace.content.Item;
+import org.dspace.core.Constants;
+import org.dspace.core.Context;
+import org.dspace.curate.AbstractCurationTask;
+import org.dspace.curate.Curator;
+import org.dspace.discovery.SearchServiceException;
+import org.dspace.utils.DSpace;
+
+import java.io.IOException;
 import java.util.*;
-import java.util.Collection;
-import org.apache.commons.lang.*;
-import org.apache.log4j.*;
-import org.dspace.content.*;
-import org.dspace.core.*;
-import org.dspace.curate.*;
-import org.dspace.discovery.*;
-import org.dspace.utils.*;
 
 /**
  * @author philip at atmire.com
@@ -131,11 +135,12 @@ public class RelatedItemsCurationTask extends AbstractCurationTask {
 
     private void addMapToResults(Map<String, List<String>> map, StringBuilder sb, String message){
         for (String identifier : map.keySet()) {
-            sb.append(message + " \'" + identifier + "\", items: ").append("\n");
+            sb.append(message + " \"" + identifier + "\". The impacted items are: ").append("\n");
 
             for (String handle : map.get(identifier)) {
-                sb.append(handle).append("\n");
+                sb.append(" - ").append(handle).append("\n");
             }
+            sb.append("\n");
         }
     }
 }
