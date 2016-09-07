@@ -1,10 +1,12 @@
 package com.atmire.clamav;
 
-import com.atmire.consumer.*;
-import org.apache.log4j.*;
-import org.dspace.content.*;
-import org.dspace.core.*;
-import org.dspace.ctask.general.*;
+import com.atmire.consumer.AsynchronousConsumer;
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.log4j.Logger;
+import org.dspace.content.Item;
+import org.dspace.core.Constants;
+import org.dspace.core.Context;
+import org.dspace.ctask.general.ClamScan;
 
 /**
  * @author philip at atmire.com
@@ -30,9 +32,7 @@ public class AsynchronousVirusScanConsumer implements AsynchronousConsumer {
                     case Constants.ITEM:
                         Item item = Item.find(context, objectId);
 
-                        Bundle bundle = item.getBundles("ORIGINAL")[0];
-
-                        if (bundle != null && bundle.getBitstreams().length > 0) {
+                        if (item != null && ArrayUtils.isNotEmpty(item.getNonInternalBitstreams())) {
                             ClamScan clamScan = new ClamScan();
                             clamScan.init(null, null);
                             clamScan.perform(item);

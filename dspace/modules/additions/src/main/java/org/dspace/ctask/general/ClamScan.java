@@ -16,7 +16,6 @@ import org.apache.log4j.Logger;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.authorize.AuthorizeManager;
 import org.dspace.content.Bitstream;
-import org.dspace.content.Bundle;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
 import org.dspace.core.ConfigurationManager;
@@ -114,8 +113,7 @@ public class ClamScan extends AbstractCurationTask {
             item = (Item) dso;
 
             try {
-                Bundle bundle = item.getBundles("ORIGINAL")[0];
-                Collections.addAll(bitstreams, bundle.getBitstreams());
+                Collections.addAll(bitstreams, item.getNonInternalBitstreams());
             } catch (SQLException authE) {
                 throw new IOException(authE.getMessage(), authE);
             }
