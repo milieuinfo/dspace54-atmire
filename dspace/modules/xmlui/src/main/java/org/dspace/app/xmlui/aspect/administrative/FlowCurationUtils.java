@@ -67,19 +67,28 @@ public class FlowCurationUtils
                 map.put(parts[0].trim(), parts[1].trim());
             }
         }
-        String status = map.get(String.valueOf(curator.getStatus(taskName)));
-        if (status == null)
+        int status = curator.getStatus(taskName);
+        String statusMessage = map.get(String.valueOf(curator.getStatus(taskName)));
+        if (statusMessage == null)
         {
             // invalid = use string for 'other
-            status = map.get("other");
+            statusMessage = map.get("other");
         }
         String result = curator.getResult(taskName);
         FlowResult flowResult = new FlowResult();
         //set whether task succeeded or failed
-        flowResult.setOutcome(success); 
+
+        if(status==Curator.CURATE_SUCCESS && success){
+            flowResult.setOutcome(true);
+        }
+        else {
+            flowResult.setOutcome(false);
+        }
+
         if(result==null)
             result = "Nothing to do for this DSpace object.";
         //add in status message
+
         if(success)
         {   
             //@TODO: Ideally, all of this status information would be contained within a translatable I18N Message.
@@ -87,7 +96,7 @@ public class FlowCurationUtils
             // (See FlowResult.getMessage(), sitemap.xmap and NoticeTransformer)
             flowResult.setHeader(new Message("default", "Task: " + getUITaskName(taskName)));
             flowResult.setMessage(T_curate_success_notice);
-            flowResult.setCharacters("STATUS: " + status + ", RESULT: " + result); 
+            flowResult.setCharacters("STATUS: " + statusMessage + ", RESULT: " + result);
         }
         else
         {

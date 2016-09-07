@@ -23,7 +23,18 @@ public class RelatedItemsCurationTask extends AbstractCurationTask {
 
     private Set<ItemMetadataRelation> configuredRelations = new DSpace().getServiceManager().getServiceByName("item-relations", Set.class);
 
-    private List<String> results = new ArrayList<String>();
+    private int status;
+
+    private Map<String, List<String>> identifierWithoutItemMap;
+    private Map<String, List<String>> identifierWithMultipleItemMap;
+
+    @Override
+    public void init(Curator curator, String taskId) throws IOException {
+        super.init(curator, taskId);
+        status = Curator.CURATE_SUCCESS;
+        identifierWithoutItemMap = new HashMap<>();
+        identifierWithMultipleItemMap = new HashMap<>();
+    }
 
     @Override
     public int perform(DSpaceObject dso) throws IOException {
@@ -54,10 +65,12 @@ public class RelatedItemsCurationTask extends AbstractCurationTask {
                         }
 
                         if(matches == 0) {
-                            results.add("No item found for identifier " + identifier + " on item " + item.getHandle());
+                            addHandleToMap(identifierWithoutItemMap, identifier, item.getHandle());
+                            status = Curator.CURATE_FAIL;
                         }
                         if(matches > 1) {
-                            results.add("Multiple items found for identifier " + identifier + " on item " + item.getHandle());
+                            addHandleToMap(identifierWithMultipleItemMap, identifier, item.getHandle());
+                            status = Curator.CURATE_FAIL;
                         }
                     }
                 }
@@ -73,9 +86,8 @@ public class RelatedItemsCurationTask extends AbstractCurationTask {
         }
 
         processResults();
-        return Curator.CURATE_SUCCESS;
+        return status;
     }
-
 
     private List<Item> getRelatedItems(Context context, Item item) throws SearchServiceException {
         java.util.List<Item> relatedItems =new ArrayList<>();
@@ -99,11 +111,29 @@ public class RelatedItemsCurationTask extends AbstractCurationTask {
     {
         StringBuilder sb = new StringBuilder();
         sb.append("Related Items Report: \n----------------\n");
-        for(String result : results)
-        {
-            sb.append(result).append("\n");
-        }
+
+        addMapToResults(identifierWithoutItemMap, sb, "No item found for identifier");
+        addMapToResults(identifierWithMultipleItemMap, sb, "Multiple items found for identifier");
+
         setResult(sb.toString());
         report(sb.toString());
+    }
+
+    private void addHandleToMap(Map<String, List<String>> map, String identifier, String handle){
+        if(!map.containsKey(identifier)){
+            map.put(identifier, new ArrayList<String>());
+        }
+
+        map.get(identifier).add(handle);
+    }
+
+    private void addMapToResults(Map<String, List<String>> map, StringBuilder sb, String message){
+        for (String identifier : map.keySet()) {
+            sb.append(message + " \'" + identifier + "\" on these items: ").append("\n");
+
+            for (String handle : map.get(identifier)) {
+                sb.append(handle).append("\n");
+            }
+        }
     }
 }
