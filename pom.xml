@@ -300,6 +300,7 @@
                 <log.dir>${dspace.dir}/log</log.dir>
                 <db.maxidle>1</db.maxidle>
                 <xmlui.google.analytics.key>DUMMY_KEY</xmlui.google.analytics.key>
+                <virus-scan>false</virus-scan>
             </properties>
         </profile>
 

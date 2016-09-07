@@ -416,4 +416,11 @@
             <class>com.atmire.utils.RemoveItemsScript</class>
         </step>
     </command>
+    <command>
+        <name>check-bitstreams</name>
+        <description>Scan bitstreams for viruses and makes them inaccessible if they are infected.</description>
+        <step>
+            <class>com.atmire.scripts.bitstreamchecker.BitstreamChecker</class>
+        </step>
+    </command>
 </commands>
