@@ -4,12 +4,10 @@ import com.atmire.utils.helper.MetadataFieldString;
 import com.atmire.utils.subclasses.MetadatumExtended;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.log4j.helpers.ISO8601DateFormat;
 import org.dspace.content.Bitstream;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
 import org.dspace.content.Metadatum;
-import org.dspace.core.ConfigurationManager;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -207,16 +205,6 @@ public class MetadataUtils {
 
         // If we get this far, we have a match
         return true;
-    }
-
-    public static String getPII(DSpaceObject item) {
-        String piiMdField = ConfigurationManager.getProperty("elsevier-sciencedirect", "metadata.field.pii");
-        return MetadataUtils.getMetadataFirstValueAnyLanguage(item, piiMdField);
-    }
-
-    public static String getDOI(DSpaceObject item) {
-        String doiMdField = ConfigurationManager.getProperty("elsevier-sciencedirect", "metadata.field.doi");
-        return MetadataUtils.getMetadataFirstValueAnyLanguage(item, doiMdField);
     }
 
     public static final String virusCheckDateField = "bitstream.virus.lastScanDate";
