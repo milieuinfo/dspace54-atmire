@@ -56,6 +56,9 @@
                 <entry key="failOnPreconditionSuccess">
                     <bean class="com.atmire.sword.rules.factory.FailOnPreconditionSuccessRuleBuilder"/>
                 </entry>
+                <entry key="uniqueValueByAuthorityId">
+                    <bean class="com.atmire.sword.rules.factory.UniqueValueByAuthorityIdRuleBuilder"/>
+                </entry>
             </map>
         </property>
     </bean>

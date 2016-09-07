@@ -227,7 +227,9 @@
             </xsl:if>
 
 
-            <script src="//widgets.vlaanderen.be/widget/live/393c7f08dc9e4d7b8a044b3b56361516" type="text/javascript"> </script>
+            <span class="header">
+                <script src="//widgets.vlaanderen.be/widget/live/393c7f08dc9e4d7b8a044b3b56361516" type="text/javascript"> </script>
+            </span>
             <!-- The following javascript removes the default text of empty text areas when they are focused on or submitted -->
             <!-- There is also javascript to disable submitting a form when the 'enter' key is pressed. -->
             <script>
@@ -332,9 +334,11 @@
 
                   <div class="slider">
                       <div class="box content">
-                          <span id="archiefspan">ARCHIEF</span><br></br>
-                          <span>BELEIDSDOMEIN</span><br></br>
-                          <span id="lnespan">LEEFMILIEU, NATUUR EN ENERGIE</span>
+                          <span class="contentwrapper">
+                              <span id="archiefspan">ARCHIEF</span><br></br>
+                              <span>BELEIDSDOMEIN</span><br></br>
+                              <span id="lnespan">LEEFMILIEU, NATUUR EN ENERGIE</span>
+                          </span>
                       </div>
                   </div>
               </div>

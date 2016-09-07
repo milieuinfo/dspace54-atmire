@@ -2581,5 +2581,10 @@
     <message key="xmlui.dri2xhtml.METS-1.0.item-ispartof">Vlaanderen identifier</message>
     <message key="xmlui.dri2xhtml.METS-1.0.item-ispartof">Part of</message>
     <message key="xmlui.dri2xhtml.METS-1.0.item-replaces">Replaces</message>
+
+
+    <message key="xmlui.ChoiceLookupTransformer.field.vlaanderen_identifier.title">Select vlaanderen identifier</message>
+    <message key="xmlui.ChoiceLookupTransformer.field.vlaanderen_identifier.help">Enter vlaanderen identifier</message>
+
     <!-- end custom messages -->
 </catalogue>

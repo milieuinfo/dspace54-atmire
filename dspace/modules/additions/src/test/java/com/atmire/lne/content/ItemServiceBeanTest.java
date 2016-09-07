@@ -54,7 +54,7 @@ public class ItemServiceBeanTest {
                                      public boolean matches(final Object argument) {
                                          DiscoverQuery query = (DiscoverQuery) argument;
                                          return StringUtils.equals(ItemServiceBean.EXTERNAL_HANDLE_DISCOVERY_FIELD
-                                                 + "_keyword : " + "1234", query.getQuery())
+                                                 + "_keyword:\"1234\"", query.getQuery())
                                                  && Constants.ITEM == query.getDSpaceObjectFilter();
                                      }
                                  }
@@ -74,7 +74,7 @@ public class ItemServiceBeanTest {
                                      public boolean matches(final Object argument) {
                                          DiscoverQuery query = (DiscoverQuery) argument;
                                          return StringUtils.equals(ItemServiceBean.EXTERNAL_HANDLE_DISCOVERY_FIELD
-                                                 + "_keyword : " + "1234", query.getQuery())
+                                                 + "_keyword:\"1234\"", query.getQuery())
                                                  && Constants.ITEM == query.getDSpaceObjectFilter();
                                      }
                                  }

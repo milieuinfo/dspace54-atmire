@@ -1,0 +1,27 @@
+<dspace-dc-types>
+
+    <dspace-header>
+        <title>Bitstream metadata types</title>
+        <contributor.author>Atmire</contributor.author>
+    </dspace-header>
+
+    <dc-schema>
+        <name>bitstream</name>
+        <namespace>http://www.atmire.com/</namespace>
+    </dc-schema>
+
+    <dc-type>
+        <schema>bitstream</schema>
+        <element>virus</element>
+        <qualifier>lastScanDate</qualifier>
+        <scope_note>Datum van de laatste scan</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>bitstream</schema>
+        <element>virus</element>
+        <qualifier>lastScanResult</qualifier>
+        <scope_note>Resultaat van de laatste scan (CLEAN, VIRUS, FILE NOT FOUND of ERROR)</scope_note>
+    </dc-type>
+
+</dspace-dc-types>

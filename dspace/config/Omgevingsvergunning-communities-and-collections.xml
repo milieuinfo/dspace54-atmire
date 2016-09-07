@@ -1,0 +1,31 @@
+<import_structure>
+    <community>
+        <name>Archief Omgevingsvergunning</name>
+        <collection>
+            <name>DBA</name>
+            <administrators>
+                <subgroup>Administrator</subgroup>
+            </administrators>
+            <submitters>
+                <subgroup>Schrijven</subgroup>
+            </submitters>
+            <readers>
+                <subgroup>Lezen</subgroup>
+                <subgroup>DBA_Eigen_Dossiers_Lezen</subgroup>
+            </readers>
+        </collection>
+        <collection>
+            <name>OMV</name>
+            <administrators>
+                <subgroup>Administrator</subgroup>
+            </administrators>
+            <submitters>
+                <subgroup>Schrijven</subgroup>
+            </submitters>
+            <readers>
+                <subgroup>Lezen</subgroup>
+                <subgroup>OMV_Eigen_Dossiers_Lezen</subgroup>
+            </readers>
+        </collection>
+    </community>
+</import_structure>
