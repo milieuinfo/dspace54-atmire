@@ -2,10 +2,13 @@ package com.atmire.ctask.general;
 
 import com.atmire.discovery.DiscoveryRelatedItemsService;
 import com.atmire.discovery.ItemMetadataRelation;
+import java.sql.*;
+import java.util.Collection;
+import org.apache.commons.collections.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.dspace.content.DSpaceObject;
-import org.dspace.content.Item;
+import org.dspace.authorize.*;
+import org.dspace.content.*;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.curate.AbstractCurationTask;
@@ -29,8 +32,8 @@ public class RelatedItemsCurationTask extends AbstractCurationTask {
 
     private int status;
 
-    private Map<String, List<String>> identifierWithoutItemMap;
-    private Map<String, List<String>> identifierWithMultipleItemMap;
+    private Map<String, Set<String>> identifierWithoutItemMap;
+    private Map<String, Set<String>> identifierWithMultipleItemMap;
 
     @Override
     public void init(Curator curator, String taskId) throws IOException {
@@ -44,42 +47,16 @@ public class RelatedItemsCurationTask extends AbstractCurationTask {
     public int perform(DSpaceObject dso) throws IOException {
         if (dso.getType() == Constants.ITEM)
         {
+            Item item = (Item) dso;
+
             Context context = null;
             try {
                 context = new Context();
                 context.turnOffAuthorisationSystem();
 
-                Item item = (Item) dso;
-                List<Item> relatedItems = getRelatedItems(context, item);
-
-                for (ItemMetadataRelation configuredRelation : configuredRelations) {
-                    String identifier = item.getMetadata(configuredRelation.getSourceMetadataField());
-
-                    if(StringUtils.isNotBlank(identifier)) {
-                        List<String> matchingItemHandles = new ArrayList<>();
-
-                        for (Item relatedItem : relatedItems) {
-                            String metadata = relatedItem.getMetadata(configuredRelation.getDestinationMetadataField());
-
-                            if(identifier.equals(metadata)){
-
-                                matchingItemHandles.add(relatedItem.getHandle());
-                            }
-                        }
-
-                        if(matchingItemHandles.size() == 0) {
-                            addHandleToMap(identifierWithoutItemMap, identifier, item.getHandle());
-                            status = Curator.CURATE_FAIL;
-                        }
-                        if(matchingItemHandles.size() > 1) {
-                            for (String matchingItemHandle : matchingItemHandles) {
-                                addHandleToMap(identifierWithMultipleItemMap, identifier, matchingItemHandle);
-                            }
-
-                            status = Curator.CURATE_FAIL;
-                        }
-                    }
-                }
+                checkRelatedItemsExist(context, item);
+                checkIdentifierIsUnique(context, item);
+                
             } catch (Exception e) {
                 log.error(e.getMessage(),e);
                 return Curator.CURATE_ERROR;
@@ -88,15 +65,69 @@ public class RelatedItemsCurationTask extends AbstractCurationTask {
                     context.abort();
                 }
             }
-
         }
 
         processResults();
         return status;
     }
 
+    private void checkIdentifierIsUnique(Context context, Item item) throws SQLException, IOException, AuthorizeException {
+        for (ItemMetadataRelation configuredRelation : configuredRelations) {
+            String identifier = item.getMetadata(configuredRelation.getDestinationMetadataField());
+
+            if (StringUtils.isNotBlank(identifier) && !identifierWithMultipleItemMap.containsKey(identifier)) {
+                String[] split = StringUtils.split(configuredRelation.getDestinationMetadataField(),".");
+
+                String schema = split[0];
+                String element = split[1];
+                String qualifier = null;
+
+                if(split.length==3){
+                    qualifier = split[2];
+                }
+
+                ItemIterator itemIterator = Item.findByAuthorityValue(context, schema, element, qualifier, identifier);
+
+                HashSet<String> itemHandles = new HashSet<>();
+
+                while (itemIterator.hasNext()){
+                    Item next = itemIterator.next();
+                    itemHandles.add(next.getHandle());
+                }
+
+                identifierWithMultipleItemMap.put(identifier, itemHandles);
+            }
+        }
+    }
+
+    private void checkRelatedItemsExist(Context context, Item item) throws SearchServiceException {
+        List<Item> relatedItems = getRelatedItems(context, item);
+
+        for (ItemMetadataRelation configuredRelation : configuredRelations) {
+            String identifier = item.getMetadata(configuredRelation.getSourceMetadataField());
+
+            if (StringUtils.isNotBlank(identifier)) {
+                List<String> matchingItemHandles = new ArrayList<>();
+
+                for (Item relatedItem : relatedItems) {
+                    String metadata = relatedItem.getMetadata(configuredRelation.getDestinationMetadataField());
+
+                    if (identifier.equals(metadata)) {
+
+                        matchingItemHandles.add(relatedItem.getHandle());
+                    }
+                }
+
+                if (matchingItemHandles.size() == 0) {
+                    addHandleToMap(identifierWithoutItemMap, identifier, item.getHandle());
+                    status = Curator.CURATE_FAIL;
+                }
+            }
+        }
+    }
+
     private List<Item> getRelatedItems(Context context, Item item) throws SearchServiceException {
-        java.util.List<Item> relatedItems =new ArrayList<>();
+        java.util.List<Item> relatedItems = new ArrayList<>();
 
         Map<String, Collection> relatedMetadata = relatedItemsService.retrieveRelatedItems(item, context);
 
@@ -125,22 +156,26 @@ public class RelatedItemsCurationTask extends AbstractCurationTask {
         report(sb.toString());
     }
 
-    private void addHandleToMap(Map<String, List<String>> map, String identifier, String handle){
+    private void addHandleToMap(Map<String, Set<String>> map, String identifier, String handle){
         if(!map.containsKey(identifier)){
-            map.put(identifier, new ArrayList<String>());
+            map.put(identifier, new HashSet<String>());
         }
 
         map.get(identifier).add(handle);
     }
 
-    private void addMapToResults(Map<String, List<String>> map, StringBuilder sb, String message){
+    private void addMapToResults(Map<String, Set<String>> map, StringBuilder sb, String message){
         for (String identifier : map.keySet()) {
-            sb.append(message + " \"" + identifier + "\". The impacted items are: ").append("\n");
+            Set<String> itemHandles = map.get(identifier);
 
-            for (String handle : map.get(identifier)) {
-                sb.append(" - ").append(handle).append("\n");
+            if(CollectionUtils.isNotEmpty(itemHandles)) {
+                sb.append(message + " \"" + identifier + "\". The impacted items are: ").append("\n");
+
+                for (String handle : itemHandles) {
+                    sb.append(" - ").append(handle).append("\n");
+                }
+                sb.append("\n");
             }
-            sb.append("\n");
         }
     }
 }
