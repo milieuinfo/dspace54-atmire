@@ -27,7 +27,7 @@ public class OpenAMAuthenticateAction extends AbstractAction {
 		Request request = ObjectModelHelper.getRequest(objectModel);
 
 		try {
-			Context context = AuthenticationUtil.authenticateImplicit(objectModel);
+			Context context = AuthenticationUtil.authenticate(objectModel, null, null, null);
 
 			EPerson eperson = context.getCurrentUser();
 
