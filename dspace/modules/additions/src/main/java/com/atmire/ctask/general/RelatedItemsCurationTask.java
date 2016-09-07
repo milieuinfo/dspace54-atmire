@@ -48,28 +48,30 @@ public class RelatedItemsCurationTask extends AbstractCurationTask {
                 Item item = (Item) dso;
                 List<Item> relatedItems = getRelatedItems(context, item);
 
-                StringBuilder sb = new StringBuilder();
-
                 for (ItemMetadataRelation configuredRelation : configuredRelations) {
                     String identifier = item.getMetadata(configuredRelation.getSourceMetadataField());
 
                     if(StringUtils.isNotBlank(identifier)) {
-                        int matches = 0;
+                        List<String> matchingItemHandles = new ArrayList<>();
 
                         for (Item relatedItem : relatedItems) {
                             String metadata = relatedItem.getMetadata(configuredRelation.getDestinationMetadataField());
 
                             if(identifier.equals(metadata)){
-                                matches+=1;
+
+                                matchingItemHandles.add(relatedItem.getHandle());
                             }
                         }
 
-                        if(matches == 0) {
+                        if(matchingItemHandles.size() == 0) {
                             addHandleToMap(identifierWithoutItemMap, identifier, item.getHandle());
                             status = Curator.CURATE_FAIL;
                         }
-                        if(matches > 1) {
-                            addHandleToMap(identifierWithMultipleItemMap, identifier, item.getHandle());
+                        if(matchingItemHandles.size() > 1) {
+                            for (String matchingItemHandle : matchingItemHandles) {
+                                addHandleToMap(identifierWithMultipleItemMap, identifier, matchingItemHandle);
+                            }
+
                             status = Curator.CURATE_FAIL;
                         }
                     }
@@ -129,7 +131,7 @@ public class RelatedItemsCurationTask extends AbstractCurationTask {
 
     private void addMapToResults(Map<String, List<String>> map, StringBuilder sb, String message){
         for (String identifier : map.keySet()) {
-            sb.append(message + " \'" + identifier + "\" on these items: ").append("\n");
+            sb.append(message + " \'" + identifier + "\", items: ").append("\n");
 
             for (String handle : map.get(identifier)) {
                 sb.append(handle).append("\n");
