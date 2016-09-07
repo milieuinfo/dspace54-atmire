@@ -33,6 +33,9 @@ public class ExactMatchPolicy implements Policy {
     @XmlElement(name="epersonField")
     private EpersonField epersonField;
 
+    @XmlElement(name="epersonValueExtractor")
+    private EpersonValueExtractor epersonValueExtractor;
+
     public ItemField getItemField() {
         return itemField;
     }
@@ -47,6 +50,14 @@ public class ExactMatchPolicy implements Policy {
 
     public void setEpersonField(EpersonField epersonField) {
         this.epersonField = epersonField;
+    }
+
+    public EpersonValueExtractor getEpersonValueExtractor() {
+        return epersonValueExtractor;
+    }
+
+    public void setEpersonValueExtractor(EpersonValueExtractor epersonValueExtractor) {
+        this.epersonValueExtractor = epersonValueExtractor;
     }
 
     @Override
@@ -66,7 +77,8 @@ public class ExactMatchPolicy implements Policy {
                     log.debug("eperson field " + ePersonMetadatum.getField() + " with value " + ePersonMetadatum.value);
                 }
 
-                if(itemMetadatum.value.equals(ePersonMetadatum.value))
+                String epersonAclValue = epersonValueExtractor.extractEpersonAclValue(ePersonMetadatum.value);
+                if(itemMetadatum.value.equals(epersonAclValue))
                 {
                     return true;
                 }
@@ -134,11 +146,15 @@ public class ExactMatchPolicy implements Policy {
             solrQueryCriteria.append("(");
 
             for (Metadatum metadatum : metadata) {
-                if (solrQueryCriteria.length() > 1) {
-                    solrQueryCriteria.append(" OR ");
-                }
+                String epersonAclValue = epersonValueExtractor.extractEpersonAclValue(metadatum.value);
 
-                solrQueryCriteria.append(getSolrIndexField() + ":" + metadatum.value);
+                if(StringUtils.isNotBlank(epersonAclValue)) {
+                    if (solrQueryCriteria.length() > 1) {
+                        solrQueryCriteria.append(" OR ");
+                    }
+
+                    solrQueryCriteria.append(getSolrIndexField() + ":" + epersonAclValue);
+                }
             }
 
             solrQueryCriteria.append(")");
