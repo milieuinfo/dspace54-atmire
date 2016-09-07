@@ -22,11 +22,14 @@ public class OpenAMAclMetadataMapper implements OpenAMEpersonMetadataMapper {
     public void mapToMetadata(Context context, EPerson eperson, OpenAMUserdetails userdetails) {
         String attributeValue = userdetails.getAttributeValue(openAMAttribute);
 
+        log.info(String.format("User %s has following value for attribute %s (mapped to %s): %s", eperson.getEmail(), openAMAttribute,
+                epersonAclMetadataQualifier, StringUtils.trimToEmpty(attributeValue)));
+
         if(StringUtils.isNotBlank(attributeValue)) {
             try {
                 ePersonAclMetadataService.updateField(context,eperson, epersonAclMetadataQualifier, attributeValue);
             } catch (Exception e) {
-                log.error(e.getMessage(),e);
+                log.error(e.getMessage(), e);
             }
         }
     }
