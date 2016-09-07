@@ -95,7 +95,10 @@ public class RelatedItemsCurationTask extends AbstractCurationTask {
                     itemHandles.add(next.getHandle());
                 }
 
-                identifierWithMultipleItemMap.put(identifier, itemHandles);
+                if(itemHandles.size() > 1) {
+                    identifierWithMultipleItemMap.put(identifier, itemHandles);
+                    status = Curator.CURATE_FAIL;
+                }
             }
         }
     }
