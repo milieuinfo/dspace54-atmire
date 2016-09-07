@@ -1,15 +1,21 @@
 package com.atmire.access.model;
 
 
-import java.util.*;
-import java.util.regex.*;
-import javax.xml.bind.annotation.*;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.*;
-import org.dspace.content.*;
-import org.dspace.core.*;
-import org.dspace.eperson.*;
+import org.apache.log4j.Logger;
+import org.dspace.content.DSpaceObject;
+import org.dspace.content.Item;
+import org.dspace.content.Metadatum;
+import org.dspace.core.Context;
+import org.dspace.eperson.EPerson;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author philip at atmire.com
@@ -27,8 +33,8 @@ public class ExactMatchPolicy implements Policy {
     @XmlElement(name="epersonField")
     private EpersonField epersonField;
 
-    @XmlElement(name="epersonValueMatcher")
-    private EpersonValueMatcher epersonValueMatcher;
+    @XmlElement(name="epersonValueExtractor")
+    private EpersonValueExtractor epersonValueExtractor;
 
     public ItemField getItemField() {
         return itemField;
@@ -46,12 +52,12 @@ public class ExactMatchPolicy implements Policy {
         this.epersonField = epersonField;
     }
 
-    public EpersonValueMatcher getEpersonValueMatcher() {
-        return epersonValueMatcher;
+    public EpersonValueExtractor getEpersonValueExtractor() {
+        return epersonValueExtractor;
     }
 
-    public void setEpersonValueMatcher(EpersonValueMatcher epersonValueMatcher) {
-        this.epersonValueMatcher = epersonValueMatcher;
+    public void setEpersonValueExtractor(EpersonValueExtractor epersonValueExtractor) {
+        this.epersonValueExtractor = epersonValueExtractor;
     }
 
     @Override
@@ -71,7 +77,8 @@ public class ExactMatchPolicy implements Policy {
                     log.debug("eperson field " + ePersonMetadatum.getField() + " with value " + ePersonMetadatum.value);
                 }
 
-                if(itemMetadatum.value.equals(getEpersonMatchedValue(ePersonMetadatum.value)))
+                String epersonAclValue = epersonValueExtractor.extractEpersonAclValue(ePersonMetadatum.value);
+                if(itemMetadatum.value.equals(epersonAclValue))
                 {
                     return true;
                 }
@@ -95,18 +102,6 @@ public class ExactMatchPolicy implements Policy {
         }
 
         return ePerson.getMetadata(schema, element, qualifier, Item.ANY);
-    }
-
-    protected String getEpersonMatchedValue(String value) {
-        String matchedValue = null;
-
-        Pattern patt = Pattern.compile(epersonValueMatcher.getValue());
-        Matcher matcher = patt.matcher(value);
-        if (matcher.find()) {
-            matchedValue = matcher.group(1);
-        }
-
-        return matchedValue;
     }
 
     private Metadatum[] getItemMetadata(Item item) {
@@ -151,14 +146,14 @@ public class ExactMatchPolicy implements Policy {
             solrQueryCriteria.append("(");
 
             for (Metadatum metadatum : metadata) {
-                String epersonMatchedValue = getEpersonMatchedValue(metadatum.value);
+                String epersonAclValue = epersonValueExtractor.extractEpersonAclValue(metadatum.value);
 
-                if(StringUtils.isNotBlank(epersonMatchedValue)) {
+                if(StringUtils.isNotBlank(epersonAclValue)) {
                     if (solrQueryCriteria.length() > 1) {
                         solrQueryCriteria.append(" OR ");
                     }
 
-                    solrQueryCriteria.append(getSolrIndexField() + ":" + epersonMatchedValue);
+                    solrQueryCriteria.append(getSolrIndexField() + ":" + epersonAclValue);
                 }
             }
 

@@ -4,7 +4,7 @@
         <exact-match-policy>
             <itemField>dba.vvo.nis</itemField>
             <epersonField>eperson.acl.organisatieCodeGetypeerd</epersonField>
-            <epersonValueMatcher>NISCODE:(.*):.*</epersonValueMatcher>
+            <epersonValueExtractor>NISCODE:(.*):.*</epersonValueExtractor>
         </exact-match-policy>
 
     </group-policy>
@@ -14,7 +14,7 @@
         <exact-match-policy>
             <itemField>omv.vvo.nis</itemField>
             <epersonField>eperson.acl.organisatieCodeGetypeerd</epersonField>
-            <epersonValueMatcher>NISCODE:(.*):.*</epersonValueMatcher>
+            <epersonValueExtractor>NISCODE:(.*):.*</epersonValueExtractor>
         </exact-match-policy>
 
     </group-policy>
