@@ -20,9 +20,8 @@
 
     <context:annotation-config /> <!-- allows us to use spring annotations in beans -->
 
-    <bean id="openAMAclMetadataMapper" class="com.atmire.authenticate.OpenAMAclMetadataMapper">
+    <bean id="openAMOrganisatieCodeMapper" class="com.atmire.authenticate.OpenAMOrganisatieCodeMapper">
         <property name="epersonAclMetadataQualifier" value="organisatieCodeGetypeerd"/>
-        <property name="openAMAttribute" value="organisatieCodeGetypeerd"/>
         <property name="ePersonAclMetadataService" ref="ePersonAclMetadataServiceBean"/>
     </bean>
 
