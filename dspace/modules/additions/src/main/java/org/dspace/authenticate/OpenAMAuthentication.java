@@ -78,6 +78,7 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
                             context.commit();
                             context.restoreAuthSystemState();
                             context.setCurrentUser(eperson);
+
                             log.info(LogManager.getHeader(context, "login", "type=openam-interactive"));
                             return SUCCESS;
                         } else {
@@ -213,4 +214,5 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
 
         return new int[0];
     }
+
 }
