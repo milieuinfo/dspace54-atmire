@@ -29,6 +29,8 @@ public class ComplianceCategoryRulesFactoryBean implements ComplianceCategoryRul
 
     private long lastCategorySetUpdate;
 
+    private long categorySetDateModified;
+
     private int minutesBetweentCategorySetupdate;
 
     public CompliancePolicy createComplianceRulePolicy() throws ValidationRuleDefinitionException {
@@ -139,20 +141,24 @@ public class ComplianceCategoryRulesFactoryBean implements ComplianceCategoryRul
         if(categorySet == null || lastCategorySetUpdate < (System.currentTimeMillis() - millisecondsBetweentCategorySetupdate)) {
             File file = new File(ConfigurationManager.getProperty("dspace.dir") + File.separator + "config" + File.separator + RULE_DEF_FILE);
 
-            FileInputStream inputStream = null;
-            try {
-                inputStream = new FileInputStream(file);
-                categorySet = marshaller.unmarshal(inputStream);
-                inputStream.close();
+            if(file.lastModified() != categorySetDateModified) {
 
-                lastCategorySetUpdate = System.currentTimeMillis();
+                FileInputStream inputStream = null;
+                try {
+                    inputStream = new FileInputStream(file);
+                    categorySet = marshaller.unmarshal(inputStream);
+                    inputStream.close();
 
-            } catch (FileNotFoundException e) {
-                throw new ValidationRuleDefinitionException("The validation rule definition file " + RULE_DEF_FILE + " was not found.", e);
-            } catch (IOException e) {
-                throw new ValidationRuleDefinitionException("There was a problem reading the validation rule definition file " + RULE_DEF_FILE + ".", e);
-            } catch (JAXBException e) {
-                throw new ValidationRuleDefinitionException("There was a problem unmarshalling the validation rule definitions from file " + RULE_DEF_FILE + ".", e);
+                    lastCategorySetUpdate = System.currentTimeMillis();
+                    categorySetDateModified = file.lastModified();
+
+                } catch (FileNotFoundException e) {
+                    throw new ValidationRuleDefinitionException("The validation rule definition file " + RULE_DEF_FILE + " was not found.", e);
+                } catch (IOException e) {
+                    throw new ValidationRuleDefinitionException("There was a problem reading the validation rule definition file " + RULE_DEF_FILE + ".", e);
+                } catch (JAXBException e) {
+                    throw new ValidationRuleDefinitionException("There was a problem unmarshalling the validation rule definitions from file " + RULE_DEF_FILE + ".", e);
+                }
             }
         }
 
