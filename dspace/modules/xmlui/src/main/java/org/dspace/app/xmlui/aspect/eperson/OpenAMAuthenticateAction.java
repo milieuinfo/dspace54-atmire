@@ -32,6 +32,7 @@ public class OpenAMAuthenticateAction extends AbstractAction {
 			EPerson eperson = context.getCurrentUser();
 
 			if (eperson != null) {
+
 				// The user has successfully logged in
 				String redirectURL = request.getContextPath();
 

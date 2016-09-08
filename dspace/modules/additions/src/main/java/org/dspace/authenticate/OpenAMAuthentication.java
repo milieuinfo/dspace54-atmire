@@ -78,6 +78,7 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
                             context.commit();
                             context.restoreAuthSystemState();
                             context.setCurrentUser(eperson);
+
                             log.info(LogManager.getHeader(context, "login", "type=openam-interactive"));
                             return SUCCESS;
                         } else {
@@ -177,14 +178,18 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
         protected URI loginUrl;
 
         public String login(String username, String password) {
-            ClientRequest clientRequest = ClientRequest.create().build(
-                    UriBuilder.fromUri(this.loginUrl).queryParam(USERNAME_QUERY_PARAM, username)
-                            .queryParam(PASSWORD_QUERY_PARAM, password).build(), DEFAULT_METHOD);
             String token = null;
-            ClientResponse clientResponse = getClientResponse(clientRequest, getOAuthParameters(""), getOAuth2LeggedSecrets());
-            if (clientResponse.getStatus() == HttpServletResponse.SC_OK) {
-                token = getTokenId(clientResponse);
+
+            if(StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
+                ClientRequest clientRequest = ClientRequest.create().build(
+                        UriBuilder.fromUri(this.loginUrl).queryParam(USERNAME_QUERY_PARAM, username)
+                                .queryParam(PASSWORD_QUERY_PARAM, password).build(), DEFAULT_METHOD);
+                ClientResponse clientResponse = getClientResponse(clientRequest, getOAuthParameters(""), getOAuth2LeggedSecrets());
+                if (clientResponse.getStatus() == HttpServletResponse.SC_OK) {
+                    token = getTokenId(clientResponse);
+                }
             }
+
             return token;
         }
 
@@ -209,4 +214,5 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
 
         return new int[0];
     }
+
 }

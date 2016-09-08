@@ -81,24 +81,6 @@ public abstract class OpenAMImplicitAuthentication extends OpenAMAuthentication 
         return true;
     }
 
-    /**
-     * We are not changing user data...
-     *
-     * @param context
-     *            A valid DSpace context.
-     *
-     * @param request
-     *            The request that started this operation, or null if not
-     *            applicable.
-     *
-     * @return an empty array
-     *
-     * @throws java.sql.SQLException
-     */
-    @Override
-    public int[] getSpecialGroups(Context context, HttpServletRequest request) throws SQLException {
-        return new int[0];
-    }
 
     @Override
     public int authenticate(Context context,
