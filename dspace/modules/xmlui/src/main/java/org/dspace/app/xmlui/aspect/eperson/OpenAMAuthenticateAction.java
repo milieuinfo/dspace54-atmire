@@ -48,16 +48,6 @@ public class OpenAMAuthenticateAction extends AbstractAction {
 
 				httpResponse.sendRedirect(redirectURL);
 
-				// log the user out for the rest of this current request,
-				// however they will be reauthenticated
-				// fully when they come back from the redirect. This prevents
-				// caching problems where part of the
-				// request is preformed fore the user was authenticated and the
-				// other half after it succedded. This
-				// way the user is fully authenticated from the start of the
-				// request.
-				context.setCurrentUser(null);
-
 				return new HashMap();
 			}
 		} catch (Exception ex) {
