@@ -185,6 +185,7 @@ registration, forgotten passwords, editing profiles, and changing passwords.
 				<map:transform type="LDAPLogin"/>
 				<map:serialize type="xml"/>
 			</map:match>
+
 			<map:match pattern="openam-login">
 				<map:act type="OpenAMAuthenticateAction">
 					<!-- Login succeeded, request will be forwarded. -->
