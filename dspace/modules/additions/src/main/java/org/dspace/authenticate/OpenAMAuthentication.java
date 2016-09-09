@@ -2,7 +2,7 @@
  * The contents of this file are subject to the license and copyright
  * detailed in the LICENSE and NOTICE files at the root of the source
  * tree and available online at
- *
+ * <p>
  * http://www.dspace.org/license/
  */
 package org.dspace.authenticate;
@@ -12,6 +12,7 @@ import be.milieuinfo.security.openam.oauth.*;
 import com.atmire.authenticate.*;
 import com.atmire.eperson.acl.service.*;
 import com.sun.jersey.api.client.*;
+
 import java.net.*;
 import java.sql.*;
 import java.util.*;
@@ -58,12 +59,17 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
         if (!StringUtils.isBlank(ssoId)) {
             final OpenAMUserdetails userDetails = this.openAMIdentityService.getUserDetails(ssoId);
             if (userDetails != null) {
+
                 final String userName = userDetails.getUsername();
-            	
-            	final String email = userDetails.getAttributeValue("mail") == null ? userName : userDetails.getAttributeValue("mail");
+
+                final String email = userDetails.getAttributeValue("mail") == null ? userName : userDetails.getAttributeValue("mail");
                 final String sn = userDetails.getAttributeValue("sn") == null ? userName : userDetails.getAttributeValue("sn");
-                final String givenName = userDetails.getAttributeValue("givenName") ==null ? userName : userDetails.getAttributeValue("givenName");
-                
+                final String givenName = userDetails.getAttributeValue("givenName") == null ? userName : userDetails.getAttributeValue("givenName");
+
+                if (log.isDebugEnabled()) {
+                    logOpenAmUserDetails(email, userDetails);
+                }
+
                 final Collection<String> roles = userDetails.getRoles();
                 if (!StringUtils.isBlank(email)) {
                     try {
@@ -101,6 +107,28 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
         }
     }
 
+    private void logOpenAmUserDetails(final String email, final OpenAMUserdetails userDetails) {
+        Map<String, String[]> attributes = userDetails.getAttributes();
+
+        for (String key : attributes.keySet()) {
+            logDebugForUser(email, key + " " + Arrays.asList(attributes.get(key)).toString());
+        }
+        logDebugForUser(email, "getOrganisatieCode [" + userDetails.getOrganisatieCode() + "]");
+        logDebugForUser(email, "getOrganisatieCodeDetail [" + userDetails.getOrganisatieCodeDetail() + "]");
+        logDebugForUser(email, "getPersonId [" + userDetails.getPersonId() + "]");
+        logDebugForUser(email, "getUsername [" + userDetails.getUsername() + "]");
+        logDebugForUser(email, "getAuthLevel [" + userDetails.getAuthLevel() + "]");
+
+        Collection<String> roles = userDetails.getRoles();
+        for (String role : roles) {
+            logDebugForUser(email, "Role [" + role + "]");
+        }
+    }
+
+    private void logDebugForUser(final String email, final String s) {
+        log.debug("(User " + email + ") " + s);
+    }
+
     private void updateEpersonAclMetadata(Context context, EPerson eperson, OpenAMUserdetails userDetails) {
         try {
             ePersonAclMetadataService.removeAllFields(context, eperson);
@@ -127,36 +155,35 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
         return eperson;
     }
 
-    
 
     protected void loadGroups(Context context, Collection<String> roles, HttpServletRequest request, String email) throws SQLException, AuthorizeException {
-    	
-    	ArrayList<Integer> currentGroups = new ArrayList<>();
+
+        ArrayList<Integer> currentGroups = new ArrayList<>();
 
         log.info("Number of OpenAM roles received for user " + email + " is " + CollectionUtils.size(roles));
 
-    	for (String role : roles) {
-    	    log.info("User " + email + " has OpenAM role " + role);
+        for (String role : roles) {
+            log.info("User " + email + " has OpenAM role " + role);
 
-            if(dSpaceAdminRole.equals(role)) {
+            if (dSpaceAdminRole.equals(role)) {
                 final Group admins = Group.findByName(context, ADMINISTRATOR_GROUP);
 
                 if (admins != null) {
                     currentGroups.add(admins.getID());
 
-                    if(log.isDebugEnabled()) {
+                    if (log.isDebugEnabled()) {
                         log.debug("User " + email + " was added to the " + admins.getName() + " group");
                     }
 
                 } else {
                     log.warn(LogManager.getHeader(context, "login", "Could not add user as administrator (group not found)!"));
                 }
-            } else if(role.startsWith(dSpaceRolePrefix)) {
+            } else if (role.startsWith(dSpaceRolePrefix)) {
                 final String groupName = role.replaceAll(dSpaceRolePrefix, "");
                 final Group group = Group.findByName(context, groupName);
                 if (group != null) {
                     currentGroups.add(group.getID());
-                    if(log.isDebugEnabled()) {
+                    if (log.isDebugEnabled()) {
                         log.debug("User " + email + " was added to the " + group.getName() + " group");
                     }
                 } else {
@@ -165,12 +192,12 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
             }
         }
 
-        if(CollectionUtils.isNotEmpty(currentGroups)){
+        if (CollectionUtils.isNotEmpty(currentGroups)) {
             int[] groupIdArray = ArrayUtils.toPrimitive(currentGroups.toArray(new Integer[currentGroups.size()]));
             request.getSession().setAttribute(SPECIAL_GROUP_REQUEST_ATTRIBUTE, groupIdArray);
         }
     }
-    
+
     protected class DSpaceJerseyBasedOAuthIdentityService extends JerseyBasedOAuthIdentityService {
 
         private static final String LOGIN_URL = BASE_PATH + "/login";
@@ -180,7 +207,7 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
         public String login(String username, String password) {
             String token = null;
 
-            if(StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
+            if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
                 ClientRequest clientRequest = ClientRequest.create().build(
                         UriBuilder.fromUri(this.loginUrl).queryParam(USERNAME_QUERY_PARAM, username)
                                 .queryParam(PASSWORD_QUERY_PARAM, password).build(), DEFAULT_METHOD);
@@ -208,7 +235,7 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
     public int[] getSpecialGroups(Context context, HttpServletRequest request) throws SQLException {
         int[] groupIds = (int[]) request.getSession().getAttribute(SPECIAL_GROUP_REQUEST_ATTRIBUTE);
 
-        if(ArrayUtils.isNotEmpty(groupIds)){
+        if (ArrayUtils.isNotEmpty(groupIds)) {
             return groupIds;
         }
 
