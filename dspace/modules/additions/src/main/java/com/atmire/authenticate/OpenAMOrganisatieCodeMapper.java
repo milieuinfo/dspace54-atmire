@@ -31,6 +31,8 @@ public class OpenAMOrganisatieCodeMapper implements OpenAMEpersonMetadataMapper 
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
             }
+        } else {
+            log.warn("No organisation code received for user " + eperson.getEmail());
         }
     }
 
