@@ -321,7 +321,7 @@ public class AuthorizeManager {
                         groupsToCheck.add(rpGroup);
 
                         for (Group group : groupsToCheck) {
-                            if (group != null && e != null && group.isMember(e)) {
+                            if (group != null && e != null && (c.inSpecialGroup(group.getID()) || group.isMember(e))) {
                                 if (metadataBasedAuthorizationService.isAuthorized(c, e, group, o)) {
                                     if(log.isDebugEnabled()) {
                                         log.debug(e.getEmail() + " is a member of group " + group.getName() + "  and all metadata " +

@@ -137,7 +137,7 @@ public class SolrServiceResourceRestrictionPlugin implements SolrServiceIndexPlu
             List<Policy> policiesFromGroup = new LinkedList<>();
 
             for (Group memberGroup : groupsToCheck) {
-                if(memberGroup.isMember(currentUser)) {
+                if(context.inSpecialGroup(memberGroup.getID()) || memberGroup.isMember(currentUser)) {
                     policiesFromGroup.addAll(metadataBasedAuthorizationService.retrievePoliciesForGroup(memberGroup));
                 }
             }
