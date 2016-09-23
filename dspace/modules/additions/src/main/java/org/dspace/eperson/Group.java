@@ -321,6 +321,7 @@ public class Group extends DSpaceObject
      * check to see if an eperson is a direct member.
      * If the eperson is a member via a subgroup will be returned <code>false</code>
      *
+     * @param c the context of the eperson to check (for checking special groups)
      * @param e
      *            eperson to check membership
      */
@@ -409,9 +410,6 @@ public class Group extends DSpaceObject
             throws SQLException
     {
         List<Group> groupList = new ArrayList<Group>();
-
-        //Every group has "Anonymous" as a subgroup
-        groupList.add(Group.find(c, ANONYMOUS_ID));
 
         StringBuilder groupQuery = new StringBuilder();
         groupQuery.append("SELECT * FROM group2groupcache WHERE parent_id = ?");
