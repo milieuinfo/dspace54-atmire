@@ -233,10 +233,12 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
 
     @Override
     public int[] getSpecialGroups(Context context, HttpServletRequest request) throws SQLException {
-        int[] groupIds = (int[]) request.getSession().getAttribute(SPECIAL_GROUP_REQUEST_ATTRIBUTE);
+        if(request != null && request.getSession() != null) {
+            int[] groupIds = (int[]) request.getSession().getAttribute(SPECIAL_GROUP_REQUEST_ATTRIBUTE);
 
-        if (ArrayUtils.isNotEmpty(groupIds)) {
-            return groupIds;
+            if (ArrayUtils.isNotEmpty(groupIds)) {
+                return groupIds;
+            }
         }
 
         return new int[0];

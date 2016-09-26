@@ -1871,12 +1871,6 @@ public class ItemImport {
         //Close zip file
         zf.close();
 
-        if (sourceDirForZip != sourcedir) {
-            sourcedir = sourceDirForZip;
-            System.out.println("Set sourceDir using path inside of Zip: " + sourcedir);
-            log.info("Set sourceDir using path inside of Zip: " + sourcedir);
-        }
-
         return sourcedir;
     }
 

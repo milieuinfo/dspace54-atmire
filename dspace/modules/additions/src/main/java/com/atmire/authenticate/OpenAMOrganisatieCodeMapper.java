@@ -21,18 +21,20 @@ public class OpenAMOrganisatieCodeMapper implements OpenAMEpersonMetadataMapper 
     public void mapToMetadata(Context context, EPerson eperson, OpenAMUserdetails userdetails) {
         OrganisatieCode organisatieCode = userdetails.getOrganisatieCode();
 
-        if(organisatieCode != null) {
+        if(eperson != null && context != null) {
+            if (organisatieCode != null) {
 
-            log.info(String.format("User %s has following value for his organisation code (mapped to %s): %s", eperson.getEmail(),
-                    epersonAclMetadataQualifier, organisatieCode.toString()));
+                log.info(String.format("User %s has following value for his organisation code (mapped to %s): %s", eperson.getEmail(),
+                        epersonAclMetadataQualifier, organisatieCode.toString()));
 
-            try {
-                ePersonAclMetadataService.updateField(context,eperson, epersonAclMetadataQualifier, organisatieCode.toString());
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
+                try {
+                    ePersonAclMetadataService.updateField(context, eperson, epersonAclMetadataQualifier, organisatieCode.toString());
+                } catch (Exception e) {
+                    log.error(e.getMessage(), e);
+                }
+            } else {
+                log.warn("No organisation code received for user " + eperson.getEmail());
             }
-        } else {
-            log.warn("No organisation code received for user " + eperson.getEmail());
         }
     }
 
