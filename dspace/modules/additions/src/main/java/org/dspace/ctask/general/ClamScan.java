@@ -33,11 +33,12 @@ import java.net.SocketException;
 import java.sql.SQLException;
 import java.util.*;
 
-/**  ClamScan.java
- *
+/**
+ * ClamScan.java
+ * <p>
  * A set of methods to scan using the
  * clamav daemon.
- *
+ * <p>
  * TODO: add a check for the inputstream size limit
  *
  * @author wbossons
@@ -215,20 +216,12 @@ public class ClamScan extends AbstractCurationTask {
 
         Context context = this.context;
         boolean abortContext = false;
-        if (context == null) {
-            try {
+        try {
+            if (context == null) {
                 context = new Context();
                 abortContext = true;
-            } catch (SQLException | RuntimeException e) {
-                log.error("Could not update bitstream after the virus scan " + bitstream.getID(), e);
-            } finally {
-                if (abortContext) {
-                    context.abort();
-                }
             }
-        }
 
-        if (context != null) {
             context.turnOffAuthorisationSystem();
             for (PostScanOperation processor : processors) {
                 if (processor.isApplicable(inWorkflow, status)) {
@@ -236,21 +229,21 @@ public class ClamScan extends AbstractCurationTask {
                 }
             }
 
-            try {
-                if (commit) {
-                    bitstream.update();
-                    context.complete();
-                }
-                context.restoreAuthSystemState();
-            } catch (SQLException | AuthorizeException | RuntimeException e) {
-                log.error("Could not update bitstream after the virus scan " + bitstream.getID(), e);
-            } finally {
-                if (abortContext) {
-                    context.abort();
-                }
+            if (commit) {
+                bitstream.update();
+                context.complete();
+            }
+            context.restoreAuthSystemState();
+
+        } catch (SQLException | AuthorizeException | RuntimeException e) {
+            log.error("Could not update bitstream after the virus scan " + bitstream.getID(), e);
+        } finally {
+            if (abortContext) {
+                context.abort();
             }
         }
     }
+
 
     protected interface PostScanOperation {
         boolean isApplicable(boolean inWorkflow, int status);
@@ -306,8 +299,9 @@ public class ClamScan extends AbstractCurationTask {
     }
 
 
-    /** openSession
-     *
+    /**
+     * openSession
+     * <p>
      * This method opens a session.
      */
 
@@ -341,11 +335,10 @@ public class ClamScan extends AbstractCurationTask {
         }
     }
 
-    /** closeSession
-     *
+    /**
+     * closeSession
+     * <p>
      * Close the IDSESSION in CLAMD
-     *
-     *
      */
     private void closeSession() {
         if (dataOutputStream != null) {
@@ -363,8 +356,9 @@ public class ClamScan extends AbstractCurationTask {
         }
     }
 
-    /** scan
-     *
+    /**
+     * scan
+     * <p>
      * Issue the INSTREAM command and return the response to
      * and from the clamav daemon
      *
@@ -469,15 +463,14 @@ public class ClamScan extends AbstractCurationTask {
 
     @Override
     protected void setResult(String result) {
-        if(curator!=null) {
+        if (curator != null) {
             super.setResult(result);
         }
     }
 
     @Override
-    protected void report(String message)
-    {
-        if(curator!=null) {
+    protected void report(String message) {
+        if (curator != null) {
             super.report(message);
         }
 
