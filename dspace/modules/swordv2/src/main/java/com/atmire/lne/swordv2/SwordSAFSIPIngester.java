@@ -49,9 +49,6 @@ public class SwordSAFSIPIngester extends AbstractSwordContentIngester {
             if (numberOfItemsInZip <= 0) {
                 throw new DSpaceSwordException("Cannot import an empty package");
 
-            } else if (numberOfItemsInZip > 1) {
-                throw new DSpaceSwordException("A package should contain at most one item");
-
             } else {
                 ItemImport itemImport = new ItemImport(true);
                 List<Item> importedItems = itemImport.addItemsAtomic(context, new Collection[]{collection}, unzippedPackage.getAbsolutePath(), mapFile.getAbsolutePath(), true);
