@@ -1820,7 +1820,7 @@ public class ItemImport {
         while (entries.hasMoreElements()) {
             entry = entries.nextElement();
             if (entry.isDirectory()) {
-                if (!new File(zipDir + entry.getName()).mkdir()) {
+                if (!new File(zipDir + entry.getName()).mkdirs()) {
                     log.error("Unable to create contents directory: " + zipDir + entry.getName());
                 }
             } else {
