@@ -24,7 +24,7 @@ public class ExternalIdentifierAuthorityConsumer implements Consumer
 
     private Set<Integer> itemsToProcess = new HashSet<>();
 
-    private String authorityField = ConfigurationManager.getProperty("authority.externalidentifier.field");
+    private String authorityFields = ConfigurationManager.getProperty("authority.externalidentifier.field");
 
 
     public void initialize() throws Exception
@@ -50,21 +50,28 @@ public class ExternalIdentifierAuthorityConsumer implements Consumer
     {
         for (Integer itemId : itemsToProcess) {
             Item item = Item.find(context, itemId);
+            String [] configuredFields = authorityFields.split(",");
 
-            Metadatum[] identifierValues = item.getMetadataByMetadataString(authorityField);
-            if(ArrayUtils.isNotEmpty(identifierValues)) {
-                for (Metadatum identifierValue : identifierValues) {
-                    if(StringUtils.isBlank(identifierValue.authority)) {
-                        Metadatum newValue = identifierValue.copy();
-                        newValue.authority = newValue.value;
-                        item.replaceMetadataValue(identifierValue, newValue);
-                    }
-                }
+            for(String authorityField: configuredFields){
+                updateAuthorityValueBasedOnField(item, authorityField);
             }
-
+            item.update();
         }
 
         context.getDBConnection().commit();
+    }
+
+    private void updateAuthorityValueBasedOnField(Item item, String authorityField) {
+        Metadatum[] identifierValues = item.getMetadataByMetadataString(authorityField.trim());
+        if(ArrayUtils.isNotEmpty(identifierValues)) {
+            for (Metadatum identifierValue : identifierValues) {
+                if(StringUtils.isBlank(identifierValue.authority)) {
+                    Metadatum newValue = identifierValue.copy();
+                    newValue.authority = newValue.value;
+                    item.replaceMetadataValue(identifierValue, newValue);
+                }
+            }
+        }
     }
 
     public void finish(Context ctx) throws Exception
