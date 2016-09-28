@@ -37,7 +37,7 @@ public class UniqueValueByAuthorityId extends AbstractFieldCheckRule {
                         String qualifier = null;
 
                         if(split.length == 3){
-                            qualifier = split[3];
+                            qualifier = split[2];
                         }
 
                         ItemIterator itemIterator = Item.findByAuthorityValue(context, schema, element, qualifier, metadatum.authority);
