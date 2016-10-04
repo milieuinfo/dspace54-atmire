@@ -45,7 +45,7 @@ public class UniqueValueByAuthorityId extends AbstractFieldCheckRule {
 
                         if (itemIterator.hasNext()) {
                             valid = false;
-                            addViolationDescription("%s value is already used by item %s", fieldDescription, itemIterator.next().getHandle());
+                            addViolationDescription("The value for %s is already used by item %s", fieldDescription, itemIterator.next().getHandle());
                         }
                     }
                 }
