@@ -6,7 +6,7 @@ rsync_loop(){
     until [[ "$rsync_output" == "done" ]]
     do
        echo "Copying files from $1 to $2, please wait..."
-       results_rsync=$(rsync -av --bwlimit=5000 --perms --delete --delete-excluded --exclude '*~' $1/ $2)
+       results_rsync=$(rsync -av --bwlimit=10000 --perms --delete --delete-excluded --exclude '*~' $1/ $2)
        #echo "Result: $results_rsync"
        TEST=`echo "$results_rsync" | grep -v "bytes/sec" | grep -o "/" | sed q`
        #echo "Test: $TEST"
