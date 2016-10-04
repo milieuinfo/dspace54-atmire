@@ -15,7 +15,10 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.authorize.AuthorizeManager;
-import org.dspace.content.*;
+import org.dspace.content.Bitstream;
+import org.dspace.content.Community;
+import org.dspace.content.DSpaceObject;
+import org.dspace.content.Item;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
 import org.dspace.core.Email;
@@ -32,6 +35,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -511,7 +515,8 @@ public class ClamScan extends AbstractCurationTask {
             }
             String handle = parent.getHandle();
             email.addArgument(bitstreamName);
-            email.addArgument(timeStamp);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+            email.addArgument(dateFormat.format(timeStamp));
             email.addArgument(ConfigurationManager.getProperty("dspace.url")+"/handle/"+handle);
             email.addArgument(ConfigurationManager.getProperty("mail.helpdesk"));
 
