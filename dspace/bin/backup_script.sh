@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 
 rsync_loop(){
-    echo "rsync -av $1/* $2"
     rsync_output="start"
     set -e
     until [[ "$rsync_output" == "done" ]]
     do
-       results_rsync=$(rsync -av $1/* $2)
-       #echo $results_rsync
-       TEST=`echo "$results_rsync" | grep -o "data" | sed q`
-       if [[ "${TEST}" != "data" ]]
+       echo "Copying files from $1 to $2, please wait..."
+       results_rsync=$(rsync -av --bwlimit=5000 --perms --delete --delete-excluded --exclude '*~' $1/ $2)
+       #echo "Result: $results_rsync"
+       TEST=`echo "$results_rsync" | grep -v "bytes/sec" | grep -o "/" | sed q`
+       #echo "Test: $TEST"
+       if [[ -z $TEST ]]
        then
             rsync_output="done"
        fi

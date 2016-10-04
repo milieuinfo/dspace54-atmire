@@ -9,5 +9,7 @@ getproperty(){
 }
 
 PATH_TO_BACKUP=$(getproperty)
-#echo $PATH_TO_BACKUP
+
+echo "Starting backup of asset store directory $@ on `date +'%Y-%m-%d %H:%M:%S.%3N'`"
 backup_dir $@
+echo "Backup of asset store directory $@ completed on `date +'%Y-%m-%d %H:%M:%S.%3N'`"
