@@ -45,6 +45,10 @@
                 <field>vlaanderen.identifier</field>
                 <fieldDescription>vlaanderen.identifier</fieldDescription>
             </rule>
+            <rule type="uniqueValueByAuthorityId">
+                <field>dc.relation.replaces</field>
+                <fieldDescription>dc.relation.replaces</fieldDescription>
+            </rule>
         </rules>
     </category>
 </rule-categories>

@@ -16,14 +16,18 @@ import org.apache.log4j.Logger;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.authorize.AuthorizeManager;
 import org.dspace.content.Bitstream;
+import org.dspace.content.Community;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
+import org.dspace.core.Email;
+import org.dspace.core.I18nUtil;
 import org.dspace.curate.AbstractCurationTask;
 import org.dspace.curate.Curator;
 import org.dspace.curate.Suspendable;
 
+import javax.mail.MessagingException;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,6 +35,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -206,7 +211,8 @@ public class ClamScan extends AbstractCurationTask {
     private List<PostScanOperation> getPostScanOperations() {
         PostScanOperation[] array = {
                 new UpdateMetadata(),
-                new RemoveAllPolicies()
+                new RemoveAllPolicies(),
+                new SendMail()
         };
         return Arrays.asList(array);
     }
@@ -475,5 +481,47 @@ public class ClamScan extends AbstractCurationTask {
         }
 
         log.warn(message);
+    }
+
+    protected class SendMail implements PostScanOperation{
+
+        @Override
+        public boolean isApplicable(boolean inWorkflow, int status) {
+            return status == Curator.CURATE_FAIL;
+        }
+
+        @Override
+        public void process(Bitstream bitstream, Context context, int status) {
+            try {
+                sendVirusDetectedMail(bitstream);
+            } catch (IOException | SQLException | MessagingException e) {
+                log.error(e);
+            }
+        }
+
+        private void sendVirusDetectedMail(Bitstream bitstream) throws IOException, SQLException, MessagingException {
+            String bitstreamName = bitstream.getName();
+            Date timeStamp = new Date();
+            String adminMail = ConfigurationManager.getProperty("mail.admin");
+
+            DSpaceObject parent = bitstream.getParentObject();
+            while (parent.getParentObject() != null && !(parent.getParentObject() instanceof Item || parent.getParentObject() instanceof org.dspace.content.Collection || parent.getParentObject() instanceof Community)) {
+                parent = parent.getParentObject();
+            }
+            Email email = Email.getEmail(I18nUtil.getEmailFilename(I18nUtil.getDefaultLocale(), "virus_detected"));
+            email.addRecipient(adminMail);
+            if(parent instanceof Item){
+                email.addRecipient(((Item) parent).getSubmitter().getEmail());
+            }
+            String handle = parent.getHandle();
+            email.addArgument(bitstreamName);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+            email.addArgument(dateFormat.format(timeStamp));
+            email.addArgument(ConfigurationManager.getProperty("dspace.url")+"/handle/"+handle);
+            email.addArgument(ConfigurationManager.getProperty("mail.helpdesk"));
+
+            email.send();
+
+        }
     }
 }

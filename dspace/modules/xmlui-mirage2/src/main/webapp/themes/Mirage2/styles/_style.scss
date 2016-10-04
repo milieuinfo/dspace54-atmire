@@ -252,6 +252,10 @@ span.contentwrapper{
     margin-left:-45px;
 }
 
+.navbar-header ul {
+    margin-bottom: 0;
+}
+
 .navbar-header .navbar-toggle
 {
     background-color:white;
@@ -301,4 +305,12 @@ footer .iw2-wrapper.iw2-default-margin {
 
 span.header .iw2-wrapper.iw2-default-margin {
   padding-right: 0;
+}
+
+#aspect_general_NoticeTransformer_div_general-message {
+    padding-top: 0px;
+
+    p {
+        white-space: pre-wrap;
+    }
 }
