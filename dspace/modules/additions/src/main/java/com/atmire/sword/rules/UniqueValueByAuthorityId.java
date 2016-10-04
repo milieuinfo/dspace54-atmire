@@ -28,7 +28,8 @@ public class UniqueValueByAuthorityId extends AbstractFieldCheckRule {
                 context = new Context();
                 context.turnOffAuthorisationSystem();
 
-                if(StringUtils.isNotBlank(metadatum.authority)) {
+                // Reverted back to using value -> Authority isn't filled in at this point, the consumer that copies this value to the authority is only triggered after this step.
+                if(StringUtils.isNotBlank(metadatum.value)) {
                     String[] split = StringUtils.split(metadataFieldToCheck, ".");
 
                     if(split.length>=2) {
@@ -37,10 +38,10 @@ public class UniqueValueByAuthorityId extends AbstractFieldCheckRule {
                         String qualifier = null;
 
                         if(split.length == 3){
-                            qualifier = split[3];
+                            qualifier = split[2];
                         }
 
-                        ItemIterator itemIterator = Item.findByAuthorityValue(context, schema, element, qualifier, metadatum.authority);
+                        ItemIterator itemIterator = Item.findByAuthorityValue(context, schema, element, qualifier, metadatum.value);
 
                         if (itemIterator.hasNext()) {
                             valid = false;
