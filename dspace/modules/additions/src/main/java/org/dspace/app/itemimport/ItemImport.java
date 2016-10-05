@@ -380,6 +380,7 @@ public class ItemImport {
 
             // create a context
             Context c = isTransactional ? new TransactionalContext() : new Context();
+            c.setDispatcher("noindex");
 
             // find the EPerson, assign to context
             EPerson myEPerson = null;
@@ -902,6 +903,12 @@ public class ItemImport {
             }
 
             c.commit();
+
+            if (!(c instanceof TransactionalContext)) {
+                if (mapOut != null) {
+                    mapOut.flush();
+                }
+            }
 
             return myitem;
 
