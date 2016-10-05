@@ -7,58 +7,26 @@
  */
 package org.dspace.app.itemexport;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-
-import javax.mail.MessagingException;
-
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.PosixParser;
+import org.apache.commons.cli.*;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-
-import org.dspace.content.Bitstream;
-import org.dspace.content.Bundle;
+import org.dspace.content.*;
 import org.dspace.content.Collection;
-import org.dspace.content.Community;
-import org.dspace.content.Metadatum;
-import org.dspace.content.DSpaceObject;
-import org.dspace.content.Item;
-import org.dspace.content.ItemIterator;
-import org.dspace.content.MetadataSchema;
-import org.dspace.core.ConfigurationManager;
-import org.dspace.core.Constants;
-import org.dspace.core.Context;
-import org.dspace.core.I18nUtil;
-import org.dspace.core.LogManager;
-import org.dspace.core.Utils;
-import org.dspace.core.Email;
+import org.dspace.core.*;
 import org.dspace.eperson.EPerson;
 import org.dspace.handle.HandleManager;
+import org.dspace.storage.rdbms.DatabaseManager;
+import org.dspace.storage.rdbms.TableRowIterator;
+
+import javax.mail.MessagingException;
+import java.io.*;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * Item exporter to create simple AIPs for DSpace content. Currently exports
@@ -105,14 +73,13 @@ public class ItemExport
 
         options.addOption("t", "type", true, "type: COLLECTION or ITEM");
         options.addOption("i", "id", true, "ID or handle of thing to export");
-        options.addOption("d", "dest", true,
-                "destination where you want items to go");
+        options.addOption("d", "dest", true, "destination where you want items to go");
         options.addOption("m", "migrate", false, "export for migration (remove handle and metadata that will be re-created in new system)");
-        options.addOption("n", "number", true,
-                "sequence number to begin exporting items with");
+        options.addOption("n", "number", true, "sequence number to begin exporting items with. optional when with -g, otherwise mandatory");
         options.addOption("z", "zip", true, "export as zip file (specify filename e.g. export.zip)");
         options.addOption("h", "help", false, "help");
         options.addOption("g", "generate-directory-structure", false, "Generate directory structure based on handle");
+        options.addOption("c", "updated-items-only", false, "Only exports items that have been updated since the last time this option was used");
 
         CommandLine line = parser.parse(options, argv);
 
@@ -122,6 +89,7 @@ public class ItemExport
         int seqStart = -1;
         int myType = -1;
         boolean handleBasedDirectoryStructure = line.hasOption('g');
+        boolean updatedItemsOnly = line.hasOption('c');
 
         Item myItem = null;
         Collection mycollection = null;
@@ -130,10 +98,8 @@ public class ItemExport
         {
             HelpFormatter myhelp = new HelpFormatter();
             myhelp.printHelp("ItemExport\n", options);
-            System.out
-                    .println("\nfull collection: ItemExport -t COLLECTION -i ID -d dest -n number");
-            System.out
-                    .println("singleitem:       ItemExport -t ITEM -i ID -d dest -n number");
+            System.out.println("\nfull collection: ItemExport -t COLLECTION -i ID -d dest -n number");
+            System.out.println("singleitem:       ItemExport -t ITEM -i ID -d dest -n number");
 
             System.exit(0);
         }
@@ -189,29 +155,25 @@ public class ItemExport
         // now validate the args
         if (myType == -1)
         {
-            System.out
-                    .println("type must be either COLLECTION or ITEM (-h for help)");
+            System.out.println("type must be either COLLECTION or ITEM (-h for help)");
             System.exit(1);
         }
 
         if (destDirName == null)
         {
-            System.out
-                    .println("destination directory must be set (-h for help)");
+            System.out.println("destination directory must be set (-h for help)");
             System.exit(1);
         }
 
         if (!handleBasedDirectoryStructure && seqStart == -1)
         {
-            System.out
-                    .println("sequence start number must be set (-h for help)");
+            System.out.println("sequence start number must be set (-h for help)");
             System.exit(1);
         }
 
         if (myIDString == null)
         {
-            System.out
-                    .println("ID must be set to either a database ID or a handle (-h for help)");
+            System.out.println("ID must be set to either a database ID or a handle (-h for help)");
             System.exit(1);
         }
 
@@ -237,8 +199,7 @@ public class ItemExport
 
             if (myItem == null)
             {
-                System.out
-                        .println("Error, item cannot be found: " + myIDString);
+                System.out.println("Error, item cannot be found: " + myIDString);
             }
         }
         else
@@ -246,8 +207,7 @@ public class ItemExport
             if (myIDString.indexOf('/') != -1)
             {
                 // has a / must be a handle
-                mycollection = (Collection) HandleManager.resolveToObject(c,
-                        myIDString);
+                mycollection = (Collection) HandleManager.resolveToObject(c, myIDString);
 
                 // ensure it's a collection
                 if ((mycollection == null)
@@ -263,10 +223,16 @@ public class ItemExport
 
             if (mycollection == null)
             {
-                System.out.println("Error, collection cannot be found: "
-                        + myIDString);
+                System.out.println("Error, collection cannot be found: " + myIDString);
                 System.exit(1);
             }
+        }
+
+        DateFile dateFile;
+        if (updatedItemsOnly) {
+            dateFile = new DateFileBasic(destDirName);
+        } else {
+            dateFile = new DateFileNoop();
         }
 
         if (zip)
@@ -281,7 +247,7 @@ public class ItemExport
             else
             {
                 System.out.println("Exporting from collection: " + myIDString);
-                items = mycollection.getItems();
+                items = getItemsIterator(mycollection, dateFile, c);
             }
             exportAsZip(c, items, destDirName, zipFileName, seqStart, migrate, handleBasedDirectoryStructure);
         }
@@ -297,7 +263,7 @@ public class ItemExport
                 System.out.println("Exporting from collection: " + myIDString);
 
                 // it's a collection, so do a bunch of items
-                ItemIterator i = mycollection.getItems();
+                ItemIterator i = getItemsIterator(mycollection, dateFile, c);
                 try
                 {
                     exportItem(c, i, destDirName, seqStart, migrate, handleBasedDirectoryStructure);
@@ -311,15 +277,44 @@ public class ItemExport
                 }
             }
         }
+        dateFile.writeDate();
 
         c.complete();
+    }
+
+    private static ItemIterator getItemsIterator(Collection mycollection, DateFile dateFile, Context context)
+            throws SQLException {
+        ItemIterator items;
+        Date lastDate = dateFile.getLastDate();
+        if (lastDate != DateFile.NO_DATE) {
+            items = getItemsIterator(mycollection, lastDate, context);
+        } else {
+            items = mycollection.getItems();
+        }
+        return items;
+    }
+
+    private static ItemIterator getItemsIterator(Collection mycollection, Date lastDate, Context context) {
+            String myQuery = "SELECT item.* FROM item, collection2item WHERE "
+                    + "item.item_id=collection2item.item_id AND "
+                    + "collection2item.collection_id= ? "
+                    + "AND item.in_archive='1' "
+                    + "AND item.last_modified > ? ";
+
+        TableRowIterator rows = null;
+        try {
+            rows = DatabaseManager.queryTable(context, "item", myQuery, mycollection.getID(), new Timestamp(lastDate.getTime()));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return new ItemIterator(context, rows);
     }
 
     private static void exportItem(Context c, ItemIterator i, String destDirName, int seqStart, boolean migrate, boolean handleBasedDirectoryStructure)
             throws Exception {
         int mySequenceNumber = seqStart;
         String fullPath = destDirName;
-
 
 
         System.out.println("Beginning export");
@@ -331,17 +326,22 @@ public class ItemExport
             if (handleBasedDirectoryStructure) {
                 String subdir = new Subdir().getSubDir(next);
                 fullPath = destDirName + File.separator + subdir;
-                }
+            }
 
-            if (!new File(fullPath).mkdirs()) {
+            File directory = new File(fullPath);
+            if (handleBasedDirectoryStructure && directory.exists()) {
+                System.out.println(fullPath + " exists. Removing it.");
+                FileUtils.deleteDirectory(directory);
+            }
+            if (!directory.mkdirs()) {
                 System.out.println("Cannot create directories at " + fullPath);
             } else {
                 System.out.println("Exporting item to " + fullPath);
 
                 exportItem(c, next, fullPath, mySequenceNumber, migrate, handleBasedDirectoryStructure);
-            mySequenceNumber++;
+                mySequenceNumber++;
+            }
         }
-    }
     }
 
 
@@ -365,13 +365,11 @@ public class ItemExport
                 itemDir = new File(destDir + "/" + seqStart);
             }
 
-            System.out.println("Exporting Item " + myItem.getID() + " to "
-                    + itemDir);
+            System.out.println("Exporting Item " + myItem.getID() + " to " + itemDir);
 
             if (itemDir.exists())
             {
-                throw new Exception("Directory " + itemDir.getAbsolutePath()
-                        + " already exists!");
+                throw new Exception("Directory " + itemDir.getAbsolutePath() + " already exists!");
             }
 
             if (itemDir.mkdirs())
@@ -391,8 +389,7 @@ public class ItemExport
         }
         else
         {
-            throw new Exception("Error, directory " + destDirName
-                    + " doesn't exist!");
+            throw new Exception("Error, directory " + destDirName + " doesn't exist!");
         }
         if(seqStart % 100 == 0) {
             c.clearCache();
