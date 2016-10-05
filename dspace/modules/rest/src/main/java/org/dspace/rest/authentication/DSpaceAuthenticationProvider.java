@@ -62,7 +62,8 @@ public class DSpaceAuthenticationProvider implements AuthenticationProvider {
             if (implicitStatus == AuthenticationMethod.SUCCESS) {
                 log.info(LogManager.getHeader(context, "login", "type=implicit"));
                 addSpecialGroupsToGrantedAuthorityList(context, httpServletRequest, grantedAuthorities);
-                return new UsernamePasswordAuthenticationToken(name, password, grantedAuthorities);
+                return createAuthenticationToken(password, context, grantedAuthorities);
+
             } else {
                 int authenticateResult = authenticationService.authenticate(context, name, password, null, httpServletRequest);
                 if (AuthenticationMethod.SUCCESS == authenticateResult) {
@@ -71,14 +72,7 @@ public class DSpaceAuthenticationProvider implements AuthenticationProvider {
                     log.info(LogManager
                             .getHeader(context, "login", "type=explicit"));
 
-                    EPerson ePerson = context.getCurrentUser();
-                    if(ePerson != null && StringUtils.isNotBlank(ePerson.getEmail())) {
-                        return new UsernamePasswordAuthenticationToken(ePerson.getEmail(), password, grantedAuthorities);
-
-                    } else {
-                        log.info(LogManager.getHeader(context, "failed_login", "No eperson with an non-blank e-mail address found"));
-                        throw new BadCredentialsException("Login failed");
-                    }
+                    return createAuthenticationToken(password, context, grantedAuthorities);
                     
                 } else {
                     log.info(LogManager.getHeader(context, "failed_login", "email="
@@ -102,6 +96,17 @@ public class DSpaceAuthenticationProvider implements AuthenticationProvider {
         }
 
         return null;
+    }
+
+    private Authentication createAuthenticationToken(final String password, final Context context, final List<SimpleGrantedAuthority> grantedAuthorities) {
+        EPerson ePerson = context.getCurrentUser();
+        if(ePerson != null && StringUtils.isNotBlank(ePerson.getEmail())) {
+            return new UsernamePasswordAuthenticationToken(ePerson.getEmail(), password, grantedAuthorities);
+
+        } else {
+            log.info(LogManager.getHeader(context, "failed_login", "No eperson with an non-blank e-mail address found"));
+            throw new BadCredentialsException("Login failed");
+        }
     }
 
     protected void addSpecialGroupsToGrantedAuthorityList(Context context, HttpServletRequest httpServletRequest, List<SimpleGrantedAuthority> grantedAuthorities)
