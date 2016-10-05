@@ -18,46 +18,76 @@ import java.util.*;
 /**
  * Created by jonas - jonas@atmire.com on 13/05/16.
  */
-public class DiscoveryRelatedItemsServiceBean implements DiscoveryRelatedItemsService {
-
+public class DiscoveryRelatedItemsServiceBean extends AbstractDiscoveryRelatedItemsService implements DiscoveryRelatedItemsService {
 
     @Autowired
     private SearchService searchService;
 
     @Override
-    public Map<String, Collection> retrieveRelatedItems(Item item, Context context) throws SearchServiceException {
+    public Map<String, Collection> retrieveRelatedItems(Item item,Context context) throws SearchServiceException {
         Map<String, Collection> matchingItems = new HashMap<>();
 
-        Set<ItemMetadataRelation> configuredRelations = new DSpace().getServiceManager().getServiceByName("item-relations", Set.class);
-
-        Set<ItemMetadataRelation> searchableRelations= new LinkedHashSet<>();
-        for (ItemMetadataRelation metadatum : configuredRelations) {
-            searchableRelations.add(metadatum);
-            if(metadatum.isInverseRelationSearchEnabled()){
-                searchableRelations.add(metadatum.createInverseMetadataRelation());
-            }
-        }
+        Set<ItemMetadataRelation> searchableRelations = retrieveItemRelations(true,true);
 
         for (ItemMetadataRelation metadatum : searchableRelations) {
             DiscoverQuery query = new DiscoverQuery();
 
-            String destinationMetadataField = metadatum.getDestinationFilterFacet().getIndexFieldName()+"_keyword";
-            String sourceMetadataField = metadatum.getSourceMetadataField();
+            String queryString = createQueryStringFromRelation(item, metadatum);
 
-            String queryString = generateQueryString(item, sourceMetadataField, destinationMetadataField);
-
-            List<DSpaceObject> relatedItems=null;
-            if(StringUtils.isNotBlank(queryString)) {
-                query.setQuery(queryString);
-                query.addFilterQueries("-search.resourceid:" + item.getID(),"search.resourcetype:2");
-                DiscoverResult result = searchService.search(context, query);
-
-                relatedItems = result.getDspaceObjects();
-            }
+            List<DSpaceObject> relatedItems = retrieveRelatedItems(context, item, query, queryString);
 
             if (CollectionUtils.isNotEmpty(relatedItems)) {
-
                 matchingItems.put(metadatum.getSourceMetadataField()+"-TO-"+metadatum.getDestinationMetadataField(), relatedItems);
+            }
+        }
+        return matchingItems;
+    }
+
+    private List<DSpaceObject> retrieveRelatedItems(Context context, Item item, DiscoverQuery query, String queryString) throws SearchServiceException {
+        List<DSpaceObject> relatedItems=null;
+        if(StringUtils.isNotBlank(queryString)) {
+            query.setQuery(queryString);
+            if(item!=null){
+                query.addFilterQueries("-search.resourceid:" + item.getID());
+            }
+            query.addFilterQueries("search.resourcetype:2");
+            DiscoverResult result = searchService.search(context, query);
+
+            relatedItems = result.getDspaceObjects();
+        }
+        return relatedItems;
+    }
+
+    private String createQueryStringFromRelation(Item item, ItemMetadataRelation metadatum) {
+        String destinationMetadataField = metadatum.getDestinationFilterFacet().getIndexFieldName()+"_keyword";
+        String sourceMetadataField = metadatum.getSourceMetadataField();
+
+        return generateQueryString(item, sourceMetadataField, destinationMetadataField);
+    }
+
+    private String createQueryStringFromRelation(Metadatum[] metadataFromItem, ItemMetadataRelation metadatum) {
+        String destinationMetadataField = metadatum.getSourceFilterFacet().getIndexFieldName()+"_keyword";
+        return generateQueryString(metadataFromItem, destinationMetadataField);
+    }
+
+
+    public Map<String, Collection<Metadatum>> retrieveInverseRelationMetadata(Context context, Metadatum[] metadatum) throws SearchServiceException {
+
+        Set<ItemMetadataRelation> searchableRelations = retrieveItemRelations(false,false);
+
+        Map<String, Collection<Metadatum>> matchingItems= new HashMap<>();
+
+        for (ItemMetadataRelation itemRelation : searchableRelations) {
+            DiscoverQuery query = new DiscoverQuery();
+
+            String queryString = createQueryStringFromRelation(metadatum, itemRelation);
+
+            List<DSpaceObject> relatedItems = retrieveRelatedItems(context, null, query, queryString);
+
+            if (CollectionUtils.isNotEmpty(relatedItems)) {
+                for(DSpaceObject dspaceObject : relatedItems){
+                    matchingItems.put(itemRelation.getInverseRelationField(), Arrays.asList(dspaceObject.getMetadataByMetadataString(itemRelation.getDestinationMetadataField())));
+                }
             }
 
         }
@@ -66,6 +96,16 @@ public class DiscoveryRelatedItemsServiceBean implements DiscoveryRelatedItemsSe
 
     private String generateQueryString(Item item, String sourceMetadatafield, String destinationMetadatafield) {
         Metadatum[] metadataFromItem = item.getMetadataByMetadataString(sourceMetadatafield);
+        StringBuffer stringBuffer = new StringBuffer();
+        for (int  i = 0 ; i < metadataFromItem.length;i++){
+            stringBuffer.append(destinationMetadatafield+":\""+metadataFromItem[i].value+"\"");
+            if(i+1 < metadataFromItem.length){
+                stringBuffer.append(" OR ");
+            }
+        }
+        return stringBuffer.toString();
+    }
+    private String generateQueryString(Metadatum[] metadataFromItem, String destinationMetadatafield) {
         StringBuffer stringBuffer = new StringBuffer();
         for (int  i = 0 ; i < metadataFromItem.length;i++){
             stringBuffer.append(destinationMetadatafield+":\""+metadataFromItem[i].value+"\"");

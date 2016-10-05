@@ -7,12 +7,14 @@
  */
 package org.dspace.rest.common;
 
+import com.atmire.objectmanager.MetaDatumEnricherApplier;
 import org.apache.log4j.Logger;
 import org.dspace.app.util.MetadataExposure;
 import org.dspace.authorize.AuthorizeManager;
 import org.dspace.content.Bundle;
 import org.dspace.content.Metadatum;
 import org.dspace.core.Context;
+import org.dspace.utils.DSpace;
 
 import javax.ws.rs.WebApplicationException;
 import javax.xml.bind.annotation.XmlElement;
@@ -59,8 +61,9 @@ public class Item extends DSpaceObject {
         }
 
         if(expandFields.contains("metadata") || expandFields.contains("all")) {
-            metadata = new ArrayList<MetadataEntry>();
-            Metadatum[] dcvs = item.getMetadata(org.dspace.content.Item.ANY, org.dspace.content.Item.ANY, org.dspace.content.Item.ANY, org.dspace.content.Item.ANY);
+            metadata = new ArrayList<>();
+            MetaDatumEnricherApplier metaDatumEnricherApplier = new DSpace().getServiceManager().getServiceByName(MetaDatumEnricherApplier.class.getSimpleName(), MetaDatumEnricherApplier.class);
+            Metadatum[] dcvs = metaDatumEnricherApplier.enrichMetaData(item, context);
             for (Metadatum dcv : dcvs) {
                 if (!MetadataExposure.isHidden(context, dcv.schema, dcv.element, dcv.qualifier)) {
                     metadata.add(new MetadataEntry(dcv.getField(), dcv.value, dcv.language));

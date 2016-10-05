@@ -7,6 +7,7 @@
  */
 package org.dspace.app.xmlui.objectmanager;
 
+import com.atmire.objectmanager.MetaDatumEnricherApplier;
 import org.dspace.app.util.MetadataExposure;
 import org.dspace.app.util.Util;
 import org.dspace.app.xmlui.wing.AttributeMap;
@@ -24,6 +25,7 @@ import org.dspace.content.crosswalk.DisseminationCrosswalk;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
+import org.dspace.utils.DSpace;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.output.SAXOutputter;
@@ -265,6 +267,8 @@ public class ItemAdapter extends AbstractAdapter
             startElement(DIM,"dim",attributes);
 
             Metadatum[] dcvs = item.getMetadata(Item.ANY, Item.ANY, Item.ANY, Item.ANY);
+            dcvs = new DSpace().getServiceManager().getServiceByName(MetaDatumEnricherApplier.class.getSimpleName(), MetaDatumEnricherApplier.class).enrichMetaData(dcvs, context);
+
             for (Metadatum dcv : dcvs)
             {
                 if (!MetadataExposure.isHidden(context, dcv.schema, dcv.element, dcv.qualifier))

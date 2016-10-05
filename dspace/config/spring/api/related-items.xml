@@ -33,6 +33,7 @@
         <property name="destinationMetadataField" value="vlaanderen.identifier"/>
         <property name="sourceFilterFacet" ref="searchFilterIsPartOf"/>
         <property name="destinationFilterFacet" ref="searchFilterVlaanderenIdentifier"/>
+        <property name="inverseRelationField" value="dc.relation.haspart"/>
     </bean>
 
     <bean id="dc.relation.replaces-TO-vlaanderen.identifier" class="com.atmire.discovery.ItemMetadataRelation">
@@ -40,6 +41,7 @@
         <property name="destinationMetadataField" value="vlaanderen.identifier"/>
         <property name="sourceFilterFacet" ref="searchFilterReplaces"/>
         <property name="destinationFilterFacet" ref="searchFilterVlaanderenIdentifier"/>
+        <property name="inverseRelationField" value="dc.relation.isreplacedby"/>
     </bean>
 
 </beans>
