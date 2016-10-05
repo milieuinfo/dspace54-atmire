@@ -165,35 +165,47 @@ public class ItemExport
             exportItems(c);
         } catch (Throwable t) {
             sendErrorMail(adminMail, t);
-            System.out.println(t.getMessage());
+            logAndPrintError("Something went wrong when exporting the items: " + t.getMessage(), t);
             exportFailed=true;
         }
-        if(!exportFailed){
+
+        if(exportFailed){
+            c.abort();
+        } else {
             sendSuccessMail(adminMail);
+            c.complete();
             dateFile.writeDate();
         }
-
-        c.complete();
     }
 
     private void sendErrorMail(String adminMail, Throwable t) throws IOException, MessagingException {
-        Email email = Email.getEmail(I18nUtil.getEmailFilename(I18nUtil.getDefaultLocale(), "export_error_admin"));
-        email.addRecipient(adminMail);
-        email.addArgument(t.getMessage());
-        email.send();
+        if(updatedItemsOnly) {
+            Email email = Email.getEmail(I18nUtil.getEmailFilename(I18nUtil.getDefaultLocale(), "export_error_admin"));
+            email.addRecipient(adminMail);
+            email.addArgument(t.getMessage());
+            email.send();
+        }
     }
 
     private void sendSuccessMail(String adminMail) throws IOException, MessagingException {
-        Email email = Email.getEmail(I18nUtil.getEmailFilename(I18nUtil.getDefaultLocale(), "export_success_admin"));
-        email.addRecipient(adminMail);
-        email.addArgument(destDirName);
-        email.send();
+        if(updatedItemsOnly) {
+            Email email = Email.getEmail(I18nUtil.getEmailFilename(I18nUtil.getDefaultLocale(), "export_success_admin"));
+            email.addRecipient(adminMail);
+            email.addArgument(destDirName);
+            email.send();
+        }
     }
 
     private static void logAndPrintMessage(String message, Priority priority){
         System.out.println(message);
         log.log(priority, message);
     }
+
+    private static void logAndPrintError(final String message, final Throwable t) {
+        System.err.println(message);
+        log.error(message, t);
+    }
+
     private void validateArguments() {
         // now validate the args
         if (myType == -1)
@@ -386,11 +398,7 @@ public class ItemExport
             }
 
             File directory = new File(fullPath);
-            if (handleBasedDirectoryStructure && directory.exists()) {
-                logAndPrintMessage(fullPath + " exists. Removing it.", Level.INFO);
-                FileUtils.deleteDirectory(directory);
-            }
-            if (!directory.mkdirs()) {
+            if (!directory.exists() && !directory.mkdirs()) {
                 logAndPrintMessage("Cannot create directories at " + fullPath,Level.INFO);
             } else {
                 logAndPrintMessage("Exporting item to " + fullPath, Level.INFO);
@@ -399,6 +407,8 @@ public class ItemExport
                 mySequenceNumber++;
             }
         }
+
+        logAndPrintMessage("Export finished without problems", Level.INFO);
     }
 
 
@@ -422,12 +432,12 @@ public class ItemExport
                 itemDir = new File(destDir + "/" + seqStart);
             }
 
-            logAndPrintMessage("Exporting Item " + myItem.getID() + " to " + itemDir,Level.INFO);
-
-            if (itemDir.exists())
-            {
-                throw new Exception("Directory " + itemDir.getAbsolutePath() + " already exists!");
+            if (itemDir.exists()) {
+                logAndPrintMessage(itemDir.getAbsolutePath() + " exists. Removing it.", Level.INFO);
+                FileUtils.deleteDirectory(itemDir);
             }
+
+            logAndPrintMessage("Exporting Item " + myItem.getID() + " to " + itemDir,Level.INFO);
 
             if (itemDir.mkdirs())
             {

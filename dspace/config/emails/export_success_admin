@@ -4,12 +4,10 @@
 #
 # See org.dspace.core.Email for information on the format of this file.
 #
-Subject: DSpace - Item export requested is successful
-The export you requested from the repository was successful.
+Subject: DSpace - Daily Item export is successful
+The automatic daily export from the repository was successful.
 
 The information of the export is available at the provided directory
 {0}
 
-
-The DSpace Team
 
