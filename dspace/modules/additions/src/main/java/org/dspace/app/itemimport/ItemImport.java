@@ -67,15 +67,15 @@ import java.util.zip.ZipFile;
  * Import items into DSpace. The conventional use is upload files by copying
  * them. DSpace writes the item's bitstreams into its assetstore. Metadata is
  * also loaded to the DSpace database.
- * <P>
+ * <p>
  * A second use assumes the bitstream files already exist in a storage
  * resource accessible to DSpace. In this case the bitstreams are 'registered'.
  * That is, the metadata is loaded to the DSpace database and DSpace is given
  * the location of the file which is subsumed into DSpace.
- * <P>
+ * <p>
  * The distinction is controlled by the format of lines in the 'contents' file.
  * See comments in processContentsFile() below.
- * <P>
+ * <p>
  * Modified by David Little, UCSD Libraries 12/21/04 to
  * allow the registration of files (bitstreams) into DSpace.
  */
@@ -95,6 +95,8 @@ public class ItemImport {
     private static boolean template = false;
 
     private static boolean keepResults = false;
+
+    private static boolean ignoreValidation = false;
 
     private static PrintWriter mapOut = null;
 
@@ -175,6 +177,7 @@ public class ItemImport {
                     "resume a failed import (add only)");
             options.addOption("q", "quiet", false, "don't display metadata");
             options.addOption("x", "transactional", false, "");
+            options.addOption("v", "ignore-validation", false, "");
 
             options.addOption("h", "help", false, "help");
 
@@ -263,6 +266,10 @@ public class ItemImport {
 
             if (line.hasOption('x')) {
                 isTransactional = true;
+            }
+
+            if (line.hasOption('v')) {
+                ignoreValidation = true;
             }
 
             if (line.hasOption('R')) {
@@ -380,6 +387,7 @@ public class ItemImport {
 
             // create a context
             Context c = isTransactional ? new TransactionalContext() : new Context();
+            c.setDispatcher("noindex");
 
             // find the EPerson, assign to context
             EPerson myEPerson = null;
@@ -514,13 +522,14 @@ public class ItemImport {
     /**
      * In this method, the BTE is instantiated. THe workflow generates the DSpace files
      * necessary for the upload, and the default item import method is called
-     * @param c The contect
+     *
+     * @param c             The contect
      * @param mycollections The collections the items are inserted to
-     * @param sourceDir The filepath to the file to read data from
-     * @param mapFile The filepath to mapfile to be generated
+     * @param sourceDir     The filepath to the file to read data from
+     * @param mapFile       The filepath to mapfile to be generated
      * @param template
-     * @param inputType The type of the input data (bibtex, csv, etc.)
-     * @param workingDir The path to create temporary files (for command line or UI based)
+     * @param inputType     The type of the input data (bibtex, csv, etc.)
+     * @param workingDir    The path to create temporary files (for command line or UI based)
      * @throws Exception
      */
     private void addBTEItems(Context c, Collection[] mycollections,
@@ -656,10 +665,12 @@ public class ItemImport {
                 String topLevelDir = dircontents[i];
                 String directory = sourceDir + File.separator + topLevelDir;
                 List<String> itemDirectories = collectItemDirectories(directory);
+
                 for (String itemDirectory : itemDirectories) {
                     String directoryName = StringUtils.substringAfter(itemDirectory, File.separator);
                     String relativePath = StringUtils.substringAfter(itemDirectory, sourceDir);
-                    if (skipItems.containsKey(directoryName)) {
+
+                    if (skipItems.containsKey(relativePath)) {
                         System.out.println("Skipping import of " + itemDirectory);
                     } else {
                         Collection[] clist;
@@ -680,7 +691,7 @@ public class ItemImport {
                         }
                         Item item = addItem(c, mycollections, sourceDir, relativePath, mapOut, template);
 
-                        if(keepResults){
+                        if (keepResults) {
                             result.add(item);
                         }
 
@@ -690,6 +701,10 @@ public class ItemImport {
                 }
             }
 
+        } catch (Throwable t) {
+            System.err.println("The item import command encountered an error: " + t.getMessage());
+            System.err.println(t.getMessage());
+            c.abort();
         } finally {
             if (mapOut != null) {
                 mapOut.flush();
@@ -803,10 +818,11 @@ public class ItemImport {
 
     /**
      * item? try and add it to the archive.
+     *
      * @param mycollections - add item to these Collections.
-     * @param path - directory containing the item directories.
-     * @param itemname handle - non-null means we have a pre-defined handle already
-     * @param mapOut - mapfile we're writing
+     * @param path          - directory containing the item directories.
+     * @param itemname      handle - non-null means we have a pre-defined handle already
+     * @param mapOut        - mapfile we're writing
      */
     private Item addItem(Context c, Collection[] mycollections, String path,
                          String itemname, PrintWriter mapOut, boolean template) throws Exception {
@@ -894,7 +910,9 @@ public class ItemImport {
 
         try {
             //validateItem
-            validateItem(c, myitem);
+            if(!ignoreValidation) {
+                validateItem(c, myitem);
+            }
 
             // made it this far, if everything is fine, commit transaction
             if (mapOut != null) {
@@ -903,9 +921,15 @@ public class ItemImport {
 
             c.commit();
 
+            if (!(c instanceof TransactionalContext)) {
+                if (mapOut != null) {
+                    mapOut.flush();
+                }
+            }
+
             return myitem;
 
-        } catch(MetadataImportException ex) {
+        } catch (MetadataImportException ex) {
             deleteItem(c, myitem);
             c.commit();
 
@@ -1040,9 +1064,7 @@ public class ItemImport {
         NodeList dcNodes = XPathAPI.selectNodeList(document,
                 "/dublin_core/dcvalue");
 
-        if (!isQuiet) {
-            System.out.println("\tLoading dublin core from " + filename);
-        }
+        System.out.println("\tLoading dublin core from " + filename);
 
         // Add each one as a new format to the registry
         for (int i = 0; i < dcNodes.getLength(); i++) {
@@ -1103,8 +1125,8 @@ public class ItemImport {
      * which the item should be inserted. If it does not exist or it
      * is empty return null.
      *
-     * @param c The context
-     * @param path The path to the data directory for this item
+     * @param c        The context
+     * @param path     The path to the data directory for this item
      * @param filename The collections file filename. Should be "collections"
      * @return A list of collections in which to insert the item or null
      */
@@ -1400,6 +1422,7 @@ public class ItemImport {
 
     /**
      * each entry represents a bitstream....
+     *
      * @param c
      * @param i
      * @param path
@@ -1413,7 +1436,7 @@ public class ItemImport {
                                          String fileName, String bundleName, boolean primary) throws SQLException,
             IOException, AuthorizeException {
         String fullpath = FilenameUtils.concat(path, fileName);
-        fileName = fileName.substring(fileName.lastIndexOf(File.separator)+1);
+        fileName = fileName.substring(fileName.lastIndexOf(File.separator) + 1);
 
         // get an input stream
         BufferedInputStream bis = new BufferedInputStream(new FileInputStream(
@@ -1528,17 +1551,16 @@ public class ItemImport {
     }
 
     /**
-     *
      * Process the Options to apply to the Item. The options are tab delimited
-     *
+     * <p>
      * Options:
-     *      48217870-MIT.pdf        permissions: -r 'MIT Users'     description: Full printable version (MIT only)
-     *      permissions:[r|w]-['group name']
-     *      description: 'the description of the file'
-     *
-     *      where:
-     *          [r|w] (meaning: read|write)
-     *          ['MIT Users'] (the group name)
+     * 48217870-MIT.pdf        permissions: -r 'MIT Users'     description: Full printable version (MIT only)
+     * permissions:[r|w]-['group name']
+     * description: 'the description of the file'
+     * <p>
+     * where:
+     * [r|w] (meaning: read|write)
+     * ['MIT Users'] (the group name)
      *
      * @param c
      * @param myItem
@@ -1705,6 +1727,7 @@ public class ItemImport {
 
     /**
      * Lookup an attribute from a DOM node.
+     *
      * @param n
      * @param name
      * @return
@@ -1726,6 +1749,7 @@ public class ItemImport {
 
     /**
      * Return the String value of a Node.
+     *
      * @param node
      * @return
      */
@@ -1746,9 +1770,7 @@ public class ItemImport {
     /**
      * Load in the XML from file.
      *
-     * @param filename
-     *            the filename to load from
-     *
+     * @param filename the filename to load from
      * @return the DOM representation of the XML file
      */
     private static Document loadXML(String filename) throws IOException,
@@ -1761,6 +1783,7 @@ public class ItemImport {
 
     /**
      * Delete a directory and its child files and directories
+     *
      * @param path The directory to delete
      * @return Whether the deletion was successful or not
      */
@@ -1881,6 +1904,7 @@ public class ItemImport {
 
     /**
      * Generate a random filename based on current time
+     *
      * @param hidden: add . as a prefix to make the file hidden
      * @return the filename
      */
@@ -1894,14 +1918,14 @@ public class ItemImport {
     }
 
     /**
-     *
      * Given a local file or public URL to a zip file that has the Simple Archive Format, this method imports the contents to DSpace
-     * @param filepath The filepath to local file or the public URL of the zip file
+     *
+     * @param filepath         The filepath to local file or the public URL of the zip file
      * @param owningCollection The owning collection the items will belong to
      * @param otherCollections The collections the created items will be inserted to, apart from the owning one
-     * @param resumeDir In case of a resume request, the directory that containsthe old mapfile and data 
-     * @param inputType The input type of the data (bibtex, csv, etc.), in case of local file
-     * @param context The context
+     * @param resumeDir        In case of a resume request, the directory that containsthe old mapfile and data
+     * @param inputType        The input type of the data (bibtex, csv, etc.), in case of local file
+     * @param context          The context
      * @throws Exception
      */
     public static void processUIImport(String filepath, Collection owningCollection, String[] otherCollections, String resumeDir, String inputType, Context context) throws Exception {
@@ -2086,12 +2110,9 @@ public class ItemImport {
      * communication with email instead. Send a success email once the batch
      * import is complete
      *
-     * @param context
-     *            - the current Context
-     * @param eperson
-     *            - eperson to send the email to
-     * @param fileName
-     *            - the filepath to the mapfile created by the batch import
+     * @param context  - the current Context
+     * @param eperson  - eperson to send the email to
+     * @param fileName - the filepath to the mapfile created by the batch import
      * @throws MessagingException
      */
     public static void emailSuccessMessage(Context context, EPerson eperson,
@@ -2114,10 +2135,8 @@ public class ItemImport {
      * communication with email instead. Send an error email if the batch
      * import fails
      *
-     * @param eperson
-     *            - EPerson to send the error message to
-     * @param error
-     *            - the error message
+     * @param eperson - EPerson to send the error message to
+     * @param error   - the error message
      * @throws MessagingException
      */
     public static void emailErrorMessage(EPerson eperson, String error)

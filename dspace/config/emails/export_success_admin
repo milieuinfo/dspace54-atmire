@@ -1,0 +1,13 @@
+# Email sent to DSpace admin when they successfully export an item or collection.
+#
+# Parameters: {0} Directory where the export has been stored
+#
+# See org.dspace.core.Email for information on the format of this file.
+#
+Subject: DSpace - Daily Item export is successful
+The automatic daily export from the repository was successful.
+
+The information of the export is available at the provided directory
+{0}
+
+

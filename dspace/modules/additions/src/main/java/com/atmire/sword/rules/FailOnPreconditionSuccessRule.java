@@ -21,7 +21,7 @@ public class FailOnPreconditionSuccessRule extends AbstractComplianceRule {
 
     @Override
     protected boolean doValidationAndBuildDescription(Context context, Item item) {
-        addViolationDescription("failed on precondition for field %s fields", fieldDescription);
+        addViolationDescription("Fields %s cannot both have a value in the metadata set of one item", fieldDescription);
         return false;
     }
 }

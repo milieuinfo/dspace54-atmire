@@ -7,58 +7,28 @@
  */
 package org.dspace.app.itemexport;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-
-import javax.mail.MessagingException;
-
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.PosixParser;
+import org.apache.commons.cli.*;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-
-import org.dspace.content.Bitstream;
-import org.dspace.content.Bundle;
+import org.apache.log4j.Priority;
+import org.dspace.content.*;
 import org.dspace.content.Collection;
-import org.dspace.content.Community;
-import org.dspace.content.Metadatum;
-import org.dspace.content.DSpaceObject;
-import org.dspace.content.Item;
-import org.dspace.content.ItemIterator;
-import org.dspace.content.MetadataSchema;
-import org.dspace.core.ConfigurationManager;
-import org.dspace.core.Constants;
-import org.dspace.core.Context;
-import org.dspace.core.I18nUtil;
-import org.dspace.core.LogManager;
-import org.dspace.core.Utils;
-import org.dspace.core.Email;
+import org.dspace.core.*;
 import org.dspace.eperson.EPerson;
 import org.dspace.handle.HandleManager;
+import org.dspace.storage.rdbms.DatabaseManager;
+import org.dspace.storage.rdbms.TableRowIterator;
+
+import javax.mail.MessagingException;
+import java.io.*;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * Item exporter to create simple AIPs for DSpace content. Currently exports
@@ -83,7 +53,23 @@ import org.dspace.handle.HandleManager;
  */
 public class ItemExport
 {
-    private static final int SUBDIR_LIMIT = 0;
+    private boolean zip = false;
+    private boolean updatedItemsOnly;
+    private boolean migrate = false;
+    private boolean handleBasedDirectoryStructure = false;
+
+    private int seqStart = -1;
+    private int myType = -1;
+
+    private String typeString = null;
+    private String destDirName = null;
+    private String myIDString = null;
+    private String zipFileName = "";
+
+    private Collection mycollection = null;
+    private Item myItem = null;
+
+    private DateFile dateFile;
 
     /**
      * used for export download
@@ -93,47 +79,167 @@ public class ItemExport
     /** log4j logger */
     private static Logger log = Logger.getLogger(ItemExport.class);
 
-    /*
-	 *
-	 */
-    public static void main(String[] argv) throws Exception
-    {
+    public static void main(String[] argv) throws Exception {
+        ItemExport itemExport = new ItemExport();
+        itemExport.mainImpl(argv);
+    }
+
+    private void mainImpl(String[] argv) throws Exception{
+
         // create an options object and populate it
         CommandLineParser parser = new PosixParser();
 
-        Options options = new Options();
-
-        options.addOption("t", "type", true, "type: COLLECTION or ITEM");
-        options.addOption("i", "id", true, "ID or handle of thing to export");
-        options.addOption("d", "dest", true,
-                "destination where you want items to go");
-        options.addOption("m", "migrate", false, "export for migration (remove handle and metadata that will be re-created in new system)");
-        options.addOption("n", "number", true,
-                "sequence number to begin exporting items with");
-        options.addOption("z", "zip", true, "export as zip file (specify filename e.g. export.zip)");
-        options.addOption("h", "help", false, "help");
-        options.addOption("g", "generate-directory-structure", false, "Generate directory structure based on handle");
+        Options options = createOptions();
 
         CommandLine line = parser.parse(options, argv);
 
-        String typeString = null;
-        String destDirName = null;
-        String myIDString = null;
-        int seqStart = -1;
-        int myType = -1;
-        boolean handleBasedDirectoryStructure = line.hasOption('g');
 
-        Item myItem = null;
-        Collection mycollection = null;
+        handleBasedDirectoryStructure = line.hasOption('g');
+        updatedItemsOnly = line.hasOption('c');
 
+
+        parseCommandLineOptions(options, line);
+        validateArguments();
+
+
+        Context c = new Context();
+        c.setIgnoreAuthorization(true);
+
+        if (myType == Constants.ITEM)
+        {
+            // first, is myIDString a handle?
+            if (myIDString.indexOf('/') != -1)
+            {
+                myItem = (Item) HandleManager.resolveToObject(c, myIDString);
+
+                if ((myItem == null) || (myItem.getType() != Constants.ITEM))
+                {
+                    myItem = null;
+                }
+            }
+            else
+            {
+                myItem = Item.find(c, Integer.parseInt(myIDString));
+            }
+
+            if (myItem == null)
+            {
+                logAndPrintMessage("Error, item cannot be found: " + myIDString, Level.ERROR);
+            }
+        }
+        else
+        {
+            if (myIDString.indexOf('/') != -1)
+            {
+                // has a / must be a handle
+                mycollection = (Collection) HandleManager.resolveToObject(c, myIDString);
+
+                // ensure it's a collection
+                if ((mycollection == null)
+                        || (mycollection.getType() != Constants.COLLECTION))
+                {
+                    mycollection = null;
+                }
+            }
+            else if (myIDString != null)
+            {
+                mycollection = Collection.find(c, Integer.parseInt(myIDString));
+            }
+
+            if (mycollection == null)
+            {
+                logAndPrintMessage("Error, collection cannot be found: " + myIDString, Level.ERROR);
+                System.exit(1);
+            }
+        }
+
+        if (updatedItemsOnly) {
+            dateFile = new DateFileBasic(destDirName);
+        } else {
+            dateFile = new DateFileNoop();
+        }
+        boolean exportFailed = false;
+        String adminMail = ConfigurationManager.getProperty("mail.admin");
+
+        try {
+            exportItems(c);
+        } catch (Throwable t) {
+            sendErrorMail(adminMail, t);
+            logAndPrintError("Something went wrong when exporting the items: " + t.getMessage(), t);
+            exportFailed=true;
+        }
+
+        if(exportFailed){
+            c.abort();
+        } else {
+            sendSuccessMail(adminMail);
+            c.complete();
+            dateFile.writeDate();
+        }
+    }
+
+    private void sendErrorMail(String adminMail, Throwable t) throws IOException, MessagingException {
+        if(updatedItemsOnly) {
+            Email email = Email.getEmail(I18nUtil.getEmailFilename(I18nUtil.getDefaultLocale(), "export_error_admin"));
+            email.addRecipient(adminMail);
+            email.addArgument(t.getMessage());
+            email.send();
+        }
+    }
+
+    private void sendSuccessMail(String adminMail) throws IOException, MessagingException {
+        if(updatedItemsOnly) {
+            Email email = Email.getEmail(I18nUtil.getEmailFilename(I18nUtil.getDefaultLocale(), "export_success_admin"));
+            email.addRecipient(adminMail);
+            email.addArgument(destDirName);
+            email.send();
+        }
+    }
+
+    private static void logAndPrintMessage(String message, Priority priority){
+        System.out.println(message);
+        log.log(priority, message);
+    }
+
+    private static void logAndPrintError(final String message, final Throwable t) {
+        System.err.println(message);
+        log.error(message, t);
+    }
+
+    private void validateArguments() {
+        // now validate the args
+        if (myType == -1)
+        {
+            System.out.println("type must be either COLLECTION or ITEM (-h for help)");
+            System.exit(1);
+        }
+
+        if (destDirName == null)
+        {
+            System.out.println("destination directory must be set (-h for help)");
+            System.exit(1);
+        }
+
+        if (!handleBasedDirectoryStructure && seqStart == -1)
+        {
+            System.out.println("sequence start number must be set (-h for help)");
+            System.exit(1);
+        }
+
+        if (myIDString == null)
+        {
+            System.out.println("ID must be set to either a database ID or a handle (-h for help)");
+            System.exit(1);
+        }
+    }
+
+    private void parseCommandLineOptions(Options options, CommandLine line) {
         if (line.hasOption('h'))
         {
             HelpFormatter myhelp = new HelpFormatter();
             myhelp.printHelp("ItemExport\n", options);
-            System.out
-                    .println("\nfull collection: ItemExport -t COLLECTION -i ID -d dest -n number");
-            System.out
-                    .println("singleitem:       ItemExport -t ITEM -i ID -d dest -n number");
+            System.out.println("\nfull collection: ItemExport -t COLLECTION -i ID -d dest -n number");
+            System.out.println("singleitem:       ItemExport -t ITEM -i ID -d dest -n number");
 
             System.exit(0);
         }
@@ -172,116 +278,48 @@ public class ItemExport
             }
         }
 
-        boolean migrate = false;
         if (line.hasOption('m')) // number
         {
             migrate = true;
         }
 
-        boolean zip = false;
-        String zipFileName = "";
         if (line.hasOption('z'))
         {
             zip = true;
             zipFileName = line.getOptionValue('z');
         }
+    }
 
-        // now validate the args
-        if (myType == -1)
-        {
-            System.out
-                    .println("type must be either COLLECTION or ITEM (-h for help)");
-            System.exit(1);
-        }
+    private Options createOptions() {
+        Options options = new Options();
 
-        if (destDirName == null)
-        {
-            System.out
-                    .println("destination directory must be set (-h for help)");
-            System.exit(1);
-        }
+        options.addOption("t", "type", true, "type: COLLECTION or ITEM");
+        options.addOption("i", "id", true, "ID or handle of thing to export");
+        options.addOption("d", "dest", true, "destination where you want items to go");
+        options.addOption("m", "migrate", false, "export for migration (remove handle and metadata that will be re-created in new system)");
+        options.addOption("n", "number", true, "sequence number to begin exporting items with. optional when with -g, otherwise mandatory");
+        options.addOption("z", "zip", true, "export as zip file (specify filename e.g. export.zip)");
+        options.addOption("h", "help", false, "help");
+        options.addOption("g", "generate-directory-structure", false, "Generate directory structure based on handle");
+        options.addOption("c", "updated-items-only", false, "Only exports items that have been updated since the last time this option was used");
+        return options;
+    }
 
-        if (!handleBasedDirectoryStructure && seqStart == -1)
-        {
-            System.out
-                    .println("sequence start number must be set (-h for help)");
-            System.exit(1);
-        }
 
-        if (myIDString == null)
-        {
-            System.out
-                    .println("ID must be set to either a database ID or a handle (-h for help)");
-            System.exit(1);
-        }
-
-        Context c = new Context();
-        c.setIgnoreAuthorization(true);
-
-        if (myType == Constants.ITEM)
-        {
-            // first, is myIDString a handle?
-            if (myIDString.indexOf('/') != -1)
-            {
-                myItem = (Item) HandleManager.resolveToObject(c, myIDString);
-
-                if ((myItem == null) || (myItem.getType() != Constants.ITEM))
-                {
-                    myItem = null;
-                }
-            }
-            else
-            {
-                myItem = Item.find(c, Integer.parseInt(myIDString));
-            }
-
-            if (myItem == null)
-            {
-                System.out
-                        .println("Error, item cannot be found: " + myIDString);
-            }
-        }
-        else
-        {
-            if (myIDString.indexOf('/') != -1)
-            {
-                // has a / must be a handle
-                mycollection = (Collection) HandleManager.resolveToObject(c,
-                        myIDString);
-
-                // ensure it's a collection
-                if ((mycollection == null)
-                        || (mycollection.getType() != Constants.COLLECTION))
-                {
-                    mycollection = null;
-                }
-            }
-            else if (myIDString != null)
-            {
-                mycollection = Collection.find(c, Integer.parseInt(myIDString));
-            }
-
-            if (mycollection == null)
-            {
-                System.out.println("Error, collection cannot be found: "
-                        + myIDString);
-                System.exit(1);
-            }
-        }
-
+    private void exportItems(Context c) throws Exception {
         if (zip)
         {
             ItemIterator items;
             if (myItem != null)
             {
-                List<Integer> myItems = new ArrayList<Integer>();
+                List<Integer> myItems = new ArrayList<>();
                 myItems.add(myItem.getID());
                 items = new ItemIterator(c, myItems);
             }
             else
             {
-                System.out.println("Exporting from collection: " + myIDString);
-                items = mycollection.getItems();
+                logAndPrintMessage("Exporting from collection: " + myIDString,Level.INFO);
+                items = getItemsIterator(mycollection, dateFile, c);
             }
             exportAsZip(c, items, destDirName, zipFileName, seqStart, migrate, handleBasedDirectoryStructure);
         }
@@ -294,10 +332,10 @@ public class ItemExport
             }
             else
             {
-                System.out.println("Exporting from collection: " + myIDString);
+                logAndPrintMessage("Exporting from collection: " + myIDString, Level.INFO);
 
                 // it's a collection, so do a bunch of items
-                ItemIterator i = mycollection.getItems();
+                ItemIterator i = getItemsIterator(mycollection, dateFile, c);
                 try
                 {
                     exportItem(c, i, destDirName, seqStart, migrate, handleBasedDirectoryStructure);
@@ -311,8 +349,35 @@ public class ItemExport
                 }
             }
         }
+    }
 
-        c.complete();
+    private static ItemIterator getItemsIterator(Collection mycollection, DateFile dateFile, Context context)
+            throws SQLException {
+        ItemIterator items;
+        Date lastDate = dateFile.getLastDate();
+        if (lastDate != DateFile.NO_DATE) {
+            items = getItemsIterator(mycollection, lastDate, context);
+        } else {
+            items = mycollection.getItems();
+        }
+        return items;
+    }
+
+    private static ItemIterator getItemsIterator(Collection mycollection, Date lastDate, Context context) {
+            String myQuery = "SELECT item.* FROM item, collection2item WHERE "
+                    + "item.item_id=collection2item.item_id AND "
+                    + "collection2item.collection_id= ? "
+                    + "AND item.in_archive='1' "
+                    + "AND item.last_modified > ? ";
+
+        TableRowIterator rows;
+        try {
+            rows = DatabaseManager.queryTable(context, "item", myQuery, mycollection.getID(), new Timestamp(lastDate.getTime()));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return new ItemIterator(context, rows);
     }
 
     private static void exportItem(Context c, ItemIterator i, String destDirName, int seqStart, boolean migrate, boolean handleBasedDirectoryStructure)
@@ -321,8 +386,7 @@ public class ItemExport
         String fullPath = destDirName;
 
 
-
-        System.out.println("Beginning export");
+        logAndPrintMessage("Beginning export" ,Level.INFO);
 
         while (i.hasNext()) {
 
@@ -331,17 +395,20 @@ public class ItemExport
             if (handleBasedDirectoryStructure) {
                 String subdir = new Subdir().getSubDir(next);
                 fullPath = destDirName + File.separator + subdir;
-                }
+            }
 
-            if (!new File(fullPath).mkdirs()) {
-                System.out.println("Cannot create directories at " + fullPath);
+            File directory = new File(fullPath);
+            if (!directory.exists() && !directory.mkdirs()) {
+                logAndPrintMessage("Cannot create directories at " + fullPath,Level.INFO);
             } else {
-                System.out.println("Exporting item to " + fullPath);
+                logAndPrintMessage("Exporting item to " + fullPath, Level.INFO);
 
                 exportItem(c, next, fullPath, mySequenceNumber, migrate, handleBasedDirectoryStructure);
-            mySequenceNumber++;
+                mySequenceNumber++;
+            }
         }
-    }
+
+        logAndPrintMessage("Export finished without problems", Level.INFO);
     }
 
 
@@ -365,14 +432,12 @@ public class ItemExport
                 itemDir = new File(destDir + "/" + seqStart);
             }
 
-            System.out.println("Exporting Item " + myItem.getID() + " to "
-                    + itemDir);
-
-            if (itemDir.exists())
-            {
-                throw new Exception("Directory " + itemDir.getAbsolutePath()
-                        + " already exists!");
+            if (itemDir.exists()) {
+                logAndPrintMessage(itemDir.getAbsolutePath() + " exists. Removing it.", Level.INFO);
+                FileUtils.deleteDirectory(itemDir);
             }
+
+            logAndPrintMessage("Exporting Item " + myItem.getID() + " to " + itemDir,Level.INFO);
 
             if (itemDir.mkdirs())
             {
@@ -391,8 +456,7 @@ public class ItemExport
         }
         else
         {
-            throw new Exception("Error, directory " + destDirName
-                    + " doesn't exist!");
+            throw new Exception("Error, directory " + destDirName + " doesn't exist!");
         }
         if(seqStart % 100 == 0) {
             c.clearCache();
@@ -441,7 +505,8 @@ public class ItemExport
 
         File outFile = new File(destDir, filename);
 
-        System.out.println("Attempting to create file " + outFile);
+        logAndPrintMessage("Attempting to create file " + outFile,Level.INFO);
+
 
         if (outFile.createNewFile())
         {
