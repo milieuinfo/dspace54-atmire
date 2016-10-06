@@ -48,9 +48,7 @@ sed -i -e "s|^\(dspace.dir[[:blank:]]*=[[:blank:]]*\).*$|\1${tomcat_apps_dir}/ds
 
 sed -i -e "s/%google_analytics_key%/${info_gaId}/g" ${tomcat_apps_dir}/dspace/config/dspace.cfg
 
-sed -i -e "s|\${sword.url}|http://${ZUIL}.milieuinfo.be:8080/${archief_name}/swordv2|g" ${tomcat_apps_dir}/dspace/config/modules/swordv2-server.cfg
-
-
+sed -i -e "s|\${sword.url}|${sword_url}|g" ${tomcat_apps_dir}/dspace/config/modules/swordv2-server.cfg
 
 sed -i \
     -e "s|\${solr.server}|http://localhost:8080/${archief_name}/solr|g" \
