@@ -2469,11 +2469,13 @@
         <message key="xmlui.dri2xhtml.METS-1.0.document-title">Document Title</message>
         <message key="xmlui.dri2xhtml.METS-1.0.imjv-dmsexportnotes">Export notes</message>
 
-        <message key="xmlui.Discovery.ConfigurableRelatedItems.help_dc.relation.ispartof-TO-vlaanderen.identifier">Ouder</message>
-        <message key="xmlui.Discovery.ConfigurableRelatedItems.help_vlaanderen.identifier-TO-dc.relation.ispartof">Kind</message>
+        <message key="xmlui.Discovery.ConfigurableRelatedItems.head_dc.relation.ispartof-TO-vlaanderen.identifier">Onderdelen</message>
+        <message key="xmlui.Discovery.ConfigurableRelatedItems.help_dc.relation.ispartof-TO-vlaanderen.identifier">Dit item is onderdeel van</message>
+        <message key="xmlui.Discovery.ConfigurableRelatedItems.help_vlaanderen.identifier-TO-dc.relation.ispartof">Dit item heeft volgende onderdelen</message>
 
-        <message key="xmlui.Discovery.ConfigurableRelatedItems.help_dc.relation.replaces-TO-vlaanderen.identifier">Vervangt</message>
-        <message key="xmlui.Discovery.ConfigurableRelatedItems.help_vlaanderen.identifier-TO-dc.relation.replaces">Is vervangen door</message>
+        <message key="xmlui.Discovery.ConfigurableRelatedItems.head_dc.relation.replaces-TO-vlaanderen.identifier">Versies</message>
+        <message key="xmlui.Discovery.ConfigurableRelatedItems.help_dc.relation.replaces-TO-vlaanderen.identifier">Dit item is een nieuwere versie van item</message>
+        <message key="xmlui.Discovery.ConfigurableRelatedItems.help_vlaanderen.identifier-TO-dc.relation.replaces">Dit item is vervangen door het recentere item</message>
 
         <message key="xmlui.dri2xhtml.METS-1.0.item-vlaandentifier">Vlaanderen identifier</message>
         <message key="xmlui.dri2xhtml.METS-1.0.item-ispartof">Deel van</message>

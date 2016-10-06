@@ -16,6 +16,8 @@ public interface DiscoveryRelatedItemsService {
 
     Map<String, Collection> retrieveRelatedItems(Item item,Context context) throws SearchServiceException;
 
+    Map<String, Collection> retrieveRelatedItems(Item item,Context context, String relationsName) throws SearchServiceException;
+
     public Map<String, Collection<Metadatum>> retrieveInverseRelationMetadata(Context context, Metadatum[] metadata) throws SearchServiceException;
 
     public Set<ItemMetadataRelation> retrieveItemRelations(boolean includeInvertedRelations, boolean useDefaultReversal);

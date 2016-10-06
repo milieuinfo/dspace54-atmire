@@ -30,17 +30,35 @@ public class DiscoveryRelatedItemsServiceBean extends AbstractDiscoveryRelatedIt
         Set<ItemMetadataRelation> searchableRelations = retrieveItemRelations(true,true);
 
         for (ItemMetadataRelation metadatum : searchableRelations) {
-            DiscoverQuery query = new DiscoverQuery();
-
-            String queryString = createQueryStringFromRelation(item, metadatum);
-
-            List<DSpaceObject> relatedItems = retrieveRelatedItems(context, item, query, queryString);
-
-            if (CollectionUtils.isNotEmpty(relatedItems)) {
-                matchingItems.put(metadatum.getSourceMetadataField()+"-TO-"+metadatum.getDestinationMetadataField(), relatedItems);
-            }
+            addMatchingItems(item, context, matchingItems, metadatum);
         }
         return matchingItems;
+    }
+
+    @Override
+    public Map<String, Collection> retrieveRelatedItems(Item item,Context context, String relationsName) throws SearchServiceException {
+        Map<String, Collection> matchingItems = new HashMap<>();
+        ItemMetadataRelation metadataRelation = new DSpace().getServiceManager().getServiceByName(relationsName, ItemMetadataRelation.class);
+
+        addMatchingItems(item, context, matchingItems, metadataRelation);
+        ItemMetadataRelation inverseMetadataRelation = metadataRelation.createInverseMetadataRelation();
+
+        inverseMetadataRelation.setSourceMetadataField(metadataRelation.getDestinationMetadataField());
+        addMatchingItems(item, context, matchingItems, inverseMetadataRelation);
+
+        return matchingItems;
+    }
+
+    private void addMatchingItems(Item item, Context context, Map<String, Collection> matchingItems, ItemMetadataRelation metadataRelation) throws SearchServiceException {
+        DiscoverQuery query = new DiscoverQuery();
+
+        String queryString = createQueryStringFromRelation(item, metadataRelation);
+
+        List<DSpaceObject> relatedItems = retrieveRelatedItems(context, item, query, queryString);
+
+        if (CollectionUtils.isNotEmpty(relatedItems)) {
+            matchingItems.put(metadataRelation.getSourceMetadataField() + "-TO-" + metadataRelation.getDestinationMetadataField(), relatedItems);
+        }
     }
 
     private List<DSpaceObject> retrieveRelatedItems(Context context, Item item, DiscoverQuery query, String queryString) throws SearchServiceException {
