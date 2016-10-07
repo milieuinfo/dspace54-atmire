@@ -1,0 +1,35 @@
+#
+# Initiele DSpace LDAP structuur
+#
+
+### R O L L E N ###
+#toepassing specifieke ou waaronder de nodige rollen aangemaakt worden.#
+
+dn: ou=archief-imjv,ou=groups,dc=milieuinfo,dc=be
+changetype: add
+objectClass: organizationalunit
+objectClass: top
+ou: archief-imjv
+
+### R O L L E N ###
+#rol die het volledige beheer kan doen van de dspace instance via de dspace-ui#
+
+dn: cn=archief-imjv_Admin,ou=archief-imjv,ou=groups,dc=milieuinfo,dc=be
+changetype: add
+objectClass: rol
+objectClass: top
+cn: archief-imjv_Admin
+
+#gebruikers in deze rol kunnen lezen in deze community
+dn: cn=archief-imjv_Lezen,ou=archief-imjv,ou=groups,dc=milieuinfo,dc=be
+changetype: add
+objectClass: rol
+objectClass: top
+cn: archief-imjv_Lezen
+
+#gebruikers in deze rol kunnen schrijven in deze community 
+dn: cn=archief-imjv_schrijven,ou=archief-imjv,ou=groups,dc=milieuinfo,dc=be
+changetype: add
+objectClass: rol
+objectClass: top
+cn: archief-imjv_Eigen_Dossiers

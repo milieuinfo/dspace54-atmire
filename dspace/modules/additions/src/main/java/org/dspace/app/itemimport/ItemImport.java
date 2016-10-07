@@ -96,7 +96,7 @@ public class ItemImport {
 
     private static boolean keepResults = false;
 
-    private static boolean ignoreValidation = false;
+    private static boolean largeImport = false;
 
     private static PrintWriter mapOut = null;
 
@@ -177,7 +177,7 @@ public class ItemImport {
                     "resume a failed import (add only)");
             options.addOption("q", "quiet", false, "don't display metadata");
             options.addOption("x", "transactional", false, "");
-            options.addOption("v", "ignore-validation", false, "");
+            options.addOption("l", "large-import", false, "");
 
             options.addOption("h", "help", false, "help");
 
@@ -268,8 +268,8 @@ public class ItemImport {
                 isTransactional = true;
             }
 
-            if (line.hasOption('v')) {
-                ignoreValidation = true;
+            if (line.hasOption('l')) {
+                largeImport = true;
             }
 
             if (line.hasOption('R')) {
@@ -387,7 +387,9 @@ public class ItemImport {
 
             // create a context
             Context c = isTransactional ? new TransactionalContext() : new Context();
-            c.setDispatcher("noindex");
+            if(largeImport) {
+                c.setDispatcher("noindex");
+            }
 
             // find the EPerson, assign to context
             EPerson myEPerson = null;
@@ -910,7 +912,7 @@ public class ItemImport {
 
         try {
             //validateItem
-            if(!ignoreValidation) {
+            if(!largeImport) {
                 validateItem(c, myitem);
             }
 

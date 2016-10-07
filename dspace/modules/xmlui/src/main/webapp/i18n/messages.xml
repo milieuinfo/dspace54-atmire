@@ -2570,12 +2570,13 @@
     <message key="xmlui.externalhandle.external_handle_not_unique">It appears that this external handle is not unique. Therefore it cannot be resolved to a single item.</message>
     <message key="xmlui.externalhandle.related_items">The following items are related to this external handle:</message>
 
+    <message key="xmlui.Discovery.ConfigurableRelatedItems.head_dc.relation.ispartof-TO-vlaanderen.identifier">Parts</message>
+    <message key="xmlui.Discovery.ConfigurableRelatedItems.help_dc.relation.ispartof-TO-vlaanderen.identifier">This item is part of</message>
+    <message key="xmlui.Discovery.ConfigurableRelatedItems.help_vlaanderen.identifier-TO-dc.relation.ispartof">This item has the following parts</message>
 
-    <message key="xmlui.Discovery.ConfigurableRelatedItems.help_dc.relation.ispartof-TO-vlaanderen.identifier">Parent</message>
-    <message key="xmlui.Discovery.ConfigurableRelatedItems.help_vlaanderen.identifier-TO-dc.relation.ispartof">Children</message>
-
-    <message key="xmlui.Discovery.ConfigurableRelatedItems.help_dc.relation.replaces-TO-vlaanderen.identifier">Replaces</message>
-    <message key="xmlui.Discovery.ConfigurableRelatedItems.help_vlaanderen.identifier-TO-dc.relation.replaces">Is replaced by</message>
+    <message key="xmlui.Discovery.ConfigurableRelatedItems.head_dc.relation.replaces-TO-vlaanderen.identifier">Versions</message>
+    <message key="xmlui.Discovery.ConfigurableRelatedItems.help_dc.relation.replaces-TO-vlaanderen.identifier">This item is a new version of item</message>
+    <message key="xmlui.Discovery.ConfigurableRelatedItems.help_vlaanderen.identifier-TO-dc.relation.replaces">This item is replaced by the newer item</message>
     <message key="xmlui.dri2xhtml.METS-1.0.item-vlaandentifier">Vlaanderen identifier</message>
 
     <message key="xmlui.dri2xhtml.METS-1.0.item-ispartof">Vlaanderen identifier</message>

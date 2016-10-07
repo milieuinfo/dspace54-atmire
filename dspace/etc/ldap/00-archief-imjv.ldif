@@ -1,0 +1,18 @@
+dn: uid=archief-imjv,ou=systemusers,dc=milieuinfo,dc=be
+changetype: add
+objectClass: top
+objectClass: person
+objectClass: inetorgperson
+objectClass: organizationalPerson
+objectClass: proxyclient
+objectClass: oauthClient
+sn: archief-imjv
+cn: archief-imjv
+uid: archief-imjv
+oauthsecret:
+trustedclient: TRUE
+allowedattributes: persoonsid|cn|sn|givenName|mail
+allowedroles: Archief_IMJV.*
+weakauthallowed: true
+userPassword: 
+allowedurls: *git.milieuinfo.be/scm/dspac/*

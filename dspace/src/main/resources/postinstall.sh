@@ -89,10 +89,10 @@ mkdir -p ${tomcat_data_dir}/GeoLite 2>/dev/null
 
 mkdir -p ${tomcat_data_dir}/assetstore 2>/dev/null
 
-# Installatie GeoLite 
+# Installatie GeoLite
 echo "Installatie GeoLite"
 if [ -a ${tomcat_data_dir}/GeoLite/GeoLiteCity.dat ]; then
-    echo "GeoLite al aanwezig niets te doen" 
+    echo "GeoLite al aanwezig niets te doen"
 else
     echo "Installatie GeoLite db"
     gzip -c /tmp/GeoLiteCity.dat.gz > ${tomcat_data_dir}/GeoLite/GeoLiteCity.dat
@@ -100,7 +100,7 @@ else
 fi
 
 
-# Installatie Solr 
+# Installatie Solr
 echo "Installatie Solr"
 if [ "$(ls -A ${tomcat_data_dir}/solr/)" ]; then
     echo "Solr al aanwezig niets te doen"
