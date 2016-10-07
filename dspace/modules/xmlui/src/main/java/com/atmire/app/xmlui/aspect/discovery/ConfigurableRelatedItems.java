@@ -1,12 +1,12 @@
 package com.atmire.app.xmlui.aspect.discovery;
 
 import com.atmire.discovery.DiscoveryRelatedItemsService;
+import com.atmire.discovery.ItemMetadataRelation;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.log4j.Logger;
 import org.dspace.app.xmlui.cocoon.AbstractDSpaceTransformer;
 import org.dspace.app.xmlui.utils.HandleUtil;
-import org.dspace.app.xmlui.wing.Message;
 import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.app.xmlui.wing.element.Body;
 import org.dspace.app.xmlui.wing.element.Division;
@@ -31,7 +31,7 @@ public class ConfigurableRelatedItems extends AbstractDSpaceTransformer{
     /* Log4j logger*/
     private static final Logger log =  Logger.getLogger(ConfigurableRelatedItems.class);
 
-    private static final Message T_head = message("xmlui.Discovery.RelatedItems.head");
+    private static final String METADATAFIELD_HEADER_BASE = "xmlui.Discovery.ConfigurableRelatedItems.head_";
     private static final String METADATAFIELD_MESSAGE_BASE = "xmlui.Discovery.ConfigurableRelatedItems.help_";
 
     /**
@@ -49,34 +49,36 @@ public class ConfigurableRelatedItems extends AbstractDSpaceTransformer{
         Item item = (Item) dspaceObject;
 
         DiscoveryRelatedItemsService relatedItemsService = new DSpace().getServiceManager().getServiceByName("DiscoveryRelatedItemsService", DiscoveryRelatedItemsService.class);
-        Map<String,Collection> relatedMetadata = null;
-        try {
-            relatedMetadata = relatedItemsService.retrieveRelatedItems(item, context);
-        } catch (SearchServiceException e) {
-            log.error("Error retrieving related items.",e);
-        }
+        Set<ItemMetadataRelation> configuredRelations = new DSpace().getServiceManager().getServiceByName("item-relations", Set.class);
 
+        for(ItemMetadataRelation metadataRelation : configuredRelations){
+            String key = metadataRelation.getSourceMetadataField() + "-TO-" + metadataRelation.getDestinationMetadataField();
+            try {
+                Map<String,Collection> relatedMetadata = relatedItemsService.retrieveRelatedItems(item,context, key);
+                if(MapUtils.isNotEmpty(relatedMetadata))
+                {
+                    java.util.List<Item> relatedItems =new ArrayList<>();
+                    if(relatedMetadata.isEmpty()) {
+                        return;
+                    }
+                    Division partsDiv = body.addDivision(key, "secondary related");
+                    partsDiv.setHead(message(METADATAFIELD_HEADER_BASE+ key));
+                    Iterator<Map.Entry<String,Collection>> it = relatedMetadata.entrySet().iterator();
+                    while(it.hasNext()){
+                        Map.Entry<String,Collection> pair = it.next();
 
-        if(MapUtils.isNotEmpty(relatedMetadata))
-        {
-            java.util.List<Item> relatedItems =new ArrayList<>();
-            if(relatedMetadata.isEmpty()){
-                return;
-            }
-            Division relatedItemsDiv = body.addDivision("item-related-container").addDivision("item-related", "secondary related");
-            relatedItemsDiv.setHead(T_head);
-
-            Iterator<Map.Entry<String,Collection>> it = relatedMetadata.entrySet().iterator();
-            while(it.hasNext()){
-                Map.Entry<String,Collection> pair = it.next();
-
-                Collection collection = pair.getValue();
-                relatedItems.clear();
-                relatedItems.addAll(collection);
-                addRelatedItemsDiv(relatedItemsDiv , relatedItems, pair.getKey());
+                        Collection collection = pair.getValue();
+                        relatedItems.clear();
+                        relatedItems.addAll(collection);
+                        addRelatedItemsDiv(partsDiv , relatedItems, pair.getKey());
+                    }
+                }
+            } catch (Exception e) {
+              log.error("Error retrieving related items for: "+key, e);
             }
         }
     }
+
 
     private void addRelatedItemsDiv(Division division, List<Item> relatedItems, String metadataField) throws WingException {
         if(CollectionUtils.isNotEmpty(relatedItems))

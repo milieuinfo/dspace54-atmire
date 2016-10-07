@@ -1,5 +1,6 @@
 package com.atmire.discovery;
 
+import org.apache.commons.lang.StringUtils;
 import org.dspace.discovery.configuration.DiscoverySearchFilterFacet;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -16,12 +17,18 @@ public class ItemMetadataRelation {
 
     private String destinationMetadataField;
 
+    private String inverseRelationField;
+
     private boolean inverseRelationSearchEnabled = true;
 
     public ItemMetadataRelation createInverseMetadataRelation(){
         ItemMetadataRelation metadataRelation = new ItemMetadataRelation();
 
-        metadataRelation.setSourceMetadataField(getDestinationMetadataField());
+        if(StringUtils.isBlank(inverseRelationField)){
+            metadataRelation.setSourceMetadataField(getDestinationMetadataField());
+        } else{
+            metadataRelation.setSourceMetadataField(getInverseRelationField());
+        }
         metadataRelation.setDestinationMetadataField(getSourceMetadataField());
         metadataRelation.setDestinationFilterFacet(getSourceFilterFacet());
         metadataRelation.setSourceFilterFacet(getDestinationFilterFacet());
@@ -69,6 +76,14 @@ public class ItemMetadataRelation {
     @Required
     public void setSourceFilterFacet(DiscoverySearchFilterFacet sourceFilterFacet) {
         this.sourceFilterFacet = sourceFilterFacet;
+    }
+    public String getInverseRelationField() {
+        return inverseRelationField;
+    }
+
+    @Required
+    public void setInverseRelationField(String inverseRelationField) {
+        this.inverseRelationField = inverseRelationField;
     }
 
 }
