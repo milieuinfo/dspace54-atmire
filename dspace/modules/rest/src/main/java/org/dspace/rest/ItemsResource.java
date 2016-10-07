@@ -11,6 +11,7 @@ import com.atmire.lne.content.ItemServiceBean;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.authorize.AuthorizeManager;
@@ -130,7 +131,7 @@ public class ItemsResource extends Resource {
             response = org.dspace.rest.common.Item[].class
     )
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Item[] getItemByExternalHandle(
+    public Response getItemByExternalHandle(
             @ApiParam(value = "The identifier of the item.", required = true)
             @PathParam("handle") String handle,
 
@@ -138,29 +139,40 @@ public class ItemsResource extends Resource {
             @QueryParam("expand") String expand,
 
             @QueryParam("userIP") String user_ip, @QueryParam("userAgent") String user_agent,
-            @QueryParam("xforwardedfor") String xforwardedfor, @Context HttpHeaders headers, @Context HttpServletRequest request, @Context final HttpServletResponse response)
+            @QueryParam("xforwardedfor") String xforwardedfor, @Context HttpHeaders headers, @Context HttpServletRequest request)
             throws WebApplicationException {
+
         org.dspace.core.Context context = null;
+
         try {
             String dspaceHandle = URLDecoder.decode(handle, "UTF-8");
             com.atmire.lne.content.ItemService service = new ItemServiceBean();
             context = createContext();
             List<org.dspace.content.Item> items = service.findItemsByExternalHandle(context, dspaceHandle);
-            if (items.size() < 1) {
-                throw new WebApplicationException(Status.NOT_FOUND);
-            }
-            if (items.size() >= 1) {
-                Item[] returnItems = new Item[items.size()];
-                for (int i = 0; i < items.size(); i++) {
-                    returnItems[i] = new Item(items.get(i), expand, context);
-                    writeStats(items.get(i), UsageEvent.Action.VIEW, user_ip, user_agent, xforwardedfor, headers, request, context);
+
+            Response response = null;
+            if (CollectionUtils.isEmpty(items)) {
+                response = Response.status(Status.NOT_FOUND).entity("Item with external handle " + handle + " was not found").build();
+            } else {
+                if (items.size() >= 1) {
+                    Item[] returnItems = new Item[items.size()];
+                    for (int i = 0; i < items.size(); i++) {
+                        returnItems[i] = new Item(items.get(i), expand, context);
+                        writeStats(items.get(i), UsageEvent.Action.VIEW, user_ip, user_agent, xforwardedfor, headers, request, context);
+                    }
+
+                    if (items.size() > 1) {
+                        response = Response.status(Status.CONFLICT).entity(returnItems).build();
+                    } else {
+                        response = Response.ok(returnItems).build();
+                    }
+
                 }
-                if (items.size() > 1) {
-                    response.setStatus(HttpServletResponse.SC_CONFLICT);
-                }
-                context.complete();
-                return returnItems;
             }
+
+            context.complete();
+            return response;
+
         } catch (ContextException e) {
             processException("Could not read item(handle=" + handle + "), ContextException. Message: " + e, context);
         } catch (SearchServiceException e) {
