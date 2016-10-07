@@ -90,6 +90,7 @@ public class RestIndex {
                   		"<li>GET /items/{item id} - Return the specified item.</li>" +
                   		"<li>GET /items/{item id}/metadata - Return metadata of the specified item.</li>" +
                   		"<li>GET /items/{item id}/bitstreams - Return bitstreams of the specified item.</li>" +
+                  		"<li>GET /items/external-handle/{handle} - Return item(s) of the specified handle.</li>" +
                   		"<li>POST /items/find-by-metadata-field - Find items by the specified metadata value.</li>" +
                   		"<li>POST /items/{item id}/metadata - Add metadata to the specified item.</li>" +
                   		"<li>POST /items/{item id}/bitstreams - Add a bitstream to the specified item.</li>" +
