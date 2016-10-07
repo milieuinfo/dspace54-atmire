@@ -51,17 +51,17 @@ OAICLASSES=$DSPACEDIR/webapps/oai/WEB-INF/classes/
 
 # Get the JARs in $DSPACEDIR/jsp/WEB-INF/lib, separated by ':'
 JARS=`echo $DSPACEDIR/lib/*.jar | sed 's/ /\:/g'`
+ADDITIONS=`echo $DSPACEDIR/lib/additions-*.jar | sed 's/ /\:/g'`
 
 # Class path for DSpace will be:
 #   Any existing classpath
 #   The JARs (WEB-INF/lib/*.jar)
 #   The WEB-INF/classes directory
 if [ "$CLASSPATH" = "" ]; then
-    FULLPATH=$OAICLASSES:$JARS:$DSPACEDIR/config
+    FULLPATH=$ADDITIONS:$OAICLASSES:$JARS:$DSPACEDIR/config
 else
-    FULLPATH=$CLASSPATH:$OAICLASSES:$JARS:$DSPACEDIR/config
+    FULLPATH=$CLASSPATH:$ADDITIONS:$OAICLASSES:$JARS:$DSPACEDIR/config
 fi
-
 
 # If the user only wants the CLASSPATH, just give it now.
 if [ "$1" = "classpath" ]; then
@@ -70,11 +70,9 @@ if [ "$1" = "classpath" ]; then
 fi
 
 
-
 #Allow user to specify java options through JAVA_OPTS variable
 if [ "$JAVA_OPTS" = "" ]; then
-  #Default Java to use 256MB of memory
-  JAVA_OPTS="-Xmx256m -Dfile.encoding=UTF-8"
+  JAVA_OPTS="-Xmx4096M -Xms128M -XX:MaxPermSize=512M -Dfile.encoding=UTF-8"
 fi
 
 # Now invoke Java
