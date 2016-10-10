@@ -64,6 +64,41 @@
 
 
 
+
+
+
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.rapporteringsjaar">Rapporterings Jaar</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.exploitatie.ExploitantCBBNummer">Exploitatie CBB Nummer</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.exploitatie.nummer">Exploitatie Nummer</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.dossiernummer">Exploitatie Dossier Nummer</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.exploitatie.ExploitantCBBNummer">Exploitant CBB Nummer</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.exploitatie.naam">Exploitatie Naam</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.ExploitantOndernemingsNummer">Exploitant Ondernemingsnummer</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.ExploitatieLocatie">Exploitatie Locatie</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.exploitatie.gemeente">Exploitatie Locatie Gemeente</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.exploitatie.postcode">Exploitatie Locatie Postcode</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.exploitatie.straat">Exploitatie Locatie Straat</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.exploitatie.huisnummer">Exploitatie Locatie Huisnummer</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.ExploitantAdres">Exploitant Adres</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.ExploitantAdresStad">Exploitant Adres Stad</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.ExploitantAdresPostcode">Exploitant Adres Postcode</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.MilieuVerslagVerzendAdres">Milieuverslag Verzendadres</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.MilieuVerslagFeit">Milieuverslag Feit</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.MilieuVerslagFeitTijdstip">Milieuverslag Feit Tijdstip</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.MilieuVerslagFeitGebruikerVoornaam">Milieuverslag Feit Gebruiker Voornaam</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.MilieuVerslagFeitGebruikerNaam">Milieuverslag Feit Gebruiker Naam</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.MilieuVerslagFeitActie">Milieuverslag Feit Actie</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.aangiftetype">Aangifte Type</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-dc.type">Type</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-dc.source">Bron</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-dc.identifier">Identifier</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-dc.title.alternative">Alternatieve Titel</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.document.title">Document Titel</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.dmsexportnotes">Export notes</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-dc.identifier.uri">Export notes</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-vlaanderen.identifier">Vlaanderen Identifier</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-dc.publisher">Uitgever</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-dc.date.issued">Datum</message>
         <!--
          The format used by all keys is as follows
 
