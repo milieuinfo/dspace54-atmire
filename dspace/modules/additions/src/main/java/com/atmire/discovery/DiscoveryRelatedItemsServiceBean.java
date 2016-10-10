@@ -10,6 +10,7 @@ import org.dspace.discovery.DiscoverQuery;
 import org.dspace.discovery.DiscoverResult;
 import org.dspace.discovery.SearchService;
 import org.dspace.discovery.SearchServiceException;
+import org.dspace.discovery.configuration.DiscoverySearchFilterFacet;
 import org.dspace.utils.DSpace;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,6 +21,10 @@ import java.util.*;
  */
 public class DiscoveryRelatedItemsServiceBean extends AbstractDiscoveryRelatedItemsService implements DiscoveryRelatedItemsService {
 
+    private static final String QUERY_TO_INTERJECTION = "-TO-";
+    private static final String QUERY_KEYWORD = "_keyword";
+    private static final String QUERY_OR_INTERJECTION = " OR ";
+
     @Autowired
     private SearchService searchService;
 
@@ -27,7 +32,7 @@ public class DiscoveryRelatedItemsServiceBean extends AbstractDiscoveryRelatedIt
     public Map<String, Collection> retrieveRelatedItems(Item item,Context context) throws SearchServiceException {
         Map<String, Collection> matchingItems = new HashMap<>();
 
-        Set<ItemMetadataRelation> searchableRelations = retrieveItemRelations(true,true);
+        Set<ItemMetadataRelation> searchableRelations = retrieveItemRelations(true, false);
 
         for (ItemMetadataRelation metadatum : searchableRelations) {
             addMatchingItems(item, context, matchingItems, metadatum);
@@ -52,12 +57,24 @@ public class DiscoveryRelatedItemsServiceBean extends AbstractDiscoveryRelatedIt
     private void addMatchingItems(Item item, Context context, Map<String, Collection> matchingItems, ItemMetadataRelation metadataRelation) throws SearchServiceException {
         DiscoverQuery query = new DiscoverQuery();
 
-        String queryString = createQueryStringFromRelation(item, metadataRelation);
+        String queryString = createQueryStringFromRelation(item, metadataRelation,false);
+        String inverseQueryString = createQueryStringFromRelation(item, metadataRelation, true);
 
         List<DSpaceObject> relatedItems = retrieveRelatedItems(context, item, query, queryString);
+        List<DSpaceObject> inverseRelatedItems = retrieveRelatedItems(context, item, query, inverseQueryString);
 
+        String key = metadataRelation.getSourceMetadataField() + QUERY_TO_INTERJECTION + metadataRelation.getDestinationMetadataField();
+        addRetrievedRelatedItems(matchingItems, relatedItems, key);
+        key = metadataRelation.getDestinationMetadataField() + QUERY_TO_INTERJECTION + metadataRelation.getSourceMetadataField();
+        addRetrievedRelatedItems(matchingItems, inverseRelatedItems, key);
+    }
+
+    private void addRetrievedRelatedItems(Map<String, Collection> matchingItems, List<DSpaceObject> relatedItems, String key) {
         if (CollectionUtils.isNotEmpty(relatedItems)) {
-            matchingItems.put(metadataRelation.getSourceMetadataField() + "-TO-" + metadataRelation.getDestinationMetadataField(), relatedItems);
+            if(matchingItems.containsKey(key)){
+                relatedItems.addAll(matchingItems.get(key));
+            }
+            matchingItems.put(key, relatedItems);
         }
     }
 
@@ -69,6 +86,7 @@ public class DiscoveryRelatedItemsServiceBean extends AbstractDiscoveryRelatedIt
                 query.addFilterQueries("-search.resourceid:" + item.getID());
             }
             query.addFilterQueries("search.resourcetype:2");
+            query.setMaxResults(9999);
             DiscoverResult result = searchService.search(context, query);
 
             relatedItems = result.getDspaceObjects();
@@ -76,15 +94,19 @@ public class DiscoveryRelatedItemsServiceBean extends AbstractDiscoveryRelatedIt
         return relatedItems;
     }
 
-    private String createQueryStringFromRelation(Item item, ItemMetadataRelation metadatum) {
-        String destinationMetadataField = metadatum.getDestinationFilterFacet().getIndexFieldName()+"_keyword";
+    private String createQueryStringFromRelation(Item item, ItemMetadataRelation metadatum, boolean useSourceFilterFacet) {
+        DiscoverySearchFilterFacet destinationFilterFacet =metadatum.getDestinationFilterFacet();
+        if(useSourceFilterFacet){
+            destinationFilterFacet= metadatum.getSourceFilterFacet();
+        }
+        String destinationMetadataField = destinationFilterFacet.getIndexFieldName()+ QUERY_KEYWORD;
         String sourceMetadataField = metadatum.getSourceMetadataField();
 
         return generateQueryString(item, sourceMetadataField, destinationMetadataField);
     }
 
     private String createQueryStringFromRelation(Metadatum[] metadataFromItem, ItemMetadataRelation metadatum) {
-        String destinationMetadataField = metadatum.getSourceFilterFacet().getIndexFieldName()+"_keyword";
+        String destinationMetadataField = metadatum.getSourceFilterFacet().getIndexFieldName()+ QUERY_KEYWORD;
         return generateQueryString(metadataFromItem, destinationMetadataField);
     }
 
@@ -103,9 +125,11 @@ public class DiscoveryRelatedItemsServiceBean extends AbstractDiscoveryRelatedIt
             List<DSpaceObject> relatedItems = retrieveRelatedItems(context, null, query, queryString);
 
             if (CollectionUtils.isNotEmpty(relatedItems)) {
+                ArrayList<Metadatum> tempList = new ArrayList<>();
                 for(DSpaceObject dspaceObject : relatedItems){
-                    matchingItems.put(itemRelation.getInverseRelationField(), Arrays.asList(dspaceObject.getMetadataByMetadataString(itemRelation.getDestinationMetadataField())));
+                    tempList.addAll(Arrays.asList(dspaceObject.getMetadataByMetadataString(itemRelation.getDestinationMetadataField())));
                 }
+                matchingItems.put(itemRelation.getInverseRelationField(), tempList);
             }
 
         }
@@ -118,7 +142,7 @@ public class DiscoveryRelatedItemsServiceBean extends AbstractDiscoveryRelatedIt
         for (int  i = 0 ; i < metadataFromItem.length;i++){
             stringBuffer.append(destinationMetadatafield+":\""+metadataFromItem[i].value+"\"");
             if(i+1 < metadataFromItem.length){
-                stringBuffer.append(" OR ");
+                stringBuffer.append(QUERY_OR_INTERJECTION);
             }
         }
         return stringBuffer.toString();
@@ -128,7 +152,7 @@ public class DiscoveryRelatedItemsServiceBean extends AbstractDiscoveryRelatedIt
         for (int  i = 0 ; i < metadataFromItem.length;i++){
             stringBuffer.append(destinationMetadatafield+":\""+metadataFromItem[i].value+"\"");
             if(i+1 < metadataFromItem.length){
-                stringBuffer.append(" OR ");
+                stringBuffer.append(QUERY_OR_INTERJECTION);
             }
         }
         return stringBuffer.toString();
