@@ -14,7 +14,6 @@ import org.dspace.app.xmlui.wing.element.ReferenceSet;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
-import org.dspace.discovery.SearchServiceException;
 import org.dspace.utils.DSpace;
 import org.xml.sax.SAXException;
 
@@ -58,9 +57,6 @@ public class ConfigurableRelatedItems extends AbstractDSpaceTransformer{
                 if(MapUtils.isNotEmpty(relatedMetadata))
                 {
                     java.util.List<Item> relatedItems =new ArrayList<>();
-                    if(relatedMetadata.isEmpty()) {
-                        return;
-                    }
                     Division partsDiv = body.addDivision(key, "secondary related");
                     partsDiv.setHead(message(METADATAFIELD_HEADER_BASE+ key));
                     Iterator<Map.Entry<String,Collection>> it = relatedMetadata.entrySet().iterator();

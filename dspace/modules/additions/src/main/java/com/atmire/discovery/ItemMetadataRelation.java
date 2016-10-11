@@ -21,20 +21,20 @@ public class ItemMetadataRelation {
 
     private boolean inverseRelationSearchEnabled = true;
 
-    public ItemMetadataRelation createInverseMetadataRelation(){
+    public ItemMetadataRelation createInverseFieldRelation(){
         ItemMetadataRelation metadataRelation = new ItemMetadataRelation();
 
-        if(StringUtils.isBlank(inverseRelationField)){
-            metadataRelation.setSourceMetadataField(getDestinationMetadataField());
-        } else{
-            metadataRelation.setSourceMetadataField(getInverseRelationField());
-        }
-        metadataRelation.setDestinationMetadataField(getSourceMetadataField());
-        metadataRelation.setDestinationFilterFacet(getSourceFilterFacet());
-        metadataRelation.setSourceFilterFacet(getDestinationFilterFacet());
-        metadataRelation.setInverseRelationSearchEnabled(this.isInverseRelationSearchEnabled());
+        metadataRelation.setSourceMetadataField(getInverseRelationField());
+        metadataRelation.setSourceFilterFacet(null);
+        metadataRelation.setDestinationMetadataField(getDestinationMetadataField());
+        metadataRelation.setDestinationFilterFacet(getDestinationFilterFacet());
+        metadataRelation.setInverseRelationSearchEnabled(isInverseRelationSearchEnabled());
 
         return metadataRelation;
+    }
+
+    public boolean hasInverseRelationField() {
+        return StringUtils.isNotBlank(inverseRelationField);
     }
 
     @Required

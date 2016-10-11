@@ -1,5 +1,6 @@
 package com.atmire.objectmanager;
 
+import org.dspace.content.Item;
 import org.dspace.content.Metadatum;
 import org.dspace.core.Context;
 
@@ -10,6 +11,6 @@ import java.util.List;
  */
 public interface MetaDatumEnricher {
 
-    void enrichMetadata(Context context, final List<Metadatum> metadataList);
+    void enrichMetadata(final Context context, final Item item, final List<Metadatum> metadataList);
 
 }
