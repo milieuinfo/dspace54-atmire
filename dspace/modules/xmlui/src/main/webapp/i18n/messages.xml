@@ -2265,6 +2265,40 @@
     <message key="xmlui.dri2xhtml.METS-1.0.blocked">Blocked</message>
 
 
+
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.rapporteringsjaar">Reporting Year</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.exploitatie.ExploitatieCBBNummer">Exploiter CBB Number</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.exploitatie.nummer">Exploitation Number</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.dossiernummer">Exploitation File Number</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.exploitatie.ExploitantCBBNummer">Exploiter CBB Number</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.exploitatie.naam">Exploitation Name</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.ExploitantOndernemingsNummer">Exploiter Enterprise Number</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.ExploitatieLocatie">Exploitation Location</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.exploitatie.gemeente">Exploitation Location Borough</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.exploitatie.postcode">Exploitation Location Postal Code</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.exploitatie.straat">Exploitation Location Street</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.exploitatie.huisnummer">Exploitation Location Street Number</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.ExploitantAdres">Exploiter Address</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.ExploitantAdresStad">Exploiter Address City</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.ExploitantAdresPostcode">Exploiter Adres Postal Code</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.MilieuVerslagVerzendAdres">Environment Report Shipping Address</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.MilieuVerslagFeit">Environment Report Fact</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.MilieuVerslagFeitTijdstip">Environment Report Fact Time</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.MilieuVerslagFeitGebruikerVoornaam">Environment Report Fact User First Name</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.MilieuVerslagFeitGebruikerNaam">Environment Report Fact User Surname</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.MilieuVerslagFeitActie">Environment Report Fact Action</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.aangiftetype">Notification Type</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-dc.type">Type</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-dc.source">Source</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-dc.identifier">Identifier</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-dc.title.alternative">Alternative Title</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.document.title">Document Title</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.dmsexportnotes">Export notes</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-dc.identifier.uri">Export notes</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-vlaanderen.identifier">Vlaanderen Identifier</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-dc.publisher">Publisher</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-dc.date.issued">Date</message>
+
     <!-- Special pioneer model related text, wherever it might end up -->
     <message key="xmlui.dri2xhtml.pioneer.preview">Preview</message>
     <message key="xmlui.dri2xhtml.pioneer.date">Date</message>
@@ -2579,9 +2613,8 @@
     <message key="xmlui.Discovery.ConfigurableRelatedItems.help_vlaanderen.identifier-TO-dc.relation.replaces">This item is replaced by the newer item</message>
     <message key="xmlui.dri2xhtml.METS-1.0.item-vlaandentifier">Vlaanderen identifier</message>
 
-    <message key="xmlui.dri2xhtml.METS-1.0.item-ispartof">Vlaanderen identifier</message>
-    <message key="xmlui.dri2xhtml.METS-1.0.item-ispartof">Part of</message>
-    <message key="xmlui.dri2xhtml.METS-1.0.item-replaces">Replaces</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-dc.relation.ispartof">Part of</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-dc.relation.replaces">Replaces</message>
 
 
     <message key="xmlui.ChoiceLookupTransformer.field.vlaanderen_identifier.title">Select vlaanderen identifier</message>
