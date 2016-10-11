@@ -17,11 +17,11 @@ public class MetaDatumEnricherApplier {
     @Autowired
     private List<MetaDatumEnricher> metaDatumEnrichers;
 
-    public Metadatum[] enrichMetaData(final Metadatum[] dcvs, Context context) {
+    public Metadatum[] enrichMetaData(final Item item, final Metadatum[] dcvs, final Context context) {
         List<Metadatum> enrichedList = new ArrayList<>(Arrays.asList(dcvs));
 
         for (MetaDatumEnricher metaDatumEnricher : metaDatumEnrichers) {
-            metaDatumEnricher.enrichMetadata(context, enrichedList);
+            metaDatumEnricher.enrichMetadata(context, item, enrichedList);
         }
 
         return enrichedList.toArray(dcvs);
@@ -29,7 +29,7 @@ public class MetaDatumEnricherApplier {
 
     public Metadatum[] enrichMetaData(Item item, Context context) {
         Metadatum[] dcvs = item.getMetadata(Item.ANY, Item.ANY, Item.ANY, Item.ANY);
-        return enrichMetaData(dcvs, context);
+        return enrichMetaData(item, dcvs, context);
     }
 
 
