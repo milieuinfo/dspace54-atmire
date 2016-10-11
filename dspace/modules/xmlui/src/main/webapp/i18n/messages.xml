@@ -2545,12 +2545,14 @@
     <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_exploitatieLocatieStad">Exploitatie Stad</message>
     <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_exploitatieLocatiePostcode">Exploitatie Postcode</message>
     <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_type">Record Type</message>
+    <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_externalHandle">Vlaanderen Identifier</message>
 
     <message key="xmlui.ArtifactBrowser.SimpleSearch.filter.aangifteType">Aangifte Type</message>
     <message key="xmlui.ArtifactBrowser.SimpleSearch.filter.rapporteringsJaar">Rapporteringsjaar</message>
     <message key="xmlui.ArtifactBrowser.SimpleSearch.filter.exploitatieLocatieStad">Exploitatie Stad</message>
     <message key="xmlui.ArtifactBrowser.SimpleSearch.filter.exploitatieLocatiePostcode">Exploitatie Postcode</message>
     <message key="xmlui.ArtifactBrowser.SimpleSearch.filter.type">Record Type</message>
+    <message key="xmlui.ArtifactBrowser.SimpleSearch.filter.externalHandle">Vlaanderen Identifier</message>
 
     <message key="xmlui.Discovery.AbstractSearch.type_aangifteType">Filter by: Aangifte Type</message>
     <message key="xmlui.Discovery.AbstractSearch.type_rapporteringsJaar">Filter by: Rapporteringsjaar</message>

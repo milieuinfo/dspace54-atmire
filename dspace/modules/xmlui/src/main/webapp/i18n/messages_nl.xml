@@ -2459,12 +2459,14 @@
         <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_exploitatieLocatieStad">Exploitatie Stad</message>
         <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_exploitatieLocatiePostcode">Exploitatie Postcode</message>
         <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_type">Record Type</message>
+        <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_externalHandle">Vlaanderen Identifier</message>
 
         <message key="xmlui.ArtifactBrowser.SimpleSearch.filter.aangifteType">Aangifte Type</message>
         <message key="xmlui.ArtifactBrowser.SimpleSearch.filter.rapporteringsJaar">Rapporteringsjaar</message>
         <message key="xmlui.ArtifactBrowser.SimpleSearch.filter.exploitatieLocatieStad">Exploitatie Stad</message>
         <message key="xmlui.ArtifactBrowser.SimpleSearch.filter.exploitatieLocatiePostcode">Exploitatie Postcode</message>
         <message key="xmlui.ArtifactBrowser.SimpleSearch.filter.type">Record Type</message>
+        <message key="xmlui.ArtifactBrowser.SimpleSearch.filter.externalHandle">Vlaanderen Identifier</message>
 
         <message key="xmlui.Discovery.AbstractSearch.type_aangifteType">Filter by: Aangifte Type</message>
         <message key="xmlui.Discovery.AbstractSearch.type_rapporteringsJaar">Filter by: Rapporteringsjaar</message>
@@ -2512,8 +2514,8 @@
         <message key="xmlui.Discovery.ConfigurableRelatedItems.help_dc.relation.replaces-TO-vlaanderen.identifier">Dit item is een nieuwere versie van item</message>
         <message key="xmlui.Discovery.ConfigurableRelatedItems.help_vlaanderen.identifier-TO-dc.relation.replaces">Dit item is vervangen door het recentere item</message>
 
-        <message key="xmlui.dri2xhtml.METS-1.0.item-dc.relation.ispartof">Deel van</message>
-        <message key="xmlui.dri2xhtml.METS-1.0.item-dc.relation.replaces">Vervangt</message>
+        <message key="xmlui.dri2xhtml.METS-1.0.item-dc.relation.ispartof">Onderdeel van</message>
+        <message key="xmlui.dri2xhtml.METS-1.0.item-dc.relation.replaces">Nieuwe versie van</message>
 
 
     <message key="xmlui.ChoiceLookupTransformer.field.vlaanderen_identifier.title">Kies een vlaanderen identifier</message>
