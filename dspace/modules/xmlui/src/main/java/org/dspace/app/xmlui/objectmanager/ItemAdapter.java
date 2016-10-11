@@ -14,11 +14,7 @@ import org.dspace.app.xmlui.wing.AttributeMap;
 import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.authorize.AuthorizeManager;
-import org.dspace.content.Bitstream;
-import org.dspace.content.BitstreamFormat;
-import org.dspace.content.Bundle;
-import org.dspace.content.Metadatum;
-import org.dspace.content.Item;
+import org.dspace.content.*;
 import org.dspace.content.authority.Choices;
 import org.dspace.content.crosswalk.CrosswalkException;
 import org.dspace.content.crosswalk.DisseminationCrosswalk;
@@ -39,8 +35,6 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.*;
-
-import org.dspace.content.DSpaceObject;
 
 
 /**
@@ -267,7 +261,7 @@ public class ItemAdapter extends AbstractAdapter
             startElement(DIM,"dim",attributes);
 
             Metadatum[] dcvs = item.getMetadata(Item.ANY, Item.ANY, Item.ANY, Item.ANY);
-            dcvs = new DSpace().getServiceManager().getServiceByName(MetaDatumEnricherApplier.class.getSimpleName(), MetaDatumEnricherApplier.class).enrichMetaData(dcvs, context);
+            dcvs = new DSpace().getServiceManager().getServiceByName(MetaDatumEnricherApplier.class.getSimpleName(), MetaDatumEnricherApplier.class).enrichMetaData(item, dcvs, context);
 
             for (Metadatum dcv : dcvs)
             {

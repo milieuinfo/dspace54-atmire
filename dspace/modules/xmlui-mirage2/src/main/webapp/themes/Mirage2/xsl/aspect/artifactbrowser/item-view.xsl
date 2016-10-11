@@ -44,7 +44,7 @@
         <xsl:apply-templates select="./mets:dmdSec/mets:mdWrap[@OTHERMDTYPE='DIM']/mets:xmlData/dim:dim"
                              mode="itemSummaryView-DIM"/>
 
-        <xsl:copy-of select="$SFXLink" />
+        <xsl:copy-of select="$SFXLink"/>
 
         <!-- Generate the Creative Commons license information from the file section (DSpace deposit license hidden by default)-->
         <xsl:if test="./mets:fileSec/mets:fileGrp[@USE='CC-LICENSE' or @USE='LICENSE']">
@@ -70,7 +70,9 @@
         <!-- Generate the bitstream information from the file section -->
         <xsl:choose>
             <xsl:when test="./mets:fileSec/mets:fileGrp[@USE='CONTENT' or @USE='ORIGINAL' or @USE='LICENSE']/mets:file">
-                <h3><i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-head</i18n:text></h3>
+                <h3>
+                    <i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-head</i18n:text>
+                </h3>
                 <div class="file-list">
                     <xsl:apply-templates select="./mets:fileSec/mets:fileGrp[@USE='CONTENT' or @USE='ORIGINAL' or @USE='LICENSE' or @USE='CC-LICENSE']">
                         <xsl:with-param name="context" select="."/>
@@ -80,20 +82,32 @@
             </xsl:when>
             <!-- Special case for handling ORE resource maps stored as DSpace bitstreams -->
             <xsl:when test="./mets:fileSec/mets:fileGrp[@USE='ORE']">
-                <xsl:apply-templates select="./mets:fileSec/mets:fileGrp[@USE='ORE']" mode="itemDetailView-DIM" />
+                <xsl:apply-templates select="./mets:fileSec/mets:fileGrp[@USE='ORE']" mode="itemDetailView-DIM"/>
             </xsl:when>
             <xsl:otherwise>
-                <h2><i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-head</i18n:text></h2>
+                <h2>
+                    <i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-head</i18n:text>
+                </h2>
                 <table class="ds-table file-list">
                     <tr class="ds-table-header-row">
-                        <th><i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-file</i18n:text></th>
-                        <th><i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-size</i18n:text></th>
-                        <th><i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-format</i18n:text></th>
-                        <th><i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-view</i18n:text></th>
+                        <th>
+                            <i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-file</i18n:text>
+                        </th>
+                        <th>
+                            <i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-size</i18n:text>
+                        </th>
+                        <th>
+                            <i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-format</i18n:text>
+                        </th>
+                        <th>
+                            <i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-view</i18n:text>
+                        </th>
                     </tr>
                     <tr>
                         <td colspan="4">
-                            <p><i18n:text>xmlui.dri2xhtml.METS-1.0.item-no-files</i18n:text></p>
+                            <p>
+                                <i18n:text>xmlui.dri2xhtml.METS-1.0.item-no-files</i18n:text>
+                            </p>
                         </td>
                     </tr>
                 </table>
@@ -113,21 +127,175 @@
                             <xsl:call-template name="itemSummaryView-DIM-file-section"/>
                         </div>
                     </div>
-                    <xsl:call-template name="itemSummaryView-DIM-date"/>
-                    <xsl:call-template name="itemSummaryView-DIM-vlaandentifier"/>
-                    <xsl:call-template name="itemSummaryView-DIM-isPartOf"/>
-                    <xsl:call-template name="itemSummaryView-DIM-replaces"/>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="element">date</xsl:with-param>
+                        <xsl:with-param name="qualifier1">issued</xsl:with-param>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="schema">vlaanderen</xsl:with-param>
+                        <xsl:with-param name="element">identifier</xsl:with-param>
+                        <xsl:with-param name="noqualifier" select="true()"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="element">relation</xsl:with-param>
+                        <xsl:with-param name="qualifier1">ispartof</xsl:with-param>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="element">relation</xsl:with-param>
+                        <xsl:with-param name="qualifier1">replaces</xsl:with-param>
+                    </xsl:call-template>
 
+
+                    <!-- Special -->
                     <xsl:call-template name="itemSummaryView-DIM-authors"/>
+
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="element">publisher</xsl:with-param>
+                        <xsl:with-param name="noqualifier" select="true()"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="element">title</xsl:with-param>
+                        <xsl:with-param name="qualifier1">alternative</xsl:with-param>
+                    </xsl:call-template>
+
+                    <xsl:call-template name="itemSummaryView-collections"/>
                     <xsl:if test="$ds_item_view_toggle_url != ''">
                         <xsl:call-template name="itemSummaryView-show-full"/>
                     </xsl:if>
                 </div>
                 <div class="col-sm-8">
+                    <!-- Special -->
                     <xsl:call-template name="itemSummaryView-DIM-abstract"/>
                     <xsl:call-template name="itemSummaryView-DIM-URI"/>
-                    <xsl:call-template name="itemSummaryView-collections"/>
                     <xsl:call-template name="itemSummaryView-hasparent"/>
+
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="schema">imjv</xsl:with-param>
+                        <xsl:with-param name="element">aangiftetype</xsl:with-param>
+                        <xsl:with-param name="noqualifier" select="true()"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="schema">imjv</xsl:with-param>
+                        <xsl:with-param name="element">rapporteringsjaar</xsl:with-param>
+                        <xsl:with-param name="noqualifier" select="true()"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="schema">imjv</xsl:with-param>
+                        <xsl:with-param name="element">exploitatie</xsl:with-param>
+                        <xsl:with-param name="qualifier1">nummer</xsl:with-param>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="schema">imjv</xsl:with-param>
+                        <xsl:with-param name="element">exploitatie</xsl:with-param>
+                        <xsl:with-param name="qualifier1">ExploitantCBBNummer</xsl:with-param>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="schema">imjv</xsl:with-param>
+                        <xsl:with-param name="element">exploitatie</xsl:with-param>
+                        <xsl:with-param name="qualifier1">naam</xsl:with-param>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="schema">imjv</xsl:with-param>
+                        <xsl:with-param name="element">ExploitantOndernemingsNummer</xsl:with-param>
+                        <xsl:with-param name="noqualifier" select="true()"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="schema">imjv</xsl:with-param>
+                        <xsl:with-param name="element">ExploitatieLocatie</xsl:with-param>
+                        <xsl:with-param name="noqualifier" select="true()"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="schema">imjv</xsl:with-param>
+                        <xsl:with-param name="element">exploitatie</xsl:with-param>
+                        <xsl:with-param name="qualifier1">gemeente</xsl:with-param>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="schema">imjv</xsl:with-param>
+                        <xsl:with-param name="element">exploitatie</xsl:with-param>
+                        <xsl:with-param name="qualifier1">postcode</xsl:with-param>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="schema">imjv</xsl:with-param>
+                        <xsl:with-param name="element">exploitatie</xsl:with-param>
+                        <xsl:with-param name="qualifier1">straat</xsl:with-param>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="schema">imjv</xsl:with-param>
+                        <xsl:with-param name="element">exploitatie</xsl:with-param>
+                        <xsl:with-param name="qualifier1">huisnummer</xsl:with-param>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="schema">imjv</xsl:with-param>
+                        <xsl:with-param name="element">dossiernummer</xsl:with-param>
+                        <xsl:with-param name="noqualifier" select="true()"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="schema">imjv</xsl:with-param>
+                        <xsl:with-param name="element">ExploitantAdres</xsl:with-param>
+                        <xsl:with-param name="noqualifier" select="true()"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="schema">imjv</xsl:with-param>
+                        <xsl:with-param name="element">ExploitantAdresStad</xsl:with-param>
+                        <xsl:with-param name="noqualifier" select="true()"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="schema">imjv</xsl:with-param>
+                        <xsl:with-param name="element">ExploitantAdresPostcode</xsl:with-param>
+                        <xsl:with-param name="noqualifier" select="true()"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="schema">imjv</xsl:with-param>
+                        <xsl:with-param name="element">MilieuVerslagVerzendAdres</xsl:with-param>
+                        <xsl:with-param name="noqualifier" select="true()"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="schema">imjv</xsl:with-param>
+                        <xsl:with-param name="element">MilieuVerslagFeit</xsl:with-param>
+                        <xsl:with-param name="noqualifier" select="true()"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="schema">imjv</xsl:with-param>
+                        <xsl:with-param name="element">MilieuVerslagFeitTijdstip</xsl:with-param>
+                        <xsl:with-param name="noqualifier" select="true()"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="schema">imjv</xsl:with-param>
+                        <xsl:with-param name="element">MilieuVerslagFeitGebruikerNaam</xsl:with-param>
+                        <xsl:with-param name="noqualifier" select="true()"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="schema">imjv</xsl:with-param>
+                        <xsl:with-param name="element">MilieuVerslagFeitActie</xsl:with-param>
+                        <xsl:with-param name="noqualifier" select="true()"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="element">type</xsl:with-param>
+                        <xsl:with-param name="noqualifier" select="true()"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="element">source</xsl:with-param>
+                        <xsl:with-param name="noqualifier" select="true()"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="element">identifier</xsl:with-param>
+                        <xsl:with-param name="noqualifier" select="true()"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="schema">imjv</xsl:with-param>
+                        <xsl:with-param name="element">document</xsl:with-param>
+                        <xsl:with-param name="qualifier1">title</xsl:with-param>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="element">description</xsl:with-param>
+                        <xsl:with-param name="noqualifier" select="true()"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="schema">imjv</xsl:with-param>
+                        <xsl:with-param name="element">dmsexportnotes</xsl:with-param>
+                        <xsl:with-param name="noqualifier" select="true()"/>
+                    </xsl:call-template>
+
                 </div>
             </div>
         </div>
@@ -137,7 +305,9 @@
     <xsl:template name="itemSummaryView-hasparent">
         <xsl:if test="dim:field[@element='relation' and not(@qualifier) and descendant::text()]">
             <div class="simple-item-view-uri item-page-field-wrapper table word-break">
-                <h5><i18n:text>xmlui.dri2xhtml.METS-1.0.item-hasparent</i18n:text></h5>
+                <h5>
+                    <i18n:text>xmlui.dri2xhtml.METS-1.0.item-hasparent</i18n:text>
+                </h5>
                 <span>
                     <xsl:for-each select="dim:field[@element='relation' and not(@qualifier)]">
                         <a>
@@ -149,44 +319,6 @@
                         <xsl:if test="count(following-sibling::dim:field[@element='relation' and not(@qualifier)]) != 0">
                             <br/>
                         </xsl:if>
-                    </xsl:for-each>
-                </span>
-            </div>
-        </xsl:if>
-    </xsl:template>
-
-    <xsl:template name="itemSummaryView-DIM-vlaandentifier">
-        <xsl:if test="dim:field[@mdschema='vlaanderen' and @element='identifier' and not(@qualifier) and descendant::text()]">
-            <div class="simple-item-view-uri item-page-field-wrapper table word-break">
-                <h5><i18n:text>xmlui.dri2xhtml.METS-1.0.item-vlaandentifier</i18n:text></h5>
-                <span>
-                    <xsl:for-each select="dim:field[@element='identifier' and not(@qualifier) and @mdschema='vlaanderen']">
-                        <xsl:value-of select="."/>
-                    </xsl:for-each>
-                </span>
-            </div>
-        </xsl:if>
-    </xsl:template>
-
-    <xsl:template name="itemSummaryView-DIM-isPartOf">
-        <xsl:if test="dim:field[@mdschema='dc' and @element='relation' and @qualifier='ispartof' and descendant::text()]">
-            <div class="simple-item-view-uri item-page-field-wrapper table word-break">
-                <h5><i18n:text>xmlui.dri2xhtml.METS-1.0.item-ispartof</i18n:text></h5>
-                <span>
-                    <xsl:for-each select="dim:field[@element='relation' and @qualifier='ispartof' and @mdschema='dc']">
-                        <xsl:value-of select="."/>
-                    </xsl:for-each>
-                </span>
-            </div>
-        </xsl:if>
-    </xsl:template>
-    <xsl:template name="itemSummaryView-DIM-replaces">
-        <xsl:if test="dim:field[@mdschema='dc' and @element='relation' and @qualifier='replaces' and descendant::text()]">
-            <div class="simple-item-view-uri item-page-field-wrapper table">
-                <h5><i18n:text>xmlui.dri2xhtml.METS-1.0.item-replaces</i18n:text></h5>
-                <span>
-                    <xsl:for-each select="dim:field[@element='relation' and @qualifier='replaces' and @mdschema='dc']">
-                        <xsl:value-of select="."/>
                     </xsl:for-each>
                 </span>
             </div>
@@ -265,7 +397,9 @@
     <xsl:template name="itemSummaryView-DIM-abstract">
         <xsl:if test="dim:field[@element='description' and @qualifier='abstract']">
             <div class="simple-item-view-description item-page-field-wrapper table">
-                <h5 class="visible-xs"><i18n:text>xmlui.dri2xhtml.METS-1.0.item-abstract</i18n:text></h5>
+                <h5 class="visible-xs">
+                    <i18n:text>xmlui.dri2xhtml.METS-1.0.item-abstract</i18n:text>
+                </h5>
                 <div>
                     <xsl:for-each select="dim:field[@element='description' and @qualifier='abstract']">
                         <xsl:choose>
@@ -291,21 +425,23 @@
     <xsl:template name="itemSummaryView-DIM-authors">
         <xsl:if test="dim:field[@element='contributor'][@qualifier='author' and descendant::text()] or dim:field[@element='creator' and descendant::text()] or dim:field[@element='contributor' and descendant::text()]">
             <div class="simple-item-view-authors item-page-field-wrapper table">
-                <h5><i18n:text>xmlui.dri2xhtml.METS-1.0.item-author</i18n:text></h5>
+                <h5>
+                    <i18n:text>xmlui.dri2xhtml.METS-1.0.item-author</i18n:text>
+                </h5>
                 <xsl:choose>
                     <xsl:when test="dim:field[@element='contributor'][@qualifier='author']">
                         <xsl:for-each select="dim:field[@element='contributor'][@qualifier='author']">
-                            <xsl:call-template name="itemSummaryView-DIM-authors-entry" />
+                            <xsl:call-template name="itemSummaryView-DIM-authors-entry"/>
                         </xsl:for-each>
                     </xsl:when>
                     <xsl:when test="dim:field[@element='creator']">
                         <xsl:for-each select="dim:field[@element='creator']">
-                            <xsl:call-template name="itemSummaryView-DIM-authors-entry" />
+                            <xsl:call-template name="itemSummaryView-DIM-authors-entry"/>
                         </xsl:for-each>
                     </xsl:when>
                     <xsl:when test="dim:field[@element='contributor']">
                         <xsl:for-each select="dim:field[@element='contributor']">
-                            <xsl:call-template name="itemSummaryView-DIM-authors-entry" />
+                            <xsl:call-template name="itemSummaryView-DIM-authors-entry"/>
                         </xsl:for-each>
                     </xsl:when>
                     <xsl:otherwise>
@@ -319,7 +455,9 @@
     <xsl:template name="itemSummaryView-DIM-authors-entry">
         <div>
             <xsl:if test="@authority">
-                <xsl:attribute name="class"><xsl:text>ds-dc_contributor_author-authority</xsl:text></xsl:attribute>
+                <xsl:attribute name="class">
+                    <xsl:text>ds-dc_contributor_author-authority</xsl:text>
+                </xsl:attribute>
             </xsl:if>
             <xsl:copy-of select="node()"/>
         </div>
@@ -328,34 +466,35 @@
     <xsl:template name="itemSummaryView-DIM-URI">
         <xsl:if test="dim:field[@element='identifier' and @qualifier='uri' and descendant::text()]">
             <div class="simple-item-view-uri item-page-field-wrapper table">
-                <h5><i18n:text>xmlui.dri2xhtml.METS-1.0.item-uri</i18n:text></h5>
+                <h5>
+                    <i18n:text>xmlui.dri2xhtml.METS-1.0.item-uri</i18n:text>
+                </h5>
                 <span>
                     <xsl:for-each select="dim:field[@element='identifier' and @qualifier='uri']">
-                        <a>
-                            <xsl:attribute name="href">
+                        <div>
+                            <a>
+                                <xsl:attribute name="href">
+                                    <xsl:copy-of select="./node()"/>
+                                </xsl:attribute>
                                 <xsl:copy-of select="./node()"/>
-                            </xsl:attribute>
-                            <xsl:copy-of select="./node()"/>
-                        </a>
-                        <xsl:if test="count(following-sibling::dim:field[@element='identifier' and @qualifier='uri']) != 0 or count(//dim:field[@mdschema='vlaanderen' and @element='identifier' and not(@qualifier) and descendant::text()]) !=0">
-                            <br/>
-                        </xsl:if>
+                            </a>
+                        </div>
                     </xsl:for-each>
-                <xsl:if test="dim:field[@mdschema='vlaanderen' and @element='identifier' and not(@qualifier) and descendant::text()]">
+                    <xsl:if test="dim:field[@mdschema='vlaanderen' and @element='identifier' and not(@qualifier) and descendant::text()]">
 
-                    <xsl:for-each select="dim:field[@mdschema='vlaanderen' and @element='identifier' and not(@qualifier) and descendant::text()]">
-                        <a>
-                            <xsl:attribute name="href">
-                                <xsl:value-of select="concat(confman:getProperty('dspace.url'),'/external-handle/',text())"/>
-                            </xsl:attribute>
-                            <xsl:value-of select="concat(confman:getProperty('dspace.url'),'/external-handle/',text())"/>
-                        </a>
-
-                    </xsl:for-each>
-                </xsl:if>
+                        <xsl:for-each select="dim:field[@mdschema='vlaanderen' and @element='identifier' and not(@qualifier) and descendant::text()]">
+                            <div>
+                                <a>
+                                    <xsl:attribute name="href">
+                                        <xsl:value-of select="concat(confman:getProperty('dspace.url'),'/external-handle/',text())"/>
+                                    </xsl:attribute>
+                                    <xsl:value-of select="concat(confman:getProperty('dspace.url'),'/external-handle/',text())"/>
+                                </a>
+                            </div>
+                        </xsl:for-each>
+                    </xsl:if>
                 </span>
             </div>
-
 
 
         </xsl:if>
@@ -383,7 +522,9 @@
                 <i18n:text>xmlui.mirage2.itemSummaryView.MetaData</i18n:text>
             </h5>
             <a>
-                <xsl:attribute name="href"><xsl:value-of select="$ds_item_view_toggle_url"/></xsl:attribute>
+                <xsl:attribute name="href">
+                    <xsl:value-of select="$ds_item_view_toggle_url"/>
+                </xsl:attribute>
                 <i18n:text>xmlui.ArtifactBrowser.ItemViewer.show_full</i18n:text>
             </a>
         </div>
@@ -432,32 +573,32 @@
 
                     <xsl:for-each select="//mets:fileSec/mets:fileGrp[@USE='CONTENT' or @USE='ORIGINAL' or @USE='LICENSE']/mets:file">
                         <xsl:call-template name="itemSummaryView-DIM-file-section-entry">
-                            <xsl:with-param name="href" select="mets:FLocat[@LOCTYPE='URL']/@xlink:href" />
-                            <xsl:with-param name="mimetype" select="@MIMETYPE" />
-                            <xsl:with-param name="label-1" select="$label-1" />
-                            <xsl:with-param name="label-2" select="$label-2" />
-                            <xsl:with-param name="title" select="mets:FLocat[@LOCTYPE='URL']/@xlink:title" />
-                            <xsl:with-param name="label" select="mets:FLocat[@LOCTYPE='URL']/@xlink:label" />
-                            <xsl:with-param name="size" select="@SIZE" />
+                            <xsl:with-param name="href" select="mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
+                            <xsl:with-param name="mimetype" select="@MIMETYPE"/>
+                            <xsl:with-param name="label-1" select="$label-1"/>
+                            <xsl:with-param name="label-2" select="$label-2"/>
+                            <xsl:with-param name="title" select="mets:FLocat[@LOCTYPE='URL']/@xlink:title"/>
+                            <xsl:with-param name="label" select="mets:FLocat[@LOCTYPE='URL']/@xlink:label"/>
+                            <xsl:with-param name="size" select="@SIZE"/>
                         </xsl:call-template>
                     </xsl:for-each>
                 </div>
             </xsl:when>
             <!-- Special case for handling ORE resource maps stored as DSpace bitstreams -->
             <xsl:when test="//mets:fileSec/mets:fileGrp[@USE='ORE']">
-                <xsl:apply-templates select="//mets:fileSec/mets:fileGrp[@USE='ORE']" mode="itemSummaryView-DIM" />
+                <xsl:apply-templates select="//mets:fileSec/mets:fileGrp[@USE='ORE']" mode="itemSummaryView-DIM"/>
             </xsl:when>
         </xsl:choose>
     </xsl:template>
 
     <xsl:template name="itemSummaryView-DIM-file-section-entry">
-        <xsl:param name="href" />
-        <xsl:param name="mimetype" />
-        <xsl:param name="label-1" />
-        <xsl:param name="label-2" />
-        <xsl:param name="title" />
-        <xsl:param name="label" />
-        <xsl:param name="size" />
+        <xsl:param name="href"/>
+        <xsl:param name="mimetype"/>
+        <xsl:param name="label-1"/>
+        <xsl:param name="label-2"/>
+        <xsl:param name="title"/>
+        <xsl:param name="label"/>
+        <xsl:param name="size"/>
         <div>
             <a>
                 <xsl:attribute name="href">
@@ -538,15 +679,15 @@
             </xsl:attribute>
             &#xFEFF; <!-- non-breaking space to force separating the end tag -->
         </span>
-        <xsl:copy-of select="$SFXLink" />
+        <xsl:copy-of select="$SFXLink"/>
     </xsl:template>
 
     <xsl:template match="dim:field" mode="itemDetailView-DIM">
         <tr>
             <xsl:attribute name="class">
                 <xsl:text>ds-table-row </xsl:text>
-                <xsl:if test="(position() div 2 mod 2 = 0)">even </xsl:if>
-                <xsl:if test="(position() div 2 mod 2 = 1)">odd </xsl:if>
+                <xsl:if test="(position() div 2 mod 2 = 0)">even</xsl:if>
+                <xsl:if test="(position() div 2 mod 2 = 1)">odd</xsl:if>
             </xsl:attribute>
             <td class="label-cell">
                 <xsl:value-of select="./@mdschema"/>
@@ -560,7 +701,9 @@
             <td class="word-break">
                 <xsl:copy-of select="./node()"/>
             </td>
-            <td><xsl:value-of select="./@language"/></td>
+            <td>
+                <xsl:value-of select="./@language"/>
+            </td>
         </tr>
     </xsl:template>
 
@@ -750,7 +893,7 @@
                         <xsl:text> (individual)</xsl:text>
                     </xsl:when>
                 </xsl:choose>
-                <xsl:if test="position() != last()">, </xsl:if>
+                <xsl:if test="position() != last()">,</xsl:if>
             </xsl:for-each>
         </xsl:variable>
 
@@ -787,12 +930,20 @@
 
     <!-- Generate the license information from the file section -->
     <xsl:template match="mets:fileGrp[@USE='CC-LICENSE']" mode="simple">
-        <li><a href="{mets:file/mets:FLocat[@xlink:title='license_text']/@xlink:href}"><i18n:text>xmlui.dri2xhtml.structural.link_cc</i18n:text></a></li>
+        <li>
+            <a href="{mets:file/mets:FLocat[@xlink:title='license_text']/@xlink:href}">
+                <i18n:text>xmlui.dri2xhtml.structural.link_cc</i18n:text>
+            </a>
+        </li>
     </xsl:template>
 
     <!-- Generate the license information from the file section -->
     <xsl:template match="mets:fileGrp[@USE='LICENSE']" mode="simple">
-        <li><a href="{mets:file/mets:FLocat[@xlink:title='license.txt']/@xlink:href}"><i18n:text>xmlui.dri2xhtml.structural.link_original_license</i18n:text></a></li>
+        <li>
+            <a href="{mets:file/mets:FLocat[@xlink:title='license.txt']/@xlink:href}">
+                <i18n:text>xmlui.dri2xhtml.structural.link_original_license</i18n:text>
+            </a>
+        </li>
     </xsl:template>
 
     <!--
@@ -811,11 +962,113 @@
         <xsl:param name="mimetype"/>
 
         <!--Build full key name for MIME type (format: xmlui.dri2xhtml.mimetype.{MIME type})-->
-        <xsl:variable name="mimetype-key">xmlui.dri2xhtml.mimetype.<xsl:value-of select='$mimetype'/></xsl:variable>
+        <xsl:variable name="mimetype-key">xmlui.dri2xhtml.mimetype.<xsl:value-of select='$mimetype'/>
+        </xsl:variable>
 
         <!--Lookup the MIME Type's key in messages.xml language file.  If not found, just display MIME Type-->
-        <i18n:text i18n:key="{$mimetype-key}"><xsl:value-of select="$mimetype"/></i18n:text>
+        <i18n:text i18n:key="{$mimetype-key}">
+            <xsl:value-of select="$mimetype"/>
+        </i18n:text>
     </xsl:template>
 
 
+    <xsl:template name="itemSummaryView-DIM-generic">
+        <xsl:param name="schema">dc</xsl:param>
+        <xsl:param name="element"/>
+        <xsl:param name="qualifier1" select="''"/>
+        <xsl:param name="qualifier2" select="''"/>
+        <xsl:param name="qualifier3" select="''"/>
+        <xsl:param name="noqualifier" select="false()"/>
+        <xsl:param name="justify" select="false()"/>
+        <xsl:if test="dim:field[@mdschema=$schema][@element=$element][@qualifier=$qualifier1 and descendant::text()]
+                        or (string-length($qualifier2) > 0 and dim:field[@mdschema=$schema][@element=$element][@qualifier=$qualifier2 and descendant::text()])
+                        or (string-length($qualifier3) > 0 and dim:field[@mdschema=$schema][@element=$element][@qualifier=$qualifier3 and descendant::text()])
+                        or ($noqualifier and dim:field[@mdschema=$schema][@element=$element][not(@qualifier) and descendant::text()])">
+            <div>
+                <xsl:attribute name="class">
+                    <xsl:choose>
+                        <xsl:when test="$justify">
+                            <xsl:text>simple-item-view-description item-page-field-wrapper table</xsl:text>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:text>simple-item-view-other item-page-field-wrapper table</xsl:text>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:attribute>
+                <h5>
+                    <xsl:choose>
+                        <xsl:when test="$noqualifier and string-length($qualifier1) = 0">
+                            <i18n:text>xmlui.dri2xhtml.METS-1.0.item-<xsl:value-of select="$schema"/>.<xsl:value-of
+                                    select="$element"/>
+                            </i18n:text>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <i18n:text>xmlui.dri2xhtml.METS-1.0.item-<xsl:value-of select="$schema"/>.<xsl:value-of
+                                    select="$element"/>.<xsl:value-of
+                                    select="$qualifier1"/>
+                            </i18n:text>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </h5>
+
+                <xsl:if test="$noqualifier">
+                    <xsl:for-each select="dim:field[@mdschema=$schema][@element=$element][not(@qualifier)]">
+                        <div>
+                            <xsl:call-template name="toURL">
+                                <xsl:with-param name="text">
+                                    <xsl:value-of select="text()"/>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                        </div>
+                    </xsl:for-each>
+                </xsl:if>
+                <xsl:if test="string-length($qualifier1) > 0">
+                    <xsl:for-each select="dim:field[@mdschema=$schema][@element=$element][@qualifier=$qualifier1]">
+                        <div>
+                            <xsl:call-template name="toURL">
+                                <xsl:with-param name="text">
+                                    <xsl:value-of select="text()"/>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                        </div>
+                    </xsl:for-each>
+                </xsl:if>
+                <xsl:if test="string-length($qualifier2) > 0">
+                    <xsl:for-each select="dim:field[@mdschema=$schema][@element=$element][@qualifier=$qualifier2]">
+                        <div>
+                            <xsl:call-template name="toURL">
+                                <xsl:with-param name="text">
+                                    <xsl:value-of select="text()"/>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                        </div>
+                    </xsl:for-each>
+                </xsl:if>
+                <xsl:if test="string-length($qualifier3) > 0">
+                    <xsl:for-each select="dim:field[@mdschema=$schema][@element=$element][@qualifier=$qualifier3]">
+                        <div>
+                            <xsl:call-template name="toURL">
+                                <xsl:with-param name="text">
+                                    <xsl:value-of select="text()"/>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                        </div>
+                    </xsl:for-each>
+                </xsl:if>
+            </div>
+        </xsl:if>
+    </xsl:template>
+    <xsl:template name="toURL">
+        <xsl:param name="text"/>
+        <xsl:choose>
+            <xsl:when test="starts-with($text, 'http:')">
+                <a href="{$text}">
+                    <xsl:value-of select="$text"/>
+                </a>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:copy-of select="$text"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
 </xsl:stylesheet>
