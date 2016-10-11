@@ -171,6 +171,11 @@
             <artifactId>additions</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>be.milieuinfo.framework</groupId>
+            <artifactId>core-log</artifactId>
+        </dependency>
+
     	<dependency>
             <groupId>org.dspace</groupId>
             <artifactId>dspace-oai</artifactId>

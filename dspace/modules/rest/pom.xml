@@ -248,6 +248,18 @@
             <groupId>org.dspace.modules</groupId>
             <artifactId>additions</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>be.milieuinfo.framework</groupId>
+            <artifactId>core-log</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.jackson</groupId>
+                    <artifactId>jackson-core-asl</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <dependency>
             <groupId>com.wordnik</groupId>
             <artifactId>swagger-jersey-jaxrs</artifactId>

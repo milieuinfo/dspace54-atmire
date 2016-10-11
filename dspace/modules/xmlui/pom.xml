@@ -193,6 +193,11 @@
             <artifactId>additions</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>be.milieuinfo.framework</groupId>
+            <artifactId>core-log</artifactId>
+        </dependency>
+
         <!-- DSpace XMLUI Languages -->
         <dependency>
             <groupId>org.dspace</groupId>
