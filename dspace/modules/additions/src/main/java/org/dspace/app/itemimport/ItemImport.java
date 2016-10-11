@@ -464,7 +464,6 @@ public class ItemImport {
                     sourcedir = unzip(sourcedir, zipfilename);
                 }
 
-
                 c.turnOffAuthorisationSystem();
 
                 if ("add".equals(command)) {
@@ -703,10 +702,6 @@ public class ItemImport {
                 }
             }
 
-        } catch (Throwable t) {
-            System.err.println("The item import command encountered an error: " + t.getMessage());
-            System.err.println(t.getMessage());
-            c.abort();
         } finally {
             if (mapOut != null) {
                 mapOut.flush();
