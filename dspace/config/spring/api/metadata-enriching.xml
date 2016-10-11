@@ -24,10 +24,9 @@
     <bean class="com.atmire.objectmanager.MetaDatumEnricherApplier" id="MetaDatumEnricherApplier"/>
 
     <bean class="com.atmire.objectmanager.DiscoveryRelatedItemsMetaDatumEnricher" autowire-candidate="true">
-        <property name="metadataFieldToIgnore">
+        <property name="identifierField">
                 <value>vlaanderen.identifier</value>
         </property>
     </bean>
-
 
 </beans>

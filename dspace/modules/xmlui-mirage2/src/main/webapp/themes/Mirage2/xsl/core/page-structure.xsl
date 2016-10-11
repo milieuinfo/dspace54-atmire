@@ -254,8 +254,7 @@
                 if (defaultedElements[i].value == '<i18n:text>xmlui.dri2xhtml.default.textarea.value</i18n:text>'){
                 defaultedElements[i].value='';}}
                 }
-                //Disable pressing 'enter' key to submit a form (otherwise pressing 'enter' causes a submission to start
-                over)
+                //Disable pressing 'enter' key to submit a form (otherwise pressing 'enter' causes a submission to start over)
                 function disableEnterKey(e)
                 {
                 var key;
