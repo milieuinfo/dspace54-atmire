@@ -2298,6 +2298,7 @@
     <message key="xmlui.dri2xhtml.METS-1.0.item-vlaanderen.identifier">Vlaanderen Identifier</message>
     <message key="xmlui.dri2xhtml.METS-1.0.item-dc.publisher">Publisher</message>
     <message key="xmlui.dri2xhtml.METS-1.0.item-dc.date.issued">Date</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-dc.description">Description</message>
 
     <!-- Special pioneer model related text, wherever it might end up -->
     <message key="xmlui.dri2xhtml.pioneer.preview">Preview</message>

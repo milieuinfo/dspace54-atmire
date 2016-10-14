@@ -95,10 +95,11 @@
     <message key="xmlui.dri2xhtml.METS-1.0.item-dc.title.alternative">Alternatieve Titel</message>
     <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.document.title">Document Titel</message>
     <message key="xmlui.dri2xhtml.METS-1.0.item-imjv.dmsexportnotes">Export notes</message>
-    <message key="xmlui.dri2xhtml.METS-1.0.item-dc.identifier.uri">Export notes</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-dc.identifier.uri">URI</message>
     <message key="xmlui.dri2xhtml.METS-1.0.item-vlaanderen.identifier">Vlaanderen Identifier</message>
     <message key="xmlui.dri2xhtml.METS-1.0.item-dc.publisher">Uitgever</message>
     <message key="xmlui.dri2xhtml.METS-1.0.item-dc.date.issued">Datum</message>
+    <message key="xmlui.dri2xhtml.METS-1.0.item-dc.description">Beschrijving</message>
         <!--
          The format used by all keys is as follows
 
