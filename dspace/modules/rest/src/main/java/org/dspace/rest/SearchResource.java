@@ -23,6 +23,7 @@ import org.dspace.discovery.configuration.DiscoveryConfigurationParameters;
 import org.dspace.discovery.configuration.DiscoverySortConfiguration;
 import org.dspace.discovery.configuration.DiscoverySortFieldConfiguration;
 import org.dspace.handle.HandleManager;
+import org.dspace.usage.UsageEvent;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
@@ -77,17 +78,13 @@ public class SearchResource extends Resource {
             @ApiParam(value = "The ordering of the results.", required = false, allowableValues = "asc,desc")
             @QueryParam("order") String order,
 
+            @QueryParam("userIP") String user_ip,
+            @QueryParam("userAgent") String user_agent, @QueryParam("xforwardedfor") String xforwardedfor,
             @Context HttpHeaders headers, @Context HttpServletRequest request)
             throws WebApplicationException, Exception {
 
         // get the context user.
-
-        // we have the context now. The context knows that we have a user.
-
         context = createContext();
-        if(context.getCurrentUser()==null){
-            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-        }
 
         if(log.isDebugEnabled())
         {
@@ -139,6 +136,9 @@ public class SearchResource extends Resource {
             for (DSpaceObject obj : dspaceObjects) {
                 Item it = (Item) obj;
                 toReturn.add(new org.dspace.rest.common.Item(it, cleanExpand, context));
+
+                writeStats(it, UsageEvent.Action.VIEW, user_ip, user_agent, xforwardedfor,
+                        headers, request, context);
             }
 
             context.complete();

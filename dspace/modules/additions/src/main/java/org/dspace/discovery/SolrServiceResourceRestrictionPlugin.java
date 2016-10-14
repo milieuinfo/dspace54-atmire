@@ -86,7 +86,7 @@ public class SolrServiceResourceRestrictionPlugin implements SolrServiceIndexPlu
                     MetadataBasedAuthorizationService metadataBasedAuthorizationService = metadataBasedAuthorizationServiceList.get(0);
 
                     for (Integer groupId : groupIds) {
-                        //build restrictions for groups without metadata based policies
+                        //build restrictions for groups with metadata based policies
                         Group group = Group.find(context, groupId);
 
                         //If the current group has metadata based restriction policies
