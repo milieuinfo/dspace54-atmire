@@ -238,14 +238,16 @@ public class ItemsResource extends Resource {
                 offset = 0;
             }
 
-            for (int i = 0; (dspaceItems.hasNext()) && (i < (limit + offset)); i++) {
+            int i = 0;
+            while (dspaceItems.hasNext() && i < (limit + offset)) {
                 org.dspace.content.Item dspaceItem = dspaceItems.next();
-                if (i >= offset) {
-                    if (ItemService.isItemListedForUser(context, dspaceItem)) {
+                if (ItemService.isItemListedForUser(context, dspaceItem)) {
+                    if (i >= offset) {
                         items.add(new Item(dspaceItem, expand, context));
                         writeStats(dspaceItem, UsageEvent.Action.VIEW, user_ip, user_agent, xforwardedfor,
                                 headers, request, context);
                     }
+                    i++;
                 }
             }
             context.complete();
