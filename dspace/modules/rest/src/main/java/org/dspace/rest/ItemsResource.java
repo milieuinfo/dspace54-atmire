@@ -249,6 +249,7 @@ public class ItemsResource extends Resource {
                     }
                     i++;
                 }
+                context.removeCached(dspaceItem, dspaceItem.getID());
             }
             context.complete();
         } catch (SQLException e) {
