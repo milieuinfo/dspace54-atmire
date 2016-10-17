@@ -22,6 +22,9 @@ sed -i \
     -e "s/%db_host%/${db_host}/g" \
     -e "s/%mailrelay_host%/${mailrelay_host}/g" \
     -e "s/%mailrelay_port%/${mailrelay_port}/g" \
+    -e "s/%mail_from_address%/${mail_from_address}/g" \
+    -e "s/%mail_feedback_recipient%/${mail_feedback_recipient}/g" \
+    -e "s/%mail_admin%/${mail_admin}/g" \
     -e "s/%dspace.consumer.token%/${dspace_consumer_token}/g" \
     -e "s/%dspace.consumer.secret%/${dspace_consumer_secret}/g" \
     -e "s/%dspace.archief.name%/${archief_name}/g" \
