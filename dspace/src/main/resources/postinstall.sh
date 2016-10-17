@@ -265,13 +265,17 @@ Bytecode true
 NotifyClamd /etc/clamav/clamd.conf
 # Check for new database 24 times a day
 Checks 24
-DatabaseMirror db.local.clamav.net
+DatabaseMirror db.be.clamav.net
 DatabaseMirror database.clamav.net
 HTTPProxyServer ${http_proxy_host}
 HTTPProxyPort ${http_proxy_port}
+HTTPProxyUsername ${http_proxy_user}
+HTTPProxyPassword ${http_proxy_password} 
+
 EOF
 
-chown clamav:clamav /etc/clamav/freshclam.conf
+chmod 0700 /etc/clamav/freshclam.conf
+chown root:root /etc/clamav/freshclam.conf
 
 cat << EOF > /etc/systemd/system/clamav-daemon.socket.d/extend.conf
 [Socket]
