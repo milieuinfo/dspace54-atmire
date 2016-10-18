@@ -49,6 +49,7 @@
     <xsl:import href="aspect/artifactbrowser/one-offs.xsl"/>
     <xsl:import href="aspect/submission/submission.xsl"/>
     <xsl:import href="custom/core/forms.xsl"/>
+    <xsl:import href="custom/core/navigation.xsl"/>
     <xsl:output indent="yes"/>
 
 
