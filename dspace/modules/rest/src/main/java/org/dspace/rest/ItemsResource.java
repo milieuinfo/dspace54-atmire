@@ -127,7 +127,7 @@ public class ItemsResource extends Resource {
 
     @GET
     @Path("/external-handle/{handle}")
-    @ApiOperation(value = "Retrieve an item by using the internal DSpace item handle.",
+    @ApiOperation(value = "Retrieve an item by using the external item handle.",
             response = org.dspace.rest.common.Item[].class
     )
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})

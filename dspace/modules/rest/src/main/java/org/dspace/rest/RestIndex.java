@@ -7,6 +7,9 @@
  */
 package org.dspace.rest;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
 import org.apache.log4j.Logger;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.eperson.EPerson;
@@ -32,6 +35,7 @@ import java.util.List;
  *
  */
 @Path("/")
+@Api(value = "/", description = "Root of REST API")
 public class RestIndex {
     private static Logger log = Logger.getLogger(RestIndex.class);
 
@@ -44,6 +48,9 @@ public class RestIndex {
      * @return HTML page which has information about all methods of REST api.
      */
     @GET
+	@ApiOperation(value = "Retrieve an html page with information about REST api.",
+			response = java.lang.String.class
+	)
     @Produces(MediaType.TEXT_HTML)
     public String sayHtmlHello() {
     	// TODO Better graphics, add arguments to all methods. (limit, offset, item and so on)
@@ -121,6 +128,9 @@ public class RestIndex {
      */
     @GET
     @Path("/test")
+	@ApiOperation(value = "Method only for testing whether the REST API is running.",
+			response = java.lang.String.class
+	)
     public String test()
     {
         return "REST api is running.";
@@ -129,19 +139,26 @@ public class RestIndex {
     /**
      * Method to login a user into REST API.
      *
-     * @param user
-     *            User which will be logged in to REST API.
+     * @param email
+     *            User's email address which will be logged in to REST API.
+     * @param password
+     *            User's password which will be logged in to REST API.
      * @return Returns response code OK and a token. Otherwise returns response
      *         code FORBIDDEN(403).
      */
-    @POST
+    @GET
     @Path("/login")
+	@ApiOperation(value = "Method  to log in a user into the REST API.",
+			response = Response.class
+	)
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Response login()
-    {
-        //If you can get here, you are authenticated, the actual login is handled by spring security
-        return Response.ok().build();
-    }
+    public Response login(
+			@ApiParam(value = "The user's email address", required = true) @QueryParam("email") String email,
+			@ApiParam(value = "The user's password", required = true) @QueryParam("password") String password)
+			{
+				//If you can get here, you are authenticated, the actual login is handled by spring security
+				return Response.ok().build();
+			}
 
 /*
 	@GET
@@ -203,6 +220,9 @@ public class RestIndex {
      */
     @POST
     @Path("/logout")
+	@ApiOperation(value = "Method to log a user out of the REST API.",
+			response = Response.class
+	)
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response logout(@Context HttpHeaders headers)
     {
@@ -222,6 +242,9 @@ public class RestIndex {
      */
     @GET
     @Path("/status")
+	@ApiOperation(value = "Method to check current status of the service and logged in user",
+			response = Status.class
+	)
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Status status(@Context HttpHeaders headers) throws UnsupportedEncodingException {
         org.dspace.core.Context context = null;
