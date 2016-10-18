@@ -35,7 +35,7 @@ import java.util.ArrayList;
  *
  */
 @Path("/communities")
-@Api(value = "/communities", description = "Retrieve communities", position = 3)
+@Api(value = "/communities", description = "Retrieve communities", position = 7)
 public class CommunitiesResource extends Resource
 {
     private static Logger log = Logger.getLogger(CommunitiesResource.class);

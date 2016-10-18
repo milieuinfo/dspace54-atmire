@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 @Path("/search")
-@Api(value = "/search", description = "Search for objects", position = 6)
+@Api(value = "/search", description = "Search for objects", position = 2)
 
 public class SearchResource extends Resource {
 

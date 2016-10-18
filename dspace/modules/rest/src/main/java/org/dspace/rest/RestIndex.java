@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.eperson.EPerson;
 import org.dspace.rest.common.Status;
-import org.dspace.rest.common.User;
 import org.dspace.rest.exceptions.ContextException;
 
 import javax.servlet.ServletContext;
@@ -25,7 +24,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
-import java.util.List;
 
 /**
  * Root of RESTful api. It provides login and logout. Also have method for
@@ -35,7 +33,7 @@ import java.util.List;
  *
  */
 @Path("/")
-@Api(value = "/", description = "Root of REST API")
+@Api(value = "/", description = "Root of REST API", position = 1)
 public class RestIndex {
     private static Logger log = Logger.getLogger(RestIndex.class);
 
@@ -146,19 +144,36 @@ public class RestIndex {
      * @return Returns response code OK and a token. Otherwise returns response
      *         code FORBIDDEN(403).
      */
-    @GET
-    @Path("/login")
+	@GET
+	@Path("/login")
 	@ApiOperation(value = "Method  to log in a user into the REST API.",
 			response = Response.class
 	)
-    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Response login(
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public Response login(
 			@ApiParam(value = "The user's email address", required = true) @QueryParam("email") String email,
-			@ApiParam(value = "The user's password", required = true) @QueryParam("password") String password)
-			{
-				//If you can get here, you are authenticated, the actual login is handled by spring security
-				return Response.ok().build();
-			}
+			@ApiParam(value = "The user's password", required = true) @QueryParam("password") String password) {
+
+		org.dspace.core.Context context = null;
+		try {
+			context = Resource.createContext();
+		} catch (ContextException e) {
+			log.error("Unable to create context: " + e.getMessage(), e);
+			return Response.serverError().entity(e.getMessage()).build();
+		} catch (WebApplicationException e) {
+			log.warn("REST API authentication for user " + email + " failed.");
+			context = null;
+		}
+
+		if(context == null || context.getCurrentUser() == null) {
+			return Response.status(Response.Status.FORBIDDEN)
+					.entity("Authentication failed. You provided an invalid username + password, OpenAM cookie or header.")
+					.build();
+		} else {
+			//If you can get here, you are authenticated, the actual login is handled by spring security
+			return Response.ok().build();
+		}
+	}
 
 /*
 	@GET
@@ -269,7 +284,9 @@ public class RestIndex {
         } catch (AuthorizeException e) {
             Resource.processException("Status eperson authorize exception: " + e.getMessage(), context);
         } finally {
-            context.abort();
+        	if(context != null) {
+				context.abort();
+			}
         }
 
         //fallback status, unauth

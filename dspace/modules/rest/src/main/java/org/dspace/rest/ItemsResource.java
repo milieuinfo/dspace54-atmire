@@ -58,7 +58,7 @@ import java.util.List;
 // Every DSpace class used without namespace is from package org.dspace.rest.common.*. Otherwise namespace is defined.
 @SuppressWarnings("deprecation")
 @Path("/items")
-@Api(value = "/items", description = "Retrieve items", position = 5)
+@Api(value = "/items", description = "Retrieve items", position = 3)
 public class ItemsResource extends Resource {
 
     private static final Logger log = Logger.getLogger(ItemsResource.class);

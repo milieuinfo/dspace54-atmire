@@ -65,9 +65,9 @@
                             <host></host>
                             <basePath>${rest.url.path}</basePath>
                             <info>
-                                <title>LNE rest application</title>
+                                <title>ACD Archief REST Application</title>
                                 <version>v1</version>
-                                <description>LNE rest api.</description>
+                                <description>ACD Archief REST API</description>
                                 <license>
                                     <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
                                     <name>Apache 2.0</name>
