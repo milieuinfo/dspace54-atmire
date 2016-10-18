@@ -30,6 +30,10 @@
     <message key="xmlui.Discovery.AbstractSearch.type_exploitatieLocatiePostcode">Filter by: Exploitatie Postcode</message>
     <message key="xmlui.Discovery.AbstractSearch.type_type">Filter by: Record Type</message>
 
+    <message key="xmlui.mirage2.discovery.reset">Reset</message>
+    <message key="xmlui.mirage2.discovery.newFilter">Voeg een nieuwe filter toe</message>
+    <message key="xmlui.mirage2.discovery.showAdvancedFilters">Toon geavanceerde filters</message>
+    <message key="xmlui.mirage2.discovery.hideAdvancedFilters">Verberg geavanceerde filters</message>
 
     <message key="xmlui.dri2xhtml.METS-1.0.imjv-Rapporteringsjaar">Rapporterings Jaar</message>
     <message key="xmlui.dri2xhtml.METS-1.0.imjv-ExploitatieCBBNummer">Exploitatie CBB Nummer</message>
@@ -222,6 +226,7 @@
         <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_other">Andere Bijdrager</message>
         <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_advisor">Adviseur</message>
         <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_department">Departement</message>
+        <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_dateIssued">Datum uitgave</message>
 
         <message key="xmlui.ArtifactBrowser.AdvancedSearch.type_ANY">Volledige Tekst</message>
         <message key="xmlui.ArtifactBrowser.AdvancedSearch.and">EN</message>
@@ -2468,12 +2473,30 @@
         <message key="xmlui.ArtifactBrowser.SimpleSearch.filter.type">Record Type</message>
         <message key="xmlui.ArtifactBrowser.SimpleSearch.filter.externalHandle">Vlaanderen Identifier</message>
 
-        <message key="xmlui.Discovery.AbstractSearch.type_aangifteType">Filter by: Aangifte Type</message>
-        <message key="xmlui.Discovery.AbstractSearch.type_rapporteringsJaar">Filter by: Rapporteringsjaar</message>
-        <message key="xmlui.Discovery.AbstractSearch.type_exploitatieLocatieStad">Filter by: Exploitatie Stad</message>
-        <message key="xmlui.Discovery.AbstractSearch.type_exploitatieLocatiePostcode">Filter by: Exploitatie Postcode</message>
-        <message key="xmlui.Discovery.AbstractSearch.type_type">Filter by: Record Type</message>
+        <message key="xmlui.ArtifactBrowser.SiteViewer.head_recent_submissions">Recent toegevoegd</message>
 
+        <message key="xmlui.Discovery.AbstractSearch.type_aangifteType">Filter op: Aangifte Type</message>
+        <message key="xmlui.Discovery.AbstractSearch.type_rapporteringsJaar">Filter op: Rapporteringsjaar</message>
+        <message key="xmlui.Discovery.AbstractSearch.type_exploitatieLocatieStad">Filter op: Exploitatie Stad</message>
+        <message key="xmlui.Discovery.AbstractSearch.type_exploitatieLocatiePostcode">Filter op: Exploitatie Postcode</message>
+        <message key="xmlui.Discovery.AbstractSearch.type_type">Filter op: Record Type</message>
+
+        <message key="xmlui.Discovery.SimpleSearch.search_scope">Zoek</message>
+        <message key="xmlui.discovery.SimpleSearch.search_label">Zoek</message>
+        <message key="xmlui.Discovery.SimpleSearch.filter_head">Filters</message>
+        <message key="xmlui.Discovery.SimpleSearch.filter_help">Gebruik filters om de zoekresultaten te verfijnen.</message>
+
+        <message key="xmlui.Discovery.SimpleSearch.filter.contains">bevat</message>
+        <message key="xmlui.Discovery.SimpleSearch.filter.equals">is gelijk aan</message>
+        <message key="xmlui.Discovery.SimpleSearch.filter.authority">heeft ID</message>
+        <message key="xmlui.Discovery.SimpleSearch.filter.notcontains">bevat niet</message>
+        <message key="xmlui.Discovery.SimpleSearch.filter.notequals">is niet gelijk aan</message>
+        <message key="xmlui.Discovery.SimpleSearch.filter.notauthority">heeft niet ID</message>
+
+        <message key="xmlui.Discovery.RelatedItems.head">Gerelateerde items</message>
+        <message key="xmlui.Discovery.RelatedItems.help">Items gerelateerd op basis van titel, auteur, maker en onderwerp.</message>
+
+        <message key="xmlui.Discovery.SimpleSearch.did_you_mean">Bedoelde u: </message>
 
         <message key="xmlui.dri2xhtml.METS-1.0.imjv-Rapporteringsjaar">Rapporterings Jaar</message>
         <message key="xmlui.dri2xhtml.METS-1.0.imjv-ExploitatieCBBNummer">Exploitatie CBB Nummer</message>
