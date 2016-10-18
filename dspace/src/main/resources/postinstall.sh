@@ -50,6 +50,7 @@ sed -i -e "s|%dspace.rest.url%|/${archief_name}/rest/api|g" ${tomcat_apps_dir}/d
 # Replacing dspace.dir in dspace.cfg file.
 # The Ant script won't run properly as it loads this property through regexp property filtering.
 sed -i -e "s|^\(dspace.dir[[:blank:]]*=[[:blank:]]*\).*$|\1${tomcat_apps_dir}/dspace|g" ${tomcat_apps_dir}/dspace/config/dspace.cfg
+sed -i -e "s|^\(assetstore.dir[[:blank:]]*=[[:blank:]]*\).*$|\1${tomcat_apps_dir}/dspace/assetstore|g" ${tomcat_apps_dir}/dspace/config/dspace.cfg
 
 sed -i -e "s/%google_analytics_key%/${info_gaId}/g" ${tomcat_apps_dir}/dspace/config/dspace.cfg
 
