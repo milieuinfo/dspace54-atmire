@@ -44,7 +44,7 @@ import java.util.List;
 // Every DSpace class used without namespace is from package
 // org.dspace.rest.common.*. Otherwise namespace is defined.
 @Path("/bitstreams")
-@Api(value = "/bitstreams", description = "Retrieve bitstreams", position = 1)
+@Api(value = "/bitstreams", description = "Retrieve bitstreams", position = 4)
 public class BitstreamResource extends Resource
 {
 

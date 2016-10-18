@@ -142,8 +142,8 @@ public class ExactMatchPolicy implements Policy {
         Metadatum[] metadata = getEpersonMetadata(ePerson);
         StringBuilder solrQueryCriteria = new StringBuilder();
 
+        solrQueryCriteria.append("(");
         if(ArrayUtils.isNotEmpty(metadata)) {
-            solrQueryCriteria.append("(");
 
             for (Metadatum metadatum : metadata) {
                 String epersonAclValue = epersonValueExtractor.extractEpersonAclValue(metadatum.value);
@@ -153,12 +153,14 @@ public class ExactMatchPolicy implements Policy {
                         solrQueryCriteria.append(" OR ");
                     }
 
-                    solrQueryCriteria.append(getSolrIndexField() + ":" + epersonAclValue);
+                    solrQueryCriteria.append(getSolrIndexField() + ":\"" + epersonAclValue + "\"");
                 }
             }
-
-            solrQueryCriteria.append(")");
+        } else {
+            solrQueryCriteria.append(getSolrIndexField() + ":\"NO-VALUE-FOUND\"");
         }
+
+        solrQueryCriteria.append(")");
 
         return solrQueryCriteria.toString();
     }

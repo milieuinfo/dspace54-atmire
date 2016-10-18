@@ -38,7 +38,7 @@ import java.util.List;
  * @author Rostislav Novak (Computing and Information Centre, CTU in Prague)
  */
 @Path("/collections")
-@Api(value = "/collections", description = "Retrieve collections", position = 2)
+@Api(value = "/collections", description = "Retrieve collections", position = 6)
 public class CollectionsResource extends Resource
 {
     private static Logger log = Logger.getLogger(CollectionsResource.class);
