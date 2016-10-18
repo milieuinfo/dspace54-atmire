@@ -58,7 +58,7 @@ import java.util.List;
 // Every DSpace class used without namespace is from package org.dspace.rest.common.*. Otherwise namespace is defined.
 @SuppressWarnings("deprecation")
 @Path("/items")
-@Api(value = "/items", description = "Retrieve items", position = 5)
+@Api(value = "/items", description = "Retrieve items", position = 3)
 public class ItemsResource extends Resource {
 
     private static final Logger log = Logger.getLogger(ItemsResource.class);
@@ -127,7 +127,7 @@ public class ItemsResource extends Resource {
 
     @GET
     @Path("/external-handle/{handle}")
-    @ApiOperation(value = "Retrieve an item by using the internal DSpace item handle.",
+    @ApiOperation(value = "Retrieve an item by using the external item handle.",
             response = org.dspace.rest.common.Item[].class
     )
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -238,15 +238,18 @@ public class ItemsResource extends Resource {
                 offset = 0;
             }
 
-            for (int i = 0; (dspaceItems.hasNext()) && (i < (limit + offset)); i++) {
+            int i = 0;
+            while (dspaceItems.hasNext() && i < (limit + offset)) {
                 org.dspace.content.Item dspaceItem = dspaceItems.next();
-                if (i >= offset) {
-                    if (ItemService.isItemListedForUser(context, dspaceItem)) {
+                if (ItemService.isItemListedForUser(context, dspaceItem)) {
+                    if (i >= offset) {
                         items.add(new Item(dspaceItem, expand, context));
                         writeStats(dspaceItem, UsageEvent.Action.VIEW, user_ip, user_agent, xforwardedfor,
                                 headers, request, context);
                     }
+                    i++;
                 }
+                context.removeCached(dspaceItem, dspaceItem.getID());
             }
             context.complete();
         } catch (SQLException e) {

@@ -86,33 +86,15 @@ public class Resource
                 context.setCurrentUser(EPerson.findByEmail(context, authentication.getName()));
             }
 
+            if(context.getCurrentUser() == null){
+                throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+            }
+
             return context;
         } catch (SQLException | AuthorizeException e) {
             throw new RuntimeException(e);
         }
 
-//        Context context = null;
-//
-//        try
-//        {
-//            context = new Context();
-//            context.getDBConnection().setAutoCommit(false); // Disable autocommit.
-//
-//            if (person != null)
-//            {
-//                context.setCurrentUser(person);
-//            }
-//
-//            return context;
-//        }
-//        catch (SQLException e)
-//        {
-//            if ((context != null) && (context.isValid()))
-//            {
-//                context.abort();
-//            }
-//            throw new ContextException("Could not create context, SQLException. Message: " + e, e);
-//        }
     }
 
     /**

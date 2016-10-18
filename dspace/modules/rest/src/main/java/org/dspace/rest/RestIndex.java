@@ -7,11 +7,13 @@
  */
 package org.dspace.rest;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
 import org.apache.log4j.Logger;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.eperson.EPerson;
 import org.dspace.rest.common.Status;
-import org.dspace.rest.common.User;
 import org.dspace.rest.exceptions.ContextException;
 
 import javax.servlet.ServletContext;
@@ -22,7 +24,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
-import java.util.List;
 
 /**
  * Root of RESTful api. It provides login and logout. Also have method for
@@ -32,6 +33,7 @@ import java.util.List;
  *
  */
 @Path("/")
+@Api(value = "/", description = "Root of REST API", position = 1)
 public class RestIndex {
     private static Logger log = Logger.getLogger(RestIndex.class);
 
@@ -44,6 +46,9 @@ public class RestIndex {
      * @return HTML page which has information about all methods of REST api.
      */
     @GET
+	@ApiOperation(value = "Retrieve an html page with information about REST api.",
+			response = java.lang.String.class
+	)
     @Produces(MediaType.TEXT_HTML)
     public String sayHtmlHello() {
     	// TODO Better graphics, add arguments to all methods. (limit, offset, item and so on)
@@ -121,6 +126,9 @@ public class RestIndex {
      */
     @GET
     @Path("/test")
+	@ApiOperation(value = "Method only for testing whether the REST API is running.",
+			response = java.lang.String.class
+	)
     public String test()
     {
         return "REST api is running.";
@@ -129,19 +137,43 @@ public class RestIndex {
     /**
      * Method to login a user into REST API.
      *
-     * @param user
-     *            User which will be logged in to REST API.
+     * @param email
+     *            User's email address which will be logged in to REST API.
+     * @param password
+     *            User's password which will be logged in to REST API.
      * @return Returns response code OK and a token. Otherwise returns response
      *         code FORBIDDEN(403).
      */
-    @POST
-    @Path("/login")
-    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Response login()
-    {
-        //If you can get here, you are authenticated, the actual login is handled by spring security
-        return Response.ok().build();
-    }
+	@GET
+	@Path("/login")
+	@ApiOperation(value = "Method  to log in a user into the REST API.",
+			response = Response.class
+	)
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public Response login(
+			@ApiParam(value = "The user's email address", required = true) @QueryParam("email") String email,
+			@ApiParam(value = "The user's password", required = true) @QueryParam("password") String password) {
+
+		org.dspace.core.Context context = null;
+		try {
+			context = Resource.createContext();
+		} catch (ContextException e) {
+			log.error("Unable to create context: " + e.getMessage(), e);
+			return Response.serverError().entity(e.getMessage()).build();
+		} catch (WebApplicationException e) {
+			log.warn("REST API authentication for user " + email + " failed.");
+			context = null;
+		}
+
+		if(context == null || context.getCurrentUser() == null) {
+			return Response.status(Response.Status.FORBIDDEN)
+					.entity("Authentication failed. You provided an invalid username + password, OpenAM cookie or header.")
+					.build();
+		} else {
+			//If you can get here, you are authenticated, the actual login is handled by spring security
+			return Response.ok().build();
+		}
+	}
 
 /*
 	@GET
@@ -203,6 +235,9 @@ public class RestIndex {
      */
     @POST
     @Path("/logout")
+	@ApiOperation(value = "Method to log a user out of the REST API.",
+			response = Response.class
+	)
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response logout(@Context HttpHeaders headers)
     {
@@ -222,6 +257,9 @@ public class RestIndex {
      */
     @GET
     @Path("/status")
+	@ApiOperation(value = "Method to check current status of the service and logged in user",
+			response = Status.class
+	)
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Status status(@Context HttpHeaders headers) throws UnsupportedEncodingException {
         org.dspace.core.Context context = null;
@@ -246,7 +284,9 @@ public class RestIndex {
         } catch (AuthorizeException e) {
             Resource.processException("Status eperson authorize exception: " + e.getMessage(), context);
         } finally {
-            context.abort();
+        	if(context != null) {
+				context.abort();
+			}
         }
 
         //fallback status, unauth

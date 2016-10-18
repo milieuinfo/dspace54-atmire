@@ -35,7 +35,7 @@ import java.sql.SQLException;
  * To change this template use File | Settings | File Templates.
  */
 @Path("/handle")
-@Api(value = "/handle", description = "Retrieve a handle", position = 4)
+@Api(value = "/handle", description = "Retrieve a handle", position = 5)
 public class HandleResource extends Resource
 {
     private static Logger log = Logger.getLogger(HandleResource.class);
