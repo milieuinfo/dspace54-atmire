@@ -261,6 +261,11 @@
                     </xsl:call-template>
                     <xsl:call-template name="itemSummaryView-DIM-generic">
                         <xsl:with-param name="schema">imjv</xsl:with-param>
+                        <xsl:with-param name="element">MilieuVerslagFeitGebruikerVoornaam</xsl:with-param>
+                        <xsl:with-param name="noqualifier" select="true()"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="itemSummaryView-DIM-generic">
+                        <xsl:with-param name="schema">imjv</xsl:with-param>
                         <xsl:with-param name="element">MilieuVerslagFeitGebruikerNaam</xsl:with-param>
                         <xsl:with-param name="noqualifier" select="true()"/>
                     </xsl:call-template>
