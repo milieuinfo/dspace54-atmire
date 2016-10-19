@@ -398,8 +398,14 @@ public class ItemExport
             }
 
             File directory = new File(fullPath);
-            if (!directory.exists() && !directory.mkdirs()) {
-                logAndPrintMessage("Cannot create directories at " + fullPath,Level.INFO);
+            if (handleBasedDirectoryStructure && directory.exists()) {
+                logAndPrintMessage(fullPath + " exists. Removing it.", Level.INFO);
+                FileUtils.deleteDirectory(directory);
+            }
+
+            if (!directory.mkdirs()) {
+                logAndPrintMessage("Cannot create directories at " + fullPath,Level.ERROR);
+                throw new IOException("Cannot create directories at "+ fullPath+", please verify the required permissions at this location.");
             } else {
                 logAndPrintMessage("Exporting item to " + fullPath, Level.INFO);
 
