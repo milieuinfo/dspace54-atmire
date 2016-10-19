@@ -391,7 +391,8 @@ public class ItemExport
                 FileUtils.deleteDirectory(directory);
             }
             if (!directory.mkdirs()) {
-                logAndPrintMessage("Cannot create directories at " + fullPath,Level.INFO);
+                logAndPrintMessage("Cannot create directories at " + fullPath,Level.ERROR);
+                throw new IOException("Cannot create directories at "+ fullPath+", please verify the required permissions at this location.");
             } else {
                 logAndPrintMessage("Exporting item to " + fullPath, Level.INFO);
 
