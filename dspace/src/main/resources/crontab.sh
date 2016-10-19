@@ -33,6 +33,9 @@ JAVA_OPTS="-Xmx2048M -Xms128M -XX:MaxPermSize=512M -Dfile.encoding=UTF-8"
 #0 1 * * * /usr/bin/flock -w 60 ~/cron-db-backup.lock $DSPACE_DIR/bin/db-backup.sh -> DONE BY ACD
 0 2 * * * /usr/bin/flock -w 60 ~/cron-assest-store-backup.lock $DSPACE_DIR/bin/backup_assetstore.sh /opt/tomcat/data/backup/assetstore
 
+# Because the ACD Archief DSpace relies heavily on the Discovery index, we have to make sure it stays up to date:
+0 2 * * * /usr/bin/flock -w 60 ~/cron-discovery.lock $DSPACE_DIR/bin/dspace index-discovery
+
 # Create an incremental export starting at 3 am every day
 0 3 * * 5 /usr/bin/flock -w 60 ~/cron-export.lock $DSPACE_DIR/bin/dspace export -g -m -c -t COLLECTION -i acd/2 -d /opt/tomcat/data/export/IMJV
 0 5 * * 5 /usr/bin/flock -w 60 ~/cron-export.lock $DSPACE_DIR/bin/dspace export -g -m -c -t COLLECTION -i acd/4 -d /opt/tomcat/data/export/DBA
