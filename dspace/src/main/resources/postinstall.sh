@@ -22,6 +22,7 @@ sed -i \
     -e "s/%db_host%/${db_host}/g" \
     -e "s/%mailrelay_host%/${mailrelay_host}/g" \
     -e "s/%mailrelay_port%/${mailrelay_port}/g" \
+    -e "s/%mailrelay_disabled%/${mailrelay_disabled}/g" \
     -e "s/%mail_from_address%/${mail_from_address}/g" \
     -e "s/%mail_feedback_recipient%/${mail_feedback_recipient}/g" \
     -e "s/%mail_admin%/${mail_admin}/g" \
