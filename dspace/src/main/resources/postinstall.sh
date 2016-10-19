@@ -33,7 +33,14 @@ sed -i \
     -e "s/%openam.admin.role%/${openam_admin_role}/g" \
     -e "s@%openam.eid.token.goto.url%@${openam_eid_token_goto_url}@g" \
     -e "s@%openam.backend.server.url%@${openam_backend_server_url}@g" \
-    -e "s/%app_mem_params%/${app_mem_params}/g" \
+    -e "s@%jmx%@${jmx}@g" \
+    -e "s@%app_mem_params%@${app_mem_params}@g" \
+    -e "s@%gc_logs%@${gc_logs}@g" \
+    -e "s@%http_proxy_host%@${http_proxy_host}@g" \
+    -e "s@%http_proxy_port%@${http_proxy_port}@g" \
+    -e "s@%http_proxy_user%@${http_proxy_user}@g" \
+    -e "s@%http_proxy_password%@${http_proxy_password}@g" \
+    -e "s@%no_proxy_java%@${no_proxy_java}@g" \
     ${tomcat_apps_dir}/*.xml \
     ${tomcat_apps_dir}/*.sh \
     ${tomcat_apps_dir}/ansible.properties \
