@@ -46,8 +46,13 @@ public class MetdataBasedAccessControlPoliciesFactoryBean implements MetdataBase
                 MetadataAccessControlPoliciesMarshaller marshaller = new MetadataAccessControlPoliciesMarshaller();
                 MetadataBasedAccessControlPolicies metadataBasedAccessControlPolicies = marshaller.unmarshal(inputStream);
 
-                for (GroupPolicy groupPolicy : metadataBasedAccessControlPolicies.getGroupPolicies()) {
-                    policies.put(groupPolicy.getGroupName(), toPolicyList(groupPolicy.getExactMatchPolicies()));
+                List<GroupPolicy> groupPolicies = metadataBasedAccessControlPolicies.getGroupPolicies();
+                if (CollectionUtils.isNotEmpty(groupPolicies)) {
+
+                    for (GroupPolicy groupPolicy : groupPolicies) {
+                        policies.put(groupPolicy.getGroupName(), toPolicyList(groupPolicy.getExactMatchPolicies()));
+                    }
+
                 }
 
                 lastModified = file.lastModified();
