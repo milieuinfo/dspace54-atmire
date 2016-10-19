@@ -187,6 +187,7 @@ public class SearchResource extends Resource {
 
     private String getSortFieldName(String sortBy, DSpaceObject dso) {
         DiscoveryConfiguration discoveryConfiguration = SearchUtils.getDiscoveryConfiguration(dso);
+
         Map<String, DiscoverySortFieldConfiguration> sortFields = new HashMap<String, DiscoverySortFieldConfiguration>();
         DiscoverySortConfiguration sortConfiguration = discoveryConfiguration.getSearchSortConfiguration();
         if(sortConfiguration != null)
