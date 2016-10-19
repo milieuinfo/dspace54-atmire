@@ -48,7 +48,7 @@ JAVA_OPTS="-Xmx2048M -Xms128M -XX:MaxPermSize=512M -Dfile.encoding=UTF-8"
 
 # Send out subscription e-mails at 22:00 every day
 # (This sends an email to any users who have "subscribed" to a Collection, notifying them of newly added content.)
-0 22 * * * /usr/bin/flock -w 60 ~/cron-subscriptions.lock $DSPACE_DIR/bin/dspace sub-daily
+#0 22 * * * /usr/bin/flock -w 60 ~/cron-subscriptions.lock $DSPACE_DIR/bin/dspace sub-daily -> NOT DESIRED BY ACD
 
 #----------------
 # WEEKLY TASKS
