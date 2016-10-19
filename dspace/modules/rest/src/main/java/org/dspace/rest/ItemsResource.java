@@ -208,7 +208,7 @@ public class ItemsResource extends Resource {
             response = org.dspace.rest.common.Item[].class
     )
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Item[] getItems(
+    public Response getItems(
             @ApiParam(value = "Show additional data for the item.", required = false, allowMultiple = true, allowableValues = "all,metadata,parentCollection,parentCollectionList,parentCommunityList,bitstreams")
             @QueryParam("expand") String expand,
 
@@ -223,45 +223,15 @@ public class ItemsResource extends Resource {
             @Context HttpHeaders headers, @Context HttpServletRequest request) throws WebApplicationException {
 
         log.info("Reading items.(offset=" + offset + ",limit=" + limit + ").");
-        org.dspace.core.Context context = null;
-        List<Item> items = null;
 
         try {
-            context = createContext();
-
-            ItemIterator dspaceItems = org.dspace.content.Item.findAllUnfiltered(context);
-            items = new ArrayList<Item>();
-
-            if (!((limit != null) && (limit >= 0) && (offset != null) && (offset >= 0))) {
-                log.warn("Pagging was badly set, using default values.");
-                limit = 100;
-                offset = 0;
-            }
-
-            int i = 0;
-            while (dspaceItems.hasNext() && i < (limit + offset)) {
-                org.dspace.content.Item dspaceItem = dspaceItems.next();
-                if (ItemService.isItemListedForUser(context, dspaceItem)) {
-                    if (i >= offset) {
-                        items.add(new Item(dspaceItem, expand, context));
-                        writeStats(dspaceItem, UsageEvent.Action.VIEW, user_ip, user_agent, xforwardedfor,
-                                headers, request, context);
-                    }
-                    i++;
-                }
-                context.removeCached(dspaceItem, dspaceItem.getID());
-            }
-            context.complete();
-        } catch (SQLException e) {
-            processException("Something went wrong while reading items from database. Message: " + e, context);
-        } catch (ContextException e) {
-            processException("Something went wrong while reading items, ContextException. Message: " + e.getMessage(), context);
-        } finally {
-            processFinally(context);
+            SearchResource searchResource = new SearchResource();
+            return searchResource.searchItems("*:*", expand, limit, offset, "dc.date.accessioned", null, "asc", user_ip, user_agent, xforwardedfor, headers, request);
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
         }
 
-        log.trace("Items were successfully read.");
-        return items.toArray(new Item[0]);
     }
 
     /**
