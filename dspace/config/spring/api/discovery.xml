@@ -25,6 +25,7 @@
     <bean id="solrServiceResourceIndexPlugin" class="org.dspace.discovery.SolrServiceResourceRestrictionPlugin" scope="prototype"/>
     <bean id="SolrServiceSpellIndexingPlugin" class="org.dspace.discovery.SolrServiceSpellIndexingPlugin" scope="prototype"/>
     <bean id="MetadataBasedAccessControlIndexPlugin" class="com.atmire.access.plugins.MetadataBasedAccessControlIndexPlugin" scope="prototype"/>
+    <bean id="ExactMatchIndexPlugin" class="com.atmire.discovery.ExactMatchIndexPlugin" scope="prototype"/>
 
     <alias name="solrServiceResourceIndexPlugin" alias="org.dspace.discovery.SolrServiceResourceRestrictionPlugin"/>
 
