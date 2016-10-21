@@ -583,6 +583,8 @@
     <dynamicField name="*.year" type="sint" indexed="true" stored="true" multiValued="true" omitNorms="true" />
     <dynamicField name="*_dt" type="date" indexed="true" stored="true" multiValued="false" omitNorms="true"  docValues="true"/>
 
+     <!-- LNE ACD specific config -->
+     <dynamicField name="*_exact" type="keywordFilter" indexed="true" stored="true" multiValued="true" omitNorms="true" />
 
     <!--Used for matching on all other fields -->
      <dynamicField name="*" type="text" multiValued="true"/>
