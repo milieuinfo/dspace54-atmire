@@ -40,7 +40,6 @@ restore_dir(){
       echo "target directory is a file"
     else
       if [ -d $TARGETDIR ] ; then
-        rm -rf $PATH_TO_RESTORE
         rsync_loop $TARGETDIR $PATH_TO_RESTORE
       else
         echo "target directory does not exist"
