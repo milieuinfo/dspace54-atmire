@@ -350,7 +350,9 @@
                 <div class="slider">
                     <div class="box content">
                         <span class="contentwrapper">
-                            <span id="archiefspan">ARCHIEF</span>
+                            <span id="archiefspan">
+                                <i18n:text>xmlui.general.header</i18n:text>
+                            </span>
                             <br></br>
                             <span>BELEIDSDOMEIN</span>
                             <br></br>
