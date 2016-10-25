@@ -20,10 +20,12 @@ import gr.ekt.bte.dataloader.FileDataLoader;
 import gr.ekt.bteio.generators.DSpaceOutputGenerator;
 import gr.ekt.bteio.loaders.OAIPMHDataLoader;
 import org.apache.commons.cli.*;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ComparatorUtils;
 import org.apache.commons.io.FileDeleteStrategy;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -660,12 +662,20 @@ public class ItemImport {
 
             String[] dircontents = d.list(directoryFilter);
 
+            //In the case our source dir is an item directory itself (contains dublin_core.xml)
+            if(ArrayUtils.isEmpty(dircontents)) {
+                System.out.println(sourceDir + " doesn't contain any folders, so we'll asume it is an item-directory.");
+                //We add it to the list to be processed
+                dircontents = new String[]{""};
+            }
+
             Arrays.sort(dircontents, ComparatorUtils.naturalComparator());
 
             for (int i = 0; i < dircontents.length; i++) {
                 String topLevelDir = dircontents[i];
                 String directory = sourceDir + File.separator + topLevelDir;
                 List<String> itemDirectories = collectItemDirectories(directory);
+                System.out.println("Found " + CollectionUtils.size(itemDirectories) + " item directories");
 
                 for (String itemDirectory : itemDirectories) {
                     String directoryName = StringUtils.substringAfter(itemDirectory, File.separator);
@@ -690,7 +700,7 @@ public class ItemImport {
                         } else {
                             clist = mycollections;
                         }
-                        Item item = addItem(c, mycollections, sourceDir, relativePath, mapOut, template);
+                        Item item = addItem(c, clist, sourceDir, relativePath, mapOut, template);
 
                         if (keepResults) {
                             result.add(item);
