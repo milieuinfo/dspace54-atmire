@@ -196,13 +196,14 @@ public class SwordAuthenticator
             {
                 // if authenticated, obtain the eperson object
                 ep = context.getCurrentUser();
+                HttpServletRequest request = getHttpRequest();
 
                 if (ep != null)
                 {
                     authenticated = true;
                     sc.setAuthenticated(ep);
                     // Set any special groups - invoke the authentication mgr.
-                    int[] groupIDs = AuthenticationManager.getSpecialGroups(context, null);
+                    int[] groupIDs = AuthenticationManager.getSpecialGroups(context, request);
 
                     for (int i = 0; i < groupIDs.length; i++)
                     {
@@ -232,7 +233,7 @@ public class SwordAuthenticator
                         TransactionalContext oboContext = this.constructContext();
                         oboContext.setCurrentUser(epObo);
                         // Set any special groups - invoke the authentication mgr.
-                        int[] groupIDs = AuthenticationManager.getSpecialGroups(oboContext, null);
+                        int[] groupIDs = AuthenticationManager.getSpecialGroups(oboContext, request);
 
                         for (int i = 0; i < groupIDs.length; i++)
                         {
