@@ -612,8 +612,10 @@ public class ItemImport {
             return addItems(c, mycollections, sourceDir, mapFile, template);
         } catch (Exception addException) {
             log.error("AddItems encountered an error, will try to revert. Error: " + addException.getMessage());
+            c.turnOffAuthorisationSystem();
             deleteItems(c, mapFile);
             c.commit();
+            c.restoreAuthSystemState();
             log.info("Attempted to delete partial (errored) import");
             throw addException;
         }
@@ -937,7 +939,10 @@ public class ItemImport {
             return myitem;
 
         } catch (MetadataImportException ex) {
+            c.turnOffAuthorisationSystem();
             deleteItem(c, myitem);
+            c.restoreAuthSystemState();
+
             c.commit();
 
             throw ex;
