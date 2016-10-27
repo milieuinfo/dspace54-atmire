@@ -115,11 +115,19 @@ fi
 
 
 # Installatie Solr
-echo "Installatie Solr"
+echo "Installatie Solr..."
 if [ "$(ls -A ${tomcat_data_dir}/solr/)" ]; then
-    echo "Solr al aanwezig niets te doen"
+    echo "Solr al aanwezig, enkel configuratie updaten"
+    cp -r ${tomcat_apps_dir}/dspace/solr/authority/conf ${tomcat_data_dir}/solr/authority/
+    chown -R tomcat:tomcat ${tomcat_data_dir}/solr/authority/conf
+    cp -r ${tomcat_apps_dir}/dspace/solr/oai/conf ${tomcat_data_dir}/solr/oai/
+    chown -R tomcat:tomcat ${tomcat_data_dir}/solr/oai/conf
+    cp -r ${tomcat_apps_dir}/dspace/solr/search/conf ${tomcat_data_dir}/solr/search/
+    chown -R tomcat:tomcat ${tomcat_data_dir}/solr/search/conf
+    cp -r ${tomcat_apps_dir}/dspace/solr/statistics/conf ${tomcat_data_dir}/solr/statistics/
+    chown -R tomcat:tomcat ${tomcat_data_dir}/solr/statistics/conf
 else
-    echo "Installatie Solr"
+    echo "Nieuwe installatie Solr"
     cp -r ${tomcat_apps_dir}/dspace/solr/* ${tomcat_data_dir}/solr/
     chown -R tomcat:tomcat ${tomcat_data_dir}/solr/
 fi
