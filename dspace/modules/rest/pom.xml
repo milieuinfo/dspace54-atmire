@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.dspace.modules</groupId>
     <artifactId>rest</artifactId>
@@ -13,7 +12,7 @@
     <parent>
         <groupId>org.dspace</groupId>
         <artifactId>modules</artifactId>
-        <version>5.4.0-SNAPSHOT</version>
+        <version>5.4.0</version>
         <relativePath>..</relativePath>
     </parent>
 
@@ -42,7 +41,7 @@
                                  <!--Need to download markdown.mustache first to use strapdown.html.mustache-->
                                 <!--&ndash;&gt;-->
                                 <!--<get dest="${build.directory}">-->
-                                    <!--<url url="https://raw.githubusercontent.com/kongchen/api-doc-template/master/v2.0/markdown.mustache"/>-->
+                                    <!--<url url="https://raw.githubusercontent.com/kongchen/api-doc-template/master/v2.0/markdown.mustache" />-->
                                 <!--</get>-->
                             <!--</target>-->
                         <!--</configuration>-->
@@ -62,7 +61,7 @@
                             <springmvc>false</springmvc>
                             <locations>org.dspace.rest</locations>
                             <schemes>${rest.scheme}</schemes>
-                            <host></host>
+                            <host />
                             <basePath>%dspace.rest.url%</basePath>
                             <info>
                                 <title>ACD Archief REST Application</title>
