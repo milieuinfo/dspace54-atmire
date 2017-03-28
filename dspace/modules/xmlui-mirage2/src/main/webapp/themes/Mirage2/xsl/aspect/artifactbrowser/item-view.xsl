@@ -68,13 +68,16 @@
                              mode="itemDetailView-DIM"/>
 
         <!-- Generate the bitstream information from the file section -->
+        <xsl:variable name="bundles">
+            <xsl:value-of select="confman:getProperty('bundles.item.display.summary')"/>
+        </xsl:variable>
         <xsl:choose>
-            <xsl:when test="./mets:fileSec/mets:fileGrp[@USE='CONTENT' or @USE='ORIGINAL' or @USE='LICENSE']/mets:file">
+            <xsl:when test="./mets:fileSec/mets:fileGrp[contains($bundles,@USE)]/mets:file">
                 <h3>
                     <i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-head</i18n:text>
                 </h3>
                 <div class="file-list">
-                    <xsl:apply-templates select="./mets:fileSec/mets:fileGrp[@USE='CONTENT' or @USE='ORIGINAL' or @USE='LICENSE' or @USE='CC-LICENSE']">
+                    <xsl:apply-templates select="./mets:fileSec/mets:fileGrp[contains($bundles,@USE)]">
                         <xsl:with-param name="context" select="."/>
                         <xsl:with-param name="primaryBitstream" select="./mets:structMap[@TYPE='LOGICAL']/mets:div[@TYPE='DSpace Item']/mets:fptr/@FILEID"/>
                     </xsl:apply-templates>
@@ -547,8 +550,11 @@
     </xsl:template>
 
     <xsl:template name="itemSummaryView-DIM-file-section">
+        <xsl:variable name="bundles">
+            <xsl:value-of select="confman:getProperty('bundles.item.display.summary')"/>
+        </xsl:variable>
         <xsl:choose>
-            <xsl:when test="//mets:fileSec/mets:fileGrp[@USE='CONTENT' or @USE='ORIGINAL' or @USE='LICENSE']/mets:file">
+            <xsl:when test="//mets:fileSec/mets:fileGrp[contains($bundles,@USE)]/mets:file">
                 <div class="item-page-field-wrapper table word-break">
                     <h5>
                         <i18n:text>xmlui.dri2xhtml.METS-1.0.item-files-viewOpen</i18n:text>
@@ -576,7 +582,8 @@
                         </xsl:choose>
                     </xsl:variable>
 
-                    <xsl:for-each select="//mets:fileSec/mets:fileGrp[@USE='CONTENT' or @USE='ORIGINAL' or @USE='LICENSE']/mets:file">
+                    <xsl:for-each select="//mets:fileSec/mets:fileGrp[contains($bundles,@USE)]/mets:file">
+
                         <xsl:call-template name="itemSummaryView-DIM-file-section-entry">
                             <xsl:with-param name="href" select="mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
                             <xsl:with-param name="mimetype" select="@MIMETYPE"/>
