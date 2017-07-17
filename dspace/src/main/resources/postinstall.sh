@@ -289,8 +289,6 @@ DatabaseMirror db.be.clamav.net
 DatabaseMirror database.clamav.net
 HTTPProxyServer ${http_proxy_host}
 HTTPProxyPort ${http_proxy_port}
-HTTPProxyUsername ${http_proxy_user}
-HTTPProxyPassword ${http_proxy_password} 
 
 EOF
 
