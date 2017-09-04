@@ -1,11 +1,13 @@
 package com.atmire.consumer;
 
-import java.util.*;
-import org.apache.commons.collections.*;
-import org.dspace.content.*;
-import org.dspace.core.*;
-import org.dspace.event.*;
-import org.dspace.utils.*;
+import org.apache.commons.collections.CollectionUtils;
+import org.dspace.content.DSpaceObject;
+import org.dspace.core.Context;
+import org.dspace.event.Consumer;
+import org.dspace.event.Event;
+import org.dspace.utils.DSpace;
+
+import java.util.HashSet;
 
 /**
  * @author philip at atmire.com
@@ -36,11 +38,14 @@ public class AsynchronousConsumersPool implements Consumer {
 
     @Override
     public void end(Context ctx) throws Exception {
-        if (CollectionUtils.isNotEmpty(toUpdateDspaceObjects)) {
-            for (ConsumerDspaceObject toUpdateDspaceObject : toUpdateDspaceObjects) {
-                asynchronousConsumerDispatcher.dispatch(toUpdateDspaceObject.getId(), toUpdateDspaceObject.getType());
+        try {
+            if (CollectionUtils.isNotEmpty(toUpdateDspaceObjects)) {
+                for (ConsumerDspaceObject toUpdateDspaceObject : toUpdateDspaceObjects) {
+                    asynchronousConsumerDispatcher.dispatch(toUpdateDspaceObject.getId(), toUpdateDspaceObject.getType());
+                }
             }
 
+        } finally {
             toUpdateDspaceObjects.clear();
         }
     }
