@@ -20,6 +20,18 @@ sed -i \
     -e "s/%db_name%/${db_name}/g" \
     -e "s/%db_port%/${db_port}/g" \
     -e "s/%db_host%/${db_host}/g" \
+    -e "s/%db_max_active_rest%/${db_max_active_rest}/g" \
+    -e "s/%db_max_idle_rest%/${db_max_idle_rest}/g" \
+    -e "s/%db_min_idle_rest%/${db_min_idle_rest}/g" \
+    -e "s/%db_max_wait_rest%/${db_max_wait_rest}/g" \
+    -e "s/%db_max_active_sword%/${db_max_active_sword}/g" \
+    -e "s/%db_max_idle_sword%/${db_max_idle_sword}/g" \
+    -e "s/%db_min_idle_sword%/${db_min_idle_sword}/g" \
+    -e "s/%db_max_wait_sword%/${db_max_wait_sword}/g" \
+    -e "s/%db_max_active_xmlui%/${db_max_active_xmlui}/g" \
+    -e "s/%db_max_idle_xmlui%/${db_max_idle_xmlui}/g" \
+    -e "s/%db_min_idle_xmlui%/${db_min_idle_xmlui}/g" \
+    -e "s/%db_max_wait_xmlui%/${db_max_wait_xmlui}/g" \
     -e "s/%mailrelay_host%/${mailrelay_host}/g" \
     -e "s/%mailrelay_port%/${mailrelay_port}/g" \
     -e "s/%dspace.consumer.token%/${dspace_consumer_token}/g" \
