@@ -48,17 +48,23 @@ public class ExternalIdentifierAuthorityConsumer implements Consumer
      */
     public void end(Context context) throws Exception
     {
-        for (Integer itemId : itemsToProcess) {
-            Item item = Item.find(context, itemId);
-            String [] configuredFields = authorityFields.split(",");
+        try {
+            for (Integer itemId : itemsToProcess) {
+                Item item = Item.find(context, itemId);
+                String[] configuredFields = authorityFields.split(",");
 
-            for(String authorityField: configuredFields){
-                updateAuthorityValueBasedOnField(item, authorityField);
+                for (String authorityField : configuredFields) {
+                    updateAuthorityValueBasedOnField(item, authorityField);
+                }
+                item.update();
             }
-            item.update();
-        }
 
-        context.getDBConnection().commit();
+            context.getDBConnection().commit();
+
+        } finally {
+            //Make sure we always clear the list of items to process so that we don't process old items on the next update
+            itemsToProcess.clear();
+        }
     }
 
     private void updateAuthorityValueBasedOnField(Item item, String authorityField) {
