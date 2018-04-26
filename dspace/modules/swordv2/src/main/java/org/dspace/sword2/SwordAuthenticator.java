@@ -7,13 +7,23 @@
  */
 package org.dspace.sword2;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+
 import com.atmire.dspace.core.TransactionalContext;
 import org.apache.log4j.Logger;
 import org.dspace.authenticate.AuthenticationManager;
 import org.dspace.authenticate.AuthenticationMethod;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.authorize.AuthorizeManager;
-import org.dspace.content.*;
+import org.dspace.content.Bundle;
+import org.dspace.content.Collection;
+import org.dspace.content.Community;
+import org.dspace.content.DSpaceObject;
+import org.dspace.content.Item;
+import org.dspace.content.ItemIterator;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
@@ -26,11 +36,6 @@ import org.swordapp.server.AuthCredentials;
 import org.swordapp.server.SwordAuthException;
 import org.swordapp.server.SwordError;
 import org.swordapp.server.UriRegistry;
-
-import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class offers a thin wrapper for the default DSpace
@@ -113,6 +118,7 @@ public class SwordAuthenticator
         {
             sc = this.authenticate(context, auth);
         }
+        //TODO rewrite this part to catch any exception an to do a "realAbort".
         catch (DSpaceSwordException e)
         {
             if (context != null && context.isValid())
