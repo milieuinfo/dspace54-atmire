@@ -118,39 +118,14 @@ public class SwordAuthenticator
         {
             sc = this.authenticate(context, auth);
         }
-        //TODO rewrite this part to catch any exception an to do a "realAbort".
-        catch (DSpaceSwordException e)
-        {
+        catch (DSpaceSwordException | SwordError | RuntimeException | SwordAuthException e) {
             if (context != null && context.isValid())
             {
-                context.abort();
+                context.realAbort();
             }
             throw e;
         }
-        catch (SwordError e)
-        {
-            if (context != null && context.isValid())
-            {
-                context.abort();
-            }
-            throw e;
-        }
-        catch (SwordAuthException e)
-        {
-            if (context != null && context.isValid())
-            {
-                context.abort();
-            }
-            throw e;
-        }
-        catch (RuntimeException e)
-        {
-            if (context != null && context.isValid())
-            {
-                context.abort();
-            }
-            throw e;
-        }
+
         return sc;
     }
 
