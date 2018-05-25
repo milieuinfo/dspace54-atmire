@@ -72,10 +72,12 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
 
                 final Collection<String> roles = userDetails.getRoles();
                 if (!StringUtils.isBlank(email)) {
+                    log.info("OpenAM Identify Service authenticated SSO ID " + ssoId + " as user " + email);
                     try {
                         loadGroups(context, roles, request, email);
                         final EPerson knownEPerson = EPerson.findByEmail(context, email);
                         if (knownEPerson == null) {
+                            log.info("Creating new EPerson for SSO ID " + ssoId + " with e-mail " + email);
                             // TEMPORARILY turn off authorisation
                             context.turnOffAuthorisationSystem();
                             final EPerson eperson = createEPerson(context, request, email, sn, givenName);
@@ -88,6 +90,7 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
                             log.info(LogManager.getHeader(context, "login", "type=openam-interactive"));
                             return SUCCESS;
                         } else {
+                            log.info("Found existing EPerson with ID " + knownEPerson.getID() + " for SSO ID " + ssoId + " with e-mail " + email);
                             updateEpersonAclMetadata(context, knownEPerson, userDetails);
                             context.setCurrentUser(knownEPerson);
                             return SUCCESS;
@@ -97,12 +100,15 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
                         return BAD_ARGS;
                     }
                 } else {
+                    log.warn("Received a blank e-mail address from OpenAM Identify Service for SSO ID " + ssoId);
                     return BAD_ARGS;
                 }
             } else {
+                log.warn("OpenAM Identify Service did not return any user details for SSO ID " + ssoId);
                 return NO_SUCH_USER;
             }
         } else {
+            log.warn("Unable to use OpenAM authentication with a blank SSO ID (ip " + request.getRemoteAddr() + ")");
             return NO_SUCH_USER;
         }
     }

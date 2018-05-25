@@ -139,20 +139,14 @@ public class SwordContext
      * Abort all of the contexts held by this class.  No changes will
      * be written to the database
      */
-    public void abort()
-    {
-        try {
+    public void abort() {
+        // abort both contexts
+        if (context != null && context.isValid()) {
+            context.realAbort();
+        }
 
-            // abort both contexts
-            if (context != null && context.isValid()) {
-                context.realAbort();
-            }
-
-            if (authenticatorContext != null && authenticatorContext.isValid()) {
-                authenticatorContext.realAbort();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (authenticatorContext != null && authenticatorContext.isValid()) {
+            authenticatorContext.realAbort();
         }
     }
 
