@@ -7,6 +7,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Metadatum;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -54,6 +55,10 @@ public abstract class AbstractFillValue implements EditMetadata {
             metadata.add(metadatum);
         }
         return metadata;
+    }
+
+    protected <T> List<T> emptyIfNull(T value) {
+        return value == null ? Collections.<T>emptyList() : Collections.singletonList(value);
     }
 
     public abstract List<Metadatum> getValues(EditParameters parameters);

@@ -98,6 +98,7 @@ public class MetadataUtils {
         MetadatumExtended elements = MetadataFieldString.encapsulate(fieldName); // this is better not with wildcards
         return getMetadataFirstValue(item, elements.getSchema(), elements.getElement(), elements.getQualifier(), elements.getLanguage());
     }
+
     public static String getMetadataFirstValueAnyLanguage(DSpaceObject item, String fieldName) {
         MetadatumExtended elements = MetadataFieldString.encapsulate(fieldName);
         return getMetadataFirstValue(item, elements.getSchema(), elements.getElement(), elements.getQualifier(), Item.ANY);

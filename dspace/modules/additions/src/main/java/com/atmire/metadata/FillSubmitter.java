@@ -7,7 +7,6 @@ import org.dspace.content.Metadatum;
 import org.dspace.eperson.EPerson;
 
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -28,7 +27,7 @@ public class FillSubmitter extends AbstractFillValue {
                 throw new UnhandledException(e);
             }
         }
-        return value == null ? Collections.<String>emptyList() : Collections.singletonList(value);
+        return emptyIfNull(value);
     }
 
     @Override
