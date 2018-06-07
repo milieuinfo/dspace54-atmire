@@ -3,18 +3,20 @@ package com.atmire.metadata;
 import org.apache.commons.lang.UnhandledException;
 import org.dspace.content.DCPersonName;
 import org.dspace.content.Item;
+import org.dspace.content.Metadatum;
 import org.dspace.eperson.EPerson;
 
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by: Antoine Snyers (antoine at atmire dot com)
  * Date: 07 Jun 2018
  */
-public class FillSubmitter extends FillValue
-{
-    @Override
-    public String getValue(FillValueDependencies parameters) {
+public class FillSubmitter extends AbstractFillValue {
+
+    private List<String> getSubmitter(EditParameters parameters) {
         String value = null;
         if (parameters.getObject() instanceof Item) {
             Item item = (Item) parameters.getObject();
@@ -26,6 +28,12 @@ public class FillSubmitter extends FillValue
                 throw new UnhandledException(e);
             }
         }
-        return value;
+        return value == null ? Collections.<String>emptyList() : Collections.singletonList(value);
     }
+
+    @Override
+    public List<Metadatum> getValues(EditParameters parameters) {
+        return convert(getSubmitter(parameters));
+    }
+
 }

@@ -67,7 +67,7 @@ public class AutoFillMetadataConsumer implements Consumer {
             for (Integer itemID : itemIDs) {
                 Item item = Item.find(context, itemID);
                 //noinspection unchecked
-                List<FillValue> config = new DSpace().getServiceManager()
+                List<EditMetadata> config = new DSpace().getServiceManager()
                         .getServiceByName("autoFillMetadata", List.class);
                 new FillMetadataRunner(config, item).run();
             }
