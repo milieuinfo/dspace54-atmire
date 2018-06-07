@@ -70,6 +70,7 @@ public class AutoFillMetadataConsumer implements Consumer {
                 List<EditMetadata> config = new DSpace().getServiceManager()
                         .getServiceByName("autoFillMetadata", List.class);
                 new FillMetadataRunner(config, item).run();
+                item.update();
             }
             context.getDBConnection().commit();
         }
