@@ -173,20 +173,20 @@ it, please enter the types and the actual numbers or codes.</hint>
          <label>Procedure</label>
          <input-type>onebox</input-type>
          <hint>Procedure</hint>
-         <required>U moet een procedure invullen</required>
+         <required>Dit veld is verplicht</required>
        </field>
      </page>
 
      <page number="2">
        <field>
          <dc-schema>mer</dc-schema>
-         <dc-element>document</dc-element>
+         <dc-element>procedurestap</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Document</label>
+         <label>Procedure Stap</label>
          <input-type>contextual-dropdown</input-type>
-         <hint>Kies het document type</hint>
-         <required>U moet een document type kiezen.</required>
+         <hint>Kies de procedure stap</hint>
+         <required>Dit veld is verplicht</required>
          <vocabulary>mer-dossier-structuur</vocabulary>
        </field>
 

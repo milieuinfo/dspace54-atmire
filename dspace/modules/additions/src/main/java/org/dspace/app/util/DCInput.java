@@ -296,6 +296,10 @@ public class DCInput
         return valueList;
     }
 
+    public void setPairs(List<String> pairs){
+        valueList = pairs;
+    }
+
     /**
      * Get the name of the controlled vocabulary that is associated with this
      * field

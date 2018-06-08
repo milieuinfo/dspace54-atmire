@@ -7,6 +7,7 @@
  */
 package org.dspace.app.xmlui.aspect.submission.submit;
 
+import com.atmire.vocabulary.VocabularyUtils;
 import org.dspace.app.util.DCInput;
 import org.dspace.app.util.DCInputSet;
 import org.dspace.app.util.DCInputsReader;
@@ -261,6 +262,15 @@ public class DescribeStep extends AbstractSubmissionStep
                         else if (inputType.equals("onebox"))
                         {
                                 renderOneboxField(form, fieldName, dcInput, dcValues, readonly);
+                        }
+                        else if (inputType.equals("contextual-dropdown"))
+                        {
+                            Metadatum[] metadata = item.getMetadata(
+                                    Item.ANY, Item.ANY, Item.ANY, Item.ANY);
+                            java.util.List<String> pairs = VocabularyUtils.getDCInputPairs(
+                                    fieldName, metadata, dcInput.getVocabulary());
+                            dcInput.setPairs(pairs);
+                            renderDropdownField(form, fieldName, dcInput, dcValues, readonly);
                         }
                         else
                         {
