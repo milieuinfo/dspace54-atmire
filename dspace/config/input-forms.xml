@@ -163,9 +163,33 @@ it, please enter the types and the actual numbers or codes.</hint>
          <hint>Select the language of the main content of the item.  If the language does not appear in the list, please select 'Other'.  If the content does not really have a language (for example, if it is a dataset or an image) please select 'N/A'.</hint>
          <required></required>
        </field>
+
+
+       <field>
+         <dc-schema>mer</dc-schema>
+         <dc-element>procedure</dc-element>
+         <dc-qualifier></dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Procedure</label>
+         <input-type>onebox</input-type>
+         <hint>Procedure</hint>
+         <required>U moet een procedure invullen</required>
+       </field>
      </page>
 
      <page number="2">
+       <field>
+         <dc-schema>mer</dc-schema>
+         <dc-element>document</dc-element>
+         <dc-qualifier></dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Document</label>
+         <input-type>contextual-dropdown</input-type>
+         <hint>Kies het document type</hint>
+         <required>U moet een document type kiezen.</required>
+         <vocabulary>mer-dossier-structuur</vocabulary>
+       </field>
+
        <field>
          <dc-schema>dc</dc-schema>
          <dc-element>subject</dc-element>
@@ -371,6 +395,10 @@ it, please enter the types and the actual numbers or codes.</hint>
        <displayed-value>N/A</displayed-value>
        <stored-value></stored-value>
      </pair>
+     <pair>
+       <displayed-value>Dutch</displayed-value>
+       <stored-value>nl</stored-value>
+      </pair>
      <pair>
        <displayed-value>English (United States)</displayed-value>
        <stored-value>en_US</stored-value>

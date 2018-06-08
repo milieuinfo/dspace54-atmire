@@ -29,12 +29,11 @@ type DocumentOnderdeel
 -- Parse HTML
 
 
-parse : String -> String
+parse : String -> Procedure
 parse string =
     string
         |> HtmlParser.parse
         |> procedure
-        |> toVocabulary
 
 
 hasClass : Attributes -> String -> Bool
@@ -208,62 +207,88 @@ default i maybeString =
 -- Data  ->  Vocabulary XML
 
 
-toVocabulary : Procedure -> String
-toVocabulary (Procedure naam stappen) =
-    """
-<field name="mer.procedure">
-  <element value="{{procedure-naam}}">
-{{stappen}}
-  </element>
-</field>
-"""
-        |> replace "{{procedure-naam}}" naam
-        |> replace "{{stappen}}" (format 4 stapXml stappen)
+toVocabulary : List Procedure -> String
+toVocabulary procedures =
+    fieldXml "mer.procedure" (List.map procedureXml procedures)
         |> removeEmptyLines
 
 
+procedureXml : Procedure -> String
+procedureXml (Procedure naam stappen) =
+    elementXml naam (stapFieldXml stappen)
+
+
+stapFieldXml : List ProcedureStap -> String
+stapFieldXml stappen =
+    fieldXml "mer.procedurestap" (List.map stapXml stappen)
+
+
 stapXml : ProcedureStap -> String
-stapXml (ProcedureStap naam list) =
-    """
-<field name="mer.procedurestap">
-  <element value="{{naam}}">
-{{documenten}}
-  </element>
-</field>
-"""
-        |> replace "{{naam}}" naam
-        |> replace "{{documenten}}" (format 8 documentXml list)
+stapXml (ProcedureStap naam documents) =
+    elementXml naam (documentFieldXml documents)
+
+
+documentFieldXml : List Document -> String
+documentFieldXml documents =
+    fieldXml "mer.document" (List.map documentXml documents)
 
 
 documentXml : Document -> String
-documentXml (Document naam list) =
-    """
-<field name="mer.document">
-  <element value="{{naam}}">
-{{onderdelen}}
-  </element>
-</field>
-"""
-        |> replace "{{naam}}" naam
-        |> replace "{{onderdelen}}" (format 8 onderdeelXml list)
+documentXml (Document naam onderdelen) =
+    elementXml naam (onderdeelFieldXml onderdelen)
+
+
+onderdeelFieldXml : List DocumentOnderdeel -> String
+onderdeelFieldXml onderdelen =
+    fieldXml "mer.documentonderdeel" (List.map onderdeelXml onderdelen)
 
 
 onderdeelXml : DocumentOnderdeel -> String
 onderdeelXml (DocumentOnderdeel naam) =
-    """
-<field name="mer.documentonderdeel">
-  <element value="{{naam}}" />
-</field>
+    elementXml naam ""
+
+
+fieldXml : String -> List String -> String
+fieldXml fieldName elements =
+    if List.isEmpty elements then
+        ""
+    else
+        """
+<bean class="com.atmire.vocabulary.Field">
+    <property name="field" value="{{fieldName}}"/>
+    <property name="values">
+        <util:list>
+{{elements}}
+        </util:list>
+    </property>
+</bean>
 """
-        |> replace "{{naam}}" naam
+            |> replace "{{fieldName}}" fieldName
+            |> replace "{{elements}}" (insertSpaces 12 (String.join "\n" elements))
 
 
-format : Int -> (a -> String) -> List a -> String
-format spaces view list =
-    list
-        |> List.map view
-        |> List.map (insertSpaces spaces)
-        |> String.join "\n"
+elementXml : String -> String -> String
+elementXml value fields =
+    if fields /= "" then
+        """
+<bean class="com.atmire.vocabulary.Value">
+    <property name="value" value="{{value}}"/>
+    <property name="fields">
+        <util:list>
+{{fields}}
+        </util:list>
+    </property>
+</bean>
+"""
+            |> replace "{{value}}" value
+            |> replace "{{fields}}" (insertSpaces 12 fields)
+    else
+        """
+<bean class="com.atmire.vocabulary.Value">
+    <property name="value" value="{{value}}"/>
+</bean>
+"""
+            |> replace "{{value}}" value
 
 
 insertSpaces : Int -> String -> String
@@ -295,12 +320,16 @@ removeEmptyLines string =
 
 main : Html.Html ()
 main =
-    Html.div [] <| List.map displayProcedure input
-
-
-displayProcedure : String -> Html.Html ()
-displayProcedure html =
-    Html.code [] [ Html.pre [] [ Html.text <| parse html ] ]
+    Html.div []
+        [ Html.code []
+            [ Html.pre []
+                [ input
+                    |> List.map parse
+                    |> toVocabulary
+                    |> Html.text
+                ]
+            ]
+        ]
 
 
 

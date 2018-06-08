@@ -1,0 +1,1603 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
+>
+    <context:annotation-config/> <!-- allows us to use spring annotations in beans -->
+
+    <bean name="mer-dossier-structuur" class="com.atmire.vocabulary.Field">
+        <property name="field" value="mer.procedure"/>
+        <property name="values">
+            <util:list>
+                <bean class="com.atmire.vocabulary.Value">
+                    <property name="value" value="Project-MER-2002"/>
+                    <property name="fields">
+                        <util:list>
+                            <bean class="com.atmire.vocabulary.Field">
+                                <property name="field" value="mer.procedurestap"/>
+                                <property name="values">
+                                    <util:list>
+                                        <bean class="com.atmire.vocabulary.Value">
+                                            <property name="value" value="Beslissing Kennisgeving"/>
+                                            <property name="fields">
+                                                <util:list>
+                                                    <bean class="com.atmire.vocabulary.Field">
+                                                        <property name="field" value="mer.document"/>
+                                                        <property name="values">
+                                                            <util:list>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Kennisgeving"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet-confidentieel onderdeel"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Confidentieel onderdeel"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Volledigverklaring"/>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Onvolledigverklaring"/>
+                                                                </bean>
+                                                            </util:list>
+                                                        </property>
+                                                    </bean>
+                                                </util:list>
+                                            </property>
+                                        </bean>
+                                        <bean class="com.atmire.vocabulary.Value">
+                                            <property name="value" value="Richtlijnen"/>
+                                            <property name="fields">
+                                                <util:list>
+                                                    <bean class="com.atmire.vocabulary.Field">
+                                                        <property name="field" value="mer.document"/>
+                                                        <property name="values">
+                                                            <util:list>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Inspraakreacties"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Geanonimiseerde inspraakreacties"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet-geanonimiseerde inspraakreacties"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Advies"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Adviesvraag"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Advies"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Richtlijnen"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Begeleidende brief"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Richtlijnen"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Aanvullende richtlijnen"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Begeleidende brief"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="richtlijnen"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Richtlijnen"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                            </util:list>
+                                                        </property>
+                                                    </bean>
+                                                </util:list>
+                                            </property>
+                                        </bean>
+                                        <bean class="com.atmire.vocabulary.Value">
+                                            <property name="value" value="Beslissing MER"/>
+                                            <property name="fields">
+                                                <util:list>
+                                                    <bean class="com.atmire.vocabulary.Field">
+                                                        <property name="field" value="mer.document"/>
+                                                        <property name="values">
+                                                            <util:list>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="MER"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet-confidentieel onderdeel"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Confidentieel deel"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet technische samenvatting"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Beslissing"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Begeleidende brief"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Goedkeuringsverslag"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Afkeuringsverslag"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                            </util:list>
+                                                        </property>
+                                                    </bean>
+                                                </util:list>
+                                            </property>
+                                        </bean>
+                                    </util:list>
+                                </property>
+                            </bean>
+                        </util:list>
+                    </property>
+                </bean>
+                <bean class="com.atmire.vocabulary.Value">
+                    <property name="value" value="Ontheffing Project-MER"/>
+                    <property name="fields">
+                        <util:list>
+                            <bean class="com.atmire.vocabulary.Field">
+                                <property name="field" value="mer.procedurestap"/>
+                                <property name="values">
+                                    <util:list>
+                                        <bean class="com.atmire.vocabulary.Value">
+                                            <property name="value" value="Beslissing ontheffing"/>
+                                            <property name="fields">
+                                                <util:list>
+                                                    <bean class="com.atmire.vocabulary.Field">
+                                                        <property name="field" value="mer.document"/>
+                                                        <property name="values">
+                                                            <util:list>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Ontheffingsaanvraag"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet-confidentieel onderdeel"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Confidentieel onderdeel"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Advies"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Adviesvraag"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Advies"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Beslissing ontheffing"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Begeleidende brief"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Ontheffingsverslag"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Weigeringsverslag"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                            </util:list>
+                                                        </property>
+                                                    </bean>
+                                                </util:list>
+                                            </property>
+                                        </bean>
+                                    </util:list>
+                                </property>
+                            </bean>
+                        </util:list>
+                    </property>
+                </bean>
+                <bean class="com.atmire.vocabulary.Value">
+                    <property name="value" value="Project-MER-2017"/>
+                    <property name="fields">
+                        <util:list>
+                            <bean class="com.atmire.vocabulary.Field">
+                                <property name="field" value="mer.procedurestap"/>
+                                <property name="values">
+                                    <util:list>
+                                        <bean class="com.atmire.vocabulary.Value">
+                                            <property name="value" value="Beslissing Aanmelding"/>
+                                            <property name="fields">
+                                                <util:list>
+                                                    <bean class="com.atmire.vocabulary.Field">
+                                                        <property name="field" value="mer.document"/>
+                                                        <property name="values">
+                                                            <util:list>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Aanmelding"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet-confidentieel onderdeel"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Confidentieel onderdeel"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Volledigverklaring"/>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Onvolledigverklaring"/>
+                                                                </bean>
+                                                            </util:list>
+                                                        </property>
+                                                    </bean>
+                                                </util:list>
+                                            </property>
+                                        </bean>
+                                        <bean class="com.atmire.vocabulary.Value">
+                                            <property name="value" value="Scopingadvies"/>
+                                            <property name="fields">
+                                                <util:list>
+                                                    <bean class="com.atmire.vocabulary.Field">
+                                                        <property name="field" value="mer.document"/>
+                                                        <property name="values">
+                                                            <util:list>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Advies"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Adviesvraag"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Advies"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Inspraakreacties"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Geanonimiseerde inspraakreacties"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet-geanonimiseerde inspraakreacties"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Scopingadvies"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Scopingadvies"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Begeleidende brief"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                            </util:list>
+                                                        </property>
+                                                    </bean>
+                                                </util:list>
+                                            </property>
+                                        </bean>
+                                        <bean class="com.atmire.vocabulary.Value">
+                                            <property name="value" value="Voorlopige goedkeuring"/>
+                                            <property name="fields">
+                                                <util:list>
+                                                    <bean class="com.atmire.vocabulary.Field">
+                                                        <property name="field" value="mer.document"/>
+                                                        <property name="values">
+                                                            <util:list>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Ontwerp-MER"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet-confidentieel deel"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Confidentieel deel"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet technische samenvatting"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Beslissing ontwerp-MER"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Begeleidende brief"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Goedkeuringsverslag"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Afkeuringsverslag"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                            </util:list>
+                                                        </property>
+                                                    </bean>
+                                                </util:list>
+                                            </property>
+                                        </bean>
+                                        <bean class="com.atmire.vocabulary.Value">
+                                            <property name="value" value="Beslissing MER"/>
+                                            <property name="fields">
+                                                <util:list>
+                                                    <bean class="com.atmire.vocabulary.Field">
+                                                        <property name="field" value="mer.document"/>
+                                                        <property name="values">
+                                                            <util:list>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="MER"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet-confidentieel onderdeel"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Confidentieel deel"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet technische samenvatting"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Advies"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Adviesvraag"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Advies"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Inspraakreacties"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Geanonimiseerde inspraakreacties"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet-geanonimiseerde inspraakreacties"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Beslissing"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Begeleidende brief"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Goedkeuringsverslag"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Afkeuringsverslag"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                            </util:list>
+                                                        </property>
+                                                    </bean>
+                                                </util:list>
+                                            </property>
+                                        </bean>
+                                    </util:list>
+                                </property>
+                            </bean>
+                        </util:list>
+                    </property>
+                </bean>
+                <bean class="com.atmire.vocabulary.Value">
+                    <property name="value" value="Plan-MER-2004"/>
+                    <property name="fields">
+                        <util:list>
+                            <bean class="com.atmire.vocabulary.Field">
+                                <property name="field" value="mer.procedurestap"/>
+                                <property name="values">
+                                    <util:list>
+                                        <bean class="com.atmire.vocabulary.Value">
+                                            <property name="value" value="Beslissing Kennisgeving"/>
+                                            <property name="fields">
+                                                <util:list>
+                                                    <bean class="com.atmire.vocabulary.Field">
+                                                        <property name="field" value="mer.document"/>
+                                                        <property name="values">
+                                                            <util:list>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Kennisgeving"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet-confidentieel onderdeel"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Confidentieel onderdeel"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Volledigverklaring"/>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Onvolledigverklaring"/>
+                                                                </bean>
+                                                            </util:list>
+                                                        </property>
+                                                    </bean>
+                                                </util:list>
+                                            </property>
+                                        </bean>
+                                        <bean class="com.atmire.vocabulary.Value">
+                                            <property name="value" value="Richtlijnen"/>
+                                            <property name="fields">
+                                                <util:list>
+                                                    <bean class="com.atmire.vocabulary.Field">
+                                                        <property name="field" value="mer.document"/>
+                                                        <property name="values">
+                                                            <util:list>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Inspraakreacties"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Geanonimiseerde inspraakreacties"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet-geanonimiseerde inspraakreacties"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Advies"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Adviesvraag"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Adviesvraag"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Richtlijnen"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Begeleidende brief"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Richtlijnen"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Aanvullende richtlijnen"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Begeleidende brief"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Richtlijnen"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                            </util:list>
+                                                        </property>
+                                                    </bean>
+                                                </util:list>
+                                            </property>
+                                        </bean>
+                                        <bean class="com.atmire.vocabulary.Value">
+                                            <property name="value" value="Beslissing MER"/>
+                                            <property name="fields">
+                                                <util:list>
+                                                    <bean class="com.atmire.vocabulary.Field">
+                                                        <property name="field" value="mer.document"/>
+                                                        <property name="values">
+                                                            <util:list>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="MER"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet-confidentieel onderdeel"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Confidentieel deel"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet technische samenvatting"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Beslissing"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Begeleidende brief"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Goedkeuringsverslag"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Afkeuringsverslag"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                            </util:list>
+                                                        </property>
+                                                    </bean>
+                                                </util:list>
+                                            </property>
+                                        </bean>
+                                    </util:list>
+                                </property>
+                            </bean>
+                        </util:list>
+                    </property>
+                </bean>
+                <bean class="com.atmire.vocabulary.Value">
+                    <property name="value" value="Plan-MER Screening"/>
+                    <property name="fields">
+                        <util:list>
+                            <bean class="com.atmire.vocabulary.Field">
+                                <property name="field" value="mer.procedurestap"/>
+                                <property name="values">
+                                    <util:list>
+                                        <bean class="com.atmire.vocabulary.Value">
+                                            <property name="value" value="Beslissing ontheffing"/>
+                                            <property name="fields">
+                                                <util:list>
+                                                    <bean class="com.atmire.vocabulary.Field">
+                                                        <property name="field" value="mer.document"/>
+                                                        <property name="values">
+                                                            <util:list>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Ontheffingsaanvraag"/>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Advies"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Adviesvraag"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Advies"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Beslissing ontheffing"/>
+                                                                </bean>
+                                                            </util:list>
+                                                        </property>
+                                                    </bean>
+                                                </util:list>
+                                            </property>
+                                        </bean>
+                                    </util:list>
+                                </property>
+                            </bean>
+                        </util:list>
+                    </property>
+                </bean>
+                <bean class="com.atmire.vocabulary.Value">
+                    <property name="value" value="Plan-MER Integratiespoor 2007"/>
+                    <property name="fields">
+                        <util:list>
+                            <bean class="com.atmire.vocabulary.Field">
+                                <property name="field" value="mer.procedurestap"/>
+                                <property name="values">
+                                    <util:list>
+                                        <bean class="com.atmire.vocabulary.Value">
+                                            <property name="value" value="Beslissing Kennisgeving"/>
+                                            <property name="fields">
+                                                <util:list>
+                                                    <bean class="com.atmire.vocabulary.Field">
+                                                        <property name="field" value="mer.document"/>
+                                                        <property name="values">
+                                                            <util:list>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Kennisgeving"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet-confidentieel onderdeel"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Confidentieel onderdeel"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Volledigverklaring"/>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Onvolledigverklaring"/>
+                                                                </bean>
+                                                            </util:list>
+                                                        </property>
+                                                    </bean>
+                                                </util:list>
+                                            </property>
+                                        </bean>
+                                        <bean class="com.atmire.vocabulary.Value">
+                                            <property name="value" value="Richtlijnen"/>
+                                            <property name="fields">
+                                                <util:list>
+                                                    <bean class="com.atmire.vocabulary.Field">
+                                                        <property name="field" value="mer.document"/>
+                                                        <property name="values">
+                                                            <util:list>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Inspraakreacties"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Geanonimiseerde inspraakreacties"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet-geanonimiseerde inspraakreacties"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Advies"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Adviesvraag"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Adviesvraag"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Richtlijnen"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Begeleidende brief"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Richtlijnen"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Aanvullende richtlijnen"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Begeleidende brief"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="richtlijnen"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Richtlijnen"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                            </util:list>
+                                                        </property>
+                                                    </bean>
+                                                </util:list>
+                                            </property>
+                                        </bean>
+                                        <bean class="com.atmire.vocabulary.Value">
+                                            <property name="value" value="Beslissing MER"/>
+                                            <property name="fields">
+                                                <util:list>
+                                                    <bean class="com.atmire.vocabulary.Field">
+                                                        <property name="field" value="mer.document"/>
+                                                        <property name="values">
+                                                            <util:list>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="MER"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet-confidentieel onderdeel"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Confidentieel deel"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet technische samenvatting"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Beslissing"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Begeleidende brief"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Goedkeuringsverslag"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Afkeuringsverslag"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                            </util:list>
+                                                        </property>
+                                                    </bean>
+                                                </util:list>
+                                            </property>
+                                        </bean>
+                                    </util:list>
+                                </property>
+                            </bean>
+                        </util:list>
+                    </property>
+                </bean>
+                <bean class="com.atmire.vocabulary.Value">
+                    <property name="value" value="Plan-MER-2017"/>
+                    <property name="fields">
+                        <util:list>
+                            <bean class="com.atmire.vocabulary.Field">
+                                <property name="field" value="mer.procedurestap"/>
+                                <property name="values">
+                                    <util:list>
+                                        <bean class="com.atmire.vocabulary.Value">
+                                            <property name="value" value="Beslissing Kennisgeving"/>
+                                            <property name="fields">
+                                                <util:list>
+                                                    <bean class="com.atmire.vocabulary.Field">
+                                                        <property name="field" value="mer.document"/>
+                                                        <property name="values">
+                                                            <util:list>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Kennisgeving"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet-confidentieel onderdeel"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Confidentieel onderdeel"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Volledigverklaring"/>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Onvolledigverklaring"/>
+                                                                </bean>
+                                                            </util:list>
+                                                        </property>
+                                                    </bean>
+                                                </util:list>
+                                            </property>
+                                        </bean>
+                                        <bean class="com.atmire.vocabulary.Value">
+                                            <property name="value" value="Richtlijnen"/>
+                                            <property name="fields">
+                                                <util:list>
+                                                    <bean class="com.atmire.vocabulary.Field">
+                                                        <property name="field" value="mer.document"/>
+                                                        <property name="values">
+                                                            <util:list>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Inspraakreacties"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Geanonimiseerde inspraakreacties"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet-geanonimiseerde inspraakreacties"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Advies"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Adviesvraag"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Adviesvraag"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Richtlijnen"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Begeleidende brief"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Richtlijnen"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Aanvullende richtlijnen"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Begeleidende brief"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Richtlijnen"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                            </util:list>
+                                                        </property>
+                                                    </bean>
+                                                </util:list>
+                                            </property>
+                                        </bean>
+                                        <bean class="com.atmire.vocabulary.Value">
+                                            <property name="value" value="Beslissing Ontwerp-MER"/>
+                                            <property name="fields">
+                                                <util:list>
+                                                    <bean class="com.atmire.vocabulary.Field">
+                                                        <property name="field" value="mer.document"/>
+                                                        <property name="values">
+                                                            <util:list>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="MER"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet-confidentieel onderdeel"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Confidentieel deel"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet technische samenvatting"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Beslissing"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Begeleidende brief"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Goedkeuringsverslag"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Afkeuringsverslag"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                            </util:list>
+                                                        </property>
+                                                    </bean>
+                                                </util:list>
+                                            </property>
+                                        </bean>
+                                        <bean class="com.atmire.vocabulary.Value">
+                                            <property name="value" value="Beslissing MER"/>
+                                            <property name="fields">
+                                                <util:list>
+                                                    <bean class="com.atmire.vocabulary.Field">
+                                                        <property name="field" value="mer.document"/>
+                                                        <property name="values">
+                                                            <util:list>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="MER"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet-confidentieel onderdeel"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Confidentieel deel"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet technische samenvatting"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Beslissing"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Begeleidende brief"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Goedkeuringsverslag"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Afkeuringsverslag"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                            </util:list>
+                                                        </property>
+                                                    </bean>
+                                                </util:list>
+                                            </property>
+                                        </bean>
+                                    </util:list>
+                                </property>
+                            </bean>
+                        </util:list>
+                    </property>
+                </bean>
+                <bean class="com.atmire.vocabulary.Value">
+                    <property name="value" value="Integratie m.e.r. in RUP 2017"/>
+                    <property name="fields">
+                        <util:list>
+                            <bean class="com.atmire.vocabulary.Field">
+                                <property name="field" value="mer.procedurestap"/>
+                                <property name="values">
+                                    <util:list>
+                                        <bean class="com.atmire.vocabulary.Value">
+                                            <property name="value" value="Startnota"/>
+                                            <property name="fields">
+                                                <util:list>
+                                                    <bean class="com.atmire.vocabulary.Field">
+                                                        <property name="field" value="mer.document"/>
+                                                        <property name="values">
+                                                            <util:list>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Startnota"/>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Inspraakreacties"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Geanonimiseerde inspraakreacties"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet-geanonimiseerde inspraakreacties"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                            </util:list>
+                                                        </property>
+                                                    </bean>
+                                                </util:list>
+                                            </property>
+                                        </bean>
+                                        <bean class="com.atmire.vocabulary.Value">
+                                            <property name="value" value="Procesnota"/>
+                                            <property name="fields">
+                                                <util:list>
+                                                    <bean class="com.atmire.vocabulary.Field">
+                                                        <property name="field" value="mer.document"/>
+                                                        <property name="values">
+                                                            <util:list>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Procesnota"/>
+                                                                </bean>
+                                                            </util:list>
+                                                        </property>
+                                                    </bean>
+                                                </util:list>
+                                            </property>
+                                        </bean>
+                                        <bean class="com.atmire.vocabulary.Value">
+                                            <property name="value" value="Scopingnota"/>
+                                            <property name="fields">
+                                                <util:list>
+                                                    <bean class="com.atmire.vocabulary.Field">
+                                                        <property name="field" value="mer.document"/>
+                                                        <property name="values">
+                                                            <util:list>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Advies"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Adviesvraag"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Advies"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Scopingnota"/>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Bepaling mbt. planMER-plicht"/>
+                                                                </bean>
+                                                            </util:list>
+                                                        </property>
+                                                    </bean>
+                                                </util:list>
+                                            </property>
+                                        </bean>
+                                        <bean class="com.atmire.vocabulary.Value">
+                                            <property name="value" value="Beslissing Ontwerp-MER"/>
+                                            <property name="fields">
+                                                <util:list>
+                                                    <bean class="com.atmire.vocabulary.Field">
+                                                        <property name="field" value="mer.document"/>
+                                                        <property name="values">
+                                                            <util:list>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="MER"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet-confidentieel onderdeel"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Confidentieel deel"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet technische samenvatting"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Beslissing"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Begeleidende brief"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Goedkeuringsverslag"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Afkeuringsverslag"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                            </util:list>
+                                                        </property>
+                                                    </bean>
+                                                </util:list>
+                                            </property>
+                                        </bean>
+                                        <bean class="com.atmire.vocabulary.Value">
+                                            <property name="value" value="Beslissing MER"/>
+                                            <property name="fields">
+                                                <util:list>
+                                                    <bean class="com.atmire.vocabulary.Field">
+                                                        <property name="field" value="mer.document"/>
+                                                        <property name="values">
+                                                            <util:list>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="MER"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet-confidentieel onderdeel"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Confidentieel deel"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Niet technische samenvatting"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                                <bean class="com.atmire.vocabulary.Value">
+                                                                    <property name="value" value="Beslissing"/>
+                                                                    <property name="fields">
+                                                                        <util:list>
+                                                                            <bean class="com.atmire.vocabulary.Field">
+                                                                                <property name="field" value="mer.documentonderdeel"/>
+                                                                                <property name="values">
+                                                                                    <util:list>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Begeleidende brief"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Goedkeuringsverslag"/>
+                                                                                        </bean>
+                                                                                        <bean class="com.atmire.vocabulary.Value">
+                                                                                            <property name="value" value="Afkeuringsverslag"/>
+                                                                                        </bean>
+                                                                                    </util:list>
+                                                                                </property>
+                                                                            </bean>
+                                                                        </util:list>
+                                                                    </property>
+                                                                </bean>
+                                                            </util:list>
+                                                        </property>
+                                                    </bean>
+                                                </util:list>
+                                            </property>
+                                        </bean>
+                                    </util:list>
+                                </property>
+                            </bean>
+                        </util:list>
+                    </property>
+                </bean>
+            </util:list>
+        </property>
+    </bean>
+
+</beans>
