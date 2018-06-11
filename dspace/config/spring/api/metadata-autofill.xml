@@ -55,6 +55,10 @@
             <property name="sourceField" value="vlaanderen.identifier"/>
             <property name="overwrite" value="true"/>
         </bean>
+        <bean class="com.atmire.metadata.FromContextVocabulary">
+            <property name="field" value="dc.description"/>
+            <property name="vocabulary" value="mer-dossier-structuur"/>
+        </bean>
     </util:list>
 
 </beans>

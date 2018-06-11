@@ -193,7 +193,9 @@ toVocabulary procedures =
 
 procedureXml : Procedure -> String
 procedureXml (Procedure naam stappen) =
-    elementXml naam (stapFieldXml stappen)
+    stapFieldXml stappen
+        |> String.append (descriptionXml naam)
+        |> elementXml naam
 
 
 stapFieldXml : List ProcedureStap -> String
@@ -203,7 +205,9 @@ stapFieldXml stappen =
 
 stapXml : ProcedureStap -> String
 stapXml (ProcedureStap naam documents) =
-    elementXml naam (documentFieldXml documents)
+    documentFieldXml documents
+        |> String.append (descriptionXml naam)
+        |> elementXml naam
 
 
 documentFieldXml : List Document -> String
@@ -213,7 +217,9 @@ documentFieldXml documents =
 
 documentXml : Document -> String
 documentXml (Document naam onderdelen) =
-    elementXml naam (onderdeelFieldXml onderdelen)
+    onderdeelFieldXml onderdelen
+        |> String.append (descriptionXml naam)
+        |> elementXml naam
 
 
 onderdeelFieldXml : List DocumentOnderdeel -> String
@@ -223,7 +229,14 @@ onderdeelFieldXml onderdelen =
 
 onderdeelXml : DocumentOnderdeel -> String
 onderdeelXml (DocumentOnderdeel naam) =
-    elementXml naam ""
+    descriptionXml naam
+        |> elementXml naam
+
+
+descriptionXml : String -> String
+descriptionXml value =
+    fieldXml "dc.description"
+        [ elementXml ("Beschrijving: " ++ value) "" ]
 
 
 fieldXml : String -> List String -> String

@@ -76,7 +76,7 @@ public class MetadataUtils {
     }
 
     public static List<Metadatum> getMetadata(DSpaceObject item, String mdString) {
-        MetadatumExtended elements = MetadataFieldString.encapsulate(mdString).withWildcards();
+        MetadatumExtended elements = MetadataFieldString.encapsulate(mdString);
         Metadatum[] metadata = item.getMetadata(elements.getSchema(), elements.getElement(), elements.getQualifier(), elements.getLanguage());
         return Arrays.asList(metadata);
     }

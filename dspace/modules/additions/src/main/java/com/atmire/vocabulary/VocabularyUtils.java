@@ -18,37 +18,46 @@ public class VocabularyUtils {
             Metadatum[] dcValues,
             String vocabulary
     ) {
-        fieldName = fieldName.replaceAll("_", ".");
-        Field field = new DSpace().getServiceManager()
-                .getServiceByName(vocabulary, Field.class);
-        return getDCInputPairs(fieldName, dcValues, field);
+        List<String> valuesForField = getValuesForField(
+                fieldName.replaceAll("_", "."), dcValues, vocabulary);
+        return toPairs(valuesForField);
     }
 
-    private static List<String> getDCInputPairs(
+    public static List<String> getValuesForField(
+            String fieldName,
+            Metadatum[] dcValues,
+            String vocabulary
+    ) {
+        Field field = new DSpace().getServiceManager()
+                .getServiceByName(vocabulary, Field.class);
+        return getValuesForField(fieldName, dcValues, field);
+    }
+
+    private static List<String> getValuesForField(
             String fieldName,
             Metadatum[] dcValues,
             Field field
     ) {
-        List<String> pairs = new ArrayList<>();
+        List<String> values = new ArrayList<>();
         if (field != null) {
             if (fieldName.equals(field.getField())) {
-                pairs = toPairs(getValues(field));
+                values = getValues(field);
             } else {
                 List<Value> matchingValues = getMatchingValue(field, dcValues);
                 if (!matchingValues.isEmpty()) {
                     Iterator<Value> valueIterator = matchingValues.iterator();
-                    while (valueIterator.hasNext() && pairs.isEmpty()) {
+                    while (valueIterator.hasNext() && values.isEmpty()) {
                         Value matchingValue = valueIterator.next();
                         Iterator<Field> fieldIterator = matchingValue.getFields().iterator();
-                        while (fieldIterator.hasNext() && pairs.isEmpty()) {
+                        while (fieldIterator.hasNext() && values.isEmpty()) {
                             Field nextField = fieldIterator.next();
-                            pairs = getDCInputPairs(fieldName, dcValues, nextField);
+                            values = getValuesForField(fieldName, dcValues, nextField);
                         }
                     }
                 }
             }
         }
-        return pairs;
+        return values;
     }
 
     private static List<String> toPairs(List<String> values) {
