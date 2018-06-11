@@ -66,99 +66,77 @@ stappen list =
                     []
 
         newProcedureStap : Node -> List Node -> List ProcedureStap
-        newProcedureStap firstRow otherRows =
-            case getChildNodes firstRow of
-                procedureStap :: otherCells ->
-                    let
-                        name =
-                            singleTextContent procedureStap
-
-                        span =
-                            rowspan procedureStap
-
-                        documents =
-                            newDocument (Element "tr" [] otherCells)
-                                (List.take span otherRows)
-
-                        nextProcedures =
-                            next span newProcedureStap otherRows
-                    in
-                    if validName name then
-                        ProcedureStap name documents :: nextProcedures
-                    else
-                        nextProcedures
-
-                _ ->
-                    []
+        newProcedureStap =
+            parseLevel ProcedureStap newDocument
 
         newDocument : Node -> List Node -> List Document
-        newDocument row otherRows =
-            case getChildNodes row of
-                document :: otherCells ->
-                    let
-                        name =
-                            singleTextContent document
-
-                        span =
-                            rowspan document
-
-                        onderdelen =
-                            newOnderdeel (Element "tr" [] otherCells)
-                                (List.take span otherRows)
-
-                        nextDocuments =
-                            next span newDocument otherRows
-                    in
-                    if validName name then
-                        Document name onderdelen :: nextDocuments
-                    else
-                        nextDocuments
-
-                _ ->
-                    []
+        newDocument =
+            parseLevel Document newOnderdeel
 
         newOnderdeel : Node -> List Node -> List DocumentOnderdeel
-        newOnderdeel row otherRows =
-            case getChildNodes row of
-                onderdeel :: _ ->
-                    let
-                        name =
-                            singleTextContent onderdeel
+        newOnderdeel =
+            let
+                leaf name _ =
+                    DocumentOnderdeel name
 
-                        span =
-                            rowspan onderdeel
-
-                        nextOnderdelen =
-                            next span newOnderdeel otherRows
-                    in
-                    if validName name then
-                        DocumentOnderdeel name :: nextOnderdelen
-                    else
-                        nextOnderdelen
-
-                _ ->
-                    []
-
-        validName : String -> Bool
-        validName name =
-            name /= "" && name /= "/"
-
-        rowspan : Node -> Int
-        rowspan cell =
-            getValue "rowspan" (getAttributes cell)
-                |> default 1
-                |> (\x -> x - 1)
-
-        next : Int -> (Node -> List Node -> List a) -> List Node -> List a
-        next span new otherRows =
-            case List.drop span otherRows of
-                [] ->
-                    []
-
-                nextRow :: more ->
-                    new nextRow more
+                noNextLevel node list =
+                    ()
+            in
+            parseLevel leaf noNextLevel
     in
     all
+
+
+parseLevel : (String -> a -> b) -> (Node -> List Node -> a) -> Node -> List Node -> List b
+parseLevel constructor nextLevel firstRow otherRows =
+    case getChildNodes firstRow of
+        firstCell :: otherCells ->
+            let
+                name =
+                    singleTextContent firstCell
+
+                span =
+                    rowspan firstCell
+
+                nextCellsProcessed =
+                    nextLevel (Element "tr" [] otherCells)
+                        (List.take span otherRows)
+
+                thisLevel =
+                    parseLevel constructor nextLevel
+
+                nextRowsProcessed =
+                    next span thisLevel otherRows
+            in
+            if validName name then
+                constructor name nextCellsProcessed :: nextRowsProcessed
+            else
+                nextRowsProcessed
+
+        _ ->
+            []
+
+
+validName : String -> Bool
+validName name =
+    name /= "" && name /= "/"
+
+
+rowspan : Node -> Int
+rowspan cell =
+    getValue "rowspan" (getAttributes cell)
+        |> default 1
+        |> (\x -> x - 1)
+
+
+next : Int -> (Node -> List Node -> List a) -> List Node -> List a
+next span new otherRows =
+    case List.drop span otherRows of
+        [] ->
+            []
+
+        nextRow :: more ->
+            new nextRow more
 
 
 getChildNodes : Node -> List Node
