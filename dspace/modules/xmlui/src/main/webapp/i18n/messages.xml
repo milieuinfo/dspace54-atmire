@@ -2624,5 +2624,119 @@
     <message key="xmlui.ChoiceLookupTransformer.field.vlaanderen_identifier.title">Select vlaanderen identifier</message>
     <message key="xmlui.ChoiceLookupTransformer.field.vlaanderen_identifier.help">Enter vlaanderen identifier</message>
 
+    <message key="xmlui.compliance.ComplianceUI.applicable_help_milieuinfo">&#160;</message>
+    <message key="xmlui.compliance.workflow.REFComplianceAction.head">Item REF OA Compliance</message>
+    <message key="xmlui.compliance.workflow.MilieuinfoComplianceAction.head">Item Milieuinfo Compliance</message>
+
+    <message key="xmlui.XMLWorkflow.default.refcompliancestep.claimaction">Item REF OA Compliance</message>
+    <message key="xmlui.XMLWorkflow.default.refcompliancestep.refcomplianceaction">Item REF OA Compliance</message>
+
+    <message key="xmlui.XMLWorkflow.default.milieuinfocompliancestep.claimaction">Item Milieuinfo Compliance</message>
+    <message key="xmlui.XMLWorkflow.default.milieuinfocompliancestep.milieuinfocomplianceaction">Item Milieuinfo Compliance</message>
+
+    <message key="xmlui.compliance.ComplianceUI.info1">Actions you may perform on this task:</message>
+    <message key="xmlui.compliance.ComplianceUI.continue">Continue</message>
+    <message key="xmlui.compliance.ComplianceUI.continue_info">Select Continue to send the item to the next workflow step.</message>
+    <message key="xmlui.compliance.ComplianceUI.return">Return</message>
+    <message key="xmlui.compliance.ComplianceUI.return_info">Select Return to send the item back to the previous workflow step if it is not compliant with all the rules.</message>
+    <message key="xmlui.compliance.ComplianceUI.cancel">Cancel</message>
+    <message key="xmlui.compliance.ComplianceUI.top_information_bar_compliant">Congratulations, this item complies with the {0}!</message>
+    <message key="xmlui.compliance.ComplianceUI.top_information_bar_not_compliant">This item is not compliant with the {0}!</message>
+    <message key="xmlui.compliance.ComplianceUI.top_information_bar_not_applicable">This item is not eligible for the {0} compliance policy</message>
+    <message key="xmlui.compliance.ComplianceUI.not_applicable_help_ref">
+        <p>The REF Open Access policy sets out the details of a requirement that certain research outputs should be made open-access to be eligible for
+            submission to the next Research Excellence Framework (REF). Only journal articles and conference proceedings accepted for publication after 1 April 2016 are eligible for the next REF. Therefore compliance with the REF OA requirements is not relevant for earlier accepted publications or publications of a different type.
+            More information can be found <a href="http://www.hefce.ac.uk/pubs/year/2014/201407/" target="_blank">here</a>.
+        </p>
+        <p>It appears that this item is not eligible for the REF. This means you can safely ignore this page as this item will not be taken into account when evaluating REF compliance.</p>
+        <p>If you do intend to include this publication in the REF submission, please click "Show rules" to view additional details on why this item is considered not eligible.</p>
+    </message>
+    <message key="xmlui.compliance.ComplianceUI.not_applicable_help_milieuinfo">Any submission to the repository can potentially comply to the Milieuinfo guidelines. You should not see this message, as this indicates that the publication has not met eligibility requirements for Milieuinfo compliance.</message>
+    <message key="xmlui.compliance.ComplianceUI.resolution_summary_title">Resolution Summary:</message>
+    <message key="xmlui.compliance.ComplianceUI.exceptions_section_title">Technical and Other Exceptions</message>
+    <message key="xmlui.compliance.ComplianceUI.ref_related_data_title">REF OA Compliance Related Data</message>
+    <message key="xmlui.compliance.ComplianceUI.circle_icon">
+        <i class="fa fa-question-circle" aria-hidden="true"></i>
+    </message>
+    <message key="xmlui.compliance.ComplianceUI.ref_related_field_dcterms.dateAccepted">Date of Acceptance (dcterms.dateAccepted)</message>
+    <message key="xmlui.compliance.ComplianceUI.ref_related_field_dc.date.issued">Print Publication Date (dc.date.issued)</message>
+    <message key="xmlui.compliance.ComplianceUI.ref_related_field_refterms.dateFirstOnline">Online Publication Date (refterms.dateFirstOnline)</message>
+    <message key="xmlui.compliance.ComplianceUI.ref_related_field_milieuinfoterms.type">Publication Type (milieuinfoterms.type)</message>
+    <message key="xmlui.compliance.ComplianceUI.ref_related_field_refterms.dateFCD">Date of first Deposit (REF compliant) (refterms.dateFCD)</message>
+    <message key="xmlui.compliance.ComplianceUI.ref_related_field_refterms.versionFCD">Version of first Deposit (REF compliant) (refterms.versionFCD)</message>
+    <message key="xmlui.compliance.ComplianceUI.ref_related_field_refterms.dateFOA">Date of first Open Access (REF compliant) (refterms.dateFOA)</message>
+    <message key="xmlui.compliance.ComplianceUI.ref_related_field_refterms.panel">REF Panel (refterms.panel)</message>
+    <message key="xmlui.compliance.ComplianceUI.ref_related_field_embargo_enddate">Embargo End Date</message>
+    <message key="xmlui.compliance.ComplianceUI.rules_show_applicable">(show applicable rules)</message>
+    <message key="xmlui.compliance.ComplianceUI.rules_show_all">(show all rules)</message>
+    <message key="xmlui.compliance.ComplianceUI.rules_show">(show rules)</message>
+    <message key="xmlui.compliance.ComplianceUI.rules_hide">(hide rules)</message>
+    <message key="xmlui.compliance.ComplianceUI.not_applicable">(not eligible)</message>
+    <message key="xmlui.compliance.ComplianceUI.workflow_disabled_hint">The submission of non-compliant items is blocked for this collection.</message>
+    <message key="xmlui.compliance.ComplianceUI.estimated_hint">
+        <i>(estimated)*</i>
+    </message>
+    <message key="xmlui.compliance.ComplianceUI.estimated_help_info">* These values were estimated so that they could be used in the compliance check. They will receive a “real” value upon item archival or at the end of the embargo.</message>
+
+    <message key="xmlui.Compliance.Navigation.head_compliance">Compliance</message>
+    <message key="xmlui.Compliance.Navigation.item-ref-compliance">Item REF OA compliance</message>
+    <message key="xmlui.Compliance.Navigation.item-milieuinfo-compliance">Item Milieuinfo compliance</message>
+
+    <message key="xmlui.compliance.submission.error_blocked">You must resolve the compliance issues before continuing the submission.</message>
+    <message key="xmlui.compliance.submission.head">Item {0} Compliance</message>
+
+    <message key="xmlui.Submission.submit.progressbar.compliance">Compliance</message>
+    <message key="xmlui.Submission.submit.progressbar.ref.compliance">REF OA Compliance</message>
+    <message key="xmlui.Submission.submit.progressbar.milieuinfo.compliance">Milieuinfo Compliance</message>
+
+    <message key="xmlui.Submission.submit.progressbar.refexception">REF OA Exceptions</message>
+    <message key="xmlui.compliance.submission.ExceptionStep.head">REF OA Exceptions</message>
+    <message key="xmlui.compliance.submission.ExceptionStep.info">
+        <p>There are a number of allowed exceptions to the requirements defined by the REF Open Access policy.
+            These exceptions cover circumstances where a deposit was not possible, or
+            where open access to deposited material could not be achieved within the policy
+            requirements. These exceptions should allow institutions to achieve near-total compliance. In the exceptional case
+            were you are unable to meet the requirements for a reason not covered by the predefined exceptions, you can provide
+            a justification for this by selecting "Other Exception".
+        </p>
+        <p>If a valid exception applies to your submission, please select the type of exception alongside with an explanation.
+            <br/>Upon selecting a type of exception, the explanation can be entered in the input field that appears.
+        </p>
+    </message>
+    <message key="xmlui.compliance.submission.ExceptionStep.exception.technicalException">Technical Exception</message>
+    <message key="xmlui.compliance.submission.ExceptionStep.exception.accessException">Access Exception</message>
+    <message key="xmlui.compliance.submission.ExceptionStep.exception.depositException">Deposit Exception</message>
+    <message key="xmlui.compliance.submission.ExceptionStep.exception.exceptionFreeText">Other Exception</message>
+    <message key="xmlui.compliance.submission.ExceptionStep.exception.none">No Exception Applicable</message>
+
+    <message key="xmlui.compliance.submission.ExceptionStep.specificException.title1.technicalException">Technical Exception:</message>
+    <message key="xmlui.compliance.submission.ExceptionStep.specificException.para1.technicalException">The following exceptions deal with cases where an output is unable to meet the criteria due to a technical issue. In these cases, the output will not be required to meet the open access criteria.</message>
+    <message key="xmlui.compliance.submission.ExceptionStep.specificException.title2.technicalException">Technical Exception Explanation:</message>
+    <message key="xmlui.compliance.submission.ExceptionStep.specificException.para2.technicalException">Please provide a justification of the selected exception (see the hint below)</message>
+
+    <message key="xmlui.compliance.submission.ExceptionStep.specificException.title1.accessException">Access Exception:</message>
+    <message key="xmlui.compliance.submission.ExceptionStep.specificException.para1.accessException">The following exceptions deal with cases where deposit of the output is possible, but there are issues to do with meeting the access requirements. In the following cases, the output will still be required to meet the deposit and discovery requirements, but not the access requirements. A closed-access deposit will be required, and the open access requirements should be met as soon as possible.</message>
+    <message key="xmlui.compliance.submission.ExceptionStep.specificException.title2.accessException">Access Exception Explanation:</message>
+    <message key="xmlui.compliance.submission.ExceptionStep.specificException.para2.accessException">Please provide a justification of the selected exception (see the hint below)</message>
+
+    <message key="xmlui.compliance.submission.ExceptionStep.specificException.title1.depositException">Deposit Exception:</message>
+    <message key="xmlui.compliance.submission.ExceptionStep.specificException.para1.depositException">The following exceptions deal with cases where the output is unable to meet the deposit requirements, or where the output is being made open access via another route. In the following cases, the output will not be required to meet any of the open access criteria, and should be considered beyond the scope of the REF Open Access policy.</message>
+    <message key="xmlui.compliance.submission.ExceptionStep.specificException.title2.depositException">Deposit Exception Explanation:</message>
+    <message key="xmlui.compliance.submission.ExceptionStep.specificException.para2.depositException">Please provide a justification of the selected exception (see the hint below)</message>
+
+    <message key="xmlui.compliance.submission.ExceptionStep.specificException.title1.exceptionFreeText">Other Exception:</message>
+    <message key="xmlui.compliance.submission.ExceptionStep.specificException.para1.exceptionFreeText">In very exceptional cases, it may not be possible for an output to meet the open access requirements set out by the REF Open Access policy for a reason not covered by the other defined exceptions. A short written explanation for why the output could not meet the open access requirements at the point of submission to the REF is required.</message>
+    <message key="xmlui.compliance.submission.ExceptionStep.specificException.title2.exceptionFreeText">Other Exception Explanation:</message>
+    <message key="xmlui.compliance.submission.ExceptionStep.specificException.para2.exceptionFreeText">You have to provide an explanation in this field before this exception becomes active.</message>
+
+    <message key="xmlui.compliance.submission.ExceptionStep.compliant">It appears that your submission complies to the REF OA requirements. This means you do not have to select an exception above.</message>
+    <message key="xmlui.compliance.submission.ExceptionStep.not_compliant">Your submission does not comply with the Open Access requirements for the next REF. You can select an exception above related to the requirements listed below or proceed to the ‘REF Compliance’ step to check why your submission is not compliant. The following requirements are not met:</message>
+
+    <message key="xmlui.administrative.item.ItemComplianceMain.head">Item {0} Compliance</message>
+    <message key="xmlui.administrative.item.ItemComplianceMain.trail">Item Compliance</message>
+    <message key="xmlui.administrative.item.ItemComplianceMain.no_item">No item found</message>
+    <message key="xmlui.administrative.item.ItemComplianceMain.return">Return to item</message>
+    <message key="xmlui.administrative.item.ItemComplianceMain.item">Item</message>
+
     <!-- end custom messages -->
 </catalogue>

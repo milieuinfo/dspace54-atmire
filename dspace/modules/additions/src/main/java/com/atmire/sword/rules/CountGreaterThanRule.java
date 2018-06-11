@@ -34,8 +34,13 @@ public class CountGreaterThanRule extends AbstractComplianceRule {
 
     }
 
-    protected String getRuleDescription() {
+    protected String getRuleDescriptionCompliant() {
         return String.format("the number of %s (field %s) is greater than %s", fieldDescription, fieldToCheck,
+                thresholdValue == null ? "ERROR" : getValueDescription(thresholdValue));
+    }
+
+    protected String getRuleDescriptionViolation() {
+        return String.format("the number of %s (field %s) must be greater than %s", fieldDescription, fieldToCheck,
                 thresholdValue == null ? "ERROR" : getValueDescription(thresholdValue));
     }
 

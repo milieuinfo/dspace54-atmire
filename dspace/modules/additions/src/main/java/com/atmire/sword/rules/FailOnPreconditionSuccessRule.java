@@ -15,7 +15,13 @@ public class FailOnPreconditionSuccessRule extends AbstractComplianceRule {
         this.fieldDescription = StringUtils.trimToEmpty(fieldDescription);
     }
 
-    protected String getRuleDescription() {
+    @Override
+    protected String getRuleDescriptionCompliant() {
+        return "succeeded on precondition";
+    }
+
+    @Override
+    protected String getRuleDescriptionViolation() {
         return "failed on precondition";
     }
 

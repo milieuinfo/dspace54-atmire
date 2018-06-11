@@ -46,9 +46,9 @@ public abstract class AbstractComplianceRule implements ComplianceRule {
             do {
                 ComplianceRule exceptionRule = it.next();
                 exceptionResult = exceptionRule.validate(context, item);
-            } while (!exceptionResult.isCompliant() && it.hasNext());
+            } while (!(exceptionResult.isCompliant() && exceptionResult.isApplicable()) && it.hasNext());
 
-            if (exceptionResult.isCompliant()) {
+            if (exceptionResult.isCompliant() && exceptionResult.isApplicable()) {
                 result.setCompliant(true);
                 result.setExceptionDescription(exceptionResult.getResultDescription());
                 result.setExceptionHint(exceptionResult.getDefinitionHint());
@@ -75,14 +75,15 @@ public abstract class AbstractComplianceRule implements ComplianceRule {
 
         if (item == null) {
             result.setCompliant(false);
-            result.setRuleDescription("the item cannot be null");
+            result.setRuleDescriptionViolation("the item cannot be null");
 
         } else {
             result.setCompliant(true);
 
             //Always do the validation so that the rule description can be built if necessary
             boolean isValid = doValidationAndBuildDescription(context, item);
-            result.setRuleDescription(getRuleDescription());
+            result.setRuleDescriptionViolation(getRuleDescriptionViolation());
+            result.setRuleDescriptionCompliant(getRuleDescriptionCompliant());
 
 
             if (preconditionsAreMet(context, result, item)) {
@@ -99,7 +100,9 @@ public abstract class AbstractComplianceRule implements ComplianceRule {
         return result;
     }
 
-    protected abstract String getRuleDescription();
+    protected abstract String getRuleDescriptionCompliant();
+
+    protected abstract String getRuleDescriptionViolation();
 
     private boolean preconditionsAreMet(final Context context, final RuleComplianceResult parentResult, final Item item) {
         boolean conditionsAreMet = true;
@@ -113,8 +116,8 @@ public abstract class AbstractComplianceRule implements ComplianceRule {
 
             conditionsAreMet &= complianceResult.isCompliant();
 
-            if (StringUtils.isNotBlank(complianceResult.getResultDescription())) {
-                preconditionRuleDescriptions.add(complianceResult.getResultDescription());
+            if (StringUtils.isNotBlank(complianceResult.getRuleDescriptionCompliant())) {
+                preconditionRuleDescriptions.add(complianceResult.getRuleDescriptionCompliant());
             }
         }
 

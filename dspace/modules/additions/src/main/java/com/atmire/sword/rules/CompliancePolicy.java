@@ -13,6 +13,8 @@ public class CompliancePolicy {
 
     private final List<ComplianceRule> exceptionRules = new LinkedList<ComplianceRule>();
 
+    private final List<ComplianceRule> preconditionRules = new LinkedList<ComplianceRule>();
+
     public void addComplianceCategory(final ComplianceCategory category) {
         categories.add(category);
     }
@@ -21,12 +23,15 @@ public class CompliancePolicy {
         exceptionRules.addAll(rules);
     }
 
-    public ComplianceResult validate(final Context context, final Item item) {
+    public void addPreconditionRules(final Collection<ComplianceRule> rules) {
+        preconditionRules.addAll(rules);
+    }
+
+    public ComplianceResult validate(final Context context, final Item item, ComplianceResult result) {
 
         Collections.sort(categories);
 
         boolean exceptionEncountered = false;
-        ComplianceResult result = new ComplianceResult();
 
         //First check all the exceptions
         for (ComplianceRule exceptionRule : exceptionRules) {
@@ -55,6 +60,22 @@ public class CompliancePolicy {
             }
 
             result.addCategoryResult(categoryResult);
+        }
+
+        return result;
+    }
+
+    public ComplianceResult validatePreconditionRules(final Context context, final Item item) {
+        ComplianceResult result = new ComplianceResult();
+
+        result.setApplicable(true);
+
+        for (ComplianceRule preconditionRule : preconditionRules) {
+            RuleComplianceResult ruleResult = preconditionRule.validate(context, item);
+            if(!ruleResult.isCompliant()) {
+                result.addPreconditionResult(ruleResult);
+                result.setApplicable(false);
+            }
         }
 
         return result;

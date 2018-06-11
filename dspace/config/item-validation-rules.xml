@@ -27,6 +27,14 @@
                     <value>2</value>
                 </fieldValue>
             </rule>
+            <rule type="pastOrCurrentDate">
+                <field>dc.date.issued</field>
+                <fieldDescription>dc.date.issued</fieldDescription>
+            </rule>
+            <rule type="pastOrCurrentDate">
+                <field>dc.date.created</field>
+                <fieldDescription>dc.date.created</fieldDescription>
+            </rule>
             <rule type="failOnPreconditionSuccess">
                 <preconditions>
                     <rule type="isNotBlank">

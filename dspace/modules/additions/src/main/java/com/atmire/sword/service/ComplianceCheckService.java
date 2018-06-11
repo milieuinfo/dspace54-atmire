@@ -10,4 +10,6 @@ import org.dspace.core.*;
 public interface ComplianceCheckService {
 
     ComplianceResult checkCompliance(final Context context, final Item item);
+
+    boolean blockOnWorkflow(String collectionHandle);
 }

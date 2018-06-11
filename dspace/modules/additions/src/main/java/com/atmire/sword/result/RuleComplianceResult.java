@@ -12,7 +12,9 @@ public class RuleComplianceResult {
 
     private boolean compliant;
 
-    private String ruleDescription;
+    private String ruleDescriptionViolation;
+
+    private String ruleDescriptionCompliant;
 
     private String preconditionDescription;
 
@@ -36,8 +38,12 @@ public class RuleComplianceResult {
         this.compliant = compliant;
     }
 
-    public void setRuleDescription(final String ruleDescription) {
-        this.ruleDescription = preformat(ruleDescription);
+    public void setRuleDescriptionViolation(final String ruleDescriptionViolation) {
+        this.ruleDescriptionViolation = preformat(ruleDescriptionViolation);
+    }
+
+    public void setRuleDescriptionCompliant(final String ruleDescriptionCompliant) {
+        this.ruleDescriptionCompliant = preformat(ruleDescriptionCompliant);
     }
 
     public void setPreconditionDescription(final String preconditionDescription) {
@@ -76,9 +82,17 @@ public class RuleComplianceResult {
             description.append(", then ");
         }
 
-        description.append(ruleDescription);
+        if(isCompliant() && !exceptionApplied() && isApplicable()) {
+            description.append(ruleDescriptionCompliant);
+        } else {
+            description.append(ruleDescriptionViolation);
+        }
 
         return format(description.toString());
+    }
+
+    public String getRuleDescriptionCompliant() {
+        return ruleDescriptionCompliant;
     }
 
     public void addViolationDescriptions(final List<String> descriptions) {

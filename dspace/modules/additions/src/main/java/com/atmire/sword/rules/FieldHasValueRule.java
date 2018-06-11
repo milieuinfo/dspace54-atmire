@@ -41,8 +41,13 @@ public class FieldHasValueRule extends AbstractFieldCheckRule {
         }
     }
 
-    protected String getRuleDescription() {
-        return String.format("the %s (%s) field has value %s", fieldDescription, metadataFieldToCheck,
+    protected String getRuleDescriptionCompliant() {
+        return String.format("the %s field (%s) has value %s", fieldDescription, metadataFieldToCheck,
+                checkedCompliantValue == null ? buildValueString() : getValueDescription(checkedCompliantValue));
+    }
+
+    protected String getRuleDescriptionViolation() {
+        return String.format("the %s field (%s) must have value %s", fieldDescription, metadataFieldToCheck,
                 checkedCompliantValue == null ? buildValueString() : getValueDescription(checkedCompliantValue));
     }
 

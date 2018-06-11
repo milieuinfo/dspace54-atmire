@@ -64,8 +64,18 @@ public class UniqueValueByAuthorityId extends AbstractFieldCheckRule {
     }
 
     @Override
-    protected String getRuleDescription() {
-        return String.format("the %s (%s) metadata field %s", fieldDescription, metadataFieldToCheck,
-                valid? "is unique" : "is not unique ");
+    protected String getRuleDescriptionCompliant() {
+        return String.format("the %s (%s) metadata field is unique",
+                             fieldDescription,
+                             metadataFieldToCheck
+        );
+    }
+
+    @Override
+    protected String getRuleDescriptionViolation() {
+        return String.format("the %s (%s) metadata field is not unique",
+                             fieldDescription,
+                             metadataFieldToCheck
+        );
     }
 }

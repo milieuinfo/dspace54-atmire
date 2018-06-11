@@ -36,8 +36,13 @@ public class DateRangeSmallerThanRule extends AbstractComplianceRule {
         }
     }
 
-    protected String getRuleDescription() {
-        return String.format("the %s is smaller than %s month(s)", rangeDescription,
+    protected String getRuleDescriptionCompliant() {
+        return String.format("the %s (from %s to %s) is smaller than %s month(s)", rangeDescription, fromField, toField,
+                thresholdValue == null ? "ERROR" : getValueDescription(thresholdValue));
+    }
+
+    protected String getRuleDescriptionViolation() {
+        return String.format("the %s (from %s to %s) must be smaller than %s month(s)", rangeDescription, fromField, toField,
                 thresholdValue == null ? "ERROR" : getValueDescription(thresholdValue));
     }
 
@@ -52,13 +57,16 @@ public class DateRangeSmallerThanRule extends AbstractComplianceRule {
                 DateTime to = getFirstDateValue(context, item, toField);
 
                 if(from == null) {
-                    addViolationDescription("there is no value for the field " + fromField);
+                    addViolationDescription("there is no valid value for the field " + fromField);
                 }
                 if(to == null) {
-                    addViolationDescription("there is no value for the field " + toField);
+                    addViolationDescription("there is no valid value for the field " + toField);
                 }
 
                 if (to != null && from != null) {
+                    if(to.isAfter(from)){
+                        to = to.minusDays(1);
+                    }
                     int months = Months.monthsBetween(from.toLocalDate(), to.toLocalDate()).getMonths();
 
                     if (months < thresholdNumber) {

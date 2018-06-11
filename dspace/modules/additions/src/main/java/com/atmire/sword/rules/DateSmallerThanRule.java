@@ -36,7 +36,7 @@ public class DateSmallerThanRule extends AbstractFieldCheckRule implements Compl
                 DateTime dateToCheck = parseDateTime(fieldValueList.get(0).value);
 
                 if(dateToCheck == null) {
-                    addViolationDescription("there is no value for the field " + metadataFieldToCheck);
+                    addViolationDescription("there is no valid value for the field " + metadataFieldToCheck);
                 } else if (thresholdDate != null && dateToCheck.compareTo(thresholdDate) < 0) {
                     valid = true;
                 } else {
@@ -52,8 +52,13 @@ public class DateSmallerThanRule extends AbstractFieldCheckRule implements Compl
         return valid;
     }
 
-    protected String getRuleDescription() {
-        return String.format("the %s is before %s", fieldDescription,
+    protected String getRuleDescriptionCompliant() {
+        return String.format("the %s (%s) is before %s", fieldDescription, metadataFieldToCheck,
+                thresholdValue == null ? "ERROR" : getValueDescription(thresholdValue));
+    }
+
+    protected String getRuleDescriptionViolation() {
+        return String.format("the %s (%s) must be before %s", fieldDescription, metadataFieldToCheck,
                 thresholdValue == null ? "ERROR" : getValueDescription(thresholdValue));
     }
 }

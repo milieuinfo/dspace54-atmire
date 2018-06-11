@@ -1,6 +1,8 @@
 package com.atmire.sword.rules;
 
 import java.sql.*;
+
+import com.atmire.utils.ItemUtils;
 import org.dspace.content.*;
 import org.dspace.core.*;
 import org.dspace.discovery.*;
@@ -16,8 +18,12 @@ public class DiscoverableRule extends AbstractComplianceRule {
         this.searchService = searchService;
     }
 
-    protected String getRuleDescription() {
-        return "The item is discoverable using the search functionality";
+    protected String getRuleDescriptionCompliant() {
+        return "the item is discoverable using the search functionality";
+    }
+
+    protected String getRuleDescriptionViolation() {
+        return "the item must be discoverable using the search functionality";
     }
 
     protected boolean doValidationAndBuildDescription(final Context context, final Item item) {

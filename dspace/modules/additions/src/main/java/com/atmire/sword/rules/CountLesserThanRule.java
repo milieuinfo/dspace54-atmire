@@ -34,9 +34,20 @@ public class CountLesserThanRule extends AbstractComplianceRule {
 
     }
 
-    protected String getRuleDescription() {
-        return String.format("the number of %s (field %s) is greater than %s", fieldDescription, fieldToCheck,
-                thresholdValue == null ? "ERROR" : getValueDescription(thresholdValue));
+    protected String getRuleDescriptionCompliant() {
+        return String.format("the number of %s (field %s) is less than %s",
+                             fieldDescription,
+                             fieldToCheck,
+                             thresholdValue == null ? "ERROR" : getValueDescription(thresholdValue)
+        );
+    }
+
+    protected String getRuleDescriptionViolation() {
+        return String.format("the number of %s (field %s) must be less than %s",
+                             fieldDescription,
+                             fieldToCheck,
+                             thresholdValue == null ? "ERROR" : getValueDescription(thresholdValue)
+        );
     }
 
     protected boolean doValidationAndBuildDescription(final Context context, final Item item) {

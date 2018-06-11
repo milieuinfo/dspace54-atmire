@@ -156,6 +156,8 @@
         <aspect name="External Handle Item Resolution" path="resource://aspects/ExternalHandle/" />
 
         <aspect name="RequireUserAuthentication" path="resource://aspects/RequireUserAuthentication/" />
+
+        <aspect name="Compliance" path="resource://aspects/Compliance/"/>
     </aspects>
 
     <!--

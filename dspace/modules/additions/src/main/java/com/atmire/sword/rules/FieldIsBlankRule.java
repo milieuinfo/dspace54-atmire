@@ -29,9 +29,20 @@ public class FieldIsBlankRule extends AbstractFieldCheckRule {
         }
     }
 
-    protected String getRuleDescription() {
-        return String.format("the %s (%s) metadata field %s", fieldDescription, metadataFieldToCheck,
-                checkedValue == null ? "is blank" : "has value " + checkedValue);
+    protected String getRuleDescriptionCompliant() {
+        return String.format(
+                "the %s field (%s) is blank",
+                fieldDescription,
+                metadataFieldToCheck
+        );
+    }
+
+    protected String getRuleDescriptionViolation() {
+        return String.format(
+                "the %s field (%s) must not be filled in",
+                fieldDescription,
+                metadataFieldToCheck
+        );
     }
 
     public static boolean isBlank(Metadatum dcValue) {
