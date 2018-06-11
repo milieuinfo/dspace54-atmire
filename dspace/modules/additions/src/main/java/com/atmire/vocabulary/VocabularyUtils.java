@@ -65,7 +65,7 @@ public class VocabularyUtils {
         for (Metadatum dcValue : dcValues) {
             if (dcValue.getField().equals(field.getField())) {
                 for (Value value : field.getValues()) {
-                    if (value.getValue().equals(dcValue.value)) {
+                    if (value.getValue().equalsIgnoreCase(dcValue.value)) {
                         matchingValues.add(value);
                     }
                 }

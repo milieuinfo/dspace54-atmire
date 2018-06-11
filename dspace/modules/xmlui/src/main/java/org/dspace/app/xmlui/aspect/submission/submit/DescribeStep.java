@@ -8,6 +8,7 @@
 package org.dspace.app.xmlui.aspect.submission.submit;
 
 import com.atmire.vocabulary.VocabularyUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.dspace.app.util.DCInput;
 import org.dspace.app.util.DCInputSet;
 import org.dspace.app.util.DCInputsReader;
@@ -270,7 +271,11 @@ public class DescribeStep extends AbstractSubmissionStep
                             java.util.List<String> pairs = VocabularyUtils.getDCInputPairs(
                                     fieldName, metadata, dcInput.getVocabulary());
                             dcInput.setPairs(pairs);
-                            renderDropdownField(form, fieldName, dcInput, dcValues, readonly);
+                            if (CollectionUtils.isNotEmpty(pairs)) {
+                                renderDropdownField(form, fieldName, dcInput, dcValues, readonly);
+                            } else {
+                                renderOneboxField(form, fieldName,dcInput , dcValues, false);
+                            }
                         }
                         else
                         {
