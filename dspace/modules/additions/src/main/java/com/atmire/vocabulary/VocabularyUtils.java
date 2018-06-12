@@ -45,10 +45,10 @@ public class VocabularyUtils {
             } else {
                 List<Value> matchingValues = getMatchingValue(field, dcValues);
                 Iterator<Value> valueIterator = matchingValues.iterator();
-                while (hasNext(valueIterator) && values.isEmpty()) {
+                while (valueIterator.hasNext() && values.isEmpty()) {
                     Value matchingValue = valueIterator.next();
                     Iterator<Field> fieldIterator = matchingValue.getFields().iterator();
-                    while (hasNext(fieldIterator) && values.isEmpty()) {
+                    while (fieldIterator.hasNext() && values.isEmpty()) {
                         Field nextField = fieldIterator.next();
                         values = getValuesForField(fieldName, dcValues, nextField);
                     }
@@ -56,10 +56,6 @@ public class VocabularyUtils {
             }
         }
         return values;
-    }
-
-    private static boolean hasNext(Iterator iterator){
-        return iterator != null && iterator.hasNext();
     }
 
     private static List<String> toPairs(List<String> values) {
