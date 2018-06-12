@@ -44,20 +44,22 @@ public class VocabularyUtils {
                 values = getValues(field);
             } else {
                 List<Value> matchingValues = getMatchingValue(field, dcValues);
-                if (!matchingValues.isEmpty()) {
-                    Iterator<Value> valueIterator = matchingValues.iterator();
-                    while (valueIterator.hasNext() && values.isEmpty()) {
-                        Value matchingValue = valueIterator.next();
-                        Iterator<Field> fieldIterator = matchingValue.getFields().iterator();
-                        while (fieldIterator.hasNext() && values.isEmpty()) {
-                            Field nextField = fieldIterator.next();
-                            values = getValuesForField(fieldName, dcValues, nextField);
-                        }
+                Iterator<Value> valueIterator = matchingValues.iterator();
+                while (hasNext(valueIterator) && values.isEmpty()) {
+                    Value matchingValue = valueIterator.next();
+                    Iterator<Field> fieldIterator = matchingValue.getFields().iterator();
+                    while (hasNext(fieldIterator) && values.isEmpty()) {
+                        Field nextField = fieldIterator.next();
+                        values = getValuesForField(fieldName, dcValues, nextField);
                     }
                 }
             }
         }
         return values;
+    }
+
+    private static boolean hasNext(Iterator iterator){
+        return iterator != null && iterator.hasNext();
     }
 
     private static List<String> toPairs(List<String> values) {
