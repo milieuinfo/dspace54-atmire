@@ -1,6 +1,5 @@
 package com.atmire.vocabulary;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -20,9 +19,6 @@ public class Value {
     }
 
     public List<Field> getFields() {
-        if (fields == null) {
-            fields = Collections.emptyList();
-        }
         return fields;
     }
 

@@ -238,6 +238,7 @@ it, please enter the types and the actual numbers or codes.</hint>
          <required></required>
        </field>
 
+<!--
        <field>
          <dc-schema>dc</dc-schema>
          <dc-element>description</dc-element>
@@ -248,6 +249,7 @@ it, please enter the types and the actual numbers or codes.</hint>
          <hint>Enter any other description or comments in this box. </hint>
          <required></required>
        </field>
+-->
      </page>
    </form>
 

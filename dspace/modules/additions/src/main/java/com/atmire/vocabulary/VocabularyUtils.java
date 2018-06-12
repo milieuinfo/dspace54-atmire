@@ -1,10 +1,11 @@
 package com.atmire.vocabulary;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.dspace.content.Metadatum;
 import org.dspace.utils.DSpace;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -30,32 +31,39 @@ public class VocabularyUtils {
     ) {
         Field field = new DSpace().getServiceManager()
                 .getServiceByName(vocabulary, Field.class);
-        return getValuesForField(fieldName, dcValues, field);
+        return getValuesForField(fieldName, dcValues, field, 0).getRight();
     }
 
-    private static List<String> getValuesForField(
+    private static Pair<Integer, List<String>> getValuesForField(
             String fieldName,
             Metadatum[] dcValues,
-            Field field
+            Field field,
+            int depth
     ) {
-        List<String> values = new ArrayList<>();
+        Pair<Integer, List<String>> result = Pair.of(depth, Collections.<String>emptyList());
         if (field != null) {
             if (fieldName.equals(field.getField())) {
-                values = getValues(field);
+                result = Pair.of(depth, getValues(field));
             } else {
-                List<Value> matchingValues = getMatchingValue(field, dcValues);
-                Iterator<Value> valueIterator = matchingValues.iterator();
-                while (valueIterator.hasNext() && values.isEmpty()) {
-                    Value matchingValue = valueIterator.next();
-                    Iterator<Field> fieldIterator = matchingValue.getFields().iterator();
-                    while (fieldIterator.hasNext() && values.isEmpty()) {
-                        Field nextField = fieldIterator.next();
-                        values = getValuesForField(fieldName, dcValues, nextField);
+                Value matchingValue = getMatchingValue(field, dcValues);
+                for (Field nextField : getFields(matchingValue)) {
+                    Pair<Integer, List<String>> values
+                            = getValuesForField(fieldName, dcValues, nextField, depth + 1);
+                    if (values.getLeft() > result.getLeft()) {
+                        result = values;
                     }
                 }
             }
         }
-        return values;
+        return result;
+    }
+
+    private static List<Field> getFields(Value value) {
+        if (value != null && value.getFields() != null) {
+            return value.getFields();
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     private static List<String> toPairs(List<String> values) {
@@ -67,18 +75,17 @@ public class VocabularyUtils {
         return pairs;
     }
 
-    private static List<Value> getMatchingValue(Field field, Metadatum[] dcValues) {
-        List<Value> matchingValues = new ArrayList<>();
+    private static Value getMatchingValue(Field field, Metadatum[] dcValues) {
         for (Metadatum dcValue : dcValues) {
             if (dcValue.getField().equals(field.getField())) {
                 for (Value value : field.getValues()) {
                     if (value.getValue().equalsIgnoreCase(dcValue.value)) {
-                        matchingValues.add(value);
+                        return value;
                     }
                 }
             }
         }
-        return matchingValues;
+        return null;
     }
 
     private static List<String> getValues(Field field) {
