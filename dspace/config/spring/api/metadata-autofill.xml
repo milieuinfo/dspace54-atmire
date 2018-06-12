@@ -58,6 +58,7 @@
         <bean class="com.atmire.metadata.FromContextVocabulary">
             <property name="field" value="dc.description"/>
             <property name="vocabulary" value="mer-dossier-structuur"/>
+            <property name="overwrite" value="true"/>
         </bean>
     </util:list>
 
