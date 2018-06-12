@@ -49,7 +49,7 @@ public class VocabularyUtils {
                 for (Field nextField : getFields(matchingValue)) {
                     Pair<Integer, List<String>> values
                             = getValuesForField(fieldName, dcValues, nextField, depth + 1);
-                    if (values.getLeft() > result.getLeft()) {
+                    if (!values.getRight().isEmpty() && values.getLeft() > result.getLeft()) {
                         result = values;
                     }
                 }
