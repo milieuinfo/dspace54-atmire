@@ -57,6 +57,134 @@
                 <field>dc.relation.replaces</field>
                 <fieldDescription>dc.relation.replaces</fieldDescription>
             </rule>
+            <rule type="regex">
+                <preconditions>
+                    <rule type="value">
+                        <field>mer.procedure</field>
+                        <fieldDescription>mer.procedure</fieldDescription>
+                        <fieldValue>
+                            <value>Project-MER-2002</value>
+                        </fieldValue>
+                    </rule>
+                </preconditions>
+                <field>mer.dossiernummer</field>
+                <fieldDescription>mer.dossiernummer</fieldDescription>
+                <fieldValue>
+                    <value>^PR0[0-9]+|PR1[0-9]+|PR2[0-9]+$</value>
+                </fieldValue>
+            </rule>
+            <rule type="regex">
+                <preconditions>
+                    <rule type="value">
+                        <field>mer.procedure</field>
+                        <fieldDescription>mer.procedure</fieldDescription>
+                        <fieldValue>
+                            <value>Ontheffing Project-MER</value>
+                        </fieldValue>
+                    </rule>
+                </preconditions>
+                <field>mer.dossiernummer</field>
+                <fieldDescription>mer.dossiernummer</fieldDescription>
+                <fieldValue>
+                    <value>^OHPR[0-9]+|PR2[0-9]+$</value>
+                </fieldValue>
+            </rule>
+            <rule type="regex">
+                <preconditions>
+                    <rule type="value">
+                        <field>mer.procedure</field>
+                        <fieldDescription>mer.procedure</fieldDescription>
+                        <fieldValue>
+                            <value>Project-MER-2017</value>
+                        </fieldValue>
+                    </rule>
+                </preconditions>
+                <field>mer.dossiernummer</field>
+                <fieldDescription>mer.dossiernummer</fieldDescription>
+                <fieldValue>
+                    <value>^PR3[0-9]+$</value>
+                </fieldValue>
+            </rule>
+            <rule type="regex">
+                <preconditions>
+                    <rule type="value">
+                        <field>mer.procedure</field>
+                        <fieldDescription>mer.procedure</fieldDescription>
+                        <fieldValue>
+                            <value>Plan-MER-2004</value>
+                        </fieldValue>
+                    </rule>
+                </preconditions>
+                <field>mer.dossiernummer</field>
+                <fieldDescription>mer.dossiernummer</fieldDescription>
+                <fieldValue>
+                    <value>^PL[0-9]+$</value>
+                </fieldValue>
+            </rule>
+            <rule type="regex">
+                <preconditions>
+                    <rule type="value">
+                        <field>mer.procedure</field>
+                        <fieldDescription>mer.procedure</fieldDescription>
+                        <fieldValue>
+                            <value>Plan-MER Screening</value>
+                        </fieldValue>
+                    </rule>
+                </preconditions>
+                <field>mer.dossiernummer</field>
+                <fieldDescription>mer.dossiernummer</fieldDescription>
+                <fieldValue>
+                    <value>^OHPL[0-9]+|SCRPL[0-9]+$</value>
+                </fieldValue>
+            </rule>
+            <rule type="regex">
+                <preconditions>
+                    <rule type="value">
+                        <field>mer.procedure</field>
+                        <fieldDescription>mer.procedure</fieldDescription>
+                        <fieldValue>
+                            <value>Plan-MER Integratiespoor 2007</value>
+                        </fieldValue>
+                    </rule>
+                </preconditions>
+                <field>mer.dossiernummer</field>
+                <fieldDescription>mer.dossiernummer</fieldDescription>
+                <fieldValue>
+                    <value>^OPL[0-9]+$</value>
+                </fieldValue>
+            </rule>
+            <rule type="regex">
+                <preconditions>
+                    <rule type="value">
+                        <field>mer.procedure</field>
+                        <fieldDescription>mer.procedure</fieldDescription>
+                        <fieldValue>
+                            <value>Integratie m.e.r. in RUP 2017</value>
+                        </fieldValue>
+                    </rule>
+                </preconditions>
+                <field>mer.dossiernummer</field>
+                <fieldDescription>mer.dossiernummer</fieldDescription>
+                <fieldValue>
+                    <value>^PLI[0-9]+$</value>
+                </fieldValue>
+            </rule>
+            <rule type="regex">
+                <preconditions>
+                    <rule type="value">
+                        <field>mer.procedure</field>
+                        <fieldDescription>mer.procedure</fieldDescription>
+                        <fieldValue>
+                            <value>Plan-MER-2017</value>
+                        </fieldValue>
+                    </rule>
+                </preconditions>
+                <field>mer.dossiernummer</field>
+                <fieldDescription>mer.dossiernummer</fieldDescription>
+                <fieldValue>
+                    <value>^SCRI[0-9]+$</value>
+                </fieldValue>
+            </rule>
         </rules>
     </category>
 </rule-categories>

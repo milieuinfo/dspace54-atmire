@@ -63,6 +63,9 @@
                 <entry key="uniqueValueByAuthorityId">
                     <bean class="com.atmire.sword.rules.factory.UniqueValueByAuthorityIdRuleBuilder"/>
                 </entry>
+                <entry key="regex">
+                    <bean class="com.atmire.sword.rules.factory.RegexRuleBuilder"/>
+                </entry>
             </map>
         </property>
         <!-- minutes to wait between category set updates -->

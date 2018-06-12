@@ -204,6 +204,17 @@ it, please enter the types and the actual numbers or codes.</hint>
        </field>
 
        <field>
+         <dc-schema>mer</dc-schema>
+         <dc-element>dossiernummer</dc-element>
+         <dc-qualifier></dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Dossiernummer</label>
+         <input-type>onebox</input-type>
+         <hint>Kies het document</hint>
+         <required></required>
+       </field>
+
+       <field>
          <dc-schema>dc</dc-schema>
          <dc-element>subject</dc-element>
          <dc-qualifier></dc-qualifier>
