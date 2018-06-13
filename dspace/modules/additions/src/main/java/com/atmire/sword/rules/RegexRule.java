@@ -1,12 +1,12 @@
 package com.atmire.sword.rules;
 
-import com.atmire.sword.validation.model.Value;
-import org.dspace.content.Metadatum;
+import static org.apache.commons.collections.CollectionUtils.isEmpty;
 
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static org.apache.commons.collections.CollectionUtils.isEmpty;
+import com.atmire.sword.validation.model.Value;
+import org.dspace.content.Metadatum;
 
 
 /**
@@ -29,13 +29,13 @@ public class RegexRule extends AbstractFieldCheckRule implements ComplianceRule 
         boolean valid = true;
         if (isEmpty(fieldValueList)) {
             valid = false;
-            addViolationDescription("The %s field has no value", fieldDescription);
+            addViolationDescription("het %s veld (%s) heeft geen waarde", fieldDescription, metadataFieldToCheck);
         } else {
             for (Metadatum metadatum : fieldValueList) {
                 if (!regex.matcher(metadatum.value).matches()) {
                     valid = false;
                     addViolationDescription(
-                            "The value %s does not satisfy the regex %s",
+                            "De waarde %s voldoet niet aan de reguliere expressie %s",
                             metadatum.value,
                             regex.pattern()
                     );
@@ -47,7 +47,7 @@ public class RegexRule extends AbstractFieldCheckRule implements ComplianceRule 
 
     protected String getRuleDescriptionCompliant() {
         return String.format(
-                "The %s (%s) field has the expected format",
+                "Het %s veld (%s) heeft niet het opgelegde formaat",
                 fieldDescription,
                 metadataFieldToCheck
         );
@@ -55,7 +55,7 @@ public class RegexRule extends AbstractFieldCheckRule implements ComplianceRule 
 
     protected String getRuleDescriptionViolation() {
         return String.format(
-                "The %s (%s) field does not have the expected format",
+                "Het %s veld (%s) moet voldoen aan het opgelegde formaat",
                 fieldDescription,
                 metadataFieldToCheck
         );

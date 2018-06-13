@@ -17,17 +17,17 @@ public class FailOnPreconditionSuccessRule extends AbstractComplianceRule {
 
     @Override
     protected String getRuleDescriptionCompliant() {
-        return "succeeded on precondition";
+        return "Velden combinatie van " + fieldDescription + " is geldig";
     }
 
     @Override
     protected String getRuleDescriptionViolation() {
-        return "failed on precondition";
+        return "Velden combinatie van " + fieldDescription + " is ongeldig";
     }
 
     @Override
     protected boolean doValidationAndBuildDescription(Context context, Item item) {
-        addViolationDescription("Fields %s cannot both have a value in the metadata set of one item", fieldDescription);
+        addViolationDescription("Velden %s kunnen niet beiden een waarde hebben binnen eenzelfde item", fieldDescription);
         return false;
     }
 }

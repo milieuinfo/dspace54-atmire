@@ -1,12 +1,12 @@
 package com.atmire.sword.rules;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.dspace.content.Item;
 import org.dspace.content.ItemIterator;
 import org.dspace.content.Metadatum;
 import org.dspace.core.Context;
-
-import java.util.List;
 
 /**
  * @author philip at atmire.com
@@ -45,13 +45,14 @@ public class UniqueValueByAuthorityId extends AbstractFieldCheckRule {
 
                         if (itemIterator.hasNext()) {
                             valid = false;
-                            addViolationDescription("The value for %s is already used by item %s", fieldDescription, itemIterator.next().getHandle());
+                            addViolationDescription("De waarde voor %s (%s) is reeds in gebruik door item %s", fieldDescription, metadataFieldToCheck,
+                                    itemIterator.next().getHandle());
                         }
                     }
                 }
             } catch (Exception e) {
                 valid = false;
-                addViolationDescription("unable to check unique value for field %s", fieldDescription);
+                addViolationDescription("niet in staat om de uniekheid van veld %s te bepalen", fieldDescription);
             }
             finally {
                 if(context!= null && context.isValid()){
@@ -65,7 +66,7 @@ public class UniqueValueByAuthorityId extends AbstractFieldCheckRule {
 
     @Override
     protected String getRuleDescriptionCompliant() {
-        return String.format("the %s (%s) metadata field is unique",
+        return String.format("het %s veld (%s) heeft een unieke waarde",
                              fieldDescription,
                              metadataFieldToCheck
         );
@@ -73,7 +74,7 @@ public class UniqueValueByAuthorityId extends AbstractFieldCheckRule {
 
     @Override
     protected String getRuleDescriptionViolation() {
-        return String.format("the %s (%s) metadata field is not unique",
+        return String.format("het %s veld (%s) moet een unieke waarde hebben",
                              fieldDescription,
                              metadataFieldToCheck
         );

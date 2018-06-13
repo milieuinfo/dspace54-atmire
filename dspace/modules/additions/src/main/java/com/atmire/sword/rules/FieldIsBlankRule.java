@@ -1,11 +1,11 @@
 package com.atmire.sword.rules;
 
-import org.apache.commons.lang3.StringUtils;
-import org.dspace.content.Metadatum;
+import static org.apache.commons.collections.CollectionUtils.isEmpty;
 
 import java.util.List;
 
-import static org.apache.commons.collections.CollectionUtils.isEmpty;
+import org.apache.commons.lang3.StringUtils;
+import org.dspace.content.Metadatum;
 
 /**
  * Validation rule that will check if a field has a non-blank value.
@@ -23,7 +23,7 @@ public class FieldIsBlankRule extends AbstractFieldCheckRule {
         if (isEmpty(fieldValueList) || isBlank(fieldValueList.get(0))) {
             return true;
         } else {
-            addViolationDescription("Field %s has a value", fieldDescription);
+            addViolationDescription("het veld %s heeft een waarde", fieldDescription);
             checkedValue = fieldValueList.get(0).value;
             return false;
         }
@@ -31,7 +31,7 @@ public class FieldIsBlankRule extends AbstractFieldCheckRule {
 
     protected String getRuleDescriptionCompliant() {
         return String.format(
-                "the %s field (%s) is blank",
+                "het %s veld (%s) is leeg",
                 fieldDescription,
                 metadataFieldToCheck
         );
@@ -39,7 +39,7 @@ public class FieldIsBlankRule extends AbstractFieldCheckRule {
 
     protected String getRuleDescriptionViolation() {
         return String.format(
-                "the %s field (%s) must not be filled in",
+                "het %s veld (%s) mag niet ingevuld worden",
                 fieldDescription,
                 metadataFieldToCheck
         );

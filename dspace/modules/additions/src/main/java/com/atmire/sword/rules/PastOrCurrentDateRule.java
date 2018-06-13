@@ -1,6 +1,6 @@
 package com.atmire.sword.rules;
 
-import org.dspace.content.Metadatum;
+import static org.apache.commons.collections.CollectionUtils.isEmpty;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static org.apache.commons.collections.CollectionUtils.isEmpty;
+import org.dspace.content.Metadatum;
 
 
 /**
@@ -23,24 +23,24 @@ public class PastOrCurrentDateRule extends AbstractFieldCheckRule implements Com
     protected boolean checkFieldValues(final List<Metadatum> fieldValueList) {
         boolean valid = false;
         if (isEmpty(fieldValueList)) {
-            addViolationDescription("The %s field has no value", fieldDescription);
+            addViolationDescription("het %s veld heeft geen waarde", fieldDescription);
         } else {
             try {
                 Date thresholdDate = parseDate(getThresholdValue());
                 Date dateToCheck = parseDate(fieldValueList.get(0).value);
 
                 if (dateToCheck == null) {
-                    addViolationDescription("there is no valid value for the field " + metadataFieldToCheck);
+                    addViolationDescription("er is geen geldige waarde voor het veld " + metadataFieldToCheck);
                 } else if (thresholdDate != null && dateToCheck.compareTo(thresholdDate) < 0) {
                     valid = true;
                 } else {
-                    addViolationDescription("the %s is after today", fieldDescription);
+                    addViolationDescription("de %s is na vandaag", fieldDescription);
                 }
 
             } catch (IllegalArgumentException ex) {
                 addViolationDescription(
-                        "the metadata field %s is invalid because it has too few tokens or contains an invalid date",
-                        metadataFieldToCheck
+                        "het veld %s (%s) is ongeldig omdat het een ongeldige datum (-formaat) bevat",
+                        fieldDescription, metadataFieldToCheck
                 );
             }
         }
@@ -66,7 +66,7 @@ public class PastOrCurrentDateRule extends AbstractFieldCheckRule implements Com
 
     protected String getRuleDescriptionCompliant() {
         return String.format(
-                "the %s (%s) is today or before today",
+                "het %s veld (%s) ligt in het verleden of op vandaag",
                 fieldDescription,
                 metadataFieldToCheck
         );
@@ -74,7 +74,7 @@ public class PastOrCurrentDateRule extends AbstractFieldCheckRule implements Com
 
     protected String getRuleDescriptionViolation() {
         return String.format(
-                "the %s (%s) must be today or before today",
+                "het %s veld (%s) moet in het verleden of vandaag zijn",
                 fieldDescription,
                 metadataFieldToCheck
         );
