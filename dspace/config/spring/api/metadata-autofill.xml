@@ -23,7 +23,7 @@
 
     <util:list id="autoFillMetadata">
         <bean class="com.atmire.metadata.ConcatenateFields">
-            <property name="field" value="vlaanderen.identifier"/>
+            <property name="field" value="vlaanderen.identifier[*]"/>
             <property name="fields">
                 <util:list>
                     <value>mer.dossiernummer</value>
@@ -36,27 +36,27 @@
             <property name="separator" value="_"/>
         </bean>
         <bean class="com.atmire.metadata.FillValue">
-            <property name="field" value="dc.language.iso"/>
+            <property name="field" value="dc.language.iso[*]"/>
             <property name="value" value="nl"/>
         </bean>
         <bean class="com.atmire.metadata.FillValue">
-            <property name="field" value="dc.publisher"/>
+            <property name="field" value="dc.publisher[*]"/>
             <property name="value" value="Vlaamse Overheid"/>
         </bean>
         <bean class="com.atmire.metadata.FillValue">
-            <property name="field" value="dc.source"/>
+            <property name="field" value="dc.source[*]"/>
             <property name="value" value="MER"/>
         </bean>
         <bean class="com.atmire.metadata.FillSubmitter">
-            <property name="field" value="dc.creator"/>
+            <property name="field" value="dc.creator[*]"/>
         </bean>
         <bean class="com.atmire.metadata.CopyValues">
-            <property name="field" value="dc.title"/>
-            <property name="sourceField" value="vlaanderen.identifier"/>
+            <property name="field" value="dc.title[*]"/>
+            <property name="sourceField" value="vlaanderen.identifier[*]"/>
             <property name="overwrite" value="true"/>
         </bean>
         <bean class="com.atmire.metadata.FromContextVocabulary">
-            <property name="field" value="dc.description"/>
+            <property name="field" value="dc.description[*]"/>
             <property name="vocabulary" value="mer-dossier-structuur"/>
             <property name="overwrite" value="true"/>
         </bean>
