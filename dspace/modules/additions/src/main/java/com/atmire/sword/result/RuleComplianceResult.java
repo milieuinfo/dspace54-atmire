@@ -77,7 +77,7 @@ public class RuleComplianceResult {
     public String getResultDescription() {
         StringBuilder description = new StringBuilder();
         if(StringUtils.isNotBlank(preconditionDescription)) {
-            description.append("als stelling ");
+            description.append("als de stelling ");
             description.append(preconditionDescription);
             description.append(" waar is, dan geldt dat ");
         }
