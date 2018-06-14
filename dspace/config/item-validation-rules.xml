@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<rule-categories xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="item-validation-rules.xsd">
+<rule-categories xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:noNamespaceSchemaLocation="item-validation-rules.xsd">
 
-    <category ordinal="1" name="sword validation"
-              description="sword validation"
+    <category ordinal="1" name="Item relaties"
+              description="Op de relaties tussen items uitgedrukt in metadata gelden bepaalde valaditieregels."
               resolutionHint="">
         <rules>
             <rule type="isBlank"
@@ -35,18 +36,6 @@
                     <value>2</value>
                 </fieldValue>
             </rule>
-            <rule type="pastOrCurrentDate"
-                  description="De waarde van dc.date.issued ligt in het verleden of op vandaag."
-                  resolutionHint="Pas de datum in dc.date.issued aan naar het verleden of vandaag.">
-                <field>dc.date.issued</field>
-                <fieldDescription>afsluitingsdatum dossier</fieldDescription>
-            </rule>
-            <rule type="pastOrCurrentDate"
-                  description="De waarde van dc.date.created ligt in het verleden of op vandaag."
-                  resolutionHint="Pas de datum in dc.date.created aan naar het verleden of vandaag.">
-                <field>dc.date.created</field>
-                <fieldDescription>startdatum dossier</fieldDescription>
-            </rule>
             <rule type="failOnPreconditionSuccess"
                   description="Het gelijktijdig gebruik van dc.relation.replaces en dc.relation.ispartof is niet toegestaan."
                   resolutionHint="Verwijder een waarde uit dc.relation.replaces of dc.relation.ispartof.">
@@ -75,6 +64,34 @@
                 <field>dc.relation.replaces</field>
                 <fieldDescription>vervangt-item</fieldDescription>
             </rule>
+        </rules>
+    </category>
+
+    <category ordinal="2" name="MER validatie"
+              description="De MER archief instantie omvat een aantal specifieke validatie regels."
+              resolutionHint="">
+        <rules>
+
+            <rule type="pastOrCurrentDate"
+                  description="De waarde van dc.date.created ligt in het verleden of op vandaag."
+                  resolutionHint="Pas de datum in dc.date.created aan naar het verleden of vandaag.">
+                <field>dc.date.created</field>
+                <fieldDescription>startdatum dossier</fieldDescription>
+            </rule>
+
+            <rule type="pastOrCurrentDate"
+                  description="De waarde van dc.date.issued ligt in het verleden of op vandaag."
+                  resolutionHint="Pas de datum in dc.date.issued aan naar het verleden of vandaag.">
+                <preconditions>
+                    <rule type="isNotBlank">
+                        <field>dc.date.issued</field>
+                        <fieldDescription>mer.procedure</fieldDescription>
+                    </rule>
+                </preconditions>
+                <field>dc.date.issued</field>
+                <fieldDescription>afsluitingsdatum dossier</fieldDescription>
+            </rule>
+
             <rule type="regex"
                   description="De waarde voor mer.dossiernummer binnen procedure 'Project-MER-2002' moet voldoen aan het formaat PR0xxx of PR1xxx of PR2xxx."
                   resolutionHint="Geef mer.dossiernummer een correcte waarde.">
