@@ -63,18 +63,25 @@ public class AutoFillMetadataConsumer implements Consumer {
      * commit and clear the IDs
      */
     public void end(Context context) throws Exception {
-        if (CollectionUtils.isNotEmpty(itemIDs)) {
-            for (Integer itemID : itemIDs) {
-                Item item = Item.find(context, itemID);
-                //noinspection unchecked
-                List<EditMetadata> config = new DSpace().getServiceManager()
-                        .getServiceByName("autoFillMetadata", List.class);
-                new FillMetadataRunner(config, item).run();
-                item.update();
+        try {
+            if (CollectionUtils.isNotEmpty(itemIDs)) {
+                for (Integer itemID : itemIDs) {
+                    try {
+                        Item item = Item.find(context, itemID);
+                        //noinspection unchecked
+                        List<EditMetadata> config = new DSpace().getServiceManager()
+                                .getServiceByName("autoFillMetadata", List.class);
+                        new FillMetadataRunner(config, item).run();
+                        item.update();
+                    } catch (Exception e) {
+                        log.error("", e);
+                    }
+                }
+                context.getDBConnection().commit();
             }
-            context.getDBConnection().commit();
+        } finally {
+            itemIDs.clear();
         }
-        itemIDs.clear();
     }
 
     public void finish(Context ctx) throws Exception {

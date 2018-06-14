@@ -264,7 +264,6 @@
         <processing-class>com.atmire.submission.MilieuinfoComplianceStep</processing-class>
         <xmlui-binding>com.atmire.app.xmlui.submission.MilieuinfoComplianceStep</xmlui-binding>
         <workflow-editable>true</workflow-editable>
-        <type-binding>condition.ref.applicable.step</type-binding>
     </step>
 
       <!--Step 7 will be to Sign off on the License-->
