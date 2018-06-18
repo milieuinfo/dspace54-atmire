@@ -1,0 +1,271 @@
+
+.related-data-table,
+.related-data-table tr,
+.related-data-table td,
+.related-data-table th{
+    background-color: #FFFFFF;
+    border: 1px solid #9CACBA;
+}
+
+.related-data-table tr.ds-table-header-row,
+.related-data-table tr.ds-table-header-row th
+{
+    background-color: #B6C8D9;
+    border: 1px solid #9CACBA;
+
+}
+
+#aspect_submission_StepTransformer_div_submit-describe select {
+    max-width: 500px;
+}
+
+#com_atmire_xmlui_compliance_ItemComplianceMain_div_item-compliance h2,
+#com_atmire_xmlui_compliance_ItemComplianceMain_div_item-compliance
+{
+    padding-top:10px;
+}
+
+.compliance-return-link{
+    padding-top:10px;
+    display: block;
+}
+
+.compliance-section, .exceptions-section {
+    margin-bottom: 15px;
+}
+
+.compliance-section ul {
+    margin-left: 0px;
+}
+
+.compliance-section span::before {
+    width: 15px;
+    display: inline-block;
+}
+
+
+.compliance-section li {
+    list-style: none;
+    padding-top:5px;
+}
+
+.compliance-section li.compliant {
+    color: #007800;
+}
+
+.compliance-section li.violating,
+.compliance-error{
+    color: #e38d13;
+}
+
+span.rule-description {
+    display: block;
+    margin: 5px 30px;
+}
+
+span.rule-resolution {
+    display: block;
+    margin: 5px 60px;
+}
+
+span.rule-description-text, .rule-resolution-text {
+    font-family: sans-serif;
+    margin-left: 5px;
+}
+
+#aspect_xmlworkflow_WorkflowTransformer_div_item-compliance,
+#aspect_submission_StepTransformer_list_item-compliance-list{
+    padding-bottom: 20px;
+}
+
+#aspect_submission_StepTransformer_list_submit-compliance-1 {
+    margin-bottom:0px;
+}
+
+ol#aspect_submission_StepTransformer_list_ref-compliance-exceptions label {
+    display: inherit;
+}
+#aspect_submission_StepTransformer_list_ref-compliance-exceptions {
+    margin-bottom: 20px;
+}
+div#aspect_submission_StepTransformer_div_dropdownDivision {
+    margin-bottom: 10px;
+}
+
+.news-div {
+    margin-bottom: 20px;
+    margin-top: 5px;
+}
+
+.top-information-bar .top-information-bar-not-compliant, .resolution-summary-bar{
+    background-image: linear-gradient(to bottom,#f0ad4e 0,#eb9316 100%);
+    border-color: #e38d13;
+}
+
+.top-information-bar .top-information-bar-compliant{
+    background-image: linear-gradient(to bottom,#5cb85c 0,#419641 100%);
+    border: 1px solid #3e8f3e;
+    margin-bottom:20px;
+}
+
+.top-information-bar .top-information-bar-not-applicable{
+    background-image: linear-gradient(to bottom,#5bc0de 0,#2aabd2 100%);
+    border: 1px solid #28a4c9;
+    margin-bottom:20px;
+}
+
+.top-information-bar p {
+    padding: 10px;
+    font-size: 16px;
+    color:white;
+    font-weight: bold;
+}
+
+.resolution-summary-bar {
+    color: white;
+    padding: 10px;
+    margin-bottom:20px;
+}
+
+.category-name, .exceptions-section-title {
+    font-size: 150%;
+    margin-bottom: 10px;
+    color: #1F3F5E;
+}
+
+.related-data-title {
+    margin-bottom: 20px;
+    font-size: 21px;  border-bottom: 1px solid #e5e5e5;
+}
+
+.question-circle, .category-name {
+    display: inline-block;
+}
+
+.fa-question-circle {
+    margin-left:5px;
+    text-decoration: none;
+}
+
+.not-applicable-section {
+    color:gray;
+}
+
+.rule-tooltip{
+    display: inline;
+    position: relative;
+    z-index:100;
+    cursor: default;
+    text-decoration: none;
+    padding-right: 5px;
+}
+
+.rule-tooltip:hover{
+    display: inline;
+    position: relative;
+}
+
+.rule-tooltip:hover:after{
+    background: #333;
+    background: rgb(31, 63, 94);
+    border-radius: 5px;
+    bottom: 26px;
+    color: #fff;
+    content: attr(href);
+    left: -20px;
+    padding: 5px 15px;
+    position: absolute;
+    z-index: 98;
+    width: 220px;
+}
+
+.rule-tooltip:hover:before{
+    border: solid;
+    border-color: rgb(31, 63, 94) transparent;
+    border-width: 6px 6px 0 6px;
+    bottom: 20px;
+    content: "";
+    left: 10px;
+    position: absolute;
+    z-index: 99;
+}
+
+.all-rules a{
+    float:right;
+    margin-top:-15px;
+}
+
+.not-applicable-rule, .not-applicable-section p, .not-applicable-section span {
+    color:gray !important;
+}
+
+.related-data-section {
+    margin-bottom:15px;
+}
+
+#aspect_xmlworkflow_WorkflowTransformer_div_compliance-wrapper {
+    margin-top:20px;
+}
+
+.not-applicable-text {
+    display: inline-block;
+}
+
+div#aspect_submission_StepTransformer_div_help-section {
+    padding-top: 3px;
+}
+
+.estimated-help-paragraph {
+    margin-top: 15px;
+}
+
+#aspect_compliance_REFItemComplianceMain_div_item-compliance .top-information-bar,
+#aspect_compliance_RIOXXItemComplianceMain_div_item-compliance .top-information-bar,
+#aspect_xmlworkflow_WorkflowTransformer_div_compliance-wrapper .top-information-bar {
+    margin-top: 15px;
+}
+
+#aspect_submission_StepTransformer_div_ref-compliance p, #aspect_submission_StepTransformer_div_ref-compliance ul {
+    font-weight: bold;
+}
+
+#aspect_submission_StepTransformer_list_ref-compliance-exceptions {
+    list-style: none;
+    margin-left:-40px;
+}
+
+span.rule-description {
+    display: block;
+    margin: 5px 30px;
+}
+
+.bold {
+    font-weight:bold;
+}
+
+.estimated-help-paragraph {
+    margin-top: 0px;
+    margin-bottom: 25px;
+}
+
+#aspect_xmlworkflow_WorkflowTransformer_div_help-section,
+#aspect_compliance_REFItemComplianceMain_div_help-section,
+#aspect_compliance_RIOXXItemComplianceMain_div_help-section {
+    clear:both;
+}
+
+#aspect_submission_StepTransformer_list_submit-project .ds-add-button {
+    margin-top: 10px;
+    min-width: 30%;
+}
+
+.upload-rioxx-version-warning {
+    margin-left:0;
+    @extend .alert;
+    @extend .alert-info;
+
+    h3 {
+        margin-bottom: 15px;
+        margin-top: 15px;
+    }
+}
