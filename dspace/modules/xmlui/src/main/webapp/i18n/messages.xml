@@ -2624,7 +2624,7 @@
     <message key="xmlui.ChoiceLookupTransformer.field.vlaanderen_identifier.title">Select vlaanderen identifier</message>
     <message key="xmlui.ChoiceLookupTransformer.field.vlaanderen_identifier.help">Enter vlaanderen identifier</message>
 
-    <message key="xmlui.itemcloning.CloneItemTransfomer.title">Maak item onderdeel/versie</message>
+    <message key="xmlui.itemcloning.CloneItemTransfomer.title">Maak item onderdeel/versie van {0}</message>
     <message key="xmlui.itemcloning.CloneItemTransfomer.trail">Maak item onderdeel/versie</message>
     <message key="xmlui.itemcloning.CloneItemTransfomer.not-found">Het item werd niet gevonden</message>
     <message key="xmlui.itemcloning.CloneItemTransfomer.not-authorized">U hebt niet voldoende rechten om een onderdeel of versie van dit item aan te maken</message>
