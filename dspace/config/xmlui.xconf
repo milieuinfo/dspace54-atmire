@@ -156,6 +156,7 @@
         <aspect name="External Handle Item Resolution" path="resource://aspects/ExternalHandle/" />
 
         <aspect name="RequireUserAuthentication" path="resource://aspects/RequireUserAuthentication/" />
+        <aspect name="ItemCloning" path="resource://aspects/ItemCloning/" />
     </aspects>
 
     <!--
