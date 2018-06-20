@@ -7,9 +7,15 @@
  */
 package org.dspace.app.util;
 
+import com.atmire.utils.ItemUtils;
+import com.atmire.utils.helper.MetadataFieldString;
+import com.atmire.utils.subclasses.MetadatumExtended;
+import org.apache.commons.lang3.StringUtils;
+import org.dspace.content.Item;
 import org.dspace.content.MetadataSchema;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -66,7 +72,7 @@ public class DCInput
     private boolean closedVocabulary = false;
 
     /** allowed document types */
-    private List<String> typeBind = null;
+    private Map<String, List<String>> typeBind = null;
 
     /** 
      * The scope of the input sets, this restricts hidden metadata fields from 
@@ -122,16 +128,28 @@ public class DCInput
         closedVocabulary = "true".equalsIgnoreCase(closedVocabularyStr)
                             || "yes".equalsIgnoreCase(closedVocabularyStr);
         
-        // parsing of the <type-bind> element (using the colon as split separator)
-        typeBind = new ArrayList<String>();
-        String typeBindDef = fieldMap.get("type-bind");
-        if(typeBindDef != null && typeBindDef.trim().length() > 0) {
-        	String[] types = typeBindDef.split(",");
-        	for(String type : types) {
-        		typeBind.add( type.trim() );
-        	}
-        }
+        // parsing of the <type-bind> element
+        typeBind = new HashMap<String, List<String>>();
+        fillTypeBinds(fieldMap, typeBind, "type-bind");
         
+    }
+
+    public void fillTypeBinds(Map<String, String> fieldMap, Map<String, List<String>> typeBind, String nodeName) {
+        String allTypeBinds = fieldMap.get(nodeName+"_all");
+        if (StringUtils.isNotBlank(allTypeBinds)) {
+            String[] typeBinds = allTypeBinds.split(" ");
+            for (String bind : typeBinds) {
+                List<String> typeList = new ArrayList<String>();
+                String typeBindDef = fieldMap.get(nodeName+"#" + bind);
+                if (typeBindDef != null && typeBindDef.trim().length() > 0) {
+                    String[] types = typeBindDef.split(";"); // changed the type bind separator from a comma to a semicolon
+                    for (String type : types) {
+                        typeList.add(type.trim());
+                    }
+                }
+                typeBind.put(bind, typeList);
+            }
+        }
     }
 
     /**
@@ -394,16 +412,56 @@ public class DCInput
 		return closedVocabulary;
 	}
 
-	/**
-	 * Decides if this field is valid for the document type
-	 * @param typeName Document type name
-	 * @return true when there is no type restriction or typeName is allowed
-	 */
-	public boolean isAllowedFor(String typeName) {
-		if(typeBind.size() == 0)
-			return true;
-		
-		return typeBind.contains(typeName);
-	}
+    public boolean isAllowedFor(Item item) {
+        return isAllowedForTypeBindSet(item, typeBind);
+    }
+
+    private boolean isAllowedForTypeBindSet(Item item, Map<String, List<String>> typeBind) {
+        Map<String, String> typebindValues = new HashMap<String, String>();
+        for (String field : typeBind.keySet()) {
+            String value = getMetadataFirstValue(item, field);
+            typebindValues.put(field, value);
+        }
+        return isAllowedForTypeBindSet(typebindValues, typeBind);
+    }
+
+    public static String getMetadataFirstValue(Item item, String fieldName) {
+        MetadatumExtended elements
+                = MetadataFieldString.encapsulate(fieldName);
+        return ItemUtils.getMetadataFirstValue(
+                item,
+                elements.getSchema(),
+                elements.getElement(),
+                elements.getQualifier(),
+                Item.ANY // important distinction with ItemUtils.getMetadataFirstValue
+        );
+    }
+
+    /**
+     * Decides if this field is valid for the document type
+     *
+     * @param typebindValues mapping of fields - values
+     * @return true when there is no type restriction or typeName is allowed
+     */
+    protected boolean isAllowedForTypeBindSet(
+            Map<String, String> typebindValues,
+            Map<String, List<String>> typeBind
+    ) {
+        boolean allowed = true;
+
+        if (typebindValues == null || typebindValues.size() < typeBind.keySet().size()) {
+            allowed = false;
+        } else if (typeBind.size() > 0) {
+            for (Map.Entry<String, String> entry : typebindValues.entrySet()) {
+                String field = entry.getKey();
+                String value = entry.getValue();
+                if (!typeBind.get(field).contains(value)) {
+                    allowed = false;
+                }
+            }
+        }
+
+        return allowed;
+    }
 	
 }

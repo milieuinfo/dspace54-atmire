@@ -352,6 +352,8 @@ public class DCInputsReader {
                 } else if (tagName.equals("vocabulary")) {
                     String closedVocabularyString = getAttribute(nd, "closed");
                     field.put("closedVocabulary", closedVocabularyString);
+                } else if (tagName.equals("type-bind")) {
+                    putTypeBinds(field, nd, value);
                 }
             }
         }
@@ -380,6 +382,28 @@ public class DCInputsReader {
                 throw new SAXException(msg);
             }
         }
+    }
+
+    /**
+     * For a node with nodeName being "type-bind":
+     * <type-bind type="hep.type"> gets the key "type-bind#hep.type"
+     * and a key "type-bind_all" is created with as value all the types separated by a space
+     */
+    private void putTypeBinds(Map<String, String> field, Node nd, String value) {
+        // keep the multiple type-binds from overriding each other
+        String tagName = nd.getNodeName();
+        String type_bind = getAttribute(nd, "type");
+        field.put(tagName+"#"+type_bind, value);
+        // to keep track of the existing type-binds
+        String allTypeBinds = field.get(tagName+"_all");
+        if(allTypeBinds == null) {
+            allTypeBinds = type_bind;
+        }else {
+            allTypeBinds += " " + type_bind;
+        }
+        field.put(tagName+"_all", allTypeBinds);
+        // the original key is now useless
+        field.remove(tagName);
     }
 
     /**
