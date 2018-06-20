@@ -16,12 +16,15 @@ import org.dspace.content.Collection;
 import org.dspace.content.Item;
 import org.dspace.content.Metadatum;
 import org.dspace.content.WorkspaceItem;
+import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by: Antoine Snyers (antoine at atmire dot com)
@@ -118,9 +121,21 @@ public class CloneAction extends AbstractAction {
     }
 
     private void clearFields(Item newItem) {
-        for (String field : new String[]{"dc.relation.ispartof", "dc.relation.replaces"}) {
+        for (String field : getFieldsToWipe()) {
             MetadataUtils.clearMetadata(newItem, field);
         }
+    }
+
+    private Set<String> getFieldsToWipe() {
+        HashSet<String> fields = new HashSet<>();
+        Collections.addAll(fields, "dc.relation.ispartof", "dc.relation.replaces");
+        Collections.addAll(fields, getConfigFields());
+        return fields;
+    }
+
+    private String[] getConfigFields() {
+        String property = ConfigurationManager.getProperty("clone.item.metadata.wipe");
+        return (property == null ? "" : property).split(",");
     }
 
     private String getIdentifier(Item item) {
