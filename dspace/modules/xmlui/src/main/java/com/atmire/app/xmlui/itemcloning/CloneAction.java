@@ -8,6 +8,7 @@ import org.apache.cocoon.acting.AbstractAction;
 import org.apache.cocoon.environment.Redirector;
 import org.apache.cocoon.environment.SourceResolver;
 import org.apache.commons.lang.UnhandledException;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.dspace.app.xmlui.utils.ContextUtil;
@@ -21,10 +22,7 @@ import org.dspace.core.Context;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by: Antoine Snyers (antoine at atmire dot com)
@@ -107,6 +105,7 @@ public class CloneAction extends AbstractAction {
                 clearFields(newItem);
                 MetadataUtils.addMetadata
                         (newItem, "dc.relation.ispartof", getIdentifier(item));
+                inheritType(newItem, item);
             }
             if (action == Action.VERSION) {
                 clearFields(newItem);
@@ -129,16 +128,44 @@ public class CloneAction extends AbstractAction {
     private Set<String> getFieldsToWipe() {
         HashSet<String> fields = new HashSet<>();
         Collections.addAll(fields, "dc.relation.ispartof", "dc.relation.replaces");
-        Collections.addAll(fields, getConfigFields());
+        Collections.addAll(fields, getWipeFields());
         return fields;
     }
 
-    private String[] getConfigFields() {
-        String property = ConfigurationManager.getProperty("clone.item.metadata.wipe");
-        return (property == null ? "" : property).split(",");
+    private String[] getWipeFields() {
+        return getCommaSeparatedValues("clone.item.metadata.wipe");
+    }
+
+    private String[] getCommaSeparatedValues(String property) {
+        String config = ConfigurationManager.getProperty(property);
+        return (config == null ? "" : config).split(",");
     }
 
     private String getIdentifier(Item item) {
         return MetadataUtils.getMetadataFirstValue(item, "vlaanderen.identifier");
+    }
+
+    private void inheritType(Item newItem, Item originalItem) {
+        String type = MetadataUtils.getMetadataFirstValue(originalItem, "dc.type");
+        String[] config = getCommaSeparatedValues("clone.item.metadata.type.hierarchy");
+        String newType = getTypeMap(config).get(toLowerCase(type));
+        if (StringUtils.isNotBlank(newType)) {
+            MetadataUtils.clearMetadata(newItem, "dc.type");
+            MetadataUtils.addMetadata(newItem, "dc.type", newType);
+        }
+    }
+
+    private Map<String, String> getTypeMap(String[] commaSeparatedValues) {
+        Map<String, String> typeMap = new HashMap<>();
+        String previousType = null;
+        for (String type : commaSeparatedValues) {
+            typeMap.put(toLowerCase(previousType), type);
+            previousType = type;
+        }
+        return typeMap;
+    }
+
+    private String toLowerCase(String previousType) {
+        return previousType != null ? previousType.toLowerCase() : null;
     }
 }
