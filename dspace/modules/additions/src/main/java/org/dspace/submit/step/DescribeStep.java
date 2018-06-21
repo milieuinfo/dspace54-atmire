@@ -130,13 +130,6 @@ public class DescribeStep extends AbstractProcessingStep
         {
             throw new ServletException(e);
         }
-
-        // Fetch the document type (dc.type)
-        String documentType = "";
-        if( (item.getMetadataByMetadataString("dc.type") != null) && (item.getMetadataByMetadataString("dc.type").length >0) )
-        {
-            documentType = item.getMetadataByMetadataString("dc.type")[0].value;
-        }
         
         // Step 1:
         // clear out all item metadata defined on this page
@@ -151,6 +144,11 @@ public class DescribeStep extends AbstractProcessingStep
             {
                 continue;
             }
+
+            if (inputs[i].isDisplayOnly()) {
+                continue;
+            }
+
 	        if (inputs[i].getInputType().equals("qualdrop_value"))
 	        {
 		        @SuppressWarnings("unchecked") // This cast is correct
