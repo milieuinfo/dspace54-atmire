@@ -47,6 +47,10 @@
             <property name="field" value="dc.source[*]"/>
             <property name="value" value="MER"/>
         </bean>
+        <bean class="com.atmire.metadata.FillValue">
+            <property name="field" value="dc.type[*]"/>
+            <property name="value" value="Procedure"/>
+        </bean>
         <bean class="com.atmire.metadata.FillSubmitter">
             <property name="field" value="dc.creator[*]"/>
         </bean>

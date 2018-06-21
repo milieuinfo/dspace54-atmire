@@ -182,7 +182,7 @@ public class DescribeStep extends AbstractSubmissionStep
                     boolean readonly = dcInput.isReadOnly(scope);
                     
                 	// Omit fields not allowed for this document type
-                    if(!dcInput.isAllowedFor(documentType))
+                    if(!dcInput.isAllowedFor(item))
                     {
                     	continue;
                     }

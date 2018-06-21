@@ -179,7 +179,7 @@ public class DescribeStep extends AbstractProcessingStep
         for (int j = 0; j < inputs.length; j++)
         {
         	// Omit fields not allowed for this document type
-            if(!inputs[j].isAllowedFor(documentType))
+            if(!inputs[j].isAllowedFor(item))
             {
             	continue;
             }
@@ -302,7 +302,7 @@ public class DescribeStep extends AbstractProcessingStep
             {
             	// Do not check the required attribute if it is not visible or not allowed for the document type
             	String scope = subInfo.isInWorkflow() ? DCInput.WORKFLOW_SCOPE : DCInput.SUBMISSION_SCOPE;
-                if ( !( inputs[i].isVisible(scope) && inputs[i].isAllowedFor(documentType) ) )
+                if ( !( inputs[i].isVisible(scope) && inputs[i].isAllowedFor(item) ) )
                 {
                 	continue;
                 }

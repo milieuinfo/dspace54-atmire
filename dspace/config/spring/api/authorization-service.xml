@@ -28,6 +28,15 @@
         <property name="authorizationChecks">
             <list>
                 <bean class="com.atmire.authorization.checks.SubmitterCheck"/>
+                <ref bean="allowedGroupsForCompliance"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="allowedGroupsForCompliance" class="com.atmire.authorization.checks.GroupAuthorizationCheck" lazy-init="true">
+        <property name="allowedGroups">
+            <list>
+                <value>Administrator</value>
             </list>
         </property>
     </bean>

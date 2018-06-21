@@ -174,21 +174,6 @@
 
        <field>
          <dc-schema>mer</dc-schema>
-         <dc-element>adviesinstantie</dc-element>
-         <dc-qualifier>naam</dc-qualifier>
-         <repeatable>false</repeatable>
-         <label>Adviesinstantie</label>
-         <input-type>onebox</input-type>
-         <hint>Vul de naam van de adviesinstantie in</hint>
-         <required></required>
-       </field>
-
-     </page>
-
-     <page number="2">
-
-       <field>
-         <dc-schema>mer</dc-schema>
          <dc-element>document</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
@@ -198,6 +183,9 @@
          <required>U moet een document type kiezen</required>
          <vocabulary>mer-dossier-structuur</vocabulary>
        </field>
+     </page>
+
+     <page number="2">
 
        <field>
          <dc-schema>vlaanderen</dc-schema>
@@ -221,6 +209,19 @@
          <!--<required>Dit veld is verplicht</required>-->
          <!--<vocabulary>mer-dossier-structuur</vocabulary>-->
        <!--</field>-->
+
+       <field>
+         <dc-schema>mer</dc-schema>
+         <dc-element>adviesinstantie</dc-element>
+         <dc-qualifier>naam</dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Adviesinstantie</label>
+         <type-bind type="dc.type">Documentonderdeel</type-bind>
+         <type-bind type="mer.document">Advies</type-bind>
+         <input-type>onebox</input-type>
+         <hint>Vul de naam van de adviesinstantie in</hint>
+         <required></required>
+       </field>
 
      </page>
    </form>
