@@ -4,6 +4,7 @@ import com.atmire.utils.helper.MetadataFieldString;
 import org.apache.commons.lang3.StringUtils;
 import org.dspace.content.Item;
 import org.dspace.content.Metadatum;
+import org.dspace.content.authority.Choices;
 
 /**
 * Created by: Antoine Snyers (antoine at atmire dot com)
@@ -105,4 +106,17 @@ public class MetadatumExtended extends Metadatum {
         String language1 = StringUtils.isBlank(language) ? wilcard : language;
         return new MetadatumExtended(schema1, element1, qualifier1, language1, value, authority, confidence);
     }
+
+    public MetadatumExtended filledWith(Metadatum dcValue) {
+        String schema1 = StringUtils.isBlank(schema) ? dcValue.schema : schema;
+        String element1 = StringUtils.isBlank(element) ? dcValue.element : element;
+        String qualifier1 = StringUtils.isBlank(qualifier) ? dcValue.qualifier : qualifier;
+        String language1 = StringUtils.isBlank(language) ? dcValue.language : language;
+        String value1 = StringUtils.isBlank(value) ? dcValue.value : value;
+        String authority1 = StringUtils.isBlank(authority) ? dcValue.authority : authority;
+        int confidence1 = confidence == Choices.CF_UNSET ? dcValue.confidence : confidence;
+        return new MetadatumExtended(
+                schema1, element1, qualifier1, language1, value1, authority1, confidence1);
+    }
+
 }

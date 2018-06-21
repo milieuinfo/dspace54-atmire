@@ -1,11 +1,11 @@
 package com.atmire.sword.rules;
 
-import org.apache.commons.lang3.StringUtils;
-import org.dspace.content.Metadatum;
+import static org.apache.commons.collections.CollectionUtils.isEmpty;
 
 import java.util.List;
 
-import static org.apache.commons.collections.CollectionUtils.isEmpty;
+import org.apache.commons.lang3.StringUtils;
+import org.dspace.content.Metadatum;
 
 /**
  * Validation rule that will check if a field has a non-blank value.
@@ -23,15 +23,26 @@ public class FieldIsBlankRule extends AbstractFieldCheckRule {
         if (isEmpty(fieldValueList) || isBlank(fieldValueList.get(0))) {
             return true;
         } else {
-            addViolationDescription("Field %s has a value", fieldDescription);
+            addViolationDescription("het veld %s heeft een waarde", fieldDescription);
             checkedValue = fieldValueList.get(0).value;
             return false;
         }
     }
 
-    protected String getRuleDescription() {
-        return String.format("the %s (%s) metadata field %s", fieldDescription, metadataFieldToCheck,
-                checkedValue == null ? "is blank" : "has value " + checkedValue);
+    protected String getRuleDescriptionCompliant() {
+        return String.format(
+                "het %s veld (%s) is leeg",
+                fieldDescription,
+                metadataFieldToCheck
+        );
+    }
+
+    protected String getRuleDescriptionViolation() {
+        return String.format(
+                "het %s veld (%s) mag niet ingevuld worden",
+                fieldDescription,
+                metadataFieldToCheck
+        );
     }
 
     public static boolean isBlank(Metadatum dcValue) {

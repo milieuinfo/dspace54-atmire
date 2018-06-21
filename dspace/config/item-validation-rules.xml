@@ -1,33 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<rule-categories xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="item-validation-rules.xsd">
+<rule-categories xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:noNamespaceSchemaLocation="item-validation-rules.xsd">
 
-    <category ordinal="1" name="sword validation"
-              description="sword validation"
+    <category ordinal="1" name="Item relaties"
+              description="Op de relaties tussen items uitgedrukt in metadata gelden bepaalde valaditieregels."
               resolutionHint="">
         <rules>
-            <rule type="isBlank">
+            <rule type="isBlank"
+                  description="Het gebruik van dc.relation.haspart is niet toegestaan."
+                  resolutionHint="Verwijder de waarde in dc.relation.haspart.">
                 <field>dc.relation.haspart</field>
-                <fieldDescription>dc.relation.haspart</fieldDescription>
+                <fieldDescription>heeft-onderdeel</fieldDescription>
             </rule>
-            <rule type="isBlank">
+            <rule type="isBlank"
+                  description="Het gebruik van dc.relation.isreplacedby is niet toegestaan."
+                  resolutionHint="Verwijder de waarde in dc.relation.isreplacedby.">
                 <field>dc.relation.isreplacedby</field>
-                <fieldDescription>dc.relation.isreplacedby</fieldDescription>
+                <fieldDescription>is-vervangen-door</fieldDescription>
             </rule>
-            <rule type="countLesserThan">
+            <rule type="countLesserThan"
+                  description="Het item heeft slechts 1 waarde voor dc.relation.replaces."
+                  resolutionHint="Verwijder de extra waardes in dc.relation.replaces.">
                 <field>dc.relation.replaces</field>
-                <fieldDescription>dc.relation.replaces</fieldDescription>
+                <fieldDescription>vervangt-item</fieldDescription>
                 <fieldValue>
                     <value>2</value>
                 </fieldValue>
             </rule>
-            <rule type="countLesserThan">
+            <rule type="countLesserThan"
+                  description="Het item heeft slechts 1 waarde voor dc.relation.ispartof."
+                  resolutionHint="Verwijder de extra waardes in dc.relation.ispartof.">
                 <field>dc.relation.ispartof</field>
-                <fieldDescription>dc.relation.ispartof</fieldDescription>
+                <fieldDescription>is-onderdeel-van</fieldDescription>
                 <fieldValue>
                     <value>2</value>
                 </fieldValue>
             </rule>
-            <rule type="failOnPreconditionSuccess">
+            <rule type="failOnPreconditionSuccess"
+                  description="Het gelijktijdig gebruik van dc.relation.replaces en dc.relation.ispartof is niet toegestaan."
+                  resolutionHint="Verwijder een waarde uit dc.relation.replaces of dc.relation.ispartof.">
                 <preconditions>
                     <rule type="isNotBlank">
                         <field>dc.relation.replaces</field>
@@ -39,15 +50,191 @@
                     </rule>
                 </preconditions>
                 <field>null</field>
-                <fieldDescription>dc.relation.replaces and dc.relation.ispartof</fieldDescription>
+                <fieldDescription>dc.relation.replaces en dc.relation.ispartof</fieldDescription>
             </rule>
-            <rule type="uniqueValueByAuthorityId">
+            <rule type="uniqueValueByAuthorityId"
+                  description="De waarde voor vlaanderen.identifier moet uniek zijn."
+                  resolutionHint="Geef vlaanderen.identifier een unieke waarde.">
                 <field>vlaanderen.identifier</field>
-                <fieldDescription>vlaanderen.identifier</fieldDescription>
+                <fieldDescription>vlaanderen identifier</fieldDescription>
             </rule>
-            <rule type="uniqueValueByAuthorityId">
+            <rule type="uniqueValueByAuthorityId"
+                  description="De waarde voor dc.relation.replaces moet uniek zijn."
+                  resolutionHint="Geef dc.relation.replaces een unieke waarde.">
                 <field>dc.relation.replaces</field>
-                <fieldDescription>dc.relation.replaces</fieldDescription>
+                <fieldDescription>vervangt-item</fieldDescription>
+            </rule>
+        </rules>
+    </category>
+
+    <category ordinal="2" name="MER validatie"
+              description="De MER archief instantie omvat een aantal specifieke validatie regels."
+              resolutionHint="">
+        <rules>
+
+            <rule type="pastOrCurrentDate"
+                  description="De waarde van dc.date.created ligt in het verleden of op vandaag."
+                  resolutionHint="Pas de datum in dc.date.created aan naar het verleden of vandaag.">
+                <field>dc.date.created</field>
+                <fieldDescription>startdatum dossier</fieldDescription>
+            </rule>
+
+            <rule type="pastOrCurrentDate"
+                  description="De waarde van dc.date.issued ligt in het verleden of op vandaag."
+                  resolutionHint="Pas de datum in dc.date.issued aan naar het verleden of vandaag.">
+                <preconditions>
+                    <rule type="isNotBlank">
+                        <field>dc.date.issued</field>
+                        <fieldDescription>mer.procedure</fieldDescription>
+                    </rule>
+                </preconditions>
+                <field>dc.date.issued</field>
+                <fieldDescription>afsluitingsdatum dossier</fieldDescription>
+            </rule>
+
+            <rule type="regex"
+                  description="De waarde voor mer.dossiernummer binnen procedure 'Project-MER-2002' moet voldoen aan het formaat PR0xxx of PR1xxx of PR2xxx."
+                  resolutionHint="Geef mer.dossiernummer een correcte waarde.">
+                <preconditions>
+                    <rule type="value">
+                        <field>mer.procedure</field>
+                        <fieldDescription>mer.procedure</fieldDescription>
+                        <fieldValue>
+                            <value>Project-MER-2002</value>
+                        </fieldValue>
+                    </rule>
+                </preconditions>
+                <field>mer.dossiernummer</field>
+                <fieldDescription>MER dossiernummer</fieldDescription>
+                <fieldValue>
+                    <value>^PR0[0-9]+|PR1[0-9]+|PR2[0-9]+$</value>
+                </fieldValue>
+            </rule>
+            <rule type="regex"
+                  description="De waarde voor mer.dossiernummer binnen procedure 'Ontheffing Project-MER' moet voldoen aan het formaat OHPRxxx of PR2xxx."
+                  resolutionHint="Geef mer.dossiernummer een correcte waarde.">
+                <preconditions>
+                    <rule type="value">
+                        <field>mer.procedure</field>
+                        <fieldDescription>mer.procedure</fieldDescription>
+                        <fieldValue>
+                            <value>Ontheffing Project-MER</value>
+                        </fieldValue>
+                    </rule>
+                </preconditions>
+                <field>mer.dossiernummer</field>
+                <fieldDescription>MER dossiernummer</fieldDescription>
+                <fieldValue>
+                    <value>^OHPR[0-9]+|PR2[0-9]+$</value>
+                </fieldValue>
+            </rule>
+            <rule type="regex"
+                  description="De waarde voor mer.dossiernummer binnen procedure 'Project-MER-2017' moet voldoen aan het formaat PR3xxx."
+                  resolutionHint="Geef mer.dossiernummer een correcte waarde.">
+                <preconditions>
+                    <rule type="value">
+                        <field>mer.procedure</field>
+                        <fieldDescription>mer.procedure</fieldDescription>
+                        <fieldValue>
+                            <value>Project-MER-2017</value>
+                        </fieldValue>
+                    </rule>
+                </preconditions>
+                <field>mer.dossiernummer</field>
+                <fieldDescription>MER dossiernummer</fieldDescription>
+                <fieldValue>
+                    <value>^PR3[0-9]+$</value>
+                </fieldValue>
+            </rule>
+            <rule type="regex"
+                  description="De waarde voor mer.dossiernummer binnen procedure 'Plan-MER-2004' moet voldoen aan het formaat PLxxx."
+                  resolutionHint="Geef mer.dossiernummer een correcte waarde.">
+                <preconditions>
+                    <rule type="value">
+                        <field>mer.procedure</field>
+                        <fieldDescription>mer.procedure</fieldDescription>
+                        <fieldValue>
+                            <value>Plan-MER-2004</value>
+                        </fieldValue>
+                    </rule>
+                </preconditions>
+                <field>mer.dossiernummer</field>
+                <fieldDescription>MER dossiernummer</fieldDescription>
+                <fieldValue>
+                    <value>^PL[0-9]+$</value>
+                </fieldValue>
+            </rule>
+            <rule type="regex"
+                  description="De waarde voor mer.dossiernummer binnen procedure 'Plan-MER Screening' moet voldoen aan het formaat OHPLxxx of SCRPLxxx."
+                  resolutionHint="Geef mer.dossiernummer een correcte waarde.">
+                <preconditions>
+                    <rule type="value">
+                        <field>mer.procedure</field>
+                        <fieldDescription>mer.procedure</fieldDescription>
+                        <fieldValue>
+                            <value>Plan-MER Screening</value>
+                        </fieldValue>
+                    </rule>
+                </preconditions>
+                <field>mer.dossiernummer</field>
+                <fieldDescription>MER dossiernummer</fieldDescription>
+                <fieldValue>
+                    <value>^OHPL[0-9]+|SCRPL[0-9]+$</value>
+                </fieldValue>
+            </rule>
+            <rule type="regex"
+                  description="De waarde voor mer.dossiernummer binnen procedure 'Plan-MER Integratiespoor 2007' moet voldoen aan het formaat OPLxxx."
+                  resolutionHint="Geef mer.dossiernummer een correcte waarde.">
+                <preconditions>
+                    <rule type="value">
+                        <field>mer.procedure</field>
+                        <fieldDescription>mer.procedure</fieldDescription>
+                        <fieldValue>
+                            <value>Plan-MER Integratiespoor 2007</value>
+                        </fieldValue>
+                    </rule>
+                </preconditions>
+                <field>mer.dossiernummer</field>
+                <fieldDescription>MER dossiernummer</fieldDescription>
+                <fieldValue>
+                    <value>^OPL[0-9]+$</value>
+                </fieldValue>
+            </rule>
+            <rule type="regex"
+                  description="De waarde voor mer.dossiernummer binnen procedure 'Integratie m.e.r. in RUP 2017' moet voldoen aan het formaat PLIxxx."
+                  resolutionHint="Geef mer.dossiernummer een correcte waarde.">
+                <preconditions>
+                    <rule type="value">
+                        <field>mer.procedure</field>
+                        <fieldDescription>mer.procedure</fieldDescription>
+                        <fieldValue>
+                            <value>Integratie m.e.r. in RUP 2017</value>
+                        </fieldValue>
+                    </rule>
+                </preconditions>
+                <field>mer.dossiernummer</field>
+                <fieldDescription>MER dossiernummer</fieldDescription>
+                <fieldValue>
+                    <value>^PLI[0-9]+$</value>
+                </fieldValue>
+            </rule>
+            <rule type="regex"
+                  description="De waarde voor mer.dossiernummer binnen procedure 'Plan-MER-2017' moet voldoen aan het formaat SCRIxxx."
+                  resolutionHint="Geef mer.dossiernummer een correcte waarde.">
+                <preconditions>
+                    <rule type="value">
+                        <field>mer.procedure</field>
+                        <fieldDescription>mer.procedure</fieldDescription>
+                        <fieldValue>
+                            <value>Plan-MER-2017</value>
+                        </fieldValue>
+                    </rule>
+                </preconditions>
+                <field>mer.dossiernummer</field>
+                <fieldDescription>MER dossiernummer</fieldDescription>
+                <fieldValue>
+                    <value>^SCRI[0-9]+$</value>
+                </fieldValue>
             </rule>
         </rules>
     </category>

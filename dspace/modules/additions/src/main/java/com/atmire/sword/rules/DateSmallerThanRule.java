@@ -1,12 +1,14 @@
 package com.atmire.sword.rules;
 
-import com.atmire.sword.validation.model.*;
-import java.util.*;
-import org.apache.commons.collections.*;
-import static org.apache.commons.collections.CollectionUtils.*;
-import org.apache.commons.lang3.*;
-import org.joda.time.*;
-import org.dspace.content.*;
+import static org.apache.commons.collections.CollectionUtils.isEmpty;
+
+import java.util.List;
+
+import com.atmire.sword.validation.model.Value;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.dspace.content.Metadatum;
+import org.joda.time.DateTime;
 
 
 /**
@@ -25,10 +27,10 @@ public class DateSmallerThanRule extends AbstractFieldCheckRule implements Compl
     protected boolean checkFieldValues(final List<Metadatum> fieldValueList) {
         boolean valid = false;
         if (isEmpty(fieldValueList)) {
-            addViolationDescription("The %s field has no value", fieldDescription);
+            addViolationDescription("het %s veld heeft geen waarde", fieldDescription);
 
         } else if (thresholdValue == null || StringUtils.isBlank(thresholdValue.getValue())) {
-            addViolationDescription("The threshold value cannot be blank");
+            addViolationDescription("de drempelwaarde kan niet leeg zijn");
 
         } else {
             try {
@@ -36,24 +38,29 @@ public class DateSmallerThanRule extends AbstractFieldCheckRule implements Compl
                 DateTime dateToCheck = parseDateTime(fieldValueList.get(0).value);
 
                 if(dateToCheck == null) {
-                    addViolationDescription("there is no value for the field " + metadataFieldToCheck);
+                    addViolationDescription("er is geen geldige waarde voor het veld " + metadataFieldToCheck);
                 } else if (thresholdDate != null && dateToCheck.compareTo(thresholdDate) < 0) {
                     valid = true;
                 } else {
-                    addViolationDescription("the %s is after %s", fieldDescription,
+                    addViolationDescription("de %s is na %s", fieldDescription,
                             thresholdValue == null ? "ERROR" : getValueDescription(thresholdValue));
                 }
 
             } catch (IllegalArgumentException ex) {
-                addViolationDescription("the metadata field %s is invalid because it has too few tokens or contains an invalid date", metadataFieldToCheck);
+                addViolationDescription("het metadata veld %s is ongeldig omdat het een ongeldige datum (-formaat) bevat", metadataFieldToCheck);
             }
         }
 
         return valid;
     }
 
-    protected String getRuleDescription() {
-        return String.format("the %s is before %s", fieldDescription,
+    protected String getRuleDescriptionCompliant() {
+        return String.format("de %s (%s) is voor %s", fieldDescription, metadataFieldToCheck,
+                thresholdValue == null ? "ERROR" : getValueDescription(thresholdValue));
+    }
+
+    protected String getRuleDescriptionViolation() {
+        return String.format("de %s (%s) moest voor %s zijn", fieldDescription, metadataFieldToCheck,
                 thresholdValue == null ? "ERROR" : getValueDescription(thresholdValue));
     }
 }
