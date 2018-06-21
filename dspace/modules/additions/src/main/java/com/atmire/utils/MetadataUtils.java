@@ -74,7 +74,7 @@ public class MetadataUtils {
     }
 
     public static List<Metadatum> getMetadata(DSpaceObject item) {
-        return getMetadata(item, Item.ANY + "." + Item.ANY + "." + Item.ANY);
+        return Arrays.asList(item.getMetadata(Item.ANY, Item.ANY, Item.ANY, Item.ANY));
     }
 
     public static List<Metadatum> getMetadata(DSpaceObject item, String mdString) {
@@ -98,12 +98,12 @@ public class MetadataUtils {
 
     public static String getMetadataFirstValue(DSpaceObject item, String fieldName) {
         MetadatumExtended elements = MetadataFieldString.encapsulate(fieldName); // this is better not with wildcards
-        return getMetadataFirstValue(item, elements.getSchema(), elements.getElement(), elements.getQualifier(), elements.getLanguage());
+        return getMetadataFirstValue(item, elements.getSchema(), elements.getElement(), elements.getQualifier(), Item.ANY);
     }
 
-    public static String getMetadataFirstValueAnyLanguage(DSpaceObject item, String fieldName) {
+    public static String getMetadataFirstValueWithLanguage(DSpaceObject item, String fieldName) {
         MetadatumExtended elements = MetadataFieldString.encapsulate(fieldName);
-        return getMetadataFirstValue(item, elements.getSchema(), elements.getElement(), elements.getQualifier(), Item.ANY);
+        return getMetadataFirstValue(item, elements.getSchema(), elements.getElement(), elements.getQualifier(), elements.getLanguage());
     }
 
     public static String getMetadataFirstValue(DSpaceObject item, String schema, String element, String qualifier, String language) {

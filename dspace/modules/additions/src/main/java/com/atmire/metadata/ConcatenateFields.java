@@ -41,7 +41,7 @@ public class ConcatenateFields extends AbstractFillValue {
         boolean useNextField = iterator.hasNext();
         while (useNextField) {
             String nextField = iterator.next();
-            String nextValue = MetadataUtils.getMetadataFirstValueAnyLanguage(object, nextField);
+            String nextValue = MetadataUtils.getMetadataFirstValue(object, nextField);
             if (StringUtils.isNotBlank(nextValue)) {
                 if (value == null) {
                     value = nextValue;
