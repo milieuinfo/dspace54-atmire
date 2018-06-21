@@ -74,6 +74,8 @@ public class DCInput
     /** allowed document types */
     private Map<String, List<String>> typeBind = null;
 
+    private boolean displayOnly;
+
     /** 
      * The scope of the input sets, this restricts hidden metadata fields from 
      * view during workflow processing. 
@@ -131,6 +133,7 @@ public class DCInput
         // parsing of the <type-bind> element
         typeBind = new HashMap<String, List<String>>();
         fillTypeBinds(fieldMap, typeBind, "type-bind");
+        displayOnly = "true".equalsIgnoreCase(fieldMap.get("display-only"));
         
     }
 
@@ -463,5 +466,8 @@ public class DCInput
 
         return allowed;
     }
-	
+
+    public boolean isDisplayOnly() {
+        return displayOnly;
+    }
 }

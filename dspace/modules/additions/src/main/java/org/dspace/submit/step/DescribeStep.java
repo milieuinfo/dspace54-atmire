@@ -190,6 +190,11 @@ public class DescribeStep extends AbstractProcessingStep
             {
                 continue;
             }
+
+            if (inputs[j].isDisplayOnly()) {
+                continue;
+            }
+
             String element = inputs[j].getElement();
             String qualifier = inputs[j].getQualifier();
             String schema = inputs[j].getSchema();
