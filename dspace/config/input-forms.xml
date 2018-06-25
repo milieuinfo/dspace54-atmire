@@ -57,9 +57,10 @@
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
          <label>Procedure</label>
-         <input-type>onebox</input-type>
-         <hint>Procedure</hint>
-         <required>Dit veld is verplicht</required>
+         <input-type>contextual-dropdown</input-type>
+         <hint>Kies de toegepaste procedure</hint>
+         <required>Dit veld is verplicht</required>9.1
+         <vocabulary>mer-dossier-structuur</vocabulary>
        </field>
 
        <field>
@@ -68,9 +69,37 @@
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
          <label>Procedure Stap</label>
-         <input-type>onebox</input-type>
+         <type-bind type="dc.type">Procedurestap</type-bind>
+         <input-type>contextual-dropdown</input-type>
          <hint>Kies de procedure stap</hint>
          <required>Dit veld is verplicht</required>
+         <vocabulary>mer-dossier-structuur</vocabulary>
+       </field>
+
+       <field>
+         <dc-schema>mer</dc-schema>
+         <dc-element>document</dc-element>
+         <dc-qualifier></dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Document</label>
+         <type-bind type="dc.type">Document</type-bind>
+         <input-type>contextual-dropdown</input-type>
+         <hint>Kies het document type</hint>
+         <required>U moet een document type kiezen</required>
+         <vocabulary>mer-dossier-structuur</vocabulary>
+       </field>
+
+       <field>
+         <dc-schema>mer</dc-schema>
+         <dc-element>documentonderdeel</dc-element>
+         <dc-qualifier></dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Documentonderdeel</label>
+         <type-bind type="dc.type">Documentonderdeel</type-bind>
+         <input-type>contextual-dropdown</input-type>
+         <hint>Kies het documentonderdeel</hint>
+         <required>Dit veld is verplicht</required>
+         <vocabulary>mer-dossier-structuur</vocabulary>
        </field>
 
        <field>
@@ -106,16 +135,17 @@
          <required></required>
        </field>
 
-       <field>
-         <dc-schema>dc</dc-schema>
-         <dc-element>type</dc-element>
-         <dc-qualifier></dc-qualifier>
-         <repeatable>true</repeatable>
-         <label>Type</label>
-         <input-type value-pairs-name="mer_types">dropdown</input-type>
-         <hint>Select the type(s) of content of the item. To select more than one value in the list, you may have to hold down the "CTRL" or "Shift" key.</hint>
-         <required></required>
-       </field>
+       <!-- AUTO-FILLED -->
+       <!--<field>-->
+         <!--<dc-schema>dc</dc-schema>-->
+         <!--<dc-element>type</dc-element>-->
+         <!--<dc-qualifier></dc-qualifier>-->
+         <!--<repeatable>true</repeatable>-->
+         <!--<label>Type</label>-->
+         <!--<input-type value-pairs-name="mer_types">dropdown</input-type>-->
+         <!--<hint>Select the type(s) of content of the item. To select more than one value in the list, you may have to hold down the "CTRL" or "Shift" key.</hint>-->
+         <!--<required></required>-->
+       <!--</field>-->
 
        <field>
          <dc-schema>mer</dc-schema>
@@ -172,17 +202,6 @@
          <required></required>
        </field>
 
-       <field>
-         <dc-schema>mer</dc-schema>
-         <dc-element>document</dc-element>
-         <dc-qualifier></dc-qualifier>
-         <repeatable>false</repeatable>
-         <label>Document</label>
-         <input-type>contextual-dropdown</input-type>
-         <hint>Kies het document type</hint>
-         <required>U moet een document type kiezen</required>
-         <vocabulary>mer-dossier-structuur</vocabulary>
-       </field>
      </page>
 
      <page number="2">
@@ -197,18 +216,6 @@
          <hint></hint>
          <required>U moet een unieke Vlaanderen identifier ingeven</required>
        </field>
-
-       <!--<field>-->
-         <!--<dc-schema>mer</dc-schema>-->
-         <!--<dc-element>documentonderdeel</dc-element>-->
-         <!--<dc-qualifier></dc-qualifier>-->
-         <!--<repeatable>false</repeatable>-->
-         <!--<label>Document</label>-->
-         <!--<input-type>contextual-dropdown</input-type>-->
-         <!--<hint>Kies het document</hint>-->
-         <!--<required>Dit veld is verplicht</required>-->
-         <!--<vocabulary>mer-dossier-structuur</vocabulary>-->
-       <!--</field>-->
 
        <field>
          <dc-schema>mer</dc-schema>
