@@ -179,7 +179,7 @@ public class DescribeStep extends AbstractSubmissionStep
                 for(DCInput dcInput : inputs)
                 {
                     String scope = submissionInfo.isInWorkflow() ? DCInput.WORKFLOW_SCOPE : DCInput.SUBMISSION_SCOPE;
-                    boolean readonly = dcInput.isReadOnly(scope);
+                    boolean readonly = dcInput.isReadOnly(scope) || dcInput.isDisplayOnly();
                     
                 	// Omit fields not allowed for this document type
                     if(!dcInput.isAllowedFor(item))
