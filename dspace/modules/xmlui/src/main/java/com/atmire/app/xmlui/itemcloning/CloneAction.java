@@ -1,5 +1,13 @@
 package com.atmire.app.xmlui.itemcloning;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import com.atmire.utils.MetadataUtils;
 import com.atmire.utils.NullValidation;
 import com.google.common.base.Function;
@@ -20,10 +28,6 @@ import org.dspace.content.WorkspaceItem;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.*;
-
 /**
  * Created by: Antoine Snyers (antoine at atmire dot com)
  * Date: 19 Jun 2018
@@ -40,6 +44,8 @@ public class CloneAction extends AbstractAction {
             Parameters parameters
     ) throws Exception {
         Context context = ContextUtil.obtainContext(objectModel);
+        context.setDispatcher("noautofill");
+
         Item item = CloneItemUtils.getItem(context, objectModel);
         NullValidation<Collection> objectValidation = new NullValidation<>()
                 .take(item, "The item can't be found")
