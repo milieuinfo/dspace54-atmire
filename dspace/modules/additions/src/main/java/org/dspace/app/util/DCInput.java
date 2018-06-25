@@ -7,17 +7,18 @@
  */
 package org.dspace.app.util;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import com.atmire.utils.ItemUtils;
 import com.atmire.utils.helper.MetadataFieldString;
 import com.atmire.utils.subclasses.MetadatumExtended;
 import org.apache.commons.lang3.StringUtils;
 import org.dspace.content.Item;
 import org.dspace.content.MetadataSchema;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Class representing a line in an input form.
@@ -72,7 +73,8 @@ public class DCInput
     private boolean closedVocabulary = false;
 
     /** allowed document types */
-    private Map<String, List<String>> typeBind = null;
+    private Map<String, Set<String>> typeBind = null;
+    private Map<String, Set<String>> negativeTypeBind = null;
 
     private boolean displayOnly;
 
@@ -131,24 +133,29 @@ public class DCInput
                             || "yes".equalsIgnoreCase(closedVocabularyStr);
         
         // parsing of the <type-bind> element
-        typeBind = new HashMap<String, List<String>>();
+        typeBind = new HashMap<String, Set<String>>();
         fillTypeBinds(fieldMap, typeBind, "type-bind");
+
+        negativeTypeBind = new HashMap<String, Set<String>>();
+        fillTypeBinds(fieldMap, negativeTypeBind, "negative-type-bind");
+
         displayOnly = "true".equalsIgnoreCase(fieldMap.get("display-only"));
         
     }
 
-    public void fillTypeBinds(Map<String, String> fieldMap, Map<String, List<String>> typeBind, String nodeName) {
+    public void fillTypeBinds(Map<String, String> fieldMap, Map<String, Set<String>> typeBind, String nodeName) {
         String allTypeBinds = fieldMap.get(nodeName+"_all");
         if (StringUtils.isNotBlank(allTypeBinds)) {
             String[] typeBinds = allTypeBinds.split(" ");
             for (String bind : typeBinds) {
-                List<String> typeList = new ArrayList<String>();
-                String typeBindDef = fieldMap.get(nodeName+"#" + bind);
-                if (typeBindDef != null && typeBindDef.trim().length() > 0) {
-                    String[] types = typeBindDef.split(";"); // changed the type bind separator from a comma to a semicolon
-                    for (String type : types) {
-                        typeList.add(type.trim());
+                Set<String> typeList = new HashSet<>();
+                String typeBindDef = StringUtils.trimToEmpty(fieldMap.get(nodeName + "#" + bind));
+                String[] types = typeBindDef.split(";"); // changed the type bind separator from a comma to a semicolon
+                for (String type : types) {
+                    if(type.equals("#")) {
+                        type = "";
                     }
+                    typeList.add(type.trim());
                 }
                 typeBind.put(bind, typeList);
             }
@@ -416,16 +423,20 @@ public class DCInput
 	}
 
     public boolean isAllowedFor(Item item) {
-        return isAllowedForTypeBindSet(item, typeBind);
+        return isAllowedForTypeBindSet(item, typeBind, negativeTypeBind);
     }
 
-    private boolean isAllowedForTypeBindSet(Item item, Map<String, List<String>> typeBind) {
+    private boolean isAllowedForTypeBindSet(Item item, Map<String, Set<String>> typeBind, Map<String, Set<String>> negativeTypeBind) {
         Map<String, String> typebindValues = new HashMap<String, String>();
         for (String field : typeBind.keySet()) {
             String value = getMetadataFirstValue(item, field);
             typebindValues.put(field, value);
         }
-        return isAllowedForTypeBindSet(typebindValues, typeBind);
+        for (String field : negativeTypeBind.keySet()) {
+            String value = getMetadataFirstValue(item, field);
+            typebindValues.put(field, value);
+        }
+        return isAllowedForTypeBindSet(typebindValues, typeBind, negativeTypeBind);
     }
 
     public static String getMetadataFirstValue(Item item, String fieldName) {
@@ -444,21 +455,23 @@ public class DCInput
      * Decides if this field is valid for the document type
      *
      * @param typebindValues mapping of fields - values
+     * @param negativeTypeBind
      * @return true when there is no type restriction or typeName is allowed
      */
     protected boolean isAllowedForTypeBindSet(
             Map<String, String> typebindValues,
-            Map<String, List<String>> typeBind
-    ) {
+            Map<String, Set<String>> typeBind,
+            Map<String, Set<String>> negativeTypeBind) {
         boolean allowed = true;
 
         if (typebindValues == null || typebindValues.size() < typeBind.keySet().size()) {
             allowed = false;
-        } else if (typeBind.size() > 0) {
+        } else if (typeBind.size() > 0 || negativeTypeBind.size() > 0) {
             for (Map.Entry<String, String> entry : typebindValues.entrySet()) {
                 String field = entry.getKey();
-                String value = entry.getValue();
-                if (!typeBind.get(field).contains(value)) {
+                String value = StringUtils.trimToEmpty(entry.getValue());
+                if ((typeBind.get(field) != null && !typeBind.get(field).contains(value))
+                        || (negativeTypeBind.get(field) != null && negativeTypeBind.get(field).contains(value))) {
                     allowed = false;
                 }
             }

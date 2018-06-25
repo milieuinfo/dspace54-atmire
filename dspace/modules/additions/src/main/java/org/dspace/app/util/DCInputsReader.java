@@ -7,6 +7,16 @@
  */
 package org.dspace.app.util;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.FactoryConfigurationError;
+
 import org.dspace.content.MetadataSchema;
 import org.dspace.core.ConfigurationManager;
 import org.w3c.dom.Document;
@@ -14,12 +24,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.FactoryConfigurationError;
-import java.io.File;
-import java.util.*;
 
 /**
  * Submission form generator for DSpace. Reads and parses the installation
@@ -353,6 +357,8 @@ public class DCInputsReader {
                     String closedVocabularyString = getAttribute(nd, "closed");
                     field.put("closedVocabulary", closedVocabularyString);
                 } else if (tagName.equals("type-bind")) {
+                    putTypeBinds(field, nd, value);
+                } else if (tagName.equals("negative-type-bind")) {
                     putTypeBinds(field, nd, value);
                 }
             }

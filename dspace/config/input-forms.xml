@@ -52,14 +52,53 @@
        <!--</field>-->
 
        <field>
+         <dc-schema>dc</dc-schema>
+         <dc-element>type</dc-element>
+         <dc-qualifier></dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Type</label>
+         <input-type value-pairs-name="mer_types">dropdown</input-type>
+         <hint></hint>
+         <required></required>
+         <display-only>true</display-only>
+       </field>
+
+       <field>
          <dc-schema>mer</dc-schema>
          <dc-element>procedure</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
          <label>Procedure</label>
+         <type-bind type="dc.type">Procedure;#</type-bind>
          <input-type>contextual-dropdown</input-type>
          <hint>Kies de toegepaste procedure</hint>
-         <required>Dit veld is verplicht</required>9.1
+         <required>Dit veld is verplicht</required>
+         <vocabulary>mer-dossier-structuur</vocabulary>
+       </field>
+
+       <field>
+         <dc-schema>mer</dc-schema>
+         <dc-element>procedure</dc-element>
+         <dc-qualifier></dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Procedure</label>
+         <negative-type-bind type="dc.type">Procedure;#</negative-type-bind>
+         <input-type>onebox</input-type>
+         <hint></hint>
+         <required></required>
+         <display-only>true</display-only>
+       </field>
+
+       <field>
+         <dc-schema>mer</dc-schema>
+         <dc-element>procedurestap</dc-element>
+         <dc-qualifier></dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Procedurestap</label>
+         <type-bind type="dc.type">Procedurestap</type-bind>
+         <input-type>contextual-dropdown</input-type>
+         <hint>Kies de procedure stap</hint>
+         <required>Dit veld is verplicht</required>
          <vocabulary>mer-dossier-structuur</vocabulary>
        </field>
 
@@ -68,12 +107,12 @@
          <dc-element>procedurestap</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Procedure Stap</label>
-         <type-bind type="dc.type">Procedurestap</type-bind>
-         <input-type>contextual-dropdown</input-type>
-         <hint>Kies de procedure stap</hint>
-         <required>Dit veld is verplicht</required>
-         <vocabulary>mer-dossier-structuur</vocabulary>
+         <label>Procedurestap</label>
+         <negative-type-bind type="dc.type">Procedure;Procedurestap</negative-type-bind>
+         <input-type>onebox</input-type>
+         <hint></hint>
+         <required></required>
+         <display-only>true</display-only>
        </field>
 
        <field>
@@ -87,6 +126,19 @@
          <hint>Kies het document type</hint>
          <required>U moet een document type kiezen</required>
          <vocabulary>mer-dossier-structuur</vocabulary>
+       </field>
+
+       <field>
+         <dc-schema>mer</dc-schema>
+         <dc-element>document</dc-element>
+         <dc-qualifier></dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Document</label>
+         <negative-type-bind type="dc.type">Procedure;Procedurestap;Document</negative-type-bind>
+         <input-type>onebox</input-type>
+         <hint></hint>
+         <required></required>
+         <display-only>true</display-only>
        </field>
 
        <field>
@@ -108,9 +160,23 @@
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
          <label>Dossiernummer</label>
+         <type-bind type="dc.type">Procedure;#</type-bind>
          <input-type>onebox</input-type>
          <hint>Kies het document</hint>
          <required></required>
+       </field>
+
+       <field>
+         <dc-schema>mer</dc-schema>
+         <dc-element>dossiernummer</dc-element>
+         <dc-qualifier></dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Dossiernummer</label>
+         <negative-type-bind type="dc.type">Procedure;#</negative-type-bind>
+         <input-type>onebox</input-type>
+         <hint></hint>
+         <required></required>
+         <display-only>true</display-only>
        </field>
 
        <field>
@@ -119,6 +185,7 @@
          <dc-qualifier>created</dc-qualifier>
          <repeatable>false</repeatable>
          <label>Datum start dossier</label>
+         <type-bind type="dc.type">Procedure;#</type-bind>
          <input-type>date</input-type>
          <hint>De datum dat het dossier geopend is</hint>
          <required>U moet de startdatum van het dossier invullen</required>
@@ -127,9 +194,23 @@
        <field>
          <dc-schema>dc</dc-schema>
          <dc-element>date</dc-element>
+         <dc-qualifier>created</dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Datum start dossier</label>
+         <negative-type-bind type="dc.type">Procedure;#</negative-type-bind>
+         <input-type>date</input-type>
+         <hint></hint>
+         <required></required>
+         <display-only>true</display-only>
+       </field>
+
+       <field>
+         <dc-schema>dc</dc-schema>
+         <dc-element>date</dc-element>
          <dc-qualifier>issued</dc-qualifier>
          <repeatable>false</repeatable>
          <label>Datum afsluiting dossier</label>
+         <type-bind type="dc.type">Procedure;#</type-bind>
          <input-type>date</input-type>
          <hint>De datum dat het dossier werd afgesloten</hint>
          <required></required>
@@ -137,12 +218,13 @@
 
        <field>
          <dc-schema>dc</dc-schema>
-         <dc-element>type</dc-element>
-         <dc-qualifier></dc-qualifier>
-         <repeatable>true</repeatable>
-         <label>Type</label>
-         <input-type value-pairs-name="mer_types">dropdown</input-type>
-         <hint>Select the type(s) of content of the item. To select more than one value in the list, you may have to hold down the "CTRL" or "Shift" key.</hint>
+         <dc-element>date</dc-element>
+         <dc-qualifier>issued</dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Datum afsluiting dossier</label>
+         <negative-type-bind type="dc.type">Procedure;#</negative-type-bind>
+         <input-type>date</input-type>
+         <hint></hint>
          <required></required>
          <display-only>true</display-only>
        </field>
@@ -153,8 +235,34 @@
          <dc-qualifier>naam</dc-qualifier>
          <repeatable>false</repeatable>
          <label>Naam initiatiefnemer</label>
+         <type-bind type="dc.type">Procedure;#</type-bind>
          <input-type>name</input-type>
          <hint>Vul de naam van de initiatiefnemer in</hint>
+         <required></required>
+       </field>
+
+       <field>
+         <dc-schema>mer</dc-schema>
+         <dc-element>initiatiefnemer</dc-element>
+         <dc-qualifier>naam</dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Naam initiatiefnemer</label>
+         <negative-type-bind type="dc.type">Procedure;#</negative-type-bind>
+         <input-type>name</input-type>
+         <hint></hint>
+         <required></required>
+         <display-only>true</display-only>
+       </field>
+
+       <field>
+         <dc-schema>mer</dc-schema>
+         <dc-element>initiatiefnemer</dc-element>
+         <dc-qualifier>kbonummer</dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>KBO nummer initiatiefnemer</label>
+         <type-bind type="dc.type">Procedure;#</type-bind>
+         <input-type>onebox</input-type>
+         <hint>Vul het KBO nummer van de initiatiefnemer in</hint>
          <required></required>
        </field>
 
@@ -164,8 +272,22 @@
          <dc-qualifier>kbonummer</dc-qualifier>
          <repeatable>false</repeatable>
          <label>KBO nummer initiatiefnemer</label>
+         <negative-type-bind type="dc.type">Procedure;#</negative-type-bind>
          <input-type>onebox</input-type>
-         <hint>Vul het KBO nummer van de initiatiefnemer in</hint>
+         <hint></hint>
+         <required></required>
+         <display-only>true</display-only>
+       </field>
+
+       <field>
+         <dc-schema>mer</dc-schema>
+         <dc-element>locatie</dc-element>
+         <dc-qualifier>provincie</dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Provincie</label>
+         <type-bind type="dc.type">Procedure;#</type-bind>
+         <input-type value-pairs-name="provincies">dropdown</input-type>
+         <hint>Kies de provincie van dit dossier in</hint>
          <required></required>
        </field>
 
@@ -175,8 +297,22 @@
          <dc-qualifier>provincie</dc-qualifier>
          <repeatable>false</repeatable>
          <label>Provincie</label>
+         <negative-type-bind type="dc.type">Procedure;#</negative-type-bind>
          <input-type value-pairs-name="provincies">dropdown</input-type>
-         <hint>Kies de provincie van dit dossier in</hint>
+         <hint></hint>
+         <required></required>
+         <display-only>true</display-only>
+       </field>
+
+       <field>
+         <dc-schema>mer</dc-schema>
+         <dc-element>locatie</dc-element>
+         <dc-qualifier>gemeente</dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Gemeente</label>
+         <type-bind type="dc.type">Procedure;#</type-bind>
+         <input-type>onebox</input-type>
+         <hint>Vul de gemeente van dit dossier in</hint>
          <required></required>
        </field>
 
@@ -186,8 +322,22 @@
          <dc-qualifier>gemeente</dc-qualifier>
          <repeatable>false</repeatable>
          <label>Gemeente</label>
+         <negative-type-bind type="dc.type">Procedure;#</negative-type-bind>
          <input-type>onebox</input-type>
-         <hint>Vul de gemeente van dit dossier in</hint>
+         <hint></hint>
+         <required></required>
+         <display-only>true</display-only>
+       </field>
+
+       <field>
+         <dc-schema>mer</dc-schema>
+         <dc-element>activiteitengroep</dc-element>
+         <dc-qualifier>codering</dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Activiteitengroep codering</label>
+         <type-bind type="dc.type">Procedure;#</type-bind>
+         <input-type>onebox</input-type>
+         <hint>Vul de code van de activiteitsrubriek in</hint>
          <required></required>
        </field>
 
@@ -197,9 +347,11 @@
          <dc-qualifier>codering</dc-qualifier>
          <repeatable>false</repeatable>
          <label>Activiteitengroep codering</label>
+         <negative-type-bind type="dc.type">Procedure;#</negative-type-bind>
          <input-type>onebox</input-type>
-         <hint>Vul de code van de activiteitsrubriek in</hint>
+         <hint></hint>
          <required></required>
+         <display-only>true</display-only>
        </field>
 
      </page>

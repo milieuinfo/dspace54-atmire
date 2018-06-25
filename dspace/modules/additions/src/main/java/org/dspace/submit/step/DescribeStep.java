@@ -7,25 +7,35 @@
  */
 package org.dspace.submit.step;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.dspace.app.util.*;
+import org.dspace.app.util.DCInput;
+import org.dspace.app.util.DCInputsReader;
+import org.dspace.app.util.DCInputsReaderException;
+import org.dspace.app.util.SubmissionInfo;
+import org.dspace.app.util.Util;
 import org.dspace.authorize.AuthorizeException;
-import org.dspace.content.*;
+import org.dspace.content.Collection;
+import org.dspace.content.DCDate;
+import org.dspace.content.DCPersonName;
+import org.dspace.content.DCSeriesNumber;
+import org.dspace.content.Item;
+import org.dspace.content.MetadataField;
+import org.dspace.content.Metadatum;
 import org.dspace.content.authority.ChoiceAuthorityManager;
 import org.dspace.content.authority.Choices;
 import org.dspace.content.authority.MetadataAuthorityManager;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
 import org.dspace.submit.AbstractProcessingStep;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Describe step for DSpace submission process. Handles the gathering of
@@ -135,9 +145,14 @@ public class DescribeStep extends AbstractProcessingStep
         // clear out all item metadata defined on this page
         for (int i = 0; i < inputs.length; i++)
         {
-
         	// Allow the clearing out of the metadata defined for other document types, provided it can change anytime
-        	
+
+            // Omit fields not allowed for this document type
+            if(!inputs[i].isAllowedFor(item))
+            {
+                continue;
+            }
+
             if (!inputs[i]
                     .isVisible(subInfo.isInWorkflow() ? DCInput.WORKFLOW_SCOPE
                             : DCInput.SUBMISSION_SCOPE))
