@@ -7,6 +7,12 @@
  */
 package org.dspace.app.xmlui.aspect.submission.submit;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Locale;
+import javax.servlet.ServletException;
+
 import com.atmire.vocabulary.VocabularyUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.dspace.app.util.DCInput;
@@ -18,22 +24,32 @@ import org.dspace.app.xmlui.aspect.submission.FlowUtils;
 import org.dspace.app.xmlui.utils.UIException;
 import org.dspace.app.xmlui.wing.Message;
 import org.dspace.app.xmlui.wing.WingException;
-import org.dspace.app.xmlui.wing.element.*;
+import org.dspace.app.xmlui.wing.element.Body;
+import org.dspace.app.xmlui.wing.element.CheckBox;
+import org.dspace.app.xmlui.wing.element.Composite;
+import org.dspace.app.xmlui.wing.element.Division;
+import org.dspace.app.xmlui.wing.element.Field;
+import org.dspace.app.xmlui.wing.element.Instance;
+import org.dspace.app.xmlui.wing.element.List;
+import org.dspace.app.xmlui.wing.element.PageMeta;
+import org.dspace.app.xmlui.wing.element.Params;
+import org.dspace.app.xmlui.wing.element.Radio;
+import org.dspace.app.xmlui.wing.element.Select;
+import org.dspace.app.xmlui.wing.element.Text;
+import org.dspace.app.xmlui.wing.element.TextArea;
 import org.dspace.authorize.AuthorizeException;
-import org.dspace.content.*;
+import org.dspace.content.Collection;
+import org.dspace.content.DCDate;
+import org.dspace.content.DCPersonName;
+import org.dspace.content.DCSeriesNumber;
 import org.dspace.content.Item;
+import org.dspace.content.Metadatum;
 import org.dspace.content.authority.Choice;
 import org.dspace.content.authority.ChoiceAuthorityManager;
 import org.dspace.content.authority.Choices;
 import org.dspace.content.authority.MetadataAuthorityManager;
 import org.dspace.utils.DSpace;
 import org.xml.sax.SAXException;
-
-import javax.servlet.ServletException;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Locale;
 
 /**
  * This is a step of the item submission processes. The describe step queries
@@ -334,6 +350,11 @@ public class DescribeStep extends AbstractSubmissionStep
             // If the input is invisible in this scope, then skip it.
             String scope = submissionInfo.isInWorkflow() ? DCInput.WORKFLOW_SCOPE : DCInput.SUBMISSION_SCOPE;
             if (!input.isVisible(scope) && !input.isReadOnly(scope))
+            {
+                continue;
+            }
+
+            if(!input.isAllowedFor(submission.getItem()))
             {
                 continue;
             }

@@ -2640,8 +2640,8 @@
     <message key="xmlui.compliance.ComplianceUI.return">Return</message>
     <message key="xmlui.compliance.ComplianceUI.return_info">Select Return to send the item back to the previous workflow step if it is not compliant with all the rules.</message>
     <message key="xmlui.compliance.ComplianceUI.cancel">Cancel</message>
-    <message key="xmlui.compliance.ComplianceUI.top_information_bar_compliant">Congratulations, this item complies with the {0}!</message>
-    <message key="xmlui.compliance.ComplianceUI.top_information_bar_not_compliant">Dit item voldoet niet aan de {0}!</message>
+    <message key="xmlui.compliance.ComplianceUI.top_information_bar_compliant">Dit item voldoet aan de {0} regels.</message>
+    <message key="xmlui.compliance.ComplianceUI.top_information_bar_not_compliant">Dit item voldoet niet aan de {0}.</message>
     <message key="xmlui.compliance.ComplianceUI.top_information_bar_not_applicable">De {0} regels zijn niet van toepassing op dit item</message>
     <message key="xmlui.compliance.ComplianceUI.not_applicable_help_ref">
         <p>The REF Open Access policy sets out the details of a requirement that certain research outputs should be made open-access to be eligible for
