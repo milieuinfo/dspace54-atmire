@@ -54,6 +54,7 @@ and searching the repository.
                                 <map:parameter name="action" value="onderdeel"/>
                                 <map:transform type="RedirectSubmissionPage">
                                     <map:parameter name="workspaceID" value="{workspaceID}"/>
+                                    <map:parameter name="handle" value="{handle}"/>
                                 </map:transform>
                             </map:act>
                         </map:match>
@@ -62,6 +63,7 @@ and searching the repository.
                                 <map:parameter name="action" value="version"/>
                                 <map:transform type="RedirectSubmissionPage">
                                     <map:parameter name="workspaceID" value="{workspaceID}"/>
+                                    <map:parameter name="handle" value="{handle}"/>
                                 </map:transform>
                             </map:act>
                         </map:match>

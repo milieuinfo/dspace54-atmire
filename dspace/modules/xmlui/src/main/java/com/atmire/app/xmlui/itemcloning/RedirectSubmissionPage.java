@@ -19,15 +19,16 @@ public class RedirectSubmissionPage extends AbstractDSpaceTransformer {
     public void addBody(Body body) throws IOException {
         try {
             String workspaceID = parameters.getParameter("workspaceID");
+            String handle = parameters.getParameter("handle");
             ((HttpServletResponse) objectModel.get(HttpEnvironment.HTTP_RESPONSE_OBJECT))
-                    .sendRedirect(getItemURL(workspaceID));
+                    .sendRedirect(getItemURL(handle, workspaceID));
         } catch (ParameterException e) {
             throw new UnhandledException(e);
         }
     }
 
-    private String getItemURL(String workspaceID) {
-        return contextPath + "/submit?workspaceID=" + workspaceID;
+    private String getItemURL(String handle, String workspaceID) {
+        return contextPath + "/handle/" + handle + "/submit-clone?workspaceID=" + workspaceID;
     }
 
 }

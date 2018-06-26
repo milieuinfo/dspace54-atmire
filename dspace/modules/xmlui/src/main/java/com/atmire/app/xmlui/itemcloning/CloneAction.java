@@ -1,16 +1,9 @@
 package com.atmire.app.xmlui.itemcloning;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import com.atmire.utils.MetadataUtils;
 import com.atmire.utils.NullValidation;
 import com.google.common.base.Function;
+import com.google.common.collect.ImmutableMap;
 import org.apache.avalon.framework.parameters.Parameters;
 import org.apache.cocoon.acting.AbstractAction;
 import org.apache.cocoon.environment.Redirector;
@@ -27,6 +20,10 @@ import org.dspace.content.Metadatum;
 import org.dspace.content.WorkspaceItem;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * Created by: Antoine Snyers (antoine at atmire dot com)
@@ -59,7 +56,10 @@ public class CloneAction extends AbstractAction {
             if (actionValidation.isOK()) {
                 Action action = actionValidation.getObject();
                 String workspaceID = createNewItem(context, owningCollection, item, action);
-                return Collections.singletonMap("workspaceID", workspaceID);
+                return ImmutableMap.of(
+                        "workspaceID", workspaceID,
+                        "handle", owningCollection.getHandle()
+                );
             } else {
                 throw new IllegalArgumentException(actionValidation.getCharacters());
             }

@@ -231,6 +231,18 @@ function doSubmission()
 
 }
 
+function doClone() {
+    var workspaceID = cocoon.request.get("workspaceID");
+
+    var handle = cocoon.parameters["handle"];
+    if (handle == null)
+        handle = cocoon.request.get("handle");
+
+    // Hand off to the master thingy....
+    //(specify "S" for submission item, for FlowUtils.findSubmission())
+    submissionControl(handle, "S" + workspaceID, null);
+}
+
 /**
  * This is the master flow control for submissions. This method decides
  * which steps are executed in which order. Each step is called and does
