@@ -47,7 +47,7 @@ public class RegexRule extends AbstractFieldCheckRule implements ComplianceRule 
 
     protected String getRuleDescriptionCompliant() {
         return String.format(
-                "Het %s veld (%s) heeft niet het opgelegde formaat",
+                "het %s veld (%s) moet voldoen aan het opgelegde formaat",
                 fieldDescription,
                 metadataFieldToCheck
         );
@@ -55,7 +55,7 @@ public class RegexRule extends AbstractFieldCheckRule implements ComplianceRule 
 
     protected String getRuleDescriptionViolation() {
         return String.format(
-                "Het %s veld (%s) moet voldoen aan het opgelegde formaat",
+                "het %s veld (%s) heeft niet het opgelegde formaat",
                 fieldDescription,
                 metadataFieldToCheck
         );
