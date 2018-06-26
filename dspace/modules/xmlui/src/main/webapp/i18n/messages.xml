@@ -2626,13 +2626,13 @@
 
     <message key="xmlui.compliance.ComplianceUI.applicable_help_milieuinfo">&#160;</message>
     <message key="xmlui.compliance.workflow.REFComplianceAction.head">Item REF OA Compliance</message>
-    <message key="xmlui.compliance.workflow.MilieuinfoComplianceAction.head">Item Milieuinfo Compliance</message>
+    <message key="xmlui.compliance.workflow.MilieuinfoComplianceAction.head">Item Milieuinfo validatie</message>
 
     <message key="xmlui.XMLWorkflow.default.refcompliancestep.claimaction">Item REF OA Compliance</message>
     <message key="xmlui.XMLWorkflow.default.refcompliancestep.refcomplianceaction">Item REF OA Compliance</message>
 
-    <message key="xmlui.XMLWorkflow.default.milieuinfocompliancestep.claimaction">Item Milieuinfo Compliance</message>
-    <message key="xmlui.XMLWorkflow.default.milieuinfocompliancestep.milieuinfocomplianceaction">Item Milieuinfo Compliance</message>
+    <message key="xmlui.XMLWorkflow.default.milieuinfocompliancestep.claimaction">Item Milieuinfo validatie</message>
+    <message key="xmlui.XMLWorkflow.default.milieuinfocompliancestep.milieuinfocomplianceaction">Item Milieuinfo validatie</message>
 
     <message key="xmlui.compliance.ComplianceUI.info1">Actions you may perform on this task:</message>
     <message key="xmlui.compliance.ComplianceUI.continue">Continue</message>
@@ -2687,7 +2687,7 @@
 
     <message key="xmlui.Submission.submit.progressbar.compliance">Compliance</message>
     <message key="xmlui.Submission.submit.progressbar.ref.compliance">REF OA Compliance</message>
-    <message key="xmlui.Submission.submit.progressbar.milieuinfo.compliance">Milieuinfo Compliance</message>
+    <message key="xmlui.Submission.submit.progressbar.milieuinfo.compliance">Milieuinfo validatie</message>
 
     <message key="xmlui.Submission.submit.progressbar.refexception">REF OA Exceptions</message>
     <message key="xmlui.compliance.submission.ExceptionStep.head">REF OA Exceptions</message>
