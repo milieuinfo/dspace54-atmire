@@ -9,7 +9,7 @@
 
     <bean class="com.atmire.app.xmlui.aspect.compliance.ComplianceUI" id="milieuinfoComplianceUI">
         <property name="complianceCheckService" ref="milieuinfoComplianceCheckService"/>
-        <property name="name" value="Milieuinfo Validation"/>
+        <property name="name" value="Milieuinfo validatie"/>
         <property name="shortname" value="Milieuinfo"/>
         <property name="identifier" value="milieuinfo"/>
         <property name="navigationKey" value="xmlui.Compliance.Navigation.item-milieuinfo-compliance"/>

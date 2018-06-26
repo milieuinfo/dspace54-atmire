@@ -237,6 +237,13 @@
                 </fieldValue>
             </rule>
         </rules>
+        <exceptions>
+            <rule type="isBlank"
+                  description="Enkel items die vallen onder een MER procedure moeten aan de MER validatie voldoen.">
+                <field>mer.procedure</field>
+                <fieldDescription>MER procedure</fieldDescription>
+            </rule>
+        </exceptions>
     </category>
 </rule-categories>
 

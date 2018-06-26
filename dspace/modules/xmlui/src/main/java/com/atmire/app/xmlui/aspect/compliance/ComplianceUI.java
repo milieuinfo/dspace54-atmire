@@ -1,5 +1,9 @@
 package com.atmire.app.xmlui.aspect.compliance;
 
+import static org.dspace.app.xmlui.wing.AbstractWingTransformer.message;
+
+import java.sql.SQLException;
+
 import com.atmire.sword.result.CategoryComplianceResult;
 import com.atmire.sword.result.ComplianceResult;
 import com.atmire.sword.result.RuleComplianceResult;
@@ -9,12 +13,16 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.dspace.app.xmlui.wing.Message;
 import org.dspace.app.xmlui.wing.WingException;
-import org.dspace.app.xmlui.wing.element.*;
+import org.dspace.app.xmlui.wing.element.Button;
+import org.dspace.app.xmlui.wing.element.Cell;
+import org.dspace.app.xmlui.wing.element.Division;
+import org.dspace.app.xmlui.wing.element.Highlight;
+import org.dspace.app.xmlui.wing.element.Item;
+import org.dspace.app.xmlui.wing.element.List;
+import org.dspace.app.xmlui.wing.element.Para;
+import org.dspace.app.xmlui.wing.element.Row;
+import org.dspace.app.xmlui.wing.element.Table;
 import org.dspace.core.Context;
-
-import java.sql.SQLException;
-
-import static org.dspace.app.xmlui.wing.AbstractWingTransformer.message;
 
 /**
  * Created by Philip Vissenaekens (philip at atmire dot com)
@@ -267,7 +275,7 @@ public class ComplianceUI {
                 String render = "compliant exception";
 
                 Item ruleItem = list.addItem("compliance-item", render);
-                ruleItem.addContent("Applied exception: " + rule.getResultDescription());
+                ruleItem.addContent("Toegepaste uitzondering: " + rule.getResultDescription());
 
                 ruleItem.addXref(rule.getDefinitionHint(), T_circle_icon, "rule-tooltip");
             }
@@ -305,7 +313,7 @@ public class ComplianceUI {
                     Highlight highlight = ruleItem.addHighlight("rule-description");
                     highlight.addHighlight("fa fa-exclamation-triangle");
                     highlight.addHighlight("rule-description-text")
-                            .addContent("Applied exception: " + rule.getExceptionDescription());
+                            .addContent("Toegepaste uitzondering: " + rule.getExceptionDescription());
                     highlight.addXref(rule.getExceptionHint(), T_circle_icon, "rule-tooltip");
 
                 } else if (!rule.isCompliant() && CollectionUtils.isNotEmpty(rule.getViolationDescriptions())) {
