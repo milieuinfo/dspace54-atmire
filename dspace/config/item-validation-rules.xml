@@ -10,19 +10,19 @@
                   description="Het gebruik van dc.relation.haspart is niet toegestaan."
                   resolutionHint="Verwijder de waarde in dc.relation.haspart.">
                 <field>dc.relation.haspart</field>
-                <fieldDescription>heeft-onderdeel</fieldDescription>
+                <fieldDescription>"heeft-onderdeel"</fieldDescription>
             </rule>
             <rule type="isBlank"
                   description="Het gebruik van dc.relation.isreplacedby is niet toegestaan."
                   resolutionHint="Verwijder de waarde in dc.relation.isreplacedby.">
                 <field>dc.relation.isreplacedby</field>
-                <fieldDescription>is-vervangen-door</fieldDescription>
+                <fieldDescription>"is-vervangen-door"</fieldDescription>
             </rule>
             <rule type="countLesserThan"
                   description="Het item heeft slechts 1 waarde voor dc.relation.replaces."
                   resolutionHint="Verwijder de extra waardes in dc.relation.replaces.">
                 <field>dc.relation.replaces</field>
-                <fieldDescription>vervangt-item</fieldDescription>
+                <fieldDescription>"vervangt-item"</fieldDescription>
                 <fieldValue>
                     <value>2</value>
                 </fieldValue>
@@ -31,7 +31,7 @@
                   description="Het item heeft slechts 1 waarde voor dc.relation.ispartof."
                   resolutionHint="Verwijder de extra waardes in dc.relation.ispartof.">
                 <field>dc.relation.ispartof</field>
-                <fieldDescription>is-onderdeel-van</fieldDescription>
+                <fieldDescription>"is-onderdeel-van"</fieldDescription>
                 <fieldValue>
                     <value>2</value>
                 </fieldValue>
@@ -62,7 +62,7 @@
                   description="De waarde voor dc.relation.replaces moet uniek zijn."
                   resolutionHint="Geef dc.relation.replaces een unieke waarde.">
                 <field>dc.relation.replaces</field>
-                <fieldDescription>vervangt-item</fieldDescription>
+                <fieldDescription>"vervangt-item"</fieldDescription>
             </rule>
         </rules>
     </category>
