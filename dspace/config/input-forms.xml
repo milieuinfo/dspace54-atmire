@@ -382,6 +382,54 @@
          <required></required>
        </field>
 
+       <field>
+         <dc-schema>dc</dc-schema>
+         <dc-element>creator</dc-element>
+         <dc-qualifier></dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Naam aanmaker</label>
+         <input-type>onebox</input-type>
+         <hint></hint>
+         <required></required>
+         <display-only>true</display-only>
+       </field>
+
+       <field>
+         <dc-schema>dc</dc-schema>
+         <dc-element>language</dc-element>
+         <dc-qualifier>iso</dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Taal</label>
+         <input-type>onebox</input-type>
+         <hint></hint>
+         <required></required>
+         <display-only>true</display-only>
+       </field>
+
+       <field>
+         <dc-schema>dc</dc-schema>
+         <dc-element>publisher</dc-element>
+         <dc-qualifier></dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Uitgever</label>
+         <input-type>onebox</input-type>
+         <hint></hint>
+         <required></required>
+         <display-only>true</display-only>
+       </field>
+
+       <field>
+         <dc-schema>dc</dc-schema>
+         <dc-element>source</dc-element>
+         <dc-qualifier></dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Bron</label>
+         <input-type>onebox</input-type>
+         <hint></hint>
+         <required></required>
+         <display-only>true</display-only>
+       </field>
+
      </page>
    </form>
 
