@@ -301,6 +301,7 @@
                 <db.maxidle>1</db.maxidle>
                 <xmlui.google.analytics.key>DUMMY_KEY</xmlui.google.analytics.key>
                 <virus-scan>false</virus-scan>
+                <collection.handle.mer>123456789/31</collection.handle.mer>
             </properties>
         </profile>
 
@@ -340,6 +341,7 @@
                 <handle.canonical.prefix>${dspace.baseUrl}/</handle.canonical.prefix>
                 <handle.prefix>acd</handle.prefix>
                 <openam.server.url>http://msb-on-750.mmis.be:9880/sso</openam.server.url>
+                <collection.handle.mer></collection.handle.mer>
             </properties>
         </profile>
 
@@ -348,6 +350,7 @@
             <properties>
                 <xmlui.google.analytics.key>DUMMY_KEY</xmlui.google.analytics.key>
                 <openam.server.url>http://msb-on-1153.mmis.be:9880/sso</openam.server.url>
+                <collection.handle.mer></collection.handle.mer>
             </properties>
         </profile>
 
