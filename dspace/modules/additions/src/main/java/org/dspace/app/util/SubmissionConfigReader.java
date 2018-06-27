@@ -7,6 +7,7 @@
  */
 package org.dspace.app.util;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.dspace.core.ConfigurationManager;
 import org.w3c.dom.Document;
@@ -92,6 +93,7 @@ public class SubmissionConfigReader
      */
     private SubmissionConfig lastSubmissionConfig = null;
 
+    private MappedCollectionHandleUtil mappedCollectionHandleUtil;
     /**
      * Load Submission Configuration from the
      * item-submission.xml configuration file 
@@ -99,6 +101,7 @@ public class SubmissionConfigReader
     public SubmissionConfigReader() throws ServletException
     {
         buildInputs(configDir + SUBMIT_DEF_FILE_PREFIX + SUBMIT_DEF_FILE_SUFFIX);
+
     }
 
     /**
@@ -114,6 +117,7 @@ public class SubmissionConfigReader
      */
     private void buildInputs(String fileName) throws ServletException
     {
+        mappedCollectionHandleUtil = new MappedCollectionHandleUtil();
         collectionToSubmissionConfig = new HashMap<String, String>();
         submitDefns = new HashMap<String, List<Map<String, String>>>();
 
@@ -333,10 +337,17 @@ public class SubmissionConfigReader
                     throw new SAXException(
                             "name-map element has content in 'item-submission.xml', it should be empty.");
                 }
-                collectionToSubmissionConfig.put(id, value);
+                filterMavenPropertiesAndAddToFormsMap(id, value);
             } // ignore any child node that isn't a "name-map"
         }
     }
+    private void filterMavenPropertiesAndAddToFormsMap(String id, String value) {
+        String idToUse = mappedCollectionHandleUtil.getIdToUse(id);
+        if(StringUtils.isNotBlank(idToUse)){
+            collectionToSubmissionConfig.put(idToUse, value);
+        }
+    }
+
 
     /**
      * Process the "step-definition" section of the XML file. Each element is

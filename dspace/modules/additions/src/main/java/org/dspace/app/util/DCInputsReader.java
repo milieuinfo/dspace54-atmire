@@ -7,16 +7,8 @@
  */
 package org.dspace.app.util;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.FactoryConfigurationError;
-
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.dspace.content.MetadataSchema;
 import org.dspace.core.ConfigurationManager;
 import org.w3c.dom.Document;
@@ -24,6 +16,12 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.FactoryConfigurationError;
+import java.io.File;
+import java.util.*;
 
 /**
  * Submission form generator for DSpace. Reads and parses the installation
@@ -48,6 +46,10 @@ import org.xml.sax.SAXException;
  */
 
 public class DCInputsReader {
+
+    /* Log4j logger*/
+    private static final Logger log =  Logger.getLogger(DCInputsReader.class);
+
     /**
      * The ID of the default collection. Will never be the ID of a named
      * collection
@@ -93,6 +95,8 @@ public class DCInputsReader {
      */
     private DCInputSet lastInputSet = null;
 
+    private MappedCollectionHandleUtil mappedCollectionHandleUtil;
+
     /**
      * Parse an XML encoded submission forms template file, and create a hashmap
      * containing all the form information. This hashmap will contain three top
@@ -115,6 +119,7 @@ public class DCInputsReader {
 
     private void buildInputs(String fileName)
             throws DCInputsReaderException {
+        mappedCollectionHandleUtil = new MappedCollectionHandleUtil();
         whichForms = new HashMap<String, String>();
         formDefns = new HashMap<String, List<List<Map<String, String>>>>();
         valuePairs = new HashMap<String, List<String>>();
@@ -254,8 +259,15 @@ public class DCInputsReader {
                 if (content != null && content.length() > 0) {
                     throw new SAXException("name-map element has content, it should be empty.");
                 }
-                whichForms.put(id, value);
+                filterMavenPropertiesAndAddToFormsMap(id, value);
             }  // ignore any child node that isn't a "name-map"
+        }
+    }
+
+    private void filterMavenPropertiesAndAddToFormsMap(String id, String value) {
+        String idToUse = mappedCollectionHandleUtil.getIdToUse(id);
+        if(StringUtils.isNotBlank(idToUse)){
+            whichForms.put(idToUse, value);
         }
     }
 
