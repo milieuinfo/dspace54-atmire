@@ -1,18 +1,25 @@
 package com.atmire.metadata;
 
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.dspace.content.Collection;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
+import org.dspace.content.WorkspaceItem;
+import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.event.Consumer;
 import org.dspace.event.Event;
 import org.dspace.utils.DSpace;
+import org.dspace.workflow.WorkflowItem;
+import org.dspace.xmlworkflow.storedcomponents.XmlWorkflowItem;
 
 /**
  * Created by: Antoine Snyers (antoine at atmire dot com)
@@ -27,8 +34,15 @@ public class AutoFillMetadataConsumer implements Consumer {
 
     private Set<Integer> itemIDs = new HashSet<>();
 
-    public void initialize() throws Exception {
+    private Set<String> enabledCollections = new HashSet<>();
 
+    public void initialize() throws Exception {
+        String[] collectionHandles = StringUtils.split(ConfigurationManager.getProperty("autofill.metadata.consumer.collections"), ",");
+        if (collectionHandles != null && collectionHandles.length > 0) {
+            for (String collectionHandle : collectionHandles) {
+                enabledCollections.add(StringUtils.trim(collectionHandle));
+            }
+        }
     }
 
     /**
@@ -36,7 +50,6 @@ public class AutoFillMetadataConsumer implements Consumer {
      * DO NOT COMMIT THE CONTEXT
      */
     public void consume(Context context, Event event) throws Exception {
-
 
         int subjectType = event.getSubjectType();
         int eventType = event.getEventType();
@@ -68,7 +81,8 @@ public class AutoFillMetadataConsumer implements Consumer {
                 for (Integer itemID : itemIDs) {
                     try {
                         Item item = Item.find(context, itemID);
-                        if(item != null) {
+                        Collection owningCollection = getItemCollection(context, item);
+                        if (item != null && shouldAutoFillInCollection(owningCollection)) {
                             //noinspection unchecked
                             List<EditMetadata> config = new DSpace().getServiceManager()
                                     .getServiceByName("autoFillMetadata", List.class);
@@ -86,7 +100,45 @@ public class AutoFillMetadataConsumer implements Consumer {
         }
     }
 
+    private Collection getItemCollection(Context context, Item item) throws SQLException {
+        Collection owningCollection = null;
+
+        if (item != null) {
+            owningCollection = item.getOwningCollection();
+            if (owningCollection == null) {
+                WorkspaceItem workspaceItem = WorkspaceItem.findByItem(context, item);
+                if (workspaceItem != null) {
+                    owningCollection = workspaceItem.getCollection();
+                }
+            }
+
+            if (owningCollection == null) {
+                WorkflowItem workflowItem = WorkflowItem.findByItem(context, item);
+                if (workflowItem != null) {
+                    owningCollection = workflowItem.getCollection();
+                }
+            }
+
+            if (owningCollection == null) {
+                XmlWorkflowItem workflowItem = XmlWorkflowItem.findByItem(context, item);
+                if (workflowItem != null) {
+                    owningCollection = workflowItem.getCollection();
+                }
+            }
+        }
+
+        return owningCollection;
+    }
+
     public void finish(Context ctx) throws Exception {
 
+    }
+
+    private boolean shouldAutoFillInCollection(final Collection owningCollection) {
+        if (CollectionUtils.isEmpty(enabledCollections) || (owningCollection != null && enabledCollections.contains(owningCollection.getHandle()))) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -109,7 +109,7 @@
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
          <label>Procedurestap</label>
-         <negative-type-bind type="dc.type">Procedure;Procedurestap</negative-type-bind>
+         <negative-type-bind type="dc.type">Procedure;Procedurestap;#</negative-type-bind>
          <input-type>onebox</input-type>
          <hint></hint>
          <required></required>
@@ -135,7 +135,7 @@
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
          <label>Document</label>
-         <negative-type-bind type="dc.type">Procedure;Procedurestap;Document</negative-type-bind>
+         <negative-type-bind type="dc.type">Procedure;Procedurestap;Document;#</negative-type-bind>
          <input-type>onebox</input-type>
          <hint></hint>
          <required></required>
