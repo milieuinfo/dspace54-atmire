@@ -1,5 +1,9 @@
 package com.atmire.metadata;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.dspace.content.DSpaceObject;
@@ -9,10 +13,6 @@ import org.dspace.core.Context;
 import org.dspace.event.Consumer;
 import org.dspace.event.Event;
 import org.dspace.utils.DSpace;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Created by: Antoine Snyers (antoine at atmire dot com)
@@ -68,11 +68,13 @@ public class AutoFillMetadataConsumer implements Consumer {
                 for (Integer itemID : itemIDs) {
                     try {
                         Item item = Item.find(context, itemID);
-                        //noinspection unchecked
-                        List<EditMetadata> config = new DSpace().getServiceManager()
-                                .getServiceByName("autoFillMetadata", List.class);
-                        new FillMetadataRunner(config, item).run();
-                        item.update();
+                        if(item != null) {
+                            //noinspection unchecked
+                            List<EditMetadata> config = new DSpace().getServiceManager()
+                                    .getServiceByName("autoFillMetadata", List.class);
+                            new FillMetadataRunner(config, item).run();
+                            item.update();
+                        }
                     } catch (Exception e) {
                         log.error("", e);
                     }

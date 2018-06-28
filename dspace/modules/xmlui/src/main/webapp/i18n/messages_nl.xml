@@ -941,7 +941,7 @@
         <message key="xmlui.Submission.submit.ReviewStep.head">Review bijdrage</message>
         <message key="xmlui.Submission.submit.ReviewStep.yes">Ja</message>
         <message key="xmlui.Submission.submit.ReviewStep.no">Nee</message>
-        <message key="xmlui.Submission.submit.ReviewStep.submit_jump">Corrigeer een dan deze</message>
+        <message key="xmlui.Submission.submit.ReviewStep.submit_jump">Corrigeer een van deze</message>
         <message key="xmlui.Submission.submit.ReviewStep.submit_jump_files">Voeg een bestand toe of verwijder een bestand</message>
         <message key="xmlui.Submission.submit.ReviewStep.head1">Initiële vragen</message>
         <message key="xmlui.Submission.submit.ReviewStep.head2">Beschrijf pagina {0}</message>
