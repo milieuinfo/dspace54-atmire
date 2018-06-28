@@ -103,7 +103,7 @@ public class ComplianceUI {
 
     private ComplianceCheckService complianceCheckService;
 
-    public void addComplianceSections(
+    public boolean addComplianceSections(
             Division div,
             org.dspace.content.Item item,
             org.dspace.core.Context context
@@ -129,6 +129,8 @@ public class ComplianceUI {
             addTopInformationBar(div, result);
             addItemNotApplicableSection(div, result);
         }
+
+        return !result.isApplicable() || result.isCompliant();
     }
 
     private void addShowRulesLink(Division div) throws WingException {
