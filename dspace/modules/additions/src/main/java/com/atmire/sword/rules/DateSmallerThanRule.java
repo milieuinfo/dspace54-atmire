@@ -47,7 +47,7 @@ public class DateSmallerThanRule extends AbstractFieldCheckRule implements Compl
                 }
 
             } catch (IllegalArgumentException ex) {
-                addViolationDescription("het metadata veld %s is ongeldig omdat het een ongeldige datum (-formaat) bevat", metadataFieldToCheck);
+                addViolationDescription("het metadata veld %s is ongeldig omdat het een ongeldige datum (in een verkeerd formaat) bevat", metadataFieldToCheck);
             }
         }
 

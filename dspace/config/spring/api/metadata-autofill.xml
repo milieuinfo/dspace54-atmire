@@ -45,7 +45,7 @@
         </bean>
         <bean class="com.atmire.metadata.FillValue">
             <property name="field" value="dc.source[*]"/>
-            <property name="value" value="MER"/>
+            <property name="value" value="Mer"/>
         </bean>
         <bean class="com.atmire.metadata.FillValue">
             <property name="field" value="dc.type[*]"/>

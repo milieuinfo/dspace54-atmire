@@ -1,5 +1,13 @@
 package com.atmire.app.xmlui.itemcloning;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import com.atmire.utils.MetadataUtils;
 import com.atmire.utils.NullValidation;
 import com.google.common.base.Function;
@@ -20,10 +28,6 @@ import org.dspace.content.Metadatum;
 import org.dspace.content.WorkspaceItem;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.*;
 
 /**
  * Created by: Antoine Snyers (antoine at atmire dot com)
@@ -107,17 +111,19 @@ public class CloneAction extends AbstractAction {
             for (Metadatum m : item.getMetadata(Item.ANY, Item.ANY, Item.ANY, Item.ANY)) {
                 newItem.addMetadata(m.schema, m.element, m.qualifier, m.language, m.value);
             }
+
+            clearFields(newItem);
+            inheritType(newItem, item, action);
+
             if (action == Action.ONDERDEEL) {
-                clearFields(newItem);
                 MetadataUtils.addMetadata
                         (newItem, "dc.relation.ispartof", getIdentifier(item));
-                inheritType(newItem, item);
             }
             if (action == Action.VERSION) {
-                clearFields(newItem);
                 MetadataUtils.addMetadata
                         (newItem, "dc.relation.replaces", getIdentifier(item));
             }
+
             newItem.update();
             return String.valueOf(workspaceItem.getID());
         } catch (AuthorizeException | SQLException | IOException e) {
@@ -151,14 +157,21 @@ public class CloneAction extends AbstractAction {
         return MetadataUtils.getMetadataFirstValue(item, "vlaanderen.identifier");
     }
 
-    private void inheritType(Item newItem, Item originalItem) {
+    private void inheritType(Item newItem, Item originalItem, Action action) {
         String type = MetadataUtils.getMetadataFirstValue(originalItem, "dc.type");
-        String[] config = getCommaSeparatedValues("clone.item.metadata.type.hierarchy");
-        String newType = getTypeMap(config).get(toLowerCase(type));
-        if (StringUtils.isNotBlank(newType)) {
-            MetadataUtils.clearMetadata(newItem, "dc.type");
-            MetadataUtils.addMetadata(newItem, "dc.type", newType);
+        String newType = null;
+
+        if (action == Action.ONDERDEEL) {
+            String[] config = getCommaSeparatedValues("clone.item.metadata.type.hierarchy");
+            newType = getTypeMap(config).get(toLowerCase(type));
         }
+
+        if (StringUtils.isBlank(newType)) {
+            newType = type;
+        }
+
+        MetadataUtils.clearMetadata(newItem, "dc.type");
+        MetadataUtils.addMetadata(newItem, "dc.type", newType);
     }
 
     private Map<String, String> getTypeMap(String[] commaSeparatedValues) {

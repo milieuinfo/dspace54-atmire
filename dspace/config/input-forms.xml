@@ -58,7 +58,7 @@
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
          <label>Type</label>
-         <input-type value-pairs-name="mer_types">dropdown</input-type>
+         <input-type>onebox</input-type>
          <hint></hint>
          <required></required>
          <display-only>true</display-only>
