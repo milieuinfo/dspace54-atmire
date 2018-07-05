@@ -1235,6 +1235,11 @@
                 <version>51.1</version>
             </dependency>
             <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>42.2.1.jre7</version>
+            </dependency>
+            <dependency>
                 <groupId>postgresql</groupId>
                 <artifactId>postgresql</artifactId>
                 <version>9.1-901-1.jdbc4</version>

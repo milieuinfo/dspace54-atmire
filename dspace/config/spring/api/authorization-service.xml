@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2002-2010, DuraSpace.  All rights reserved
+    Licensed under the DuraSpace License.
+
+    A copy of the DuraSpace License has been included in this
+    distribution and is available at: http://www.dspace.org/license
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd"
+
+       default-autowire-candidates="*Service,*DAO,javax.sql.DataSource">
+
+    <context:annotation-config/>
+    <!-- allows us to use spring annotations in beans -->
+
+    <!-- Lazy init to accommodate for dspace.cfg having to load before being abel to create a context in "GroupAuthorizationCheck"-->
+    <bean id="ComplianceAuthorizationChecker" class="com.atmire.authorization.AuthorizationChecker" lazy-init="true">
+
+        <!-- If any of the checks returns true, the user is authorized -->
+        <property name="authorizationChecks">
+            <list>
+                <bean class="com.atmire.authorization.checks.SubmitterCheck"/>
+                <ref bean="allowedGroupsForCompliance"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="allowedGroupsForCompliance" class="com.atmire.authorization.checks.GroupAuthorizationCheck" lazy-init="true">
+        <property name="allowedGroups">
+            <list>
+                <value>Administrator</value>
+            </list>
+        </property>
+    </bean>
+
+</beans>

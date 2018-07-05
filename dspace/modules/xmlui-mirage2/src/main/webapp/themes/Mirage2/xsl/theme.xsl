@@ -50,6 +50,7 @@
     <xsl:import href="aspect/submission/submission.xsl"/>
     <xsl:import href="custom/core/forms.xsl"/>
     <xsl:import href="custom/core/navigation.xsl"/>
+    <xsl:import href="custom/compliance/item-compliance.xsl"/>
     <xsl:output indent="yes"/>
 
 

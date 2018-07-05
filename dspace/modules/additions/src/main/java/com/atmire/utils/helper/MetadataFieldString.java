@@ -1,16 +1,15 @@
 package com.atmire.utils.helper;
 
-import org.apache.commons.lang.StringUtils;
-import org.dspace.app.util.DCInput;
-import org.dspace.content.Item;
-import org.dspace.content.Metadatum;
-import org.dspace.content.authority.Choices;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import com.atmire.utils.subclasses.MetadatumExtended;
+import org.apache.commons.lang.StringUtils;
+import org.dspace.app.util.DCInput;
+import org.dspace.content.Item;
+import org.dspace.content.Metadatum;
+import org.dspace.content.authority.Choices;
 
 /**
  * metadataFieldString = schema.element.qualifier[language]::authority::confidence
@@ -99,6 +98,11 @@ public class MetadataFieldString {
                 } else {
                     qualifier = rest;
                 }
+            } else if(element.contains("[")) {
+                int open = element.indexOf('[');
+                int close = element.indexOf(']');
+                language = element.substring(open + 1, close);
+                element = element.substring(0, open);
             }
         }
 

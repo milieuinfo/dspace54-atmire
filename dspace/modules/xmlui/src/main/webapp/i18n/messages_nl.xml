@@ -692,13 +692,13 @@
         <message key="xmlui.Submission.CollectionViewer.link1">Voer een nieuw item in in deze collectie</message>
 
         <!-- org.dspace.app.xmlui.submission.Navigation -->
-        <message key="xmlui.Submission.Navigation.submissions">Bijdragen</message>
+        <message key="xmlui.Submission.Navigation.submissions">Item invoer</message>
 
 
         <!-- org.dspace.app.xmlui.Submission.submissions -->
-        <message key="xmlui.Submission.Submissions.title">Bijdragen &amp; Workflow</message>
-        <message key="xmlui.Submission.Submissions.trail">Bijdragen</message>
-        <message key="xmlui.Submission.Submissions.head">Bijdragen &amp; workflow taken</message>
+        <message key="xmlui.Submission.Submissions.title">Item invoer &amp; Workflow</message>
+        <message key="xmlui.Submission.Submissions.trail">Item invoer</message>
+        <message key="xmlui.Submission.Submissions.head">Item invoer &amp; workflow taken</message>
         <message key="xmlui.Submission.Submissions.untitled"><i>Ongetiteld</i></message>
         <message key="xmlui.Submission.Submissions.email">email: </message>
         <!-- Same transformer, workflow section -->
@@ -716,7 +716,7 @@
         <message key="xmlui.Submission.Submissions.workflow_submit_take">Neem geselecteerde taken</message>
         <message key="xmlui.Submission.Submissions.workflow_info3">Er zijn geen taken in de pool</message>
         <!-- Same transformer, submissions section -->
-        <message key="xmlui.Submission.Submissions.submit_head1">Bijdragen</message>
+        <message key="xmlui.Submission.Submissions.submit_head1">Item invoer</message>
         <message key="xmlui.Submission.Submissions.submit_info1a">U kunt </message>
         <message key="xmlui.Submission.Submissions.submit_info1b">Een nieuw invoer starten</message>
         <message key="xmlui.Submission.Submissions.submit_info1c">Het invoerproces omvat het beschrijven van het item, en het uploaden van bijbehorende bestanden. Elke community of collectie kan eigen invoerbeleid hebben.</message>
@@ -733,7 +733,7 @@
         <message key="xmlui.Submission.Submissions.submit_head4">Supervising:</message>
         <message key="xmlui.Submission.Submissions.submit_submit_remove">Verwijder geselecteerde invoer</message>
         <!-- Same transformer, inprogress section -->
-        <message key="xmlui.Submission.Submissions.progress_head1">Bijdragen die gereviewed worden</message>
+        <message key="xmlui.Submission.Submissions.progress_head1">Items die gereviewed worden</message>
         <message key="xmlui.Submission.Submissions.progress_info1">Dit zijn uw voltooide bijdragen die momenteel door collectiebeheerders worden gereviewed.</message>
         <message key="xmlui.Submission.Submissions.progress_column1">Titel</message>
         <message key="xmlui.Submission.Submissions.progress_column2">Collectie</message>
@@ -941,7 +941,7 @@
         <message key="xmlui.Submission.submit.ReviewStep.head">Review bijdrage</message>
         <message key="xmlui.Submission.submit.ReviewStep.yes">Ja</message>
         <message key="xmlui.Submission.submit.ReviewStep.no">Nee</message>
-        <message key="xmlui.Submission.submit.ReviewStep.submit_jump">Corrigeer een dan deze</message>
+        <message key="xmlui.Submission.submit.ReviewStep.submit_jump">Corrigeer een van deze</message>
         <message key="xmlui.Submission.submit.ReviewStep.submit_jump_files">Voeg een bestand toe of verwijder een bestand</message>
         <message key="xmlui.Submission.submit.ReviewStep.head1">Initiële vragen</message>
         <message key="xmlui.Submission.submit.ReviewStep.head2">Beschrijf pagina {0}</message>
@@ -2545,5 +2545,27 @@
     <message key="xmlui.ChoiceLookupTransformer.field.vlaanderen_identifier.title">Kies een vlaanderen identifier</message>
     <message key="xmlui.ChoiceLookupTransformer.field.vlaanderen_identifier.help">Geef een nieuwe vlaanderen identifier in</message>
 
+    <message key="xmlui.compliance.workflow.MilieuinfoComplianceAction.head">Item Milieuinfo validatie</message>
+    <message key="xmlui.XMLWorkflow.default.milieuinfocompliancestep.claimaction">Item Milieuinfo validatie</message>
+    <message key="xmlui.XMLWorkflow.default.milieuinfocompliancestep.milieuinfocomplianceaction">Item Milieuinfo validatie</message>
 
+    <message key="xmlui.compliance.ComplianceUI.top_information_bar_compliant">Dit item voldoet aan de {0} regels.</message>
+    <message key="xmlui.compliance.ComplianceUI.top_information_bar_not_compliant">Dit item voldoet niet aan de {0}.</message>
+    <message key="xmlui.compliance.ComplianceUI.top_information_bar_compliant">Dit item voldoet aan de {0} regels.</message>
+    <message key="xmlui.compliance.ComplianceUI.top_information_bar_not_compliant">Dit item voldoet niet aan de {0}.</message>
+    <message key="xmlui.compliance.ComplianceUI.top_information_bar_not_applicable">De {0} regels zijn niet van toepassing op dit item</message>
+    <message key="xmlui.compliance.ComplianceUI.resolution_summary_title">Samenvatting oplossing:</message>
+    <message key="xmlui.compliance.submission.error_blocked">U moet de overtreden validatieregels oplossen voordat u kan verder gaan met de archivering.</message>
+    <message key="xmlui.compliance.submission.head">Item {0} validatie</message>
+    <message key="xmlui.Submission.submit.progressbar.milieuinfo.compliance">Milieuinfo validatie</message>
+    <message key="xmlui.compliance.ComplianceUI.rules_show_applicable">(toon relevante regels)</message>
+    <message key="xmlui.compliance.ComplianceUI.rules_show_all">(toon alle regels)</message>
+    <message key="xmlui.compliance.ComplianceUI.rules_show">(toon regels)</message>
+    <message key="xmlui.compliance.ComplianceUI.rules_hide">(verberg regels)</message>
+    <message key="xmlui.compliance.ComplianceUI.not_applicable">(niet van toepassing)</message>
+    <message key="xmlui.compliance.ComplianceUI.workflow_disabled_hint">De invoer van ongeldige items is geblokkeerd voor deze collectie.</message>
+    <message key="xmlui.administrative.item.ItemComplianceMain.head">Item {0} validatie</message>
+    <message key="xmlui.administrative.item.ItemComplianceMain.trail">Item validatie</message>
+    <message key="xmlui.administrative.item.ItemComplianceMain.no_item">Geen item gevonden</message>
+    <message key="xmlui.administrative.item.ItemComplianceMain.return">Keer terug naar item-pagina</message>
 </catalogue>

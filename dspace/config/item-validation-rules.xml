@@ -1,33 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<rule-categories xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="item-validation-rules.xsd">
+<rule-categories xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:noNamespaceSchemaLocation="item-validation-rules.xsd">
 
-    <category ordinal="1" name="sword validation"
-              description="sword validation"
+    <category ordinal="1" name="Item relaties"
+              description="Op de relaties tussen items uitgedrukt in metadata gelden bepaalde valaditieregels."
               resolutionHint="">
         <rules>
-            <rule type="isBlank">
+            <rule type="isBlank"
+                  description="Het gebruik van dc.relation.haspart is niet toegestaan."
+                  resolutionHint="Verwijder de waarde in dc.relation.haspart.">
                 <field>dc.relation.haspart</field>
-                <fieldDescription>dc.relation.haspart</fieldDescription>
+                <fieldDescription>"heeft-onderdeel"</fieldDescription>
             </rule>
-            <rule type="isBlank">
+            <rule type="isBlank"
+                  description="Het gebruik van dc.relation.isreplacedby is niet toegestaan."
+                  resolutionHint="Verwijder de waarde in dc.relation.isreplacedby.">
                 <field>dc.relation.isreplacedby</field>
-                <fieldDescription>dc.relation.isreplacedby</fieldDescription>
+                <fieldDescription>"is-vervangen-door"</fieldDescription>
             </rule>
-            <rule type="countLesserThan">
+            <rule type="countLesserThan"
+                  description="Het item heeft slechts 1 waarde voor dc.relation.replaces."
+                  resolutionHint="Verwijder de extra waardes in dc.relation.replaces.">
                 <field>dc.relation.replaces</field>
-                <fieldDescription>dc.relation.replaces</fieldDescription>
+                <fieldDescription>"vervangt-item"</fieldDescription>
                 <fieldValue>
                     <value>2</value>
                 </fieldValue>
             </rule>
-            <rule type="countLesserThan">
+            <rule type="countLesserThan"
+                  description="Het item heeft slechts 1 waarde voor dc.relation.ispartof."
+                  resolutionHint="Verwijder de extra waardes in dc.relation.ispartof.">
                 <field>dc.relation.ispartof</field>
-                <fieldDescription>dc.relation.ispartof</fieldDescription>
+                <fieldDescription>"is-onderdeel-van"</fieldDescription>
                 <fieldValue>
                     <value>2</value>
                 </fieldValue>
             </rule>
-            <rule type="failOnPreconditionSuccess">
+            <rule type="failOnPreconditionSuccess"
+                  description="Het gelijktijdig gebruik van dc.relation.replaces en dc.relation.ispartof is niet toegestaan."
+                  resolutionHint="Verwijder een waarde uit dc.relation.replaces of dc.relation.ispartof.">
                 <preconditions>
                     <rule type="isNotBlank">
                         <field>dc.relation.replaces</field>
@@ -39,15 +50,19 @@
                     </rule>
                 </preconditions>
                 <field>null</field>
-                <fieldDescription>dc.relation.replaces and dc.relation.ispartof</fieldDescription>
+                <fieldDescription>dc.relation.replaces en dc.relation.ispartof</fieldDescription>
             </rule>
-            <rule type="uniqueValueByAuthorityId">
+            <rule type="uniqueValueByAuthorityId"
+                  description="De waarde voor vlaanderen.identifier moet uniek zijn."
+                  resolutionHint="Geef vlaanderen.identifier een unieke waarde.">
                 <field>vlaanderen.identifier</field>
-                <fieldDescription>vlaanderen.identifier</fieldDescription>
+                <fieldDescription>vlaanderen identifier</fieldDescription>
             </rule>
-            <rule type="uniqueValueByAuthorityId">
+            <rule type="uniqueValueByAuthorityId"
+                  description="De waarde voor dc.relation.replaces moet uniek zijn."
+                  resolutionHint="Geef dc.relation.replaces een unieke waarde.">
                 <field>dc.relation.replaces</field>
-                <fieldDescription>dc.relation.replaces</fieldDescription>
+                <fieldDescription>"vervangt-item"</fieldDescription>
             </rule>
         </rules>
     </category>

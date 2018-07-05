@@ -7,6 +7,9 @@
  */
 // Preset Bootstrap variables
 // ----------------------
+$fa-font-path: "../vendor/fontawesome/fonts";
+@import "../vendor/fontawesome/scss/font-awesome";
+
 $brand-primary: #333333 !default;
 
 $navbar-inverse-bg: #333333 !default;

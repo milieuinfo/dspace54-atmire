@@ -24,6 +24,7 @@
     <bean class="com.atmire.sword.service.ComplianceCheckServiceBean" id="com.atmire.sword.service.ComplianceCheckService" autowire-candidate="true">
     </bean>
 
+    <alias alias="milieuinfoComplianceCheckService" name="com.atmire.sword.service.ComplianceCheckService"/>
 
     <!-- Compliance rules factory -->
     <bean class="com.atmire.sword.rules.factory.ComplianceCategoryRulesFactoryBean" id="org.dspace.ref.compliance.rules.factory.ComplianceRulesFactory" autowire-candidate="true">
@@ -50,6 +51,9 @@
                 <entry key="dateSmallerThan">
                     <bean class="com.atmire.sword.rules.factory.DateSmallerThanRuleBuilder"/>
                 </entry>
+                <entry key="pastOrCurrentDate">
+                    <bean class="com.atmire.sword.rules.factory.PastOrCurrentDateRuleBuilder"/>
+                </entry>
                 <entry key="countLesserThan">
                     <bean class="com.atmire.sword.rules.factory.CountLesserThanRuleBuilder"/>
                 </entry>
@@ -59,10 +63,14 @@
                 <entry key="uniqueValueByAuthorityId">
                     <bean class="com.atmire.sword.rules.factory.UniqueValueByAuthorityIdRuleBuilder"/>
                 </entry>
+                <entry key="regex">
+                    <bean class="com.atmire.sword.rules.factory.RegexRuleBuilder"/>
+                </entry>
             </map>
         </property>
         <!-- minutes to wait between category set updates -->
         <property name="minutesBetweentCategorySetupdate" value="30"/>
     </bean>
+
 
 </beans>

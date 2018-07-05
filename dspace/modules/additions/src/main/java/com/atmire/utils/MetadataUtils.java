@@ -1,5 +1,13 @@
 package com.atmire.utils;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
 import com.atmire.utils.helper.MetadataFieldString;
 import com.atmire.utils.subclasses.MetadatumExtended;
 import org.apache.commons.lang.StringUtils;
@@ -8,14 +16,6 @@ import org.dspace.content.Bitstream;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
 import org.dspace.content.Metadatum;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by: Antoine Snyers (antoine at atmire dot com)
@@ -30,12 +30,14 @@ public class MetadataUtils {
     }
 
     public static void addMetadata(DSpaceObject item, Metadatum dcValue) {
-        item.addMetadata(dcValue.schema, dcValue.element, dcValue.qualifier, dcValue.language, dcValue.value, dcValue.authority, dcValue.confidence);
+        String language = StringUtils.equals(dcValue.language, Item.ANY) ? null : dcValue.language;
+        item.addMetadata(dcValue.schema, dcValue.element, dcValue.qualifier, language, dcValue.value, dcValue.authority, dcValue.confidence);
     }
 
     public static void addMetadata(DSpaceObject item, String mdField, String value) {
         MetadatumExtended metadata = MetadataFieldString.encapsulate(mdField);
-        item.addMetadata(metadata.getSchema(), metadata.getElement(), metadata.getQualifier(), metadata.getLanguage(), value);
+        String language = StringUtils.equals(metadata.getLanguage(), Item.ANY) ? null : metadata.getLanguage();
+        item.addMetadata(metadata.getSchema(), metadata.getElement(), metadata.getQualifier(), language, value);
     }
 
     public static void clearAllMetadata(DSpaceObject item) {
@@ -72,11 +74,11 @@ public class MetadataUtils {
     }
 
     public static List<Metadatum> getMetadata(DSpaceObject item) {
-        return getMetadata(item, Item.ANY + "." + Item.ANY + "." + Item.ANY);
+        return Arrays.asList(item.getMetadata(Item.ANY, Item.ANY, Item.ANY, Item.ANY));
     }
 
     public static List<Metadatum> getMetadata(DSpaceObject item, String mdString) {
-        MetadatumExtended elements = MetadataFieldString.encapsulate(mdString).withWildcards();
+        MetadatumExtended elements = MetadataFieldString.encapsulate(mdString);
         Metadatum[] metadata = item.getMetadata(elements.getSchema(), elements.getElement(), elements.getQualifier(), elements.getLanguage());
         return Arrays.asList(metadata);
     }
@@ -96,11 +98,12 @@ public class MetadataUtils {
 
     public static String getMetadataFirstValue(DSpaceObject item, String fieldName) {
         MetadatumExtended elements = MetadataFieldString.encapsulate(fieldName); // this is better not with wildcards
-        return getMetadataFirstValue(item, elements.getSchema(), elements.getElement(), elements.getQualifier(), elements.getLanguage());
-    }
-    public static String getMetadataFirstValueAnyLanguage(DSpaceObject item, String fieldName) {
-        MetadatumExtended elements = MetadataFieldString.encapsulate(fieldName);
         return getMetadataFirstValue(item, elements.getSchema(), elements.getElement(), elements.getQualifier(), Item.ANY);
+    }
+
+    public static String getMetadataFirstValueWithLanguage(DSpaceObject item, String fieldName) {
+        MetadatumExtended elements = MetadataFieldString.encapsulate(fieldName);
+        return getMetadataFirstValue(item, elements.getSchema(), elements.getElement(), elements.getQualifier(), elements.getLanguage());
     }
 
     public static String getMetadataFirstValue(DSpaceObject item, String schema, String element, String qualifier, String language) {

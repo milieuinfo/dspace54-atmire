@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    The contents of this file are subject to the license and copyright
+    detailed in the LICENSE and NOTICE files at the root of the source
+    tree and available online at
+
+    http://www.dspace.org/license/
+
+-->
+<map:sitemap xmlns:map="http://apache.org/cocoon/sitemap/1.0">
+    <map:components>
+        <map:transformers>
+            <map:transformer name="MilieuinfoItemComplianceMain" src="com.atmire.app.xmlui.aspect.compliance.MilieuinfoItemComplianceMain"/>
+            <map:transformer name="Navigation" src="com.atmire.app.xmlui.aspect.compliance.Navigation"/>
+            <map:transformer name="UnauthorizedRestrictedItem" src="org.dspace.app.xmlui.aspect.artifactbrowser.UnauthorizedRestrictedItem"/>
+        </map:transformers>
+        <map:matchers default="wildcard">
+            <map:matcher name="HandleTypeMatcher" src="org.dspace.app.xmlui.aspect.general.HandleTypeMatcher"/>
+        </map:matchers>
+        <map:selectors>
+            <map:selector name="AuthenticatedSelector" src="org.dspace.app.xmlui.aspect.general.AuthenticatedSelector"/>
+            <map:selector name="ComplianceAuthorizedSelector" src="com.atmire.app.xmlui.aspect.compliance.ComplianceAuthorizedSelector"/>
+        </map:selectors>
+        <map:actions>
+            <map:action name="StartAuthentication" src="org.dspace.app.xmlui.aspect.eperson.StartAuthenticationAction"/>
+        </map:actions>
+    </map:components>
+
+    <map:pipelines>
+        <map:pipeline>
+
+            <!-- Make sure the user is atleast logged in -->
+            <map:select type="ComplianceAuthorizedSelector">
+                <map:when test="eperson">
+                    <map:generate/>
+
+                    <map:transform type="Navigation"/>
+
+                    <map:match pattern="handle/*/*/milieuinfo-compliance">
+                        <map:match type="HandleTypeMatcher" pattern="item">
+                            <map:transform type="MilieuinfoItemComplianceMain"/>
+                            <map:serialize type="xml"/>
+                        </map:match>
+                    </map:match>
+
+                    <!-- Not a URL we care about, so just pass it on. -->
+                    <map:serialize type="xml"/>
+                </map:when>
+                <map:otherwise>
+                    <map:generate/>
+
+                    <map:match pattern="handle/*/*/milieuinfo-compliance">
+                        <map:select type="AuthenticatedSelector">
+                            <map:when test="eperson">
+                                <map:transform type="UnauthorizedRestrictedItem"/>
+                                <map:serialize/>
+                            </map:when>
+                            <map:otherwise>
+                                <map:act type="StartAuthentication">
+                                    <map:parameter name="header"
+                                                   value="xmlui.ArtifactBrowser.RestrictedItem.auth_header"/>
+                                    <map:parameter name="message"
+                                                   value="xmlui.ArtifactBrowser.RestrictedItem.auth_message"/>
+                                </map:act>
+                                <map:serialize/>
+                            </map:otherwise>
+                        </map:select>
+                    </map:match>
+
+
+                    <map:serialize type="xml"/>
+                </map:otherwise>
+            </map:select>
+
+        </map:pipeline>
+    </map:pipelines>
+</map:sitemap>

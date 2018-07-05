@@ -1,9 +1,8 @@
 package com.atmire.utils;
 
-import org.dspace.content.Bitstream;
-import org.dspace.content.Bundle;
-import org.dspace.content.DSpaceObject;
-import org.dspace.content.Item;
+import com.atmire.utils.helper.MetadataFieldString;
+import com.atmire.utils.subclasses.MetadatumExtended;
+import org.dspace.content.*;
 
 import java.sql.SQLException;
 import java.util.Collections;
@@ -39,5 +38,32 @@ public class ItemUtils {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public static String getMetadataFirstValue(Item item, String fieldName) {
+        MetadatumExtended elements
+                = MetadataFieldString.encapsulate(fieldName); // this is better not with wildcards
+        return getMetadataFirstValue(
+                item,
+                elements.getSchema(),
+                elements.getElement(),
+                elements.getQualifier(),
+                elements.getLanguage()
+        );
+    }
+
+    public static String getMetadataFirstValue(
+            Item item,
+            String schema,
+            String element,
+            String qualifier,
+            String language
+    ) {
+        Metadatum[] metadata = item.getMetadata(schema, element, qualifier, language);
+        String value = null;
+        if (metadata.length > 0) {
+            value = metadata[0].value;
+        }
+        return value;
     }
 }

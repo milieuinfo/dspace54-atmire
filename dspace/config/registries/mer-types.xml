@@ -1,0 +1,85 @@
+<dspace-dc-types>
+
+    <dspace-header>
+        <title>MER metadata types</title>
+        <contributor.author>atmire</contributor.author>
+    </dspace-header>
+
+    <dc-schema>
+        <name>mer</name>
+        <namespace>http://mer.milieuinfo.be</namespace>
+    </dc-schema>
+
+    <dc-type>
+        <schema>mer</schema>
+        <element>procedure</element>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>mer</schema>
+        <element>procedurestap</element>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>mer</schema>
+        <element>document</element>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>mer</schema>
+        <element>documentonderdeel</element>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>mer</schema>
+        <element>dossiernummer</element>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>mer</schema>
+        <element>initiatiefnemer</element>
+        <qualifier>naam</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>mer</schema>
+        <element>initiatiefnemer</element>
+        <qualifier>kbonummer</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>mer</schema>
+        <element>locatie</element>
+        <qualifier>gemeente</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>mer</schema>
+        <element>locatie</element>
+        <qualifier>provincie</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>mer</schema>
+        <element>activiteitengroep</element>
+        <qualifier>codering</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>mer</schema>
+        <element>adviesinstantie</element>
+        <qualifier>naam</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
+
+</dspace-dc-types>
