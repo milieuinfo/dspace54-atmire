@@ -14,7 +14,7 @@ public class MappedCollectionHandleUtil {
 
     public String getIdToUse(String id) {
         if(!id.equals("default") && ! id.matches("[0-9]*/[0-9]*")){
-            String configuredHandleProperty = ConfigurationManager.getProperty(id);
+            String configuredHandleProperty = ConfigurationManager.getProperty("submission-collections", id);
             if(StringUtils.isBlank(configuredHandleProperty)){
                 log.error("A non existing property has been found during the retrieval of configured handles in the input forms: "+ id +". Please verify this configuration and correct accordingly");
             }else{

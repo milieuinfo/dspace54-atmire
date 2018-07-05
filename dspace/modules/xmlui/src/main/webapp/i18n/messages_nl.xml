@@ -692,13 +692,13 @@
         <message key="xmlui.Submission.CollectionViewer.link1">Voer een nieuw item in in deze collectie</message>
 
         <!-- org.dspace.app.xmlui.submission.Navigation -->
-        <message key="xmlui.Submission.Navigation.submissions">Bijdragen</message>
+        <message key="xmlui.Submission.Navigation.submissions">Item invoer</message>
 
 
         <!-- org.dspace.app.xmlui.Submission.submissions -->
-        <message key="xmlui.Submission.Submissions.title">Bijdragen &amp; Workflow</message>
-        <message key="xmlui.Submission.Submissions.trail">Bijdragen</message>
-        <message key="xmlui.Submission.Submissions.head">Bijdragen &amp; workflow taken</message>
+        <message key="xmlui.Submission.Submissions.title">Item invoer &amp; Workflow</message>
+        <message key="xmlui.Submission.Submissions.trail">Item invoer</message>
+        <message key="xmlui.Submission.Submissions.head">Item invoer &amp; workflow taken</message>
         <message key="xmlui.Submission.Submissions.untitled"><i>Ongetiteld</i></message>
         <message key="xmlui.Submission.Submissions.email">email: </message>
         <!-- Same transformer, workflow section -->
@@ -716,7 +716,7 @@
         <message key="xmlui.Submission.Submissions.workflow_submit_take">Neem geselecteerde taken</message>
         <message key="xmlui.Submission.Submissions.workflow_info3">Er zijn geen taken in de pool</message>
         <!-- Same transformer, submissions section -->
-        <message key="xmlui.Submission.Submissions.submit_head1">Bijdragen</message>
+        <message key="xmlui.Submission.Submissions.submit_head1">Item invoer</message>
         <message key="xmlui.Submission.Submissions.submit_info1a">U kunt </message>
         <message key="xmlui.Submission.Submissions.submit_info1b">Een nieuw invoer starten</message>
         <message key="xmlui.Submission.Submissions.submit_info1c">Het invoerproces omvat het beschrijven van het item, en het uploaden van bijbehorende bestanden. Elke community of collectie kan eigen invoerbeleid hebben.</message>
@@ -733,7 +733,7 @@
         <message key="xmlui.Submission.Submissions.submit_head4">Supervising:</message>
         <message key="xmlui.Submission.Submissions.submit_submit_remove">Verwijder geselecteerde invoer</message>
         <!-- Same transformer, inprogress section -->
-        <message key="xmlui.Submission.Submissions.progress_head1">Bijdragen die gereviewed worden</message>
+        <message key="xmlui.Submission.Submissions.progress_head1">Items die gereviewed worden</message>
         <message key="xmlui.Submission.Submissions.progress_info1">Dit zijn uw voltooide bijdragen die momenteel door collectiebeheerders worden gereviewed.</message>
         <message key="xmlui.Submission.Submissions.progress_column1">Titel</message>
         <message key="xmlui.Submission.Submissions.progress_column2">Collectie</message>

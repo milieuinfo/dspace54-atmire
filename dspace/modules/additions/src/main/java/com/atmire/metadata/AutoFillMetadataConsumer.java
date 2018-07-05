@@ -37,7 +37,7 @@ public class AutoFillMetadataConsumer implements Consumer {
     private Set<String> enabledCollections = new HashSet<>();
 
     public void initialize() throws Exception {
-        String[] collectionHandles = StringUtils.split(ConfigurationManager.getProperty("autofill.metadata.consumer.collections"), ",");
+        String[] collectionHandles = StringUtils.split(ConfigurationManager.getProperty("autofill", "autofill.metadata.consumer.collections"), ",");
         if (collectionHandles != null && collectionHandles.length > 0) {
             for (String collectionHandle : collectionHandles) {
                 enabledCollections.add(StringUtils.trim(collectionHandle));

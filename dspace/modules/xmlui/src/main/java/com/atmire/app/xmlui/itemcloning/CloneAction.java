@@ -149,7 +149,7 @@ public class CloneAction extends AbstractAction {
     }
 
     private String[] getCommaSeparatedValues(String property) {
-        String config = ConfigurationManager.getProperty(property);
+        String config = ConfigurationManager.getProperty("item-cloning", property);
         return (config == null ? "" : config).split(",");
     }
 
@@ -177,9 +177,11 @@ public class CloneAction extends AbstractAction {
     private Map<String, String> getTypeMap(String[] commaSeparatedValues) {
         Map<String, String> typeMap = new HashMap<>();
         String previousType = null;
-        for (String type : commaSeparatedValues) {
-            typeMap.put(toLowerCase(previousType), type);
-            previousType = type;
+        if(commaSeparatedValues != null) {
+            for (String type : commaSeparatedValues) {
+                typeMap.put(toLowerCase(previousType), type);
+                previousType = type;
+            }
         }
         return typeMap;
     }
