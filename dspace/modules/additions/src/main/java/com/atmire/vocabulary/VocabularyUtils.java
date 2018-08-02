@@ -1,5 +1,6 @@
 package com.atmire.vocabulary;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.dspace.content.Metadatum;
 import org.dspace.utils.DSpace;
@@ -42,7 +43,10 @@ public class VocabularyUtils {
     ) {
         Pair<Integer, List<String>> result = Pair.of(depth, Collections.<String>emptyList());
         if (field != null) {
-            if (fieldName.equals(field.getField())) {
+            if(fieldName.contains("[")) {
+                fieldName = fieldName.split("\\[")[0];
+            }
+            if (StringUtils.equals(fieldName, field.getField())) {
                 result = Pair.of(depth, getValues(field));
             } else {
                 Value matchingValue = getMatchingValue(field, dcValues);
