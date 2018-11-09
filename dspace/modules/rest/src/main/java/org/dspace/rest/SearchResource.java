@@ -141,8 +141,6 @@ public class SearchResource extends Resource {
                         headers, request, context);
             }
 
-            context.complete();
-
             GenericEntity<List<org.dspace.rest.common.Item>> entity = new GenericEntity<List<org.dspace.rest.common.Item>>(toReturn) {
             };
 
@@ -151,6 +149,8 @@ public class SearchResource extends Resource {
         } catch (Exception ex) {
             log.error(ex.getMessage());
             response = Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
+        } finally {
+            context.complete();
         }
 
         return response;
