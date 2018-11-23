@@ -87,6 +87,7 @@ public class Resource
             }
 
             if(context.getCurrentUser() == null){
+                context.abort();
                 throw new WebApplicationException(Response.Status.UNAUTHORIZED);
             }
 
