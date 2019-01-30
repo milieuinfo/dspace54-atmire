@@ -78,7 +78,7 @@
   <dc-type>
     <schema>imjv</schema>
     <element>aangiftetype</element>
-    <scope_note>Exploitatie dossiernummer</scope_note>
+    <scope_note>Aangifte type</scope_note>
   </dc-type>
 
   <dc-type>
