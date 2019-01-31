@@ -28,7 +28,7 @@
     <node.version>11.9.0</node.version>
     <npm.version>6.7.0</npm.version>
     <!-- picked up by gem-maven-plugin -->
-    <jruby.version>9.2.5.0</jruby.version>
+    <jruby.version>9.1.17.0</jruby.version>
 </properties>
 
 <build>
