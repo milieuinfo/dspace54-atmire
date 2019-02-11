@@ -12,7 +12,7 @@
     <parent>
         <groupId>org.dspace</groupId>
         <artifactId>modules</artifactId>
-        <version>5.4.8-SNAPSHOT</version>
+        <version>5.4.10-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
@@ -24,9 +24,11 @@
     <mirage2.deps.included>true</mirage2.deps.included>
     <!-- Versions of build dependencies to be auto-installed when "mirage2.deps.included=true" -->
     <sass.version>3.7.2</sass.version>
-    <compass.version>1.0.1</compass.version>
-    <node.version>11.3.0</node.version>
-    <npm.version>6.4.1</npm.version>
+    <compass.version>1.0.3</compass.version>
+    <node.version>11.9.0</node.version>
+    <npm.version>6.7.0</npm.version>
+    <!-- picked up by gem-maven-plugin -->
+    <jruby.version>9.1.17.0</jruby.version>
 </properties>
 
 <build>
@@ -354,12 +356,12 @@
                     <plugin>
                         <groupId>de.saumya.mojo</groupId>
                         <artifactId>gem-maven-plugin</artifactId>
-                        <version>1.0.6</version>
+                        <version>1.1.6</version>
                     </plugin>
                     <plugin>
                         <groupId>com.github.eirslett</groupId>
                         <artifactId>frontend-maven-plugin</artifactId>
-                        <version>1.0</version>
+                        <version>1.6</version>
                     </plugin>
                 </plugins>
             </pluginManagement>

@@ -8,6 +8,7 @@
 package org.dspace.rest;
 
 import org.apache.log4j.Logger;
+import org.dspace.authenticate.OpenAMHeaderAuthentication;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.content.DSpaceObject;
 import org.dspace.core.ConfigurationManager;
@@ -84,6 +85,9 @@ public class Resource
                     context.setSpecialGroup(Group.findByName(context, grantedAuthority.getAuthority()).getID());
                 }
                 context.setCurrentUser(EPerson.findByEmail(context, authentication.getName()));
+            } else {
+                OpenAMHeaderAuthentication openAMHeaderAuthentication = new OpenAMHeaderAuthentication();
+                openAMHeaderAuthentication.authenticate(context, null, null, null, new DSpace().getRequestService().getCurrentRequest().getHttpServletRequest());
             }
 
             if(context.getCurrentUser() == null){
