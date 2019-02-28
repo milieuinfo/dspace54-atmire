@@ -2,11 +2,13 @@ package com.atmire.app.xmlui.aspect.externalhandle;
 
 import com.atmire.lne.content.ItemService;
 import com.atmire.lne.content.ItemServiceBean;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.avalon.framework.parameters.ParameterException;
 import org.apache.cocoon.ProcessingException;
-import org.apache.cocoon.environment.ObjectModelHelper;
-import org.apache.cocoon.environment.Request;
 import org.apache.cocoon.environment.http.HttpEnvironment;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.dspace.app.xmlui.cocoon.AbstractDSpaceTransformer;
 import org.dspace.app.xmlui.utils.UIException;
@@ -15,16 +17,11 @@ import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.app.xmlui.wing.element.Body;
 import org.dspace.app.xmlui.wing.element.Division;
 import org.dspace.authorize.AuthorizeException;
+import org.dspace.content.Bitstream;
+import org.dspace.content.Bundle;
 import org.dspace.content.Item;
 import org.dspace.discovery.SearchServiceException;
 import org.xml.sax.SAXException;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.sql.SQLException;
-import java.util.List;
 
 public class ItemViewer extends AbstractDSpaceTransformer {
 
@@ -40,6 +37,14 @@ public class ItemViewer extends AbstractDSpaceTransformer {
     private static final Message T_external_handle_not_unique = message("xmlui.externalhandle.external_handle_not_unique");
     private static final Message T_related_items = message("xmlui.externalhandle.related_items");
 
+    private static final int NOT_FOUND = 0;
+    private static final int FOUND = 1;
+    private static final int TOO_MANY = 2;
+
+    private static final String PARAMETER_HANDLE = "handle";
+    private static final String PARAMETER_ACTION = "action";
+    private static final String ACTION_BITSTREAM = "bitstream";
+
     private ItemService itemService;
 
     public ItemViewer() {
@@ -48,33 +53,109 @@ public class ItemViewer extends AbstractDSpaceTransformer {
 
     public void addBody(final Body body) throws SAXException, WingException, UIException, SQLException, IOException, AuthorizeException, ProcessingException {
 
-        HttpServletResponse response = (HttpServletResponse) objectModel.get(HttpEnvironment.HTTP_RESPONSE_OBJECT);
+      HttpServletResponse response = (HttpServletResponse) objectModel.get(HttpEnvironment.HTTP_RESPONSE_OBJECT);
 
-        try {
-            String externalHandle = getExternalHandle();
+      try {
+
+            String externalHandle = parameters.getParameter(PARAMETER_HANDLE);
+            boolean downloadBitstream = parameters.getParameter(PARAMETER_ACTION).equals(ACTION_BITSTREAM);
 
             List<Item> result = itemService.findItemsByExternalHandle(context, externalHandle);
 
-            renderCorrectPage(body, response, result);
+            renderCorrectPage(body, response, result,downloadBitstream);
 
-        } catch (SearchServiceException e) {
+        } catch (SearchServiceException| ParameterException e) {
             renderErrorPage(body, response, T_discovery_query_problem, e);
         }
     }
 
-    private void renderCorrectPage(final Body body, final HttpServletResponse response, final List<Item> result) throws IOException, WingException {
-        if (result.size() <= 0) {
-            renderNotFoundPage(body, response);
-        } else if(result.size() > 1) {
-            renderTooManyResultsPage(body, response, result);
+    private void renderCorrectPage(final Body body, final HttpServletResponse response, final List<Item> result, final boolean downloadBitstream) throws IOException, SQLException, WingException {
+        if(downloadBitstream){
+          handleBitstream(body,response,result);
         } else {
-            String handle = result.get(0).getHandle();
-            renderItemPage(response, handle);
+          handleItem(body,response,result);
         }
+
     }
 
-    private void renderItemPage(final HttpServletResponse response, final String handle) throws IOException {
+    private void handleBitstream(final Body body, final HttpServletResponse response, final List<Item> result) throws SQLException, WingException, IOException {
+      switch (bitstreamPageToRender(result)){
+        case NOT_FOUND:
+          renderNotFoundPage(body,response);
+          break;
+        case  TOO_MANY:
+          renderTooManyResultsPage(body,response,result);
+          break;
+        case FOUND:
+        default:
+          redirectToBistream(response,getItemHandle(result),getBitstream(result));
+          break;
+      }
+    }
+
+    private void handleItem(final Body body, final HttpServletResponse response, final List<Item> result) throws SQLException, WingException, IOException {
+      switch (itemPageToRender(result)){
+        case NOT_FOUND:
+          renderNotFoundPage(body,response);
+          break;
+        case  TOO_MANY:
+          renderTooManyResultsPage(body,response,result);
+          break;
+        case FOUND:
+        default:
+          redirectToItemPage(response,getItemHandle(result));
+          break;
+      }
+    }
+
+    private Bitstream getBitstream(List<Item> items) throws SQLException {
+      return items.get(0).getBundles()[0].getBitstreams()[0];
+    }
+
+    private String getItemHandle(List<Item> items) {
+      return items.get(0).getHandle();
+    }
+
+    private int itemPageToRender(final List<Item> items){
+      return determinePageToRender(items.size());
+    }
+
+    private int bitstreamPageToRender(final List<Item> items) throws SQLException {
+        int itemsPage = itemPageToRender(items);
+        if (FOUND == itemsPage){
+          Item item = items.get(0);
+          Bundle[] bundles = item.getBundles();
+          int bundlePage = determinePageToRender(bundles.length);
+          if (FOUND == bundlePage){
+            Bundle bundle = bundles[0];
+            Bitstream[] bitstreams = bundle.getBitstreams();
+            return determinePageToRender(bitstreams.length);
+
+          }else{
+            return bundlePage;
+          }
+        }else{
+          return itemsPage;
+       }
+    }
+
+    private int determinePageToRender(final int nbItems){
+      switch (nbItems){
+        case 0:
+          return NOT_FOUND;
+        case 1:
+          return FOUND;
+        default:
+          return TOO_MANY;
+      }
+    }
+
+    private void redirectToItemPage(final HttpServletResponse response, final String handle) throws IOException {
         response.sendRedirect(buildItemViewPageUrl(handle));
+    }
+
+    private void redirectToBistream(final HttpServletResponse response, final String handle, final Bitstream bitstream) throws IOException {
+        response.sendRedirect(buildBitstreamPageUrl(handle,bitstream));
     }
 
     private void renderTooManyResultsPage(final Body body, final HttpServletResponse response, final List<Item> result) throws WingException {
@@ -110,13 +191,11 @@ public class ItemViewer extends AbstractDSpaceTransformer {
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
 
-    private String getExternalHandle() throws UnsupportedEncodingException {
-        Request request = ObjectModelHelper.getRequest(objectModel);
-        String rawValue = StringUtils.substringAfter(request.getSitemapURI(), "external-handle/");
-        return URLDecoder.decode(rawValue, "UTF-8");
-    }
-
     private String buildItemViewPageUrl(final String dsItemHandle) {
         return contextPath + "/handle/" + dsItemHandle;
+    }
+
+    private String buildBitstreamPageUrl(final String dsItemHandle,Bitstream bitstream) {
+        return  contextPath + "/bitstream/handle/" + dsItemHandle +"/"+bitstream.getName();
     }
 }
