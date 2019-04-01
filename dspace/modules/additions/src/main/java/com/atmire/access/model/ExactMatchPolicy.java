@@ -62,20 +62,21 @@ public class ExactMatchPolicy implements Policy {
 
     @Override
     public boolean isAuthorized(EPerson ePerson, Item item) {
-        log.debug("ExactMatchPolicy.isAuthorized");
-        log.debug("ePerson: " + ePerson.getEmail());
+        if(ePerson != null) {
+            log.debug("ExactMatchPolicy.isAuthorized");
+            log.debug("ePerson: " + ePerson.getEmail());
 
-        Metadatum[] ePersonMetadata = getEpersonMetadata(ePerson);
-        Metadatum[] itemMetadata = getItemMetadata(item);
+            Metadatum[] ePersonMetadata = getEpersonMetadata(ePerson);
+            Metadatum[] itemMetadata = getItemMetadata(item);
 
-        boolean printedDebug = false;
-        for (Metadatum itemMetadatum : itemMetadata) {
-            log.debug("item field " + itemMetadatum.getField() + " with value " + itemMetadatum.value);
-            for (Metadatum ePersonMetadatum : ePersonMetadata) {
+            boolean printedDebug = false;
+            for (Metadatum itemMetadatum : itemMetadata) {
+                log.debug("item field " + itemMetadatum.getField() + " with value " + itemMetadatum.value);
+                for (Metadatum ePersonMetadatum : ePersonMetadata) {
 
-                if(!printedDebug) {
-                    log.debug("eperson field " + ePersonMetadatum.getField() + " with value " + ePersonMetadatum.value);
-                }
+                    if (!printedDebug) {
+                        log.debug("eperson field " + ePersonMetadatum.getField() + " with value " + ePersonMetadatum.value);
+                    }
 
                 String epersonAclValue = epersonValueExtractor.extractEpersonAclValue(ePersonMetadatum.value);
                 if(itemMetadatum.value.equals(epersonAclValue))
@@ -84,7 +85,8 @@ public class ExactMatchPolicy implements Policy {
                 }
             }
 
-            printedDebug = true;
+                printedDebug = true;
+            }
         }
 
         return false;
