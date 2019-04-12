@@ -17,12 +17,12 @@ JAVA_OPTS="-Xmx2048M -Xms128M -XX:MaxPermSize=512M -Dfile.encoding=UTF-8"
 
 # Running the filter-media job regularly ensures that thumbnails are generated for newly add image/PDF
 # files and also ensures full text search is available for newly added PDF/Word/PPT/HTML documents
-# 0 4,12 * * * /usr/bin/flock -w 60 ~/cron-filter-media.lock $DSPACE_DIR/bin/dspace filter-media -> NO FULLTEXT INDEXING NEEDED
+0 4,12 * * * /usr/bin/flock -w 60 ~/cron-filter-media.lock $DSPACE_DIR/bin/dspace filter-media
 
 # Update the OAI-PMH index with the newest content (and re-optimize that index) at twice every day
 # NOTE: ONLY NECESSARY IF YOU ARE RUNNING OAI-PMH
 # (This ensures new content is available via OAI-PMH and ensures the OAI-PMH index is optimized for better performance)
-# 0 5,13 * * * /usr/bin/flock -w 60 ~/cron-oai.lock $DSPACE_DIR/bin/dspace oai import -o
+0 5,13 * * * /usr/bin/flock -w 60 ~/cron-oai.lock $DSPACE_DIR/bin/dspace oai import -o
 
 #----------------
 # DAILY TASKS
@@ -34,12 +34,12 @@ JAVA_OPTS="-Xmx2048M -Xms128M -XX:MaxPermSize=512M -Dfile.encoding=UTF-8"
 0 2 * * * /usr/bin/flock -w 60 ~/cron-assest-store-backup.lock $DSPACE_DIR/bin/backup_assetstore.sh /opt/tomcat/data/backup/assetstore
 
 # Because the ACD Archief DSpace relies heavily on the Discovery index, we have to make sure it stays up to date:
-0 1 * * * /usr/bin/flock -w 60 ~/cron-discovery.lock $DSPACE_DIR/bin/dspace index-discovery
+0 2 * * * /usr/bin/flock -w 60 ~/cron-discovery.lock $DSPACE_DIR/bin/dspace index-discovery
 
 # Create an incremental export starting at 3 am every day
-0 3 * * * /usr/bin/flock -w 60 ~/cron-export.lock $DSPACE_DIR/bin/dspace export -g -m -c -t COLLECTION -i acd/2 -d /opt/tomcat/data/export/IMJV
-0 5 * * * /usr/bin/flock -w 60 ~/cron-export.lock $DSPACE_DIR/bin/dspace export -g -m -c -t COLLECTION -i acd/4 -d /opt/tomcat/data/export/DBA
-0 7 * * * /usr/bin/flock -w 60 ~/cron-export.lock $DSPACE_DIR/bin/dspace export -g -m -c -t COLLECTION -i acd/5 -d /opt/tomcat/data/export/OMV
+0 3 * * 5 /usr/bin/flock -w 60 ~/cron-export.lock $DSPACE_DIR/bin/dspace export -g -m -c -t COLLECTION -i acd/2 -d /opt/tomcat/data/export/IMJV
+0 5 * * 5 /usr/bin/flock -w 60 ~/cron-export.lock $DSPACE_DIR/bin/dspace export -g -m -c -t COLLECTION -i acd/4 -d /opt/tomcat/data/export/DBA
+0 7 * * 5 /usr/bin/flock -w 60 ~/cron-export.lock $DSPACE_DIR/bin/dspace export -g -m -c -t COLLECTION -i acd/5 -d /opt/tomcat/data/export/OMV
 
 # Run any Curation Tasks queued from the Admin UI at 22:00 every day
 # (Ensures that any curation task that an administrator "queued" from the Admin UI is executed

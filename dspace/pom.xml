@@ -15,7 +15,7 @@
     <parent>
         <groupId>org.dspace</groupId>
         <artifactId>dspace-parent</artifactId>
-        <version>5.4</version>
+        <version>5.4.17-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
@@ -73,8 +73,8 @@
                             <!-- Don't "attach" the assembly results to this project. As
                                  this assembly builds a directory, setting this to "true"
                                 (default value) will just result in a WARNING message.-->
-                            <attach>false</attach>
-                            <finalName>${project.artifactId}</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <attach>true</attach>
                             <descriptors>
                                 <descriptor>src/main/assembly/assembly.xml</descriptor>
                             </descriptors>
@@ -88,6 +88,13 @@
                             </execution>
                         </executions>
                     </plugin>
+            	    <plugin>
+            	        <groupId>com.mycila</groupId>
+            	        <artifactId>license-maven-plugin</artifactId>
+            	        <configuration>
+            	            <skip>true</skip>
+            	        </configuration>
+            	    </plugin>
                 </plugins>
             </build>
         </profile>
@@ -162,6 +169,11 @@
         <dependency>
             <groupId>org.dspace.modules</groupId>
             <artifactId>additions</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>be.milieuinfo.framework</groupId>
+            <artifactId>core-log</artifactId>
         </dependency>
 
     	<dependency>

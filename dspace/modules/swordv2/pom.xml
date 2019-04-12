@@ -16,7 +16,7 @@
    <parent>
       <groupId>org.dspace</groupId>
       <artifactId>modules</artifactId>
-      <version>5.4</version>
+      <version>5.4.17-SNAPSHOT</version>
       <relativePath>..</relativePath>
    </parent>
 
@@ -94,6 +94,11 @@
       <dependency>
          <groupId>org.dspace.modules</groupId>
          <artifactId>additions</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>be.milieuinfo.framework</groupId>
+         <artifactId>core-log</artifactId>
       </dependency>
 
       <!-- DSpace Custom SWORDv2 Web application -->
