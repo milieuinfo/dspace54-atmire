@@ -13,13 +13,17 @@ import com.atmire.authenticate.*;
 import com.atmire.eperson.acl.service.*;
 import com.sun.jersey.api.client.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.*;
 import javax.servlet.http.*;
 import javax.ws.rs.core.*;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.*;
 import org.apache.log4j.*;
 import org.dspace.authorize.*;
@@ -72,10 +76,12 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
 
                 final Collection<String> roles = userDetails.getRoles();
                 if (!StringUtils.isBlank(email)) {
+                    log.debug("OpenAM Identify Service authenticated SSO ID " + ssoId + " as user " + email);
                     try {
                         loadGroups(context, roles, request, email);
                         final EPerson knownEPerson = EPerson.findByEmail(context, email);
                         if (knownEPerson == null) {
+                            log.debug("Creating new EPerson for SSO ID " + ssoId + " with e-mail " + email);
                             // TEMPORARILY turn off authorisation
                             context.turnOffAuthorisationSystem();
                             final EPerson eperson = createEPerson(context, request, email, sn, givenName);
@@ -88,6 +94,7 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
                             log.info(LogManager.getHeader(context, "login", "type=openam-interactive"));
                             return SUCCESS;
                         } else {
+                            log.debug("Found existing EPerson with ID " + knownEPerson.getID() + " for SSO ID " + ssoId + " with e-mail " + email);
                             updateEpersonAclMetadata(context, knownEPerson, userDetails);
                             context.setCurrentUser(knownEPerson);
                             return SUCCESS;
@@ -97,12 +104,17 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
                         return BAD_ARGS;
                     }
                 } else {
+                    log.warn("Received a blank e-mail address from OpenAM Identify Service for SSO ID " + ssoId);
                     return BAD_ARGS;
                 }
             } else {
+                log.warn("OpenAM Identify Service did not return any user details for SSO ID " + ssoId);
                 return NO_SUCH_USER;
             }
         } else {
+            if(log.isDebugEnabled()) {
+                log.debug("Unable to use OpenAM authentication with a blank SSO ID (ip " + request.getRemoteAddr() + ")");
+            }
             return NO_SUCH_USER;
         }
     }
@@ -211,9 +223,24 @@ public abstract class OpenAMAuthentication implements AuthenticationMethod {
                 ClientRequest clientRequest = ClientRequest.create().build(
                         UriBuilder.fromUri(this.loginUrl).queryParam(USERNAME_QUERY_PARAM, username)
                                 .queryParam(PASSWORD_QUERY_PARAM, password).build(), DEFAULT_METHOD);
+
                 ClientResponse clientResponse = getClientResponse(clientRequest, getOAuthParameters(""), getOAuth2LeggedSecrets());
+
                 if (clientResponse.getStatus() == HttpServletResponse.SC_OK) {
+
+                    if(log.isDebugEnabled()) {
+                        try {
+                            String entity = IOUtils.toString(clientResponse.getEntityInputStream(), StandardCharsets.UTF_8);
+                            log.debug("OpenAM response entity: " + entity);
+                            clientResponse.setEntityInputStream(new ByteArrayInputStream(entity.getBytes(StandardCharsets.UTF_8)));
+                        } catch (IOException ex) {
+                            log.error(ex);
+                        }
+                    }
+
                     token = getTokenId(clientResponse);
+                } else {
+                    log.warn("OpenAM service " + loginUrl + " returned status code " + clientResponse.getStatus() + " for user " + username);
                 }
             }
 

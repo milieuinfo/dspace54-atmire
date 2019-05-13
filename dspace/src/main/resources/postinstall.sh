@@ -20,6 +20,18 @@ sed -i \
     -e "s/%db_name%/${db_name}/g" \
     -e "s/%db_port%/${db_port}/g" \
     -e "s/%db_host%/${db_host}/g" \
+    -e "s/%db_max_active_rest%/${db_max_active_rest}/g" \
+    -e "s/%db_max_idle_rest%/${db_max_idle_rest}/g" \
+    -e "s/%db_min_idle_rest%/${db_min_idle_rest}/g" \
+    -e "s/%db_max_wait_rest%/${db_max_wait_rest}/g" \
+    -e "s/%db_max_active_sword%/${db_max_active_sword}/g" \
+    -e "s/%db_max_idle_sword%/${db_max_idle_sword}/g" \
+    -e "s/%db_min_idle_sword%/${db_min_idle_sword}/g" \
+    -e "s/%db_max_wait_sword%/${db_max_wait_sword}/g" \
+    -e "s/%db_max_active_xmlui%/${db_max_active_xmlui}/g" \
+    -e "s/%db_max_idle_xmlui%/${db_max_idle_xmlui}/g" \
+    -e "s/%db_min_idle_xmlui%/${db_min_idle_xmlui}/g" \
+    -e "s/%db_max_wait_xmlui%/${db_max_wait_xmlui}/g" \
     -e "s/%mailrelay_host%/${mailrelay_host}/g" \
     -e "s/%mailrelay_port%/${mailrelay_port}/g" \
     -e "s/%mailrelay_disabled%/${mailrelay_disabled}/g" \
@@ -115,11 +127,19 @@ fi
 
 
 # Installatie Solr
-echo "Installatie Solr"
+echo "Installatie Solr..."
 if [ "$(ls -A ${tomcat_data_dir}/solr/)" ]; then
-    echo "Solr al aanwezig niets te doen"
+    echo "Solr al aanwezig, enkel configuratie updaten"
+    cp -r ${tomcat_apps_dir}/dspace/solr/authority/conf ${tomcat_data_dir}/solr/authority/
+    chown -R tomcat:tomcat ${tomcat_data_dir}/solr/authority/conf
+    cp -r ${tomcat_apps_dir}/dspace/solr/oai/conf ${tomcat_data_dir}/solr/oai/
+    chown -R tomcat:tomcat ${tomcat_data_dir}/solr/oai/conf
+    cp -r ${tomcat_apps_dir}/dspace/solr/search/conf ${tomcat_data_dir}/solr/search/
+    chown -R tomcat:tomcat ${tomcat_data_dir}/solr/search/conf
+    cp -r ${tomcat_apps_dir}/dspace/solr/statistics/conf ${tomcat_data_dir}/solr/statistics/
+    chown -R tomcat:tomcat ${tomcat_data_dir}/solr/statistics/conf
 else
-    echo "Installatie Solr"
+    echo "Nieuwe installatie Solr"
     cp -r ${tomcat_apps_dir}/dspace/solr/* ${tomcat_data_dir}/solr/
     chown -R tomcat:tomcat ${tomcat_data_dir}/solr/
 fi
@@ -282,7 +302,7 @@ DatabaseMirror database.clamav.net
 HTTPProxyServer ${http_proxy_host}
 HTTPProxyPort ${http_proxy_port}
 HTTPProxyUsername ${http_proxy_user}
-HTTPProxyPassword ${http_proxy_password} 
+HTTPProxyPassword ${http_proxy_password}
 
 EOF
 

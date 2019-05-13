@@ -23,6 +23,7 @@ public class DiscoveryRelatedItemsServiceBean extends AbstractDiscoveryRelatedIt
 
     private static final String QUERY_TO_INTERJECTION = "-TO-";
     private static final String QUERY_KEYWORD = "_keyword";
+    private static final String QUERY_EXACT = "_exact";
     private static final String QUERY_OR_INTERJECTION = " OR ";
 
     @Autowired
@@ -108,18 +109,18 @@ public class DiscoveryRelatedItemsServiceBean extends AbstractDiscoveryRelatedIt
         if(inverse){
             DiscoverySearchFilterFacet filterFacet = metadatum.getSourceFilterFacet();
             if(filterFacet == null) {
-                destinationMetadataField = metadatum.getSourceMetadataField();
+                destinationMetadataField = metadatum.getSourceMetadataField() + QUERY_EXACT;
             } else {
-                destinationMetadataField = filterFacet.getIndexFieldName()+ QUERY_KEYWORD;
+                destinationMetadataField = filterFacet.getIndexFieldName() + QUERY_KEYWORD;
             }
 
             sourceMetadataField = metadatum.getDestinationMetadataField();
         } else {
             DiscoverySearchFilterFacet filterFacet = metadatum.getDestinationFilterFacet();
             if(filterFacet == null) {
-                destinationMetadataField = metadatum.getDestinationMetadataField();
+                destinationMetadataField = metadatum.getDestinationMetadataField() + QUERY_EXACT;
             } else {
-                destinationMetadataField = filterFacet.getIndexFieldName()+ QUERY_KEYWORD;
+                destinationMetadataField = filterFacet.getIndexFieldName() + QUERY_KEYWORD;
             }
 
             sourceMetadataField = metadatum.getSourceMetadataField();

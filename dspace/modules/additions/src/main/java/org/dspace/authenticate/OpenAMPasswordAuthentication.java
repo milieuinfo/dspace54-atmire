@@ -7,13 +7,14 @@
  */
 package org.dspace.authenticate;
 
+import java.sql.SQLException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.dspace.core.Context;
 import org.dspace.eperson.EPerson;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
 
 public class OpenAMPasswordAuthentication extends OpenAMAuthentication {
 
@@ -88,6 +89,9 @@ public class OpenAMPasswordAuthentication extends OpenAMAuthentication {
                             String realm,
                             HttpServletRequest request) throws SQLException {
         final String ssoId = openAMIdentityService.login(username, password);
+        if(StringUtils.isBlank(ssoId)) {
+            log.warn("OpenAM password authentication for user " + username + " returned an empty SSO ID");
+        }
         return authenticateOpenAM(context, request, ssoId);
     }
 

@@ -1,11 +1,11 @@
 package com.atmire.dspace.core;
 
+import java.sql.SQLException;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.log4j.Logger;
 import org.dspace.core.Context;
-
-import java.sql.SQLException;
 
 /**
  * Created by: Antoine Snyers (antoine at atmire dot com)
@@ -77,7 +77,7 @@ public class TransactionalContext extends Context {
         }
     }
 
-    public void realAbort() throws SQLException {
+    public void realAbort() {
         log.info("Number of aborts:" + numberAbort);
         log.debug(toString());
         log.debug("Proceeding with the real abort");

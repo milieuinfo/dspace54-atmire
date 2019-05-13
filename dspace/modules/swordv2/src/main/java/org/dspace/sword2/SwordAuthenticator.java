@@ -7,28 +7,35 @@
  */
 package org.dspace.sword2;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+
 import com.atmire.dspace.core.TransactionalContext;
-import org.dspace.core.Context;
-import org.dspace.core.ConfigurationManager;
-import org.dspace.core.LogManager;
-import org.dspace.core.Constants;
+import org.apache.log4j.Logger;
 import org.dspace.authenticate.AuthenticationManager;
 import org.dspace.authenticate.AuthenticationMethod;
-import org.dspace.eperson.EPerson;
-import org.dspace.eperson.Group;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.authorize.AuthorizeManager;
-import org.dspace.content.*;
-import org.apache.log4j.Logger;
+import org.dspace.content.Bundle;
+import org.dspace.content.Collection;
+import org.dspace.content.Community;
+import org.dspace.content.DSpaceObject;
+import org.dspace.content.Item;
+import org.dspace.content.ItemIterator;
+import org.dspace.core.ConfigurationManager;
+import org.dspace.core.Constants;
+import org.dspace.core.Context;
+import org.dspace.core.LogManager;
+import org.dspace.eperson.EPerson;
+import org.dspace.eperson.Group;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.swordapp.server.AuthCredentials;
-import org.swordapp.server.Deposit;
 import org.swordapp.server.SwordAuthException;
 import org.swordapp.server.SwordError;
 import org.swordapp.server.UriRegistry;
-
-import java.sql.SQLException;
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * This class offers a thin wrapper for the default DSpace
@@ -53,12 +60,17 @@ public class SwordAuthenticator
      */
     public boolean authenticates(Context context, String un, String pw)
     {
-        int auth = AuthenticationManager.authenticate(context, un, pw, null, null);
+        HttpServletRequest request = getHttpRequest();
+        int auth = AuthenticationManager.authenticate(context, un, pw, null, request);
         if (auth == AuthenticationMethod.SUCCESS)
         {
             return true;
         }
         return false;
+    }
+
+    private HttpServletRequest getHttpRequest() {
+        return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
     }
 
     /**
@@ -106,38 +118,14 @@ public class SwordAuthenticator
         {
             sc = this.authenticate(context, auth);
         }
-        catch (DSpaceSwordException e)
-        {
+        catch (DSpaceSwordException | SwordError | RuntimeException | SwordAuthException e) {
             if (context != null && context.isValid())
             {
-                context.abort();
+                context.realAbort();
             }
             throw e;
         }
-        catch (SwordError e)
-        {
-            if (context != null && context.isValid())
-            {
-                context.abort();
-            }
-            throw e;
-        }
-        catch (SwordAuthException e)
-        {
-            if (context != null && context.isValid())
-            {
-                context.abort();
-            }
-            throw e;
-        }
-        catch (RuntimeException e)
-        {
-            if (context != null && context.isValid())
-            {
-                context.abort();
-            }
-            throw e;
-        }
+
         return sc;
     }
 
@@ -189,13 +177,14 @@ public class SwordAuthenticator
             {
                 // if authenticated, obtain the eperson object
                 ep = context.getCurrentUser();
+                HttpServletRequest request = getHttpRequest();
 
                 if (ep != null)
                 {
                     authenticated = true;
                     sc.setAuthenticated(ep);
                     // Set any special groups - invoke the authentication mgr.
-                    int[] groupIDs = AuthenticationManager.getSpecialGroups(context, null);
+                    int[] groupIDs = AuthenticationManager.getSpecialGroups(context, request);
 
                     for (int i = 0; i < groupIDs.length; i++)
                     {
@@ -225,7 +214,7 @@ public class SwordAuthenticator
                         TransactionalContext oboContext = this.constructContext();
                         oboContext.setCurrentUser(epObo);
                         // Set any special groups - invoke the authentication mgr.
-                        int[] groupIDs = AuthenticationManager.getSpecialGroups(oboContext, null);
+                        int[] groupIDs = AuthenticationManager.getSpecialGroups(oboContext, request);
 
                         for (int i = 0; i < groupIDs.length; i++)
                         {
