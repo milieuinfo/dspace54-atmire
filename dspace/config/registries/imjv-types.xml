@@ -5,13 +5,13 @@
   </dspace-header>
 
   <dc-schema>
-      <name>imjv</name>
+    <name>imjv</name>
     <namespace>http://imjv.milieuinfo.be</namespace>
   </dc-schema>
 
 
   <dc-type>
-	<schema>imjv</schema>
+    <schema>imjv</schema>
     <element>rapporteringsjaar</element>
     <scope_note>Rapporterings Jaar</scope_note>
   </dc-type>
