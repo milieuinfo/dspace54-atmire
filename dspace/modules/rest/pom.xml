@@ -155,6 +155,9 @@
                             </excludes>
                         </overlay>
                     </overlays>
+                    <packagingExcludes>
+                        WEB-INF/lib/postgresql-9.1*
+                    </packagingExcludes>
                 </configuration>
                 <executions>
                     <execution>
@@ -371,6 +374,11 @@
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
         </dependency>
 
     </dependencies>

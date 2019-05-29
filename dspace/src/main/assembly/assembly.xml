@@ -180,6 +180,9 @@
          <includes>
             <include>*:jar:*</include>
          </includes>
+         <excludes>
+            <exclude>postgresql:postgresql</exclude>
+         </excludes>
          <outputDirectory>apps/dspace/lib</outputDirectory>
       </dependencySet>
    </dependencySets>
@@ -203,6 +206,9 @@
                   <includes>
                      <include>*:jar:*</include>
                   </includes>
+                  <excludes>
+                     <exclude>postgresql:postgresql</exclude>
+                  </excludes>
                   <outputDirectory>apps/dspace/lib</outputDirectory>
                </dependencySet>
             </dependencySets>

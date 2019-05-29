@@ -46,6 +46,9 @@
                      </includes>
                   </resource>
                </webResources>
+               <packagingExcludes>
+                  WEB-INF/lib/postgresql-9.1*
+               </packagingExcludes>
             </configuration>
             <executions>
                <execution>
@@ -126,6 +129,11 @@
            <groupId>org.springframework</groupId>
            <artifactId>spring-web</artifactId>
        </dependency>
+
+      <dependency>
+         <groupId>org.postgresql</groupId>
+         <artifactId>postgresql</artifactId>
+      </dependency>
 
    </dependencies>
 
