@@ -40,7 +40,6 @@ sed -i \
     -e "s/%mail_admin%/${mail_admin}/g" \
     -e "s/%dspace.consumer.token%/${dspace_consumer_token}/g" \
     -e "s/%dspace.consumer.secret%/${dspace_consumer_secret}/g" \
-    -e "s/%dspace.archief.name%/${archief_name}/g" \
     -e "s/%openam.role.prefix%/${openam_role_prefix}/g" \
     -e "s/%openam.admin.role%/${openam_admin_role}/g" \
     -e "s@%openam.eid.token.goto.url%@${openam_eid_token_goto_url}@g" \
@@ -63,9 +62,9 @@ sed -i \
 cat ${tomcat_apps_dir}/ansible.properties | cat - ${tomcat_apps_dir}/dspace/config/dspace.cfg > ${tomcat_apps_dir}/dspace/config/dspace.cfg.tmp && mv -f ${tomcat_apps_dir}/dspace/config/dspace.cfg.tmp ${tomcat_apps_dir}/dspace/config/dspace.cfg
 
 # Fixing some swagger stuff
-sed -i -e "s|%dspace.rest.url%|/${archief_name}/rest|g" ${tomcat_apps_dir}/dspace/webapps/rest/swagger-ui-2.1.0/dist/index.html
-sed -i -e "s|%dspace.rest.url%|${archief_name}/rest|g" ${tomcat_apps_dir}/dspace/webapps/rest/api-docs/strapdown.html
-sed -i -e "s|%dspace.rest.url%|/${archief_name}/rest/api|g" ${tomcat_apps_dir}/dspace/webapps/rest/api-docs/swagger.json
+sed -i -e "s|%dspace.rest.url%|/rest|g" ${tomcat_apps_dir}/dspace/webapps/rest/swagger-ui-2.1.0/dist/index.html
+sed -i -e "s|%dspace.rest.url%|rest|g" ${tomcat_apps_dir}/dspace/webapps/rest/api-docs/strapdown.html
+sed -i -e "s|%dspace.rest.url%|/rest/api|g" ${tomcat_apps_dir}/dspace/webapps/rest/api-docs/swagger.json
 
 # Replacing dspace.dir in dspace.cfg file.
 # The Ant script won't run properly as it loads this property through regexp property filtering.
@@ -77,7 +76,7 @@ sed -i -e "s/%google_analytics_key%/${info_gaId}/g" ${tomcat_apps_dir}/dspace/co
 sed -i -e "s|\${sword.url}|${sword_url}|g" ${tomcat_apps_dir}/dspace/config/modules/swordv2-server.cfg
 
 sed -i \
-    -e "s|\${solr.server}|http://localhost:8080/${archief_name}/solr|g" \
+    -e "s|\${solr.server}|http://localhost:8080/solr|g" \
     ${tomcat_apps_dir}/dspace/config/modules/oai.cfg \
     ${tomcat_apps_dir}/dspace/config/modules/discovery.cfg \
     ${tomcat_apps_dir}/dspace/config/modules/solr-statistics.cfg
@@ -87,10 +86,10 @@ sed -i \
 #ln -f -s ${tomcat_apps_dir}/lni.xml ${tomcat_home_dir}/conf/Catalina/localhost/lni.xml
 #ln -f -s ${tomcat_apps_dir}/sword.xml ${tomcat_home_dir}/conf/Catalina/localhost/sword.xml
 #ln -f -s ${tomcat_apps_dir}/oai.xml ${tomcat_home_dir}/conf/Catalina/localhost/oai.xml
-ln -f -s ${tomcat_apps_dir}/rest.xml ${tomcat_home_dir}/conf/Catalina/localhost/${archief_name}#rest.xml
-ln -f -s ${tomcat_apps_dir}/solr.xml ${tomcat_home_dir}/conf/Catalina/localhost/${archief_name}#solr.xml
-ln -f -s ${tomcat_apps_dir}/swordv2.xml ${tomcat_home_dir}/conf/Catalina/localhost/${archief_name}#swordv2.xml
-ln -f -s ${tomcat_apps_dir}/xmlui.xml ${tomcat_home_dir}/conf/Catalina/localhost/${archief_name}#xmlui.xml
+ln -f -s ${tomcat_apps_dir}/rest.xml ${tomcat_home_dir}/conf/Catalina/localhost/rest.xml
+ln -f -s ${tomcat_apps_dir}/solr.xml ${tomcat_home_dir}/conf/Catalina/localhost/solr.xml
+ln -f -s ${tomcat_apps_dir}/swordv2.xml ${tomcat_home_dir}/conf/Catalina/localhost/swordv2.xml
+ln -f -s ${tomcat_apps_dir}/xmlui.xml ${tomcat_home_dir}/conf/Catalina/localhost/xmlui.xml
 
 ln -f -s ${tomcat_apps_dir}/setenv.sh ${tomcat_home_dir}/bin/setenv.sh
 

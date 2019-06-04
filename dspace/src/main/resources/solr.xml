@@ -7,4 +7,4 @@
     http://www.dspace.org/license/
 
 -->
-<Context path="/%dspace.archief.name%/solr" docBase="%tomcat_apps_dir%/dspace/webapps/solr" debug="0" useHttpOnly="true" reloadable="true" cachingAllowed="true" />
+<Context path="/solr" docBase="%tomcat_apps_dir%/dspace/webapps/solr" debug="0" useHttpOnly="true" reloadable="true" cachingAllowed="true" />

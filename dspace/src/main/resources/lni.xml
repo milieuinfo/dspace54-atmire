@@ -7,4 +7,4 @@
     http://www.dspace.org/license/
 
 -->
-<Context path="/%dspace.archief.name%/lni" docBase="%tomcat_apps_dir%/dspace/webapps/lni" debug="0" useHttpOnly="true" reloadable="true" cachingAllowed="true" />
+<Context path="/lni" docBase="%tomcat_apps_dir%/dspace/webapps/lni" debug="0" useHttpOnly="true" reloadable="true" cachingAllowed="true" />

@@ -7,4 +7,4 @@
     http://www.dspace.org/license/
 
 -->
-<Context path="/%dspace.archief.name%/oai" docBase="%tomcat_apps_dir%/dspace/webapps/oai" debug="0" useHttpOnly="true" reloadable="true" cachingAllowed="true" />
+<Context path="/oai" docBase="%tomcat_apps_dir%/dspace/webapps/oai" debug="0" useHttpOnly="true" reloadable="true" cachingAllowed="true" />

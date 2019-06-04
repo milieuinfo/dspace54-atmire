@@ -7,7 +7,7 @@
     http://www.dspace.org/license/
 
 -->
-<Context path="/%dspace.archief.name%/swordv2" docBase="%tomcat_apps_dir%/dspace/webapps/swordv2" debug="0" useHttpOnly="true" reloadable="true" cachingAllowed="true">
+<Context path="/swordv2" docBase="%tomcat_apps_dir%/dspace/webapps/swordv2" debug="0" useHttpOnly="true" reloadable="true" cachingAllowed="true">
 
     <Resource name="jdbc/dspace"
               auth="Container"

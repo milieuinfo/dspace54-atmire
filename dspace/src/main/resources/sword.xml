@@ -7,4 +7,4 @@
     http://www.dspace.org/license/
 
 -->
-<Context path="/%dspace.archief.name%/sword" docBase="%tomcat_apps_dir%/dspace/webapps/sword" debug="0" useHttpOnly="true" reloadable="true" cachingAllowed="true" />
+<Context path="/sword" docBase="%tomcat_apps_dir%/dspace/webapps/sword" debug="0" useHttpOnly="true" reloadable="true" cachingAllowed="true" />
