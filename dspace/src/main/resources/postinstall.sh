@@ -11,7 +11,7 @@ sed -i \
     -e "s/%vlan%/${vlan}/g" \
     -e "s/%ZUIL%/${ZUIL}/g" \
     -e "s/%zuil%/${zuil}/g" \
-    -e "s/%ZUILURL%/${ZUILURL}/g" \
+    -e "s/%rp_host%/${rp_host}/g" \
     -e "s@%tomcat_apps_dir%@${tomcat_apps_dir}@g" \
     -e "s@%tomcat_data_dir%@${tomcat_data_dir}@g" \
     -e "s@%tomcat_home_dir%@${tomcat_home_dir}@g" \
