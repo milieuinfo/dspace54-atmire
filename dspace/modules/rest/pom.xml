@@ -12,7 +12,7 @@
     <parent>
         <groupId>org.dspace</groupId>
         <artifactId>modules</artifactId>
-        <version>5.4.18-SNAPSHOT</version>
+        <version>5.4.18</version>
         <relativePath>..</relativePath>
     </parent>
 
@@ -41,7 +41,7 @@
                                  <!--Need to download markdown.mustache first to use strapdown.html.mustache-->
                                 <!--&ndash;&gt;-->
                                 <!--<get dest="${build.directory}">-->
-                                    <!--<url url="https://raw.githubusercontent.com/kongchen/api-doc-template/master/v2.0/markdown.mustache"/>-->
+                                    <!--<url url="https://raw.githubusercontent.com/kongchen/api-doc-template/master/v2.0/markdown.mustache" />-->
                                 <!--</get>-->
                             <!--</target>-->
                         <!--</configuration>-->
@@ -61,7 +61,7 @@
                             <springmvc>false</springmvc>
                             <locations>org.dspace.rest</locations>
                             <schemes>${rest.scheme}</schemes>
-                            <host></host>
+                            <host />
                             <basePath>%dspace.rest.url%</basePath>
                             <info>
                                 <title>ACD Archief REST Application</title>
