@@ -103,7 +103,7 @@ public class ItemExport
 
 
         Context c = new Context();
-        c.setIgnoreAuthorization(true);
+        c.turnOffAuthorisationSystem();
 
         if (myType == Constants.ITEM)
         {

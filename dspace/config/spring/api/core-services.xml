@@ -19,7 +19,7 @@
 				<value>news-top.html</value>
 				<value>news-side.html</value>
 			</list>
-		</property>	
+		</property>
 	</bean>
 
 </beans>

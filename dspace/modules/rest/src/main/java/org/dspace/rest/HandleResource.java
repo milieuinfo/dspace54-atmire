@@ -39,7 +39,6 @@ import java.sql.SQLException;
 public class HandleResource extends Resource
 {
     private static Logger log = Logger.getLogger(HandleResource.class);
-    private static org.dspace.core.Context context;
 
     @GET
     @Path("/{prefix}/{suffix}")
