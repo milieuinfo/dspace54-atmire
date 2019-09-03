@@ -301,7 +301,6 @@
                 <assetstore.dir>${dspace.dir}/assetstore</assetstore.dir>
                 <log.dir>${dspace.dir}/log</log.dir>
                 <db.maxidle>1</db.maxidle>
-                <xmlui.google.analytics.key>DUMMY_KEY</xmlui.google.analytics.key>
                 <virus-scan>false</virus-scan>
             </properties>
         </profile>
@@ -335,7 +334,6 @@
                 <assetstore.dir>${dspace.dir}/assetstore</assetstore.dir>
                 <log.dir>${dspace.dir}/log</log.dir>
                 <db.maxidle>1</db.maxidle>
-                <xmlui.google.analytics.key></xmlui.google.analytics.key>
                 <authentication.method>
                     org.dspace.authenticate.PasswordAuthentication,org.dspace.authenticate.OpenAMCookieAuthentication,org.dspace.authenticate.OpenAMHeaderAuthentication,org.dspace.authenticate.OpenAMPasswordAuthentication
                 </authentication.method>
@@ -348,7 +346,6 @@
         <profile>
             <id>client-prod</id>
             <properties>
-                <xmlui.google.analytics.key>DUMMY_KEY</xmlui.google.analytics.key>
                 <openam.server.url>http://msb-on-1153.mmis.be:9880/sso</openam.server.url>
             </properties>
         </profile>

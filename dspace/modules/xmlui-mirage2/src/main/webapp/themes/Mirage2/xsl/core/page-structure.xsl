@@ -233,6 +233,7 @@
                 </link>
             </xsl:if>
 
+            <script id="gdpr_script" src="https://cdn.milieuinfo.be/gdpr/LATEST/gdpr.js"></script>
 
             <span class="header">
                 <script src="//widgets.vlaanderen.be/widget/live/393c7f08dc9e4d7b8a044b3b56361516"
