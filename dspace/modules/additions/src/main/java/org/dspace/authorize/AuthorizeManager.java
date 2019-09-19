@@ -8,19 +8,16 @@
 package org.dspace.authorize;
 
 import com.atmire.access.service.*;
-
 import java.sql.*;
-import java.util.*;
 import java.util.Date;
-
-import org.apache.commons.collections.CollectionUtils;
+import java.util.*;
+import org.apache.commons.collections.*;
 import org.apache.log4j.*;
-import org.dspace.content.*;
 import org.dspace.content.Collection;
+import org.dspace.content.*;
 import org.dspace.core.*;
 import org.dspace.eperson.*;
 import org.dspace.storage.rdbms.*;
-import org.dspace.submit.step.*;
 import org.dspace.utils.*;
 import org.dspace.workflow.*;
 
@@ -321,16 +318,16 @@ public class AuthorizeManager {
                         groupsToCheck.add(rpGroup);
 
                         for (Group group : groupsToCheck) {
-                            if (group != null && e != null && (c.inSpecialGroup(group.getID()) || group.isMember(e))) {
+                            if (group != null && (c.inSpecialGroup(group.getID()) || group.isMember(e))) {
                                 if (metadataBasedAuthorizationService.isAuthorized(c, e, group, o)) {
                                     if(log.isDebugEnabled()) {
-                                        log.debug(e.getEmail() + " is a member of group " + group.getName() + "  and all metadata " +
+                                        log.debug((e != null ? e.getEmail() : "Anonymous user") + " is a member of group " + group.getName() + "  and all metadata " +
                                                 "based access control policies are met");
                                     }
 
                                     return true;
                                 } else {
-                                    log.info(e.getEmail() + " is a member of group " + group.getName() + " but the group’s " +
+                                    log.info((e != null ? e.getEmail() : "Anonymous user") + " is a member of group " + group.getName() + " but the group’s " +
                                             "metadata based access control policies prohibit access");
                                 }
                             }

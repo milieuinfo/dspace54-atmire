@@ -1,12 +1,16 @@
 package com.atmire.sword.rules;
 
-import com.atmire.sword.validation.model.*;
+import static org.apache.commons.collections.CollectionUtils.isEmpty;
+
 import java.util.Collection;
-import java.util.*;
-import org.apache.commons.collections.*;
-import static org.apache.commons.collections.CollectionUtils.*;
-import org.apache.commons.lang.*;
-import org.dspace.content.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.atmire.sword.validation.model.Value;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.dspace.content.Metadatum;
 
 /**
  * Rule that will check if an item field has a specified value
@@ -30,19 +34,24 @@ public class FieldHasValueRule extends AbstractFieldCheckRule {
     protected boolean checkFieldValues(final List<Metadatum> fieldValueList) {
 
         if (isEmpty(fieldValueList)) {
-            addViolationDescription("The %s field has no value", fieldDescription);
+            addViolationDescription("Het %s veld heeft geen waarde", fieldDescription);
             return false;
         } else if(possibleValues.containsKey(fieldValueList.get(0).value)) {
             checkedCompliantValue = possibleValues.get(fieldValueList.get(0).value);
             return true;
         } else {
-            addViolationDescription("The %s field has value %s", fieldDescription, fieldValueList.get(0).value);
+            addViolationDescription("het %s veld heeft waarde %s", fieldDescription, fieldValueList.get(0).value);
             return false;
         }
     }
 
-    protected String getRuleDescription() {
-        return String.format("the %s (%s) field has value %s", fieldDescription, metadataFieldToCheck,
+    protected String getRuleDescriptionCompliant() {
+        return String.format("het %s veld (%s) heeft waarde %s", fieldDescription, metadataFieldToCheck,
+                checkedCompliantValue == null ? buildValueString() : getValueDescription(checkedCompliantValue));
+    }
+
+    protected String getRuleDescriptionViolation() {
+        return String.format("het %s veld (%s) moet waarde %s hebben", fieldDescription, metadataFieldToCheck,
                 checkedCompliantValue == null ? buildValueString() : getValueDescription(checkedCompliantValue));
     }
 

@@ -14,6 +14,7 @@
 
 
 @import "fonts/sans/FlandersArtSans";
+@import "ref";
 
 
 body{
@@ -313,4 +314,8 @@ span.header .iw2-wrapper.iw2-default-margin {
     p {
         white-space: pre-wrap;
     }
+}
+
+button[id^="com_atmire_app_xmlui_itemcloning_CloneItemTransformer_"] {
+    margin-right:10px;
 }

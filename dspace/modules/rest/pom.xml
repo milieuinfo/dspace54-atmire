@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.dspace.modules</groupId>
     <artifactId>rest</artifactId>
@@ -42,7 +41,7 @@
                                  <!--Need to download markdown.mustache first to use strapdown.html.mustache-->
                                 <!--&ndash;&gt;-->
                                 <!--<get dest="${build.directory}">-->
-                                    <!--<url url="https://raw.githubusercontent.com/kongchen/api-doc-template/master/v2.0/markdown.mustache"/>-->
+                                    <!--<url url="https://raw.githubusercontent.com/kongchen/api-doc-template/master/v2.0/markdown.mustache" />-->
                                 <!--</get>-->
                             <!--</target>-->
                         <!--</configuration>-->
@@ -62,8 +61,8 @@
                             <springmvc>false</springmvc>
                             <locations>org.dspace.rest</locations>
                             <schemes>${rest.scheme}</schemes>
-                            <host></host>
-                            <basePath>${rest.url.path}</basePath>
+                            <host />
+                            <basePath>%dspace.rest.url%</basePath>
                             <info>
                                 <title>ACD Archief REST Application</title>
                                 <version>v1</version>
@@ -101,7 +100,7 @@
                             <directory>${basedir}/src/main/webapp</directory>
                             <includes>
                                 <include>WEB-INF/web.xml</include>
-                      <!--          <include>swagger-ui-${swagger-ui-version}/dist/index.html</include> -->
+                                <include>swagger-ui-${swagger-ui-version}/dist/index.html</include> 
                             </includes>
                         </resource>
                         <resource>
@@ -254,6 +253,18 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <dependency>
+            <groupId>be.milieuinfo.framework</groupId>
+            <artifactId>core-log</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.jackson</groupId>
+                    <artifactId>jackson-core-asl</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <dependency>
             <groupId>com.wordnik</groupId>
             <artifactId>swagger-jersey-jaxrs</artifactId>
