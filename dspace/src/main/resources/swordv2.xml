@@ -1,0 +1,28 @@
+<!--
+
+    The contents of this file are subject to the license and copyright
+    detailed in the LICENSE and NOTICE files at the root of the source
+    tree and available online at
+
+    http://www.dspace.org/license/
+
+-->
+<Context path="/swordv2" docBase="%tomcat_apps_dir%/dspace/webapps/swordv2" debug="0" useHttpOnly="true" reloadable="true" cachingAllowed="true">
+
+    <Resource name="jdbc/dspace"
+              auth="Container"
+              type="javax.sql.DataSource"
+              maxActive="%db_max_active_sword%"
+              maxIdle="%db_max_idle_sword%"
+              minIdle="%db_min_idle_sword%"
+              maxWait="%db_max_wait_sword%"
+              username="%db_username%"
+              password="%db_password%"
+              driverClassName="org.postgresql.Driver"
+              validationQuery="select 1;"
+              testOnBorrow="true"
+              testOnReturn="false"
+              testWhileIdle="false"
+              url="jdbc:postgresql://%db_host%:%db_port%/%db_name%"/>
+
+</Context>

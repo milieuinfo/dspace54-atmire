@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.dspace</groupId>
     <artifactId>dspace-parent</artifactId>
@@ -18,12 +17,14 @@
     </organization>
 
     <!-- brings the sonatype snapshot repository and signing requirement on board -->
+    <!--
     <parent>
         <groupId>org.sonatype.oss</groupId>
         <artifactId>oss-parent</artifactId>
         <version>9</version>
-        <relativePath/>
+        <relativePath />
     </parent>
+    -->
 
     <prerequisites>
         <maven>3.0</maven>
@@ -160,8 +161,7 @@
                         <configuration>
                             <target name="Encode any UTF-8 chars in properties">
                                 <!-- Run 'native2ascii' to encode UTF-8 characters in properties files. Place the resulting file(s) in /target -->
-                                <native2ascii encoding="UTF8" src="${root.basedir}" dest="${root.basedir}/target"
-                                              includes="*.properties"/>
+                                <native2ascii encoding="UTF8" src="${root.basedir}" dest="${root.basedir}/target" includes="*.properties" />
                             </target>
                         </configuration>
                         <goals>
@@ -223,6 +223,7 @@
                         <exclude>**/readme*</exclude>
                         <exclude>**/.gitignore</exclude>
                         <exclude>**/build.properties*</exclude>
+                        <exclude>**/postinstall.sh</exclude>
                     </excludes>
                     <mapping>
                         <!-- Custom DSpace file extensions which are not recognized by maven-release-plugin:
@@ -267,86 +268,6 @@
                 <!-- 'root.basedir' is the relative path to the [dspace-src] root folder -->
                 <!-- NOTE that we are using the copy in the target dir, which has any Unicode characters encoded (see native2ascii above) -->
                 <filters.file>${root.basedir}/target/build.properties</filters.file>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>atmire-dev</id>
-            <properties>
-                <clientname>lne54</clientname>
-                <tomcat.port>12190</tomcat.port>
-                <dspace.dir>/home/${clientname}/dspace</dspace.dir>
-                <dspace.name>DSpace at lne</dspace.name>
-                <dspace.hostname>dev2.atmire.com</dspace.hostname>
-                <dspace.baseUrl>https://${dspace.hostname}</dspace.baseUrl>
-                <dspace.url>${dspace.baseUrl}/dspace-${clientname}</dspace.url>
-                <sword.url>${dspace.baseUrl}/dspace-${clientname}-sword</sword.url>
-                <http.sword.url>http://${dspace.hostname}/dspace-${clientname}-sword</http.sword.url>
-                <rest.base.url>${dspace.baseUrl}/dspace-lne54-rest</rest.base.url>
-                <rest.url.path>/dspace-lne54-rest/api</rest.url.path>
-                <rest.scheme>https</rest.scheme>
-                <!-- <dspace.oai.url>https://dev.atmire.com/dspace-$PROJECT_NAME$-oai</dspace.oai.url> -->
-                <db.name>postgres</db.name>
-                <db.driver>org.postgresql.Driver</db.driver>
-                <db.url>jdbc:postgresql://localhost:5432/dspace-${clientname}</db.url>
-                <db.username>dspace</db.username>
-                <db.password>dspace</db.password>
-                <mail.server>no-mail-server</mail.server>
-                <mail.from.address>noreply@atmire.com</mail.from.address>
-                <feedback.recipient>noreply@atmire.com</feedback.recipient>
-                <mail.admin>noreply@atmire.com</mail.admin>
-                <alert.recipient>noreply@atmire.com</alert.recipient>
-                <mail.server.disabled>true</mail.server.disabled>
-                <solr.server>http://localhost:${tomcat.port}/solr</solr.server>
-                <assetstore.dir>${dspace.dir}/assetstore</assetstore.dir>
-                <log.dir>${dspace.dir}/log</log.dir>
-                <db.maxidle>1</db.maxidle>
-                <virus-scan>false</virus-scan>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>client-DEV</id>
-            <properties>
-                <tomcat.port>8080</tomcat.port>
-                <dspace.dir>/opt/tomcat/dspace</dspace.dir>
-                <dspace.name>DSpace at lne</dspace.name>
-                <dspace.hostname>archief-test-on-1.vm.cumuli.be</dspace.hostname>
-                <dspace.baseUrl>https://${dspace.hostname}/xmlui</dspace.baseUrl>
-                <dspace.url>${dspace.baseUrl}</dspace.url>
-                <sword.url>http://archief-test-on-1.vm.cumuli.be:8080/swordv2</sword.url>
-                <rest.base.url>/rest</rest.base.url>
-                <rest.url.path>/rest/api</rest.url.path>
-                <rest.scheme>https</rest.scheme>
-                <!-- <dspace.oai.url>https://dev.atmire.com/dspace-$PROJECT_NAME$-oai</dspace.oai.url> -->
-                <db.name>postgres</db.name>
-                <db.driver>org.postgresql.Driver</db.driver>
-                <db.url>jdbc:postgresql://localhost:5432/</db.url>
-                <db.username>dspace</db.username>
-                <db.password>dspace</db.password>
-                <mail.server>no-mail-server</mail.server>
-                <mail.from.address>noreply@atmire.com</mail.from.address>
-                <feedback.recipient>noreply@atmire.com</feedback.recipient>
-                <mail.admin>noreply@atmire.com</mail.admin>
-                <alert.recipient>noreply@atmire.com</alert.recipient>
-                <mail.server.disabled>true</mail.server.disabled>
-                <solr.server>http://localhost:${tomcat.port}/archief-imjv/solr</solr.server>
-                <assetstore.dir>${dspace.dir}/assetstore</assetstore.dir>
-                <log.dir>${dspace.dir}/log</log.dir>
-                <db.maxidle>1</db.maxidle>
-                <authentication.method>
-                    org.dspace.authenticate.PasswordAuthentication,org.dspace.authenticate.OpenAMCookieAuthentication,org.dspace.authenticate.OpenAMHeaderAuthentication,org.dspace.authenticate.OpenAMPasswordAuthentication
-                </authentication.method>
-                <handle.canonical.prefix>${dspace.baseUrl}/</handle.canonical.prefix>
-                <handle.prefix>acd</handle.prefix>
-                <openam.server.url>http://msb-on-750.mmis.be:9880/sso</openam.server.url>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>client-prod</id>
-            <properties>
-                <openam.server.url>http://msb-on-1153.mmis.be:9880/sso</openam.server.url>
             </properties>
         </profile>
 
@@ -583,6 +504,7 @@
         <!--
            Builds DSpace "Assembly & Configuration" project
         -->
+
         <profile>
             <id>dspace</id>
             <activation>
@@ -776,18 +698,30 @@
             </modules>
         </profile>
 
+        <!-- Debian packaging -->
+        <profile>
+            <id>pkg</id>
+            <activation>
+                <file>
+                    <exists>pkg/pom.xml</exists>
+                </file>
+            </activation>
+            <modules>
+                <module>pkg</module>
+            </modules>
+        </profile>
 
         <!--
            The 'release' profile is used by the 'maven-release-plugin' (see above)
            to actually perform a DSpace software release to Maven central.
-         -->
+         --><!--
         <profile>
             <id>release</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
             </activation>
-            <!-- Activate all modules *except* for the 'dspace' module,
-                 as it does not include any Java source code to release. -->
+            Activate all modules *except* for the 'dspace' module,
+                 as it does not include any Java source code to release.
             <modules>
                 <module>dspace-api</module>
                 <module>dspace-jspui</module>
@@ -803,8 +737,27 @@
                 <module>dspace-xmlui</module>
             </modules>
         </profile>
-
+-->
     </profiles>
+
+    <distributionManagement>
+        <repository>
+            <id>release</id>
+            <url>${acd.repository.release.url}</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshot</id>
+            <url>${acd.repository.snapshot.url}</url>
+        </snapshotRepository>
+    </distributionManagement>
+    <issueManagement>
+        <system>${acd.issueManagement.system}</system>
+        <url>${acd.issueManagement.url}</url>
+    </issueManagement>
+    <ciManagement>
+        <system>${acd.ciManagement.system}</system>
+        <url>${acd.ciManagement.url}</url>
+    </ciManagement>
 
     <!--
        Dependency management provides a means to control which
@@ -968,6 +921,12 @@
                 <groupId>be.milieuinfo.security</groupId>
                 <artifactId>acd-openam-oauth-client</artifactId>
                 <version>11.0.0.12</version>
+            </dependency>
+
+            <dependency>
+                <groupId>be.milieuinfo.framework</groupId>
+                <artifactId>core-log</artifactId>
+                <version>2.1.2</version>
             </dependency>
 
             <dependency>
@@ -1267,10 +1226,17 @@
                 <artifactId>icu4j</artifactId>
                 <version>51.1</version>
             </dependency>
+            <!--
             <dependency>
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
                 <version>42.2.1.jre7</version>
+            </dependency>
+            -->
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>42.2.5.jre7</version>
             </dependency>
             <dependency>
                 <groupId>com.oracle</groupId>
@@ -1428,11 +1394,12 @@
             </comments>
         </license>
     </licenses>
-
+    <!--
     <issueManagement>
         <system>JIRA</system>
         <url>https://jira.duraspace.org/browse/DS</url>
     </issueManagement>
+    -->
 
     <mailingLists>
         <mailingList>
@@ -1632,7 +1599,7 @@
         </developer>
         <developer>
             <name>Jeffrey Trimble</name>
-            <email/>
+            <email />
             <roles>
                 <role>commiter</role>
             </roles>
@@ -1669,8 +1636,8 @@
             <name>Pere Villega</name>
             <email>pere.villega@gmail.com</email>
             <url>http://www.perevillega.com</url>
-            <organization/>
-            <organizationUrl/>
+            <organization />
+            <organizationUrl />
             <roles>
                 <role>developer</role>
             </roles>
@@ -1716,22 +1683,21 @@
         on release to deploy release versions to the repository by the
         release manager.
     -->
-    <distributionManagement>
+    <!--<distributionManagement>-->
         <!-- further distribution management is found upstream in the sonatype parent -->
-    </distributionManagement>
-
+    <!--</distributionManagement>-->
+    <!--
     <repositories>
         <repository>
             <id>sonatype-releases</id>
             <name>Sonatype Releases Repository</name>
             <url>https://oss.sonatype.org/content/repositories/releases/</url>
         </repository>
-        <!--Nor sonatype nor maven central appear to still contain org.restlet.jee:org.restlet.ext.servlet:jar:2.1.1 any more. No problem if it is in your local repo. Build fail if it isn't-->
         <repository>
             <id>restlet</id>
             <name>restlet</name>
             <url>http://maven.restlet.org</url>
         </repository>
     </repositories>
-
+    -->
 </project>
