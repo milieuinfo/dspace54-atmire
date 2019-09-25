@@ -14,12 +14,17 @@ import org.apache.log4j.Logger;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.authorize.AuthorizeManager;
 import org.dspace.browse.BrowseException;
+import org.dspace.content.WorkspaceItem;
 import org.dspace.content.service.ItemService;
+import org.dspace.core.ConfigurationManager;
+import org.dspace.core.LogManager;
 import org.dspace.rest.common.Collection;
 import org.dspace.rest.common.Item;
 import org.dspace.rest.common.MetadataEntry;
 import org.dspace.rest.exceptions.ContextException;
 import org.dspace.usage.UsageEvent;
+import org.dspace.workflow.WorkflowManager;
+import org.dspace.xmlworkflow.XmlWorkflowManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
@@ -396,14 +401,18 @@ public class CollectionsResource extends Resource
             }
             workspaceItem.update();
 
-            // Index item to browse.
-            org.dspace.browse.IndexBrowse browse = new org.dspace.browse.IndexBrowse(context);
-            browse.indexItem(dspaceItem);
-
-            log.trace("Installing item to collection(id=" + collectionId + ").");
-            dspaceItem = org.dspace.content.InstallItem.installItem(context, workspaceItem);
-
-            returnItem = new Item(dspaceItem, "", context);
+            // Must insert the item into workflow
+            if(ConfigurationManager.getProperty("workflow","workflow.framework").equals("xmlworkflow")){
+                try{
+                    XmlWorkflowManager.start(context, workspaceItem);
+                }catch (Exception e){
+                    log.error(LogManager.getHeader(context, "Error while starting xml workflow", "Item id: " + dspaceItem.getID()), e);
+                    throw new ContextException("Error while starting xml workflow: Item id: " + dspaceItem.getID(),e);
+                }
+            }else{
+                WorkflowManager.start(context, (WorkspaceItem)workspaceItem);
+            }
+            returnItem=new Item(workspaceItem.getItem(),"",context);
 
             context.complete();
 
@@ -420,10 +429,6 @@ public class CollectionsResource extends Resource
         catch (IOException e)
         {
             processException("Could not add item into collection(id=" + collectionId + "), IOException. Message: " + e, context);
-        }
-        catch (BrowseException e)
-        {
-            processException("Could not add item into browse index, BrowseException. Message: " + e, context);
         }
         catch (ContextException e)
         {

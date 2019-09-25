@@ -127,6 +127,9 @@
                 <div class="col-sm-4">
                     <div class="row">
                         <div class="col-xs-6 col-sm-12">
+                            <xsl:call-template name="itemSummaryView-DIM-thumbnail"/>
+                        </div>
+                        <div class="col-xs-6 col-sm-12">
                             <xsl:call-template name="itemSummaryView-DIM-file-section"/>
                         </div>
                     </div>

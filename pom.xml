@@ -4,7 +4,7 @@
     <groupId>org.dspace</groupId>
     <artifactId>dspace-parent</artifactId>
     <packaging>pom</packaging>
-    <version>5.4.20-SNAPSHOT</version>
+    <version>5.10</version>
     <name>DSpace Parent Project</name>
     <description>
         DSpace open source software is a turnkey institutional repository application.
@@ -32,6 +32,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>${project.build.sourceEncoding}</project.reporting.outputEncoding>
+        <jackson.version>2.9.3</jackson.version>
         <java.version>1.7</java.version>
         <lucene.version>4.10.2</lucene.version>
         <solr.version>4.10.2</solr.version>
@@ -408,34 +410,29 @@
                                     <fileTemplate>src/main/license/third-party-file-groupByLicense.ftl</fileTemplate>
                                     <!-- License names that should all be merged into the *first* listed name -->
                                     <licenseMerges>
-                                        <licenseMerge>Apache Software License, Version 2.0|The Apache Software License,
-                                            Version 2.0|Apache License Version 2.0|Apache License, Version 2.0|Apache
-                                            Public License 2.0|Apache License 2.0|Apache Software License - Version
-                                            2.0|Apache 2.0 License|Apache 2.0 license|Apache License V2.0|Apache
-                                            2|Apache License|Apache|ASF 2.0
-                                        </licenseMerge>
+                                        <licenseMerge>Apache Software License, Version 2.0|The Apache Software License, Version 2.0|Apache License Version 2.0|Apache License, Version 2.0|Apache Public License 2.0|Apache License 2.0|Apache Software License - Version 2.0|Apache 2.0 License|Apache 2.0 license|Apache License V2.0|Apache 2|Apache License|Apache|ASF 2.0|Apache 2.0</licenseMerge>
                                         <!-- Ant-contrib is an Apache License -->
-                                        <licenseMerge>Apache Software License, Version
-                                            2.0|http://ant-contrib.sourceforge.net/tasks/LICENSE.txt
-                                        </licenseMerge>
-                                        <licenseMerge>BSD License|The BSD License|BSD licence|BSD license|BSD|BSD-style
-                                            license|New BSD License|New BSD license|Revised BSD License
-                                        </licenseMerge>
+                                        <licenseMerge>Apache Software License, Version 2.0|http://ant-contrib.sourceforge.net/tasks/LICENSE.txt</licenseMerge>
+                                        <!-- XML Commons claims these licenses, but it's really Apache License: https://xerces.apache.org/xml-commons/licenses.html -->
+                                        <licenseMerge>Apache Software License, Version 2.0|The SAX License|The W3C License</licenseMerge>
+                                        <licenseMerge>BSD License|The BSD License|BSD licence|BSD license|BSD|BSD-style license|BSD-Style License|New BSD License|New BSD license|Revised BSD License|BSD 2-Clause license</licenseMerge>
                                         <!-- DuraSpace uses a BSD License for DSpace -->
                                         <licenseMerge>BSD License|DuraSpace BSD License|DuraSpace Sourcecode License
                                         </licenseMerge>
                                         <!-- Coverity uses modified BSD: https://github.com/coverity/coverity-security-library -->
                                         <licenseMerge>BSD License|BSD style modified by Coverity</licenseMerge>
-                                        <licenseMerge>Common Development and Distribution License (CDDL)|Common
-                                            Development and Distribution License (CDDL) v1.0|COMMON DEVELOPMENT AND
-                                            DISTRIBUTION LICENSE (CDDL) Version 1.0|CDDL, v1.0|CDDL 1.0 license|CDDL
-                                            1.0|CDDL 1.1
-                                        </licenseMerge>
+                                        <!-- Jaxen claims this license, but it's really BSD: http://jaxen.codehaus.org/license.html -->
+                                        <licenseMerge>BSD License|http://jaxen.codehaus.org/license.html</licenseMerge>
+                                        <licenseMerge>Common Development and Distribution License (CDDL)|Common Development and Distribution License (CDDL) v1.0|COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.0|Common Development and Distribution License|CDDL, v1.0|CDDL 1.0 license|CDDL 1.0|CDDL 1.1|CDDL|CDDL License</licenseMerge>
                                         <!-- Jersey / Java Servlet API claims this license, but is actually CDDL 1.0: http://servlet-spec.java.net -->
                                         <licenseMerge>Common Development and Distribution License (CDDL)|CDDL + GPLv2
                                             with classpath exception
                                         </licenseMerge>
-                                        <!-- Jersey claims this license, but it is dual licensed with CDDL 1.0 being one: https://jersey.java.net/license.html -->
+                                        <!-- Jersey claims this license, but it is dual licensed with CDDL 1.1 being one: https://jersey.java.net/license.html -->
+                                        <licenseMerge>Common Development and Distribution License (CDDL)|CDDL+GPL License</licenseMerge>
+                                        <!-- JavaMail claims this license, but it is dual licensed with CDDL being one: https://java.net/projects/javamail/pages/License -->
+                                        <licenseMerge>Common Development and Distribution License (CDDL)|GPLv2+CE</licenseMerge>
+                                        <!-- JAXB claims this license, but it is dual licensed with CDDL being one: https://jaxb.java.net/ -->
                                         <licenseMerge>Common Development and Distribution License (CDDL)|GPL2 w/ CPE
                                         </licenseMerge>
                                         <licenseMerge>Eclipse Public License|Eclipse Public License - Version
@@ -444,12 +441,7 @@
                                         <!-- JUnit claims this license but is actually Eclipse Public License: http://junit.org/license.html -->
                                         <licenseMerge>Eclipse Public License|Common Public License Version 1.0
                                         </licenseMerge>
-                                        <licenseMerge>GNU Lesser General Public License (LGPL)|GNU Lesser General Public
-                                            License (LGPL), Version 2.1|GNU LESSER GENERAL PUBLIC LICENSE, Version
-                                            2.1|GNU Lesser General Public License|GNU Lesser Public License|GNU Lesser
-                                            General Public License, Version 2.1|Lesser General Public License (LGPL) v
-                                            2.1|LGPL 2.1|LGPL 2.1 license|LGPL 3.0 license|LGPL, v2.1 or later|LGPL
-                                        </licenseMerge>
+                                        <licenseMerge>GNU Lesser General Public License (LGPL)|The GNU Lesser General Public License, Version 2.1|GNU Lesser General Public License (LGPL), Version 2.1|GNU LESSER GENERAL PUBLIC LICENSE, Version 2.1|GNU Lesser General Public License, version 2.1|GNU LESSER GENERAL PUBLIC LICENSE|GNU Lesser General Public License|GNU Lesser Public License|GNU Lesser General Public License, Version 2.1|Lesser General Public License (LGPL) v 2.1|LGPL 2.1|LGPL 2.1 license|LGPL 3.0 license|LGPL, v2.1 or later|LGPL</licenseMerge>
                                         <licenseMerge>MIT License|The MIT License|MIT LICENSE</licenseMerge>
                                         <!-- BouncyCastle uses a modified MIT License: http://www.bouncycastle.org/license.html -->
                                         <licenseMerge>MIT License|Bouncy Castle Licence</licenseMerge>
@@ -780,132 +772,132 @@
             <dependency>
                 <groupId>org.dspace</groupId>
                 <artifactId>dspace-api</artifactId>
-                <version>5.4</version>
+                <version>5.10</version>
             </dependency>
             <dependency>
                 <groupId>org.dspace.modules</groupId>
                 <artifactId>additions</artifactId>
-                <version>5.4.20-SNAPSHOT</version>
+                <version>5.10</version>
             </dependency>
 
             <dependency>
                 <groupId>org.dspace</groupId>
                 <artifactId>dspace-sword</artifactId>
-                <version>5.4</version>
+                <version>5.10</version>
                 <type>jar</type>
                 <classifier>classes</classifier>
             </dependency>
             <dependency>
                 <groupId>org.dspace</groupId>
                 <artifactId>dspace-sword</artifactId>
-                <version>5.4</version>
+                <version>5.10</version>
                 <type>war</type>
             </dependency>
             <dependency>
                 <groupId>org.dspace</groupId>
                 <artifactId>dspace-swordv2</artifactId>
-                <version>5.4</version>
+                <version>5.10</version>
                 <type>jar</type>
                 <classifier>classes</classifier>
             </dependency>
             <dependency>
                 <groupId>org.dspace</groupId>
                 <artifactId>dspace-swordv2</artifactId>
-                <version>5.4</version>
+                <version>5.10</version>
                 <type>war</type>
             </dependency>
             <dependency>
                 <groupId>org.dspace</groupId>
                 <artifactId>dspace-jspui</artifactId>
-                <version>5.4</version>
+                <version>5.10</version>
                 <type>jar</type>
                 <classifier>classes</classifier>
             </dependency>
             <dependency>
                 <groupId>org.dspace</groupId>
                 <artifactId>dspace-jspui</artifactId>
-                <version>5.4</version>
+                <version>5.10</version>
                 <type>war</type>
             </dependency>
             <dependency>
                 <groupId>org.dspace</groupId>
                 <artifactId>dspace-oai</artifactId>
-                <version>5.4</version>
+                <version>5.10</version>
                 <type>jar</type>
                 <classifier>classes</classifier>
             </dependency>
             <dependency>
                 <groupId>org.dspace</groupId>
                 <artifactId>dspace-oai</artifactId>
-                <version>5.4</version>
+                <version>5.10</version>
                 <type>war</type>
             </dependency>
             <dependency>
                 <groupId>org.dspace</groupId>
                 <artifactId>dspace-lni</artifactId>
-                <version>5.4</version>
+                <version>5.10</version>
                 <type>jar</type>
                 <classifier>classes</classifier>
             </dependency>
             <dependency>
                 <groupId>org.dspace</groupId>
                 <artifactId>dspace-lni-client</artifactId>
-                <version>5.4</version>
+                <version>5.10</version>
             </dependency>
             <dependency>
                 <groupId>org.dspace</groupId>
                 <artifactId>dspace-lni</artifactId>
-                <version>5.4</version>
+                <version>5.10</version>
                 <type>war</type>
             </dependency>
             <dependency>
                 <groupId>org.dspace</groupId>
                 <artifactId>dspace-xmlui</artifactId>
-                <version>5.4</version>
+                <version>5.10</version>
                 <type>jar</type>
                 <classifier>classes</classifier>
             </dependency>
             <dependency>
                 <groupId>org.dspace</groupId>
                 <artifactId>dspace-xmlui</artifactId>
-                <version>5.4</version>
+                <version>5.10</version>
                 <type>war</type>
             </dependency>
             <dependency>
                 <groupId>org.dspace</groupId>
                 <artifactId>dspace-services</artifactId>
-                <version>5.4</version>
+                <version>5.10</version>
             </dependency>
             <dependency>
                 <groupId>org.dspace</groupId>
                 <artifactId>dspace-rdf</artifactId>
-                <version>5.4</version>
+                <version>5.10</version>
                 <type>war</type>
             </dependency>
             <dependency>
                 <groupId>org.dspace</groupId>
                 <artifactId>dspace-rest</artifactId>
-                <version>5.4</version>
+                <version>5.10</version>
                 <type>jar</type>
                 <classifier>classes</classifier>
             </dependency>
             <dependency>
                 <groupId>org.dspace</groupId>
                 <artifactId>dspace-rest</artifactId>
-                <version>5.4</version>
+                <version>5.10</version>
                 <type>war</type>
             </dependency>
             <dependency>
                 <groupId>org.dspace</groupId>
                 <artifactId>dspace-solr</artifactId>
-                <version>5.4</version>
+                <version>5.10</version>
                 <type>jar</type>
                 <classifier>classes</classifier>
             </dependency>
             <dependency>
                 <groupId>org.dspace</groupId>
                 <artifactId>dspace-solr</artifactId>
-                <version>5.4</version>
+                <version>5.10</version>
                 <type>war</type>
                 <classifier>skinny</classifier>
             </dependency>
@@ -1050,7 +1042,7 @@
             <dependency>
                 <groupId>commons-collections</groupId>
                 <artifactId>commons-collections</artifactId>
-                <version>3.2</version>
+            <version>3.2.2</version>
                 <!-- <version>3.1</version> xmlui - wing -->
             </dependency>
             <dependency>
@@ -1134,17 +1126,17 @@
             <dependency>
                 <groupId>org.apache.pdfbox</groupId>
                 <artifactId>pdfbox</artifactId>
-                <version>1.8.7</version>
+                <version>1.8.12</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.pdfbox</groupId>
                 <artifactId>fontbox</artifactId>
-                <version>1.8.7</version>
+                <version>1.8.12</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.pdfbox</groupId>
                 <artifactId>jempbox</artifactId>
-                <version>1.8.7</version>
+                <version>1.8.12</version>
             </dependency>
             <dependency>
                 <groupId>org.bouncycastle</groupId>
@@ -1236,9 +1228,9 @@
             </dependency>
             <!--
             <dependency>
-                <groupId>postgresql</groupId>
+                <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
-                <version>9.1-901-1.jdbc4</version>
+                <version>42.2.1.jre7</version>
             </dependency>
             -->
             <dependency>
@@ -1373,6 +1365,21 @@
                 <artifactId>annotations</artifactId>
                 <version>3.0.0</version>
                 <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -1664,10 +1671,10 @@
        snapshots into the snapshot repository below.
     -->
     <scm>
-        <connection>scm:git:https://github.com/milieuinfo/dspace54-atmire.git</connection>
-        <developerConnection>scm:git:https://github.com/milieuinfo/dspace54-atmire.git</developerConnection>
-        <url>https://github.com/milieuinfo/dspace54-atmire.git</url>
-        <tag>dspace-5.4</tag>
+        <connection>scm:git:git@github.com:DSpace/DSpace.git</connection>
+        <developerConnection>scm:git:git@github.com:DSpace/DSpace.git</developerConnection>
+        <url>git@github.com:DSpace/DSpace.git</url>
+      <tag>dspace-5.10</tag>
     </scm>
 
     <!--

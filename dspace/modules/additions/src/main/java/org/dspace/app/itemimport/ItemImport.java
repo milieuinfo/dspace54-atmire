@@ -288,7 +288,7 @@ public class ItemImport {
             String zipfilename = "";
             if (line.hasOption('z')) {
                 zip = true;
-                zipfilename = sourcedir + System.getProperty("file.separator") + line.getOptionValue('z');
+                zipfilename = line.getOptionValue('z');
             }
 
             //By default assume collections will be given on the command line
@@ -1091,6 +1091,10 @@ public class ItemImport {
         if (value == null) {
             value = "";
         }
+        else
+        {
+        	value = value.trim();
+        }
         // //getElementData(n, "element");
         String element = getAttributeValue(n, "element");
         String qualifier = getAttributeValue(n, "qualifier"); //NodeValue();
@@ -1109,8 +1113,9 @@ public class ItemImport {
         if ("none".equals(qualifier) || "".equals(qualifier)) {
             qualifier = null;
         }
-
-        if (!isTest) {
+        // only add metadata if it is no test and there is an real value
+        if (!isTest && !value.equals(""))
+        {
             i.addMetadata(schema, element, qualifier, language, value);
         } else {
             // If we're just test the import, let's check that the actual metadata field exists.
@@ -1961,7 +1966,7 @@ public class ItemImport {
                     context = new Context();
                     eperson = EPerson.find(context, oldEPerson.getID());
                     context.setCurrentUser(eperson);
-                    context.setIgnoreAuthorization(true);
+                    context.turnOffAuthorisationSystem();
 
                     boolean isResume = theResumeDir != null;
 

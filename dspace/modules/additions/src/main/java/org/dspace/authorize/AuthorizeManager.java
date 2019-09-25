@@ -308,7 +308,7 @@ public class AuthorizeManager {
                 }
 
                 //If there is a group and the user is a member
-                if (rp.getGroupID() != -1 && Group.isMember(c, rp.getGroupID())) {
+                if (rp.getGroupID() != -1 && Group.isMember(c, e, rp.getGroupID())) {
 
                     //For items and bitstreams, we also check the metadata based policies
                     if (o instanceof Item || o instanceof Bitstream) {
@@ -515,7 +515,9 @@ public class AuthorizeManager {
 
         rp.update();
 
+        c.turnOffAuthorisationSystem();
         o.updateLastModified();
+        c.restoreAuthSystemState();
     }
 
     /**
@@ -568,7 +570,9 @@ public class AuthorizeManager {
 
         rp.update();
 
+        c.turnOffAuthorisationSystem();
         o.updateLastModified();
+        c.restoreAuthSystemState();
     }
 
     /**
@@ -799,7 +803,9 @@ public class AuthorizeManager {
             drp.update();
         }
 
+        c.turnOffAuthorisationSystem();
         dest.updateLastModified();
+        c.restoreAuthSystemState();
     }
 
     /**
@@ -814,12 +820,14 @@ public class AuthorizeManager {
      */
     public static void removeAllPolicies(Context c, DSpaceObject o)
             throws SQLException {
-        o.updateLastModified();
-
         // FIXME: authorization check?
         DatabaseManager.updateQuery(c, "DELETE FROM resourcepolicy WHERE "
                         + "resource_type_id= ? AND resource_id= ? ",
                 o.getType(), o.getID());
+
+        c.turnOffAuthorisationSystem();
+        o.updateLastModified();
+        c.restoreAuthSystemState();
     }
 
     /**
@@ -859,6 +867,29 @@ public class AuthorizeManager {
                 o.getType(), o.getID(), type);
     }
 
+	/**
+	 * Change all the policies related to the action (fromPolicy) of the
+	 * specified object to the new action (toPolicy)
+	 *
+	 * @param context
+	 * @param dso
+	 *            the dspace object
+	 * @param fromAction
+	 *            the action to change
+	 * @param toAction
+	 *            the new action to set
+	 * @throws SQLException
+	 * @throws AuthorizeException
+	 */
+	public static void switchPoliciesAction(Context context, DSpaceObject dso, int fromAction, int toAction)
+			throws SQLException, AuthorizeException {
+		List<ResourcePolicy> rps = getPoliciesActionFilter(context, dso, fromAction);
+		for (ResourcePolicy rp : rps) {
+			rp.setAction(toAction);
+			rp.update();
+		}
+	}
+
     /**
      * Remove all policies from an object that match a given action. FIXME
      * doesn't check authorization
@@ -875,7 +906,6 @@ public class AuthorizeManager {
      */
     public static void removePoliciesActionFilter(Context context,
                                                   DSpaceObject dso, int actionID) throws SQLException {
-        dso.updateLastModified();
         if (actionID == -1) {
             // remove all policies from object
             removeAllPolicies(context, dso);
@@ -885,6 +915,10 @@ public class AuthorizeManager {
                             "resource_id= ? AND action_id= ? ",
                     dso.getType(), dso.getID(), actionID);
         }
+
+        context.turnOffAuthorisationSystem();
+        dso.updateLastModified();
+        context.restoreAuthSystemState();
     }
 
     /**
@@ -919,11 +953,13 @@ public class AuthorizeManager {
      */
     public static void removeGroupPolicies(Context c, DSpaceObject o, Group g)
             throws SQLException {
-        o.updateLastModified();
-
         DatabaseManager.updateQuery(c, "DELETE FROM resourcepolicy WHERE "
                         + "resource_type_id= ? AND resource_id= ? AND epersongroup_id= ? ",
                 o.getType(), o.getID(), g.getID());
+
+        c.turnOffAuthorisationSystem();
+        o.updateLastModified();
+        c.restoreAuthSystemState();
     }
 
     /**
@@ -941,10 +977,13 @@ public class AuthorizeManager {
      */
     public static void removeEPersonPolicies(Context c, DSpaceObject o, EPerson e)
             throws SQLException {
-        o.updateLastModified();
         DatabaseManager.updateQuery(c, "DELETE FROM resourcepolicy WHERE "
                         + "resource_type_id= ? AND resource_id= ? AND eperson_id= ? ",
                 o.getType(), o.getID(), e.getID());
+
+        c.turnOffAuthorisationSystem();
+        o.updateLastModified();
+        c.restoreAuthSystemState();
     }
 
     /**
