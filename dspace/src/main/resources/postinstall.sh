@@ -503,7 +503,7 @@ StatsEnabled false
 StatsPEDisabled true
 StatsHostID auto
 StatsTimeout 10
-StreamMaxLength 100M
+StreamMaxLength 500M
 LogFile /var/log/clamav/clamav.log
 LogTime true
 LogFileUnlock false
