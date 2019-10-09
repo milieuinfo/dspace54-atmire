@@ -20,6 +20,18 @@ sed -i \
     -e "s/%db_name%/${db_name}/g" \
     -e "s/%db_port%/${db_port}/g" \
     -e "s/%db_host%/${db_host}/g" \
+    -e "s/%db_max_active_rest%/${db_max_active_rest}/g" \
+    -e "s/%db_max_idle_rest%/${db_max_idle_rest}/g" \
+    -e "s/%db_min_idle_rest%/${db_min_idle_rest}/g" \
+    -e "s/%db_max_wait_rest%/${db_max_wait_rest}/g" \
+    -e "s/%db_max_active_sword%/${db_max_active_sword}/g" \
+    -e "s/%db_max_idle_sword%/${db_max_idle_sword}/g" \
+    -e "s/%db_min_idle_sword%/${db_min_idle_sword}/g" \
+    -e "s/%db_max_wait_sword%/${db_max_wait_sword}/g" \
+    -e "s/%db_max_active_xmlui%/${db_max_active_xmlui}/g" \
+    -e "s/%db_max_idle_xmlui%/${db_max_idle_xmlui}/g" \
+    -e "s/%db_min_idle_xmlui%/${db_min_idle_xmlui}/g" \
+    -e "s/%db_max_wait_xmlui%/${db_max_wait_xmlui}/g" \
     -e "s/%mailrelay_host%/${mailrelay_host}/g" \
     -e "s/%mailrelay_port%/${mailrelay_port}/g" \
     -e "s/%dspace.consumer.token%/${dspace_consumer_token}/g" \
@@ -91,10 +103,10 @@ mkdir -p ${tomcat_data_dir}/GeoLite 2>/dev/null
 
 mkdir -p ${tomcat_data_dir}/assetstore 2>/dev/null
 
-# Installatie GeoLite 
+# Installatie GeoLite
 echo "Installatie GeoLite"
 if [ -a ${tomcat_data_dir}/GeoLite/GeoLiteCity.dat ]; then
-    echo "GeoLite al aanwezig niets te doen" 
+    echo "GeoLite al aanwezig niets te doen"
 else
     echo "Installatie GeoLite db"
     gzip -c /tmp/GeoLiteCity.dat.gz > ${tomcat_data_dir}/GeoLite/GeoLiteCity.dat
@@ -102,12 +114,20 @@ else
 fi
 
 
-# Installatie Solr 
-echo "Installatie Solr"
+# Installatie Solr
+echo "Installatie Solr..."
 if [ "$(ls -A ${tomcat_data_dir}/solr/)" ]; then
-    echo "Solr al aanwezig niets te doen"
+    echo "Solr al aanwezig, enkel configuratie updaten"
+    cp -r ${tomcat_apps_dir}/dspace/solr/authority/conf ${tomcat_data_dir}/solr/authority/
+    chown -R tomcat:tomcat ${tomcat_data_dir}/solr/authority/conf
+    cp -r ${tomcat_apps_dir}/dspace/solr/oai/conf ${tomcat_data_dir}/solr/oai/
+    chown -R tomcat:tomcat ${tomcat_data_dir}/solr/oai/conf
+    cp -r ${tomcat_apps_dir}/dspace/solr/search/conf ${tomcat_data_dir}/solr/search/
+    chown -R tomcat:tomcat ${tomcat_data_dir}/solr/search/conf
+    cp -r ${tomcat_apps_dir}/dspace/solr/statistics/conf ${tomcat_data_dir}/solr/statistics/
+    chown -R tomcat:tomcat ${tomcat_data_dir}/solr/statistics/conf
 else
-    echo "Installatie Solr"
+    echo "Nieuwe installatie Solr"
     cp -r ${tomcat_apps_dir}/dspace/solr/* ${tomcat_data_dir}/solr/
     chown -R tomcat:tomcat ${tomcat_data_dir}/solr/
 fi

@@ -8,6 +8,8 @@
 package org.dspace.rest;
 
 import org.apache.log4j.Logger;
+import org.dspace.authenticate.AuthenticationManager;
+import org.dspace.authenticate.OpenAMHeaderAuthentication;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.content.DSpaceObject;
 import org.dspace.core.ConfigurationManager;
@@ -84,9 +86,21 @@ public class Resource
                     context.setSpecialGroup(Group.findByName(context, grantedAuthority.getAuthority()).getID());
                 }
                 context.setCurrentUser(EPerson.findByEmail(context, authentication.getName()));
+            } else {
+                OpenAMHeaderAuthentication openAMHeaderAuthentication = new OpenAMHeaderAuthentication();
+                HttpServletRequest request = new DSpace().getRequestService().getCurrentRequest().getHttpServletRequest();
+                openAMHeaderAuthentication.authenticate(context, null, null, null, request);
+
+                int[] groupIDs = AuthenticationManager.getSpecialGroups(context, request);
+                for (int i = 0; i < groupIDs.length; i++)
+                {
+                    context.setSpecialGroup(groupIDs[i]);
+                    log.debug("Adding Special Group id="+String.valueOf(groupIDs[i]));
+                }
             }
 
             if(context.getCurrentUser() == null){
+                context.abort();
                 throw new WebApplicationException(Response.Status.UNAUTHORIZED);
             }
 

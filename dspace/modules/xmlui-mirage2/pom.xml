@@ -23,10 +23,12 @@
         <grunt.color.scheme>classic_mirage_color_scheme</grunt.color.scheme>
         <mirage2.deps.included>true</mirage2.deps.included>
         <!-- Versions of build dependencies to be auto-installed when "mirage2.deps.included=true" -->
-        <sass.version>3.3.14</sass.version>
-        <compass.version>1.0.1</compass.version>
-        <node.version>0.10.31</node.version>
-        <npm.version>1.4.23</npm.version>
+        <sass.version>3.7.2</sass.version>
+        <compass.version>1.0.3</compass.version>
+        <node.version>11.9.0</node.version>
+        <npm.version>6.7.0</npm.version>
+        <!-- picked up by gem-maven-plugin -->
+        <jruby.version>9.1.17.0</jruby.version>
     </properties>
 
     <build>

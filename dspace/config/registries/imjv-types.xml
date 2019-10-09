@@ -184,12 +184,18 @@
         <scope_note>Exploitatie dossiernummer</scope_note>
     </dc-type>
 
-    <dc-type>
-        <schema>imjv</schema>
-        <element>document</element>
-        <qualifier>title</qualifier>
-        <scope_note>Document</scope_note>
-    </dc-type>
+  <dc-type>
+    <schema>imjv</schema>
+    <element>brieftype</element>
+    <scope_note>Brief type</scope_note>
+  </dc-type>
+
+  <dc-type>
+    <schema>imjv</schema>
+    <element>document</element>
+    <qualifier>title</qualifier>
+    <scope_note>Document</scope_note>
+  </dc-type>
 
 
 </dspace-dc-types>
