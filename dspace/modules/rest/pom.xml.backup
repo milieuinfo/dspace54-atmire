@@ -1,0 +1,236 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.dspace.modules</groupId>
+    <artifactId>rest</artifactId>
+    <packaging>war</packaging>
+    <name>DSpace REST :: Local Customizations</name>
+    <description>
+        This project allows you to overlay your own local REST customizations
+        on top of the default REST API provided with DSpace.
+    </description>
+
+    <parent>
+        <groupId>org.dspace</groupId>
+        <artifactId>modules</artifactId>
+        <version>5.4</version>
+        <relativePath>..</relativePath>
+    </parent>
+
+    <properties>
+        <!-- This is the path to the root [dspace-src] directory. -->
+        <root.basedir>${basedir}/../../..</root.basedir>
+        <!-- Swagger properties -->
+        <swagger-ui-version>2.1.0</swagger-ui-version>
+        <dspace.rest.url>%dspace.rest.url%</dspace.rest.url>
+    </properties>
+
+    <build>
+        <filters>
+            <!-- Filter using the properties file defined by dspace-parent POM -->
+            <filter>${filters.file}</filter>
+        </filters>
+        <plugins>
+            <!--<plugin>-->
+                <!--<artifactId>maven-antrun-plugin</artifactId>-->
+                <!--<version>1.7</version>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<phase>compile</phase>-->
+                        <!--<configuration>-->
+                            <!--<target name="get markdown.mustache">-->
+                                <!--&lt;!&ndash;-->
+                                 <!--Need to download markdown.mustache first to use strapdown.html.mustache-->
+                                <!--&ndash;&gt;-->
+                                <!--<get dest="${build.directory}">-->
+                                    <!--<url url="https://raw.githubusercontent.com/kongchen/api-doc-template/master/v2.0/markdown.mustache"/>-->
+                                <!--</get>-->
+                            <!--</target>-->
+                        <!--</configuration>-->
+                        <!--<goals>-->
+                            <!--<goal>run</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
+            <plugin>
+                <groupId>com.github.kongchen</groupId>
+                <artifactId>swagger-maven-plugin</artifactId>
+                <version>3.0.1</version>
+                <configuration>
+                    <apiSources>
+                        <apiSource>
+                            <springmvc>false</springmvc>
+                            <locations>org.dspace.rest</locations>
+                            <schemes>${rest.scheme}</schemes>
+                            <host></host>
+                            <basePath>${dspace.rest.url}</basePath>
+                            <info>
+                                <title>LNE rest application</title>
+                                <version>v1</version>
+                                <description>LNE rest api.</description>
+                                <license>
+                                    <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+                                    <name>Apache 2.0</name>
+                                </license>
+                            </info>
+                            <templatePath>${basedir}/src/main/resources/strapdown.html.hbs</templatePath>
+                            <outputPath>${build.directory}/api-docs/strapdown.html</outputPath>
+                            <swaggerDirectory>${build.directory}/api-docs</swaggerDirectory>
+                        </apiSource>
+                    </apiSources>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--  Download swagger UI -->
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <archiveClasses>false</archiveClasses>
+                    <webResources>
+                        <resource>
+                            <filtering>true</filtering>
+                            <directory>${basedir}/src/main/webapp</directory>
+                            <includes>
+                                <include>WEB-INF/web.xml</include>
+                                <include>swagger-ui-${swagger-ui-version}/dist/index.html</include> 
+                            </includes>
+                        </resource>
+                        <resource>
+                            <filtering>true</filtering>
+                            <targetPath>swagger-ui-${swagger-ui-version}/dist</targetPath>
+                            <directory>
+                                src/main/resources/swagger-ui-${swagger-ui-version}/dist
+                            </directory>
+                            <includes>
+                                <include>index.html</include>
+                            </includes>
+                        </resource>
+                        <resource>
+                            <filtering>true</filtering>
+                            <targetPath>swagger-ui-${swagger-ui-version}/dist</targetPath>
+                            <directory>
+                                src/
+                            </directory>
+                            <include>swagger-ui-${swagger-ui-version}/dist/**</include>
+                            <targetPath>/</targetPath>
+                        </resource>
+                        <!--
+                         Copy swagger generated json file & swagger UI files
+                        -->
+                        <resource>
+                            <filtering>true</filtering>
+                            <directory>${build.directory}</directory>
+                            <includes>
+                                <include>api-docs/**</include>
+
+                            </includes>
+                      <!--      <excludes>
+                                <exclude>swagger-ui-${swagger-ui-version}/dist/index.html</exclude>
+                            </excludes> -->
+                            <targetPath>/</targetPath>
+                        </resource>
+                    </webResources>
+                    <overlays>
+                        <!--
+                           the priority of overlays is determined here
+                           1.) default: anything in the current project has highest
+                           2.) anything defined here has precedence in the order defined
+                           3.) any war found transitively in the dependencies will be applied
+                           next. the order is unpredictable.
+                        -->
+                        <overlay>
+                            <groupId>org.dspace</groupId>
+                            <artifactId>dspace-rest</artifactId>
+                            <excludes>
+                                <exclude>WEB-INF/lib/**</exclude>
+                            </excludes>
+                        </overlay>
+                    </overlays>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>oracle-support</id>
+            <activation>
+                <property>
+                    <name>db.name</name>
+                    <value>oracle</value>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>com.oracle</groupId>
+                    <artifactId>ojdbc6</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.dspace.modules</groupId>
+            <artifactId>additions</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.wordnik</groupId>
+            <artifactId>swagger-jersey-jaxrs</artifactId>
+            <version>1.5.1-M2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.4.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.4.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.4.2</version>
+        </dependency>
+        <!-- DSpace REST Webapp -->
+        <dependency>
+            <groupId>org.dspace</groupId>
+            <artifactId>dspace-rest</artifactId>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>org.dspace</groupId>
+            <artifactId>dspace-rest</artifactId>
+            <type>jar</type>
+            <classifier>classes</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+</project>

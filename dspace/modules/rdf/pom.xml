@@ -11,7 +11,7 @@
     <parent>
         <artifactId>modules</artifactId>
         <groupId>org.dspace</groupId>
-        <version>5.10</version>
+        <version>5.10.2-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
@@ -40,6 +40,9 @@
                             </includes>
                         </resource>
                     </webResources>
+                    <packagingExcludes>
+                        WEB-INF/lib/postgresql-9.1*
+                    </packagingExcludes>
                 </configuration>
                 <executions>
                     <execution>
@@ -82,6 +85,11 @@
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
         </dependency>
     </dependencies>
 

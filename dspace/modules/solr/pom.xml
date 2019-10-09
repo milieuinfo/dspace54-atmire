@@ -2,7 +2,6 @@
    <modelVersion>4.0.0</modelVersion>
    <groupId>org.dspace.modules</groupId>
    <artifactId>solr</artifactId>
-   <version>5.10</version>
    <packaging>war</packaging>
    <name>DSpace SOLR :: Local Customizations</name>
    <description>
@@ -13,7 +12,7 @@
    <parent>
       <groupId>org.dspace</groupId>
       <artifactId>modules</artifactId>
-      <version>5.10</version>
+      <version>5.10.2-SNAPSHOT</version>
       <relativePath>..</relativePath>
    </parent>
 
@@ -76,6 +75,12 @@
 
     </dependencyManagement>
    <dependencies>
+
+       <dependency>
+           <groupId>be.milieuinfo.framework</groupId>
+           <artifactId>core-log</artifactId>
+       </dependency>
+
        <dependency>
            <groupId>org.dspace</groupId>
            <artifactId>dspace-solr</artifactId>

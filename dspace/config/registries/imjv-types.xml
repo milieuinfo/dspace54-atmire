@@ -5,117 +5,14 @@
   </dspace-header>
 
   <dc-schema>
-      <name>imjv</name>
+    <name>imjv</name>
     <namespace>http://imjv.milieuinfo.be</namespace>
   </dc-schema>
 
-
   <dc-type>
-	<schema>imjv</schema>
+    <schema>imjv</schema>
     <element>rapporteringsjaar</element>
     <scope_note>Rapporterings Jaar</scope_note>
-  </dc-type>
-
-  <dc-type>
-    <schema>imjv</schema>
-    <element>ExploitatieCBBNummer</element>
-    <scope_note>Exploitatie CBB Nummer</scope_note>
-  </dc-type>
-
-  <dc-type>
-    <schema>imjv</schema>
-    <element>ExploitantCBBNummer</element>
-    <scope_note>Exploitant CBB Nummer</scope_note>
-  </dc-type>
-
-  <dc-type>
-    <schema>imjv</schema>
-    <element>ExploitatieNaam</element>
-    <scope_note>Exploitatie Naam</scope_note>
-  </dc-type>
-
-  <dc-type>
-    <schema>imjv</schema>
-    <element>ExploitantOndernemingsNummer</element>
-    <scope_note>Exploitant Ondernemingsnummer</scope_note>
-  </dc-type>
-
-  <dc-type>
-    <schema>imjv</schema>
-    <element>ExploitatieLocatie</element>
-    <scope_note>Vervlakte voorstelling van de Exploitatie locatie</scope_note>
-  </dc-type>
-
-  <dc-type>
-    <schema>imjv</schema>
-    <element>ExploitatieLocatieStad</element>
-    <scope_note>Exploitatielocatie stad</scope_note>
-  </dc-type>
-
-  <dc-type>
-    <schema>imjv</schema>
-    <element>ExploitatieLocatiePostcode</element>
-    <scope_note>Exploitatielocatie postcode</scope_note>
-  </dc-type>
-
-  <dc-type>
-    <schema>imjv</schema>
-    <element>ExploitantAdres</element>
-    <scope_note>Vervlakte voorstelling van het Exploitant adres</scope_note>
-  </dc-type>
-
-  <dc-type>
-    <schema>imjv</schema>
-    <element>ExploitantAdresStad</element>
-    <scope_note>Exploitantadres stad</scope_note>
-  </dc-type>
-
-  <dc-type>
-    <schema>imjv</schema>
-    <element>ExploitantAdresPostcode</element>
-    <scope_note>Exploitantadres postcode</scope_note>
-  </dc-type>
-
-  <dc-type>
-    <schema>imjv</schema>
-    <element>MilieuVerslagVerzendAdres</element>
-    <scope_note>Vervlakte voorstelling Milieuverslag Verzendadres</scope_note>
-  </dc-type>
-
-  <dc-type>
-    <schema>imjv</schema>
-    <element>MilieuVerslagFeit</element>
-    <scope_note>Vervlakte voorstelling Milieuverslag Feit</scope_note>
-  </dc-type>
-
-  <dc-type>
-    <schema>imjv</schema>
-    <element>MilieuVerslagFeitTijdstip</element>
-    <scope_note>Milieuverslag Feit Tijdstip</scope_note>
-  </dc-type>
-
-  <dc-type>
-    <schema>imjv</schema>
-    <element>MilieuVerslagFeitGebruikerVoornaam</element>
-    <scope_note>Milieuverslag Feit Voornaam Gebruiker</scope_note>
-  </dc-type>
-
-  <dc-type>
-    <schema>imjv</schema>
-    <element>MilieuVerslagFeitGebruikerNaam</element>
-    <scope_note>Milieuverslag Feit Achternaam Gebruiker</scope_note>
-  </dc-type>
-
-  <dc-type>
-    <schema>imjv</schema>
-    <element>MilieuVerslagFeitActie</element>
-    <scope_note>Milieuverslag Feit Actie</scope_note>
-  </dc-type>
-
-  <dc-type>
-    <schema>imjv</schema>
-    <element>AangifteType</element>
-    <scope_note>Aangifte type</scope_note>
   </dc-type>
 
   <dc-type>
@@ -175,21 +72,33 @@
     <dc-type>
         <schema>imjv</schema>
         <element>dossiernummer</element>
-        <scope_note>Exploitatie dossiernummer</scope_note>
+    <scope_note>Milieuverslag dossiernummer</scope_note>
     </dc-type>
 
     <dc-type>
         <schema>imjv</schema>
         <element>aangiftetype</element>
-        <scope_note>Exploitatie dossiernummer</scope_note>
+    <scope_note>Aangifte type</scope_note>
     </dc-type>
 
-    <dc-type>
-        <schema>imjv</schema>
-        <element>document</element>
-        <qualifier>title</qualifier>
-        <scope_note>Document</scope_note>
-    </dc-type>
+  <dc-type>
+    <schema>imjv</schema>
+    <element>brieftype</element>
+    <scope_note>Brief type</scope_note>
+  </dc-type>
+
+  <dc-type>
+    <schema>imjv</schema>
+    <element>verslagversie</element>
+    <scope_note>Milieuverslag versie</scope_note>
+  </dc-type>
+
+  <dc-type>
+    <schema>imjv</schema>
+    <element>document</element>
+    <qualifier>title</qualifier>
+    <scope_note>Document</scope_note>
+  </dc-type>
 
 
 </dspace-dc-types>
