@@ -12,17 +12,15 @@ import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.log4j.Logger;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.authorize.AuthorizeManager;
 import org.dspace.content.BitstreamFormat;
 import org.dspace.content.Bundle;
-import org.dspace.content.ItemIterator;
 import org.dspace.content.Metadatum;
-import org.dspace.content.service.ItemService;
 import org.dspace.discovery.SearchServiceException;
 import org.dspace.eperson.Group;
-import org.dspace.handle.HandleManager;
 import org.dspace.rest.common.Bitstream;
 import org.dspace.rest.common.Item;
 import org.dspace.rest.common.MetadataEntry;
@@ -30,10 +28,8 @@ import org.dspace.rest.exceptions.ContextException;
 import org.dspace.storage.rdbms.TableRow;
 import org.dspace.storage.rdbms.TableRowIterator;
 import org.dspace.usage.UsageEvent;
-import org.dspace.utils.DSpace;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
@@ -128,27 +124,26 @@ public class ItemsResource extends Resource {
     @GET
     @Path("/external-handle/{handle}")
     @ApiOperation(value = "Retrieve an item by using the external item handle.",
-            response = org.dspace.rest.common.Item[].class
+        response = org.dspace.rest.common.Item[].class
     )
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response getItemByExternalHandle(
-            @ApiParam(value = "The identifier of the item.", required = true)
-            @PathParam("handle") String handle,
+        @ApiParam(value = "The identifier of the item.", required = true)
+        @PathParam("handle") String handle,
 
-            @ApiParam(value = "Show additional data for the item.", required = false, allowMultiple = true, allowableValues = "all,metadata,parentCollection,parentCollectionList,parentCommunityList,bitstreams")
-            @QueryParam("expand") String expand,
+        @ApiParam(value = "Show additional data for the item.", required = false, allowMultiple = true, allowableValues = "all,metadata,parentCollection,parentCollectionList,parentCommunityList,bitstreams")
+        @QueryParam("expand") String expand,
 
-            @QueryParam("userIP") String user_ip, @QueryParam("userAgent") String user_agent,
-            @QueryParam("xforwardedfor") String xforwardedfor, @Context HttpHeaders headers, @Context HttpServletRequest request)
-            throws WebApplicationException {
+        @QueryParam("userIP") String user_ip, @QueryParam("userAgent") String user_agent,
+        @QueryParam("xforwardedfor") String xforwardedfor, @Context HttpHeaders headers, @Context HttpServletRequest request)
+        throws WebApplicationException {
 
         org.dspace.core.Context context = null;
 
         try {
-            String dspaceHandle = URLDecoder.decode(handle, "UTF-8");
-            com.atmire.lne.content.ItemService service = new ItemServiceBean();
+
             context = createContext();
-            List<org.dspace.content.Item> items = service.findItemsByExternalHandle(context, dspaceHandle);
+            List<org.dspace.content.Item> items = findItemsByExternalHandle(handle, context);
 
             Response response = null;
             if (CollectionUtils.isEmpty(items)) {
@@ -185,6 +180,115 @@ public class ItemsResource extends Resource {
             processFinally(context);
         }
         return null;
+    }
+    private List<org.dspace.content.Item> findItemsByExternalHandle(String externalHandle,org.dspace.core.Context context ) throws UnsupportedEncodingException,SearchServiceException{
+        String dspaceHandle = URLDecoder.decode(externalHandle, "UTF-8");
+        com.atmire.lne.content.ItemService service = new ItemServiceBean();
+        return service.findItemsByExternalHandle(context, dspaceHandle);
+
+    }
+
+    @GET
+    @Path("/external-handle/{handle}/bitstream")
+    @ApiOperation(value = "Retrieve the bitstream associated with an item by using the external item handle.",
+        response = javax.ws.rs.core.Response.class
+    )
+    public Response getBitstreamByExternalHandle(
+        @ApiParam(value = "The identifier of the item.", required = true)
+        @PathParam("handle") String handle,
+        @QueryParam("userIP") String user_ip, @QueryParam("userAgent") String user_agent,
+        @QueryParam("xforwardedfor") String xforwardedfor, @Context HttpHeaders headers, @Context HttpServletRequest request)
+        throws WebApplicationException {
+
+        org.dspace.core.Context context = null;
+
+        try {
+
+            context = createContext();
+            List<org.dspace.content.Item> items = findItemsByExternalHandle(handle, context);
+
+            Response response = null;
+
+            ImmutablePair<Status, String> error = returnErrorPage(items, handle);
+
+            if (null != error ){
+              response = Response.status(error.left).entity(error.right).build();
+
+            }else {
+              org.dspace.content.Bitstream bitstream = getBitstream(items);
+              writeStats(bitstream, UsageEvent.Action.VIEW, user_ip, user_agent, xforwardedfor, headers,
+                request, context);
+
+              InputStream inputStream = bitstream.retrieve();
+              String type = bitstream.getFormat().getMIMEType();
+              String name = bitstream.getName();
+              response = Response.ok(inputStream).type(type)
+                  .header("Content-Disposition", "attachment; filename=\"" + name + "\"")
+                  .build();
+
+            }
+
+
+            context.complete();
+            return response;
+
+        } catch (ContextException e) {
+            processException("Could not read item(handle=" + handle + "), ContextException. Message: " + e, context);
+        } catch (SearchServiceException e) {
+            processException("Could not read item(handle=" + handle + "), SearchServiceException. Message: " + e, context);
+        } catch (SQLException e) {
+            processException("Could not read item(handle=" + handle + "), SQLException. Message: " + e, context);
+        } catch (UnsupportedEncodingException e) {
+            processException("Could not read item(handle=" + handle + "), UnsupportedEncodingException. Message: " + e, context);
+        }catch (AuthorizeException e){
+            processException("Could not retrieve file of bitstream, AuthorizeException! Message: " + e, context);
+        }catch (IOException e){
+            processException("Could not retrieve file of bitstream, AuthorizeException! Message: " + e, context);
+        } finally {
+            processFinally(context);
+        }
+        return null;
+    }
+
+    private ImmutablePair<Status,String> returnErrorPage(List<org.dspace.content.Item> items, String externalHandle) throws SQLException{
+        if (items.isEmpty()){
+            return new ImmutablePair<>(Status.NOT_FOUND, "No item found with external handle "+ externalHandle);
+        }else if (items.size()!=1){
+            return new ImmutablePair<>(Status.CONFLICT,"Too many items found for external handle "+ externalHandle);
+        } else{
+            org.dspace.content.Item item = items.get(0);
+            return returnErrorPageBundles(item.getBundles(), externalHandle);
+        }
+    }
+
+
+    private ImmutablePair<Status,String> returnErrorPageBundles(Bundle[] bundles, String externalHandle){
+
+        if (bundles.length ==0){
+            return new ImmutablePair<>(Status.NOT_FOUND, "No bundle associated to item with external handle "+externalHandle);
+        }else if (bundles.length > 1){
+            return new ImmutablePair<>(Status.CONFLICT, "Too many bundles associated to item with external handle "+externalHandle);
+
+        }else{
+            Bundle bundle = bundles[0];
+            return returnErrorPageBitstreams(bundle.getBitstreams(), externalHandle);
+        }
+    }
+
+    private ImmutablePair<Status,String> returnErrorPageBitstreams(org.dspace.content.Bitstream[] bitstreams, String externalHandle){
+
+        if (bitstreams.length == 0 ){
+            return new ImmutablePair<>(Status.NOT_FOUND, "No bitstream associated to item with external handle "+externalHandle);
+        } else if (bitstreams.length > 1) {
+            return new ImmutablePair<>(Status.CONFLICT, "Too many bitstreams associated to item with external handle "+externalHandle);
+        }else {
+            // OK !!
+            return null;
+        }
+    }
+
+    private org.dspace.content.Bitstream getBitstream(List<org.dspace.content.Item> items) throws SQLException{
+        return items.get(0).getBundles()[0].getBitstreams()[0];
     }
 
     /**
