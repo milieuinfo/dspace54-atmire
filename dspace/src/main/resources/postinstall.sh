@@ -163,6 +163,8 @@ rm -rf ${tomcat_apps_dir}/dspace/log
 
 ln -s /var/log/dspace ${tomcat_apps_dir}/dspace/log
 
+echo "Toelaten om PDF's te converteren door ImageMagick"
+sed -i 's/rights="none" pattern="PDF"/rights="read|write" pattern="PDF"/g' /etc/ImageMagick-6/policy.xml /etc/ImageMagick-6/policy.xml
 
 echo "Wissen van de install dir"
 rm -rf ${tomcat_apps_dir}/dspace_install 
