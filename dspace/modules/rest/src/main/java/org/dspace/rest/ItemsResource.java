@@ -118,6 +118,7 @@ public class ItemsResource extends Resource {
             processFinally(context);
         }
 
+        
         return item;
     }
 
@@ -266,13 +267,25 @@ public class ItemsResource extends Resource {
 
         if (bundles.length ==0){
             return new ImmutablePair<>(Status.NOT_FOUND, "No bundle associated to item with external handle "+externalHandle);
-        }else if (bundles.length > 1){
-            return new ImmutablePair<>(Status.CONFLICT, "Too many bundles associated to item with external handle "+externalHandle);
+        }else {
+            Bundle bundle = findOriginalBundle(bundles) ;
 
-        }else{
-            Bundle bundle = bundles[0];
-            return returnErrorPageBitstreams(bundle.getBitstreams(), externalHandle);
+            if (null == bundle) {
+                return new ImmutablePair<>(Status.CONFLICT,
+                    "No bundle found that cointains the actual bitstream " + externalHandle);
+            }else {
+                return returnErrorPageBitstreams(bundle.getBitstreams(), externalHandle);
+            }
         }
+    }
+
+    private Bundle findOriginalBundle(Bundle[] bundles){
+        for (Bundle b : bundles){
+            if (b.getName().equalsIgnoreCase("original")){
+                return  b;
+            }
+        }
+        return null;
     }
 
     private ImmutablePair<Status,String> returnErrorPageBitstreams(org.dspace.content.Bitstream[] bitstreams, String externalHandle){
