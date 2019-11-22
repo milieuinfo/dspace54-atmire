@@ -301,7 +301,7 @@ public class ItemsResource extends Resource {
     }
 
     private org.dspace.content.Bitstream getBitstream(List<org.dspace.content.Item> items) throws SQLException{
-        return items.get(0).getBundles()[0].getBitstreams()[0];
+        return findOriginalBundle(items.get(0).getBundles()).getBitstreams()[0];
     }
 
     /**

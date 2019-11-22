@@ -36,6 +36,7 @@ public class ItemIteratorScript extends IteratorScript {
                         print("Processing item " + item.getID());
                     }
                     runItem(item);
+                    if (iteration%5000 == 0) {print(iteration + " items treated.");}
                     iteration++;
                 }
             } while (loop && stillActive());

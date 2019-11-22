@@ -1,20 +1,20 @@
 package com.atmire.scripts.deletenonoriginalbundles;
 
 import com.atmire.scripts.ContextScript;
-import com.atmire.scripts.Script;
 import java.util.Date;
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.dspace.content.Bitstream;
 import org.dspace.content.Bundle;
-import org.dspace.content.Collection;
-import org.dspace.content.Community;
 import org.dspace.content.Item;
-import org.dspace.content.ItemIterator;
+import org.dspace.storage.rdbms.DatabaseManager;
+import org.dspace.storage.rdbms.TableRow;
 
 public class DeleteNonOriginalBundles extends ContextScript {
+
   private static Logger log = Logger.getLogger(DeleteNonOriginalBundles.class);
 
-  private static int commit_size = 5000;
+  private static int commitSize = 100;
 
   public DeleteNonOriginalBundles() {
   }
@@ -27,7 +27,7 @@ public class DeleteNonOriginalBundles extends ContextScript {
   public void run() throws Exception {
     print("Started at " + new Date());
     try {
-      iterateOverAllCommunities();
+      iterateOverAllItemsThatHaveMoreThanOneBundle();
       context.complete();
     } catch (Exception e) {
       printAndLogError(e);
@@ -35,66 +35,53 @@ public class DeleteNonOriginalBundles extends ContextScript {
     print("Ended at " + new Date());
   }
 
-  private void iterateOverAllCommunities() throws Exception {
-    Community[] communities = Community.findAll(context);
-    for (Community community : communities) {
-      iterateOverAllCollections(community);
-    }
-  }
 
-  private void iterateOverAllCollections(Community community) throws Exception {
-    print("Treating Community ["+community.getName()+"]");
-    Collection[] collections = community.getCollections();
-    for (Collection collection : collections) {
-      iterateOverAllItemsOfCollection(collection);
-      context.commit();
-    }
-  }
-
-  private void iterateOverAllItemsOfCollection(Collection collection) throws Exception {
+  private void iterateOverAllItemsThatHaveMoreThanOneBundle() throws Exception {
+    String query = "select item_id from item2bundle group by item_id having count(*) > 1";
+    List<TableRow> rows = DatabaseManager.queryTable(context, "item2bundle", query).toList();
+    print(rows.size() + " items to treat");
     int i = 0;
-    print("Treating Collection ["+collection.getName()+"]");
-    ItemIterator allItems = collection.getAllItems();
-    while (allItems.hasNext()) {
-      Item next = allItems.next();
-      if (log.isDebugEnabled()) {
-        log.debug("Treate item " + next.getID());
-      }
-      removeNonOriginalBundles(next);
+    long begin = System.currentTimeMillis();
+    for (TableRow row : rows) {
+      int itemId = row.getIntColumn("item_id");
+
+      Item item = Item.find(context, itemId);
+      removeNonOriginalBundles(item);
       i++;
-      if (i % commit_size == 0 ){
+      if (i % commitSize == 0) {
+        long end = System.currentTimeMillis();
+        print("Treated " + i + " items comitting (100 items took "+ (end-begin)+"ms)");
         context.commit();
+        begin= System.currentTimeMillis();
       }
     }
+
   }
 
-  private void removeNonOriginalBundles(Item item) throws Exception{
+  private void removeNonOriginalBundles(Item item) throws Exception {
     Bundle[] bundles = item.getBundles();
     for (Bundle bundle : bundles) {
       deleteBundleIfNotOriginal(item, bundle);
     }
   }
 
-  private void deleteBundleIfNotOriginal(Item item, Bundle bundle) throws Exception{
+  private void deleteBundleIfNotOriginal(Item item, Bundle bundle) throws Exception {
     if (!bundle.getName().equalsIgnoreCase("original")) {
       deletBundle(item, bundle);
     }
   }
 
-  private void deletBundle(Item item, Bundle bundle) throws Exception{
+  private void deletBundle(Item item, Bundle bundle) throws Exception {
     deletAllBitstreamOfBundle(bundle);
     item.removeBundle(bundle);
-
   }
 
-  private void deletAllBitstreamOfBundle(Bundle bundle) throws Exception{
+  private void deletAllBitstreamOfBundle(Bundle bundle) throws Exception {
     Bitstream[] bitstreams = bundle.getBitstreams();
     for (Bitstream bitstream : bitstreams) {
       bundle.removeBitstream(bitstream);
     }
   }
-
-
 
 
 }
