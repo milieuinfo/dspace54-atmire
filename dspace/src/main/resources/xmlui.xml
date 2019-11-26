@@ -7,7 +7,7 @@
     http://www.dspace.org/license/
 
 -->
-<Context path="/%dspace.archief.name%/xmlui" docBase="%tomcat_apps_dir%/dspace/webapps/xmlui" debug="0" useHttpOnly="true" reloadable="true" cachingAllowed="true">
+<Context path="/xmlui" docBase="%tomcat_apps_dir%/dspace/webapps/xmlui" debug="0" useHttpOnly="true" reloadable="true" cachingAllowed="true">
 
     <Resource name="jdbc/dspace"
               auth="Container"
