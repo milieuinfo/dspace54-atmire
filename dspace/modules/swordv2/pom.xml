@@ -16,7 +16,7 @@
    <parent>
       <groupId>org.dspace</groupId>
       <artifactId>modules</artifactId>
-      <version>5.10</version>
+      <version>5.10.7-SNAPSHOT</version>
       <relativePath>..</relativePath>
    </parent>
 
@@ -130,6 +130,11 @@
            <artifactId>spring-web</artifactId>
        </dependency>
 
+       <dependency>
+         <groupId>org.postgresql</groupId>
+         <artifactId>postgresql</artifactId>
+      </dependency>
+     
       <dependency>
          <groupId>org.postgresql</groupId>
          <artifactId>postgresql</artifactId>

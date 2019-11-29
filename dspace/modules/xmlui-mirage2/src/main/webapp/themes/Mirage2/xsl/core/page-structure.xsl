@@ -356,7 +356,7 @@
                             <br></br>
                             <span>BELEIDSDOMEIN</span>
                             <br></br>
-                            <span id="lnespan">LEEFMILIEU, NATUUR EN ENERGIE</span>
+                            <span id="lnespan">OMGEVING</span>
                         </span>
                     </div>
                 </div>

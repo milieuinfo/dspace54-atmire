@@ -163,6 +163,8 @@ rm -rf ${tomcat_apps_dir}/dspace/log
 
 ln -s /var/log/dspace ${tomcat_apps_dir}/dspace/log
 
+echo "Toelaten om PDF's te converteren door ImageMagick"
+sed -i 's/rights="none" pattern="PDF"/rights="read|write" pattern="PDF"/g' /etc/ImageMagick-6/policy.xml /etc/ImageMagick-6/policy.xml
 
 echo "Wissen van de install dir"
 rm -rf ${tomcat_apps_dir}/dspace_install 
@@ -503,7 +505,7 @@ StatsEnabled false
 StatsPEDisabled true
 StatsHostID auto
 StatsTimeout 10
-StreamMaxLength 100M
+StreamMaxLength 500M
 LogFile /var/log/clamav/clamav.log
 LogTime true
 LogFileUnlock false

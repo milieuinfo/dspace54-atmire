@@ -417,4 +417,11 @@
             <class>com.atmire.scripts.bitstreamchecker.BitstreamChecker</class>
         </step>
     </command>
+    <command>
+        <name>clean-non-original-bundles</name>
+        <description>Deletes for each item all non "original" bundles (ex: TEXT and THUMBNAIL).</description>
+        <step>
+            <class>com.atmire.scripts.deletenonoriginalbundles.DeleteNonOriginalBundles</class>
+        </step>
+    </command>
 </commands>
