@@ -97,7 +97,7 @@ public class OpenAMPasswordAuthentication extends OpenAMAuthentication {
 
     @Override
     public String loginPageURL(Context context, HttpServletRequest request, HttpServletResponse response) {
-        return response.encodeRedirectURL(request.getContextPath() + "/openamentry");
+        return response.encodeRedirectURL(request.getContextPath() + "/openam-login");
     }
 
     @Override

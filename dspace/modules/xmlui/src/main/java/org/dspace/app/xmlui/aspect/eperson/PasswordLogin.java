@@ -216,7 +216,7 @@ public class PasswordLogin extends AbstractDSpaceTransformer implements Cacheabl
         password.setRequired();
         password.setLabel(T_password);
 
-        final String gotoUrl = ConfigurationManager.getProperty("authentication-openam", "openam.eid.token.goto.url");
+        final String gotoUrl = "openamexit";
         item.addXref(gotoUrl, T_token_eid_link);
 
 //        item.addXref(contextPath + "/forgot", T_forgot_link);
