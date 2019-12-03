@@ -45,6 +45,7 @@ sed -i \
     -e "s/%openam.admin.role%/${openam_admin_role}/g" \
     -e "s@%openam.eid.token.goto.url%@${openam_eid_token_goto_url}@g" \
     -e "s@%openam.backend.server.url%@${openam_backend_server_url}@g" \
+    -e "s@%openam.public.server.url%@${openam_public_server_url}@g" \
     -e "s@%jmx%@${jmx}@g" \
     -e "s@%app_mem_params%@${app_mem_params}@g" \
     -e "s@%gc_logs%@${gc_logs}@g" \
