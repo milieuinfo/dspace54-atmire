@@ -102,6 +102,7 @@ public class ItemViewerTest {
         when(item.getBundles()).thenReturn(new Bundle[]{bundle});
         when(bitstream.getName()).thenReturn("abc.jpg");
         when(bundle.getBitstreams()).thenReturn(new Bitstream[]{bitstream});
+        when(bundle.getName()).thenReturn("original");
 
         itemViewer.setup(resolver, objectModel, "", parameters);
     }
