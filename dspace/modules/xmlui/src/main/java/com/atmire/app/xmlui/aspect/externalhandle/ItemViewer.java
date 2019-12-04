@@ -4,6 +4,7 @@ import com.atmire.lne.content.ItemService;
 import com.atmire.lne.content.ItemServiceBean;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.avalon.framework.parameters.ParameterException;
@@ -79,7 +80,9 @@ public class ItemViewer extends AbstractDSpaceTransformer {
     }
 
     private void handleBitstream(final Body body, final HttpServletResponse response, final List<Item> result) throws SQLException, WingException, IOException {
-      switch (bitstreamPageToRender(result)){
+
+      List<Bitstream> originalBitstreams = getOriginalBitstreams(result);
+      switch (determinePageToRender(originalBitstreams.size())){
         case NOT_FOUND:
           renderNotFoundPage(body,response);
           break;
@@ -88,9 +91,23 @@ public class ItemViewer extends AbstractDSpaceTransformer {
           break;
         case FOUND:
         default:
-          redirectToBistream(response,getItemHandle(result),getBitstream(result));
+          redirectToBistream(response,getItemHandle(result),originalBitstreams.get(0));
           break;
       }
+    }
+
+    private List<Bitstream> getOriginalBitstreams(final List<Item> result) throws SQLException{
+      List<Bitstream> toReturn = new ArrayList<>();
+      for (Item item : result){
+        for (Bundle bundle : item.getBundles()){
+          if (bundle.getName().equalsIgnoreCase("original")){
+            for(Bitstream bitstream: bundle.getBitstreams()) {
+              toReturn.add(bitstream);
+            }
+          }
+        }
+      }
+      return toReturn;
     }
 
     private void handleItem(final Body body, final HttpServletResponse response, final List<Item> result) throws SQLException, WingException, IOException {
@@ -108,10 +125,6 @@ public class ItemViewer extends AbstractDSpaceTransformer {
       }
     }
 
-    private Bitstream getBitstream(List<Item> items) throws SQLException {
-      return items.get(0).getBundles()[0].getBitstreams()[0];
-    }
-
     private String getItemHandle(List<Item> items) {
       return items.get(0).getHandle();
     }
@@ -120,24 +133,6 @@ public class ItemViewer extends AbstractDSpaceTransformer {
       return determinePageToRender(items.size());
     }
 
-    private int bitstreamPageToRender(final List<Item> items) throws SQLException {
-        int itemsPage = itemPageToRender(items);
-        if (FOUND == itemsPage){
-          Item item = items.get(0);
-          Bundle[] bundles = item.getBundles();
-          int bundlePage = determinePageToRender(bundles.length);
-          if (FOUND == bundlePage){
-            Bundle bundle = bundles[0];
-            Bitstream[] bitstreams = bundle.getBitstreams();
-            return determinePageToRender(bitstreams.length);
-
-          }else{
-            return bundlePage;
-          }
-        }else{
-          return itemsPage;
-       }
-    }
 
     private int determinePageToRender(final int nbItems){
       switch (nbItems){
