@@ -31,7 +31,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <packageName>dspace-pkg</packageName>
-                    <depends>oracle-java7 (=7u79-acdbuild-2) ,acdtomcat7 (=7.0.75-1) ,imagemagick ,ghostscript</depends>
+                    <depends>oracle-java7 (=7u79-acdbuild-2) ,acdtomcat7 (&gt;=7.0.75-1) ,imagemagick ,ghostscript</depends>
                     <artifacts>
                         <artifact>
                             <groupId>${project.groupId}</groupId>
