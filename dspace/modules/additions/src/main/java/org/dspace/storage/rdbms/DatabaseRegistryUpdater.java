@@ -83,6 +83,7 @@ public class DatabaseRegistryUpdater implements FlywayCallback {
       @Override
       public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
         String filename = file.getFileName().toString();
+        log.info("Found file " + filename + " in registries folder");
         if (filename.endsWith("formats.xml")) {
           updateBitstreamFormats(filename, context);
         } else if (filename.endsWith("workflow-types.xml")) {
