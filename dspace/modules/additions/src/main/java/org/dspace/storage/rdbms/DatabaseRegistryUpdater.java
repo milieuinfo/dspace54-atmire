@@ -85,16 +85,16 @@ public class DatabaseRegistryUpdater implements FlywayCallback {
         String filename = file.getFileName().toString();
         log.info("Found file " + filename + " in registries folder");
         if (filename.endsWith("formats.xml")) {
-          updateBitstreamFormats(filename, context);
+          updateBitstreamFormats(file.toAbsolutePath().toString(), context);
         } else if (filename.endsWith("workflow-types.xml")) {
           // Check if XML Workflow is enabled in workflow.cfg
           if (ConfigurationManager.getProperty("workflow", "workflow.framework")
               .equals("xmlworkflow")) {
             // If so, load in the workflow metadata types as well
-            updateRegistry(filename);
+            updateRegistry(file.toAbsolutePath().toString());
           }
         } else if (filename.endsWith("types.xml")) {
-          updateRegistry(filename);
+          updateRegistry(file.toAbsolutePath().toString());
         }
         return CONTINUE;
       }
