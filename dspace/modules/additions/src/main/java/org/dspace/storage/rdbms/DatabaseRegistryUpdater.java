@@ -78,23 +78,23 @@ public class DatabaseRegistryUpdater implements FlywayCallback {
     }
   }
 
-  private void readConfigAndUpdateRegistry(final Context context, String base) throws IOException {
+  private void readConfigAndUpdateRegistry(final Context context, final String base) throws IOException {
     Files.walkFileTree(Paths.get(base), new SimpleFileVisitor<Path>() {
       @Override
       public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
         String filename = file.getFileName().toString();
         log.info("Found file " + filename + " in registries folder");
         if (filename.endsWith("formats.xml")) {
-          updateBitstreamFormats(file.toAbsolutePath().toString(), context);
+          updateBitstreamFormats(base + filename, context);
         } else if (filename.endsWith("workflow-types.xml")) {
           // Check if XML Workflow is enabled in workflow.cfg
           if (ConfigurationManager.getProperty("workflow", "workflow.framework")
               .equals("xmlworkflow")) {
             // If so, load in the workflow metadata types as well
-            updateRegistry(file.toAbsolutePath().toString());
+            updateRegistry(base + filename);
           }
         } else if (filename.endsWith("types.xml")) {
-          updateRegistry(file.toAbsolutePath().toString());
+          updateRegistry(base + filename);
         }
         return CONTINUE;
       }
