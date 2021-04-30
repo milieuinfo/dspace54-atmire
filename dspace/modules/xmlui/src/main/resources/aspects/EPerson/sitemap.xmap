@@ -43,7 +43,7 @@ registration, forgotten passwords, editing profiles, and changing passwords.
 			<map:action name="ShibbolethAction" src="org.dspace.app.xmlui.aspect.eperson.ShibbolethAction"/>
 			<map:action name="LDAPAuthenticateAction" src="org.dspace.app.xmlui.aspect.eperson.LDAPAuthenticateAction"/>
 			<map:action name="OpenAMAuthenticateAction" src="org.dspace.app.xmlui.aspect.eperson.OpenAMAuthenticateAction"/>
-			<map:action name="UnAuthenticateAction" src="org.dspace.app.xmlui.aspect.eperson.UnAuthenticateAction"/>
+			<map:action name="ExtendedUnAuthenticateAction" src="org.dspace.app.xmlui.aspect.eperson.ExtendedUnAuthenticateAction"/>
 			<map:action name="LoginRedirect" src="org.dspace.app.xmlui.aspect.eperson.LoginRedirect" />
 		</map:actions>
 		
@@ -199,11 +199,11 @@ registration, forgotten passwords, editing profiles, and changing passwords.
 			</map:match>
 			
 			<!--
-					Log the user out. The UnAuthenticateAction can not fail and will 
+					Log the user out. The ExtendedUnAuthenticateAction can not fail and will
 					always redirect the user to the DSpace homepage.
 					-->
 			<map:match pattern="logout">
-				<map:act type="UnAuthenticateAction">
+				<map:act type="ExtendedUnAuthenticateAction">
 					<!-- logout succeeded, request will be forwarded to the homepage. -->
 					<map:serialize type="xml"/>
 				</map:act>
