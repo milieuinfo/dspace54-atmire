@@ -200,9 +200,9 @@ LogTime yes
 LogVerbose yes
 LogRotate yes
 DatabaseOwner clamav
-DatabaseMirror http://${artifactory_user}:${artifactory_password}@${artifactory_hostname}:${artifactory_port}/artifactory/Clamav
+PrivateMirror http://${artifactory_user}:${artifactory_password}@${artifactory_hostname}:${artifactory_port}/artifactory/Clamav
 MaxAttempts 5
-ScriptedUpdates yes
+ScriptedUpdates no
 Checks 24
 NotifyClamd /etc/clamav/clamd.conf
 EOF
