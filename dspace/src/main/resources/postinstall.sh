@@ -289,7 +289,7 @@ EOF
 
 echo "Wachten op virus definities..."
 ## wait until the virus-definitions are available on the system before starting the clamav-daemon
-while  [ ! -f  /var/lib/clamav/daily.c[vl]d ]
+while  [ ! -f  /var/lib/clamav/main.c[vl]d ]
 do
   ls -l /var/lib/clamav/
   sleep 5
