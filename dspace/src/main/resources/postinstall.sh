@@ -273,7 +273,6 @@ MaxRecursion 16
 MaxFiles 10000
 MaxPartitions 50
 MaxIconsPE 100
-StatsPEDisabled true
 StatsHostID auto
 StatsTimeout 10
 StreamMaxLength 500M
