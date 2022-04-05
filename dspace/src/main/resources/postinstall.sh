@@ -291,7 +291,11 @@ echo "Wachten op virus definities..."
 ## wait until the virus-definitions are available on the system before starting the clamav-daemon
 while  [ ! -f  /var/lib/clamav/daily.c[vl]d ]
 do
+  ls -l /var/lib/clamav/
   sleep 5
 done
+
+echo "Sleep 20 om zeker te zijn dat alles goed is geladen"
+sleep 20
 
 /bin/systemctl start clamav-daemon.service
