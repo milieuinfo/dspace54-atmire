@@ -273,8 +273,6 @@ MaxRecursion 16
 MaxFiles 10000
 MaxPartitions 50
 MaxIconsPE 100
-StatsHostID auto
-StatsTimeout 10
 StreamMaxLength 500M
 LogFile /var/log/clamav/clamav.log
 LogTime true
