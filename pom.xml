@@ -184,7 +184,7 @@
                         <version>${java.version}</version>
                         <scope>system</scope>
                         <!-- Path to tools.jar (containing native2ascii tool) is determined by a profile (see below) -->
-                        <systemPath>${toolsjar}</systemPath>
+                        <systemPath>${java.home}/../lib/tools.jar</systemPath>
                     </dependency>
                 </dependencies>
             </plugin>
