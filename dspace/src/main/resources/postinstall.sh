@@ -110,10 +110,12 @@ chown tomcat:tomcat ${tomcat_data_dir}
 
 mkdir -p ${tomcat_data_dir}/solr 2>/dev/null
 
-
 mkdir -p ${tomcat_data_dir}/GeoLite 2>/dev/null
 
 mkdir -p ${tomcat_data_dir}/assetstore 2>/dev/null
+
+mkdir -p ${tomcat_data_dir}/upload 2>/dev/null
+chown -R tomcat:tomcat ${tomcat_data_dir}/upload
 
 # Installatie GeoLite
 echo "Installatie GeoLite"
