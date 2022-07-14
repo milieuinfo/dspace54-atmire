@@ -136,6 +136,7 @@
                 <module>oai</module>
             </modules>
         </profile>
+        <!--
         <profile>
             <id>mirage2</id>
             <activation>
@@ -147,6 +148,7 @@
                 <module>xmlui-mirage2</module>
             </modules>
         </profile>
+       -->
 
     </profiles>
 </project>
