@@ -117,6 +117,9 @@ mkdir -p ${tomcat_data_dir}/assetstore 2>/dev/null
 mkdir -p ${tomcat_data_dir}/upload 2>/dev/null
 chown -R tomcat:tomcat ${tomcat_data_dir}/upload
 
+mkdir -p ${tomcat_data_dir}/imports 2>/dev/null
+chown -R tomcat:tomcat ${tomcat_data_dir}/imports
+
 # Installatie GeoLite
 echo "Installatie GeoLite"
 if [ -a ${tomcat_data_dir}/GeoLite/GeoLiteCity.dat ]; then
