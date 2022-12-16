@@ -191,7 +191,7 @@
             <dependency>
                 <artifactId>spring-beans</artifactId>
                 <groupId>org.springframework</groupId>
-                <version>3.2.13.RELEASE</version>
+                <version>5.2.20.RELEASE</version>
             </dependency>
 
             <dependency>
@@ -344,7 +344,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
-            <version>3.2.13.RELEASE</version>
+            <version>5.2.20.RELEASE</version>
             <scope>compile</scope>
         </dependency>
 
