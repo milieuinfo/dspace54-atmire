@@ -239,7 +239,7 @@
             <dependency>
                 <artifactId>spring-webmvc</artifactId>
                 <groupId>org.springframework</groupId>
-                <version>3.2.9.RELEASE</version>
+                <version>5.2.20.RELEASE</version>
             </dependency>
 
             <dependency>
