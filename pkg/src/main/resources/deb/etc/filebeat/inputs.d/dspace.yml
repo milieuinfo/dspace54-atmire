@@ -1,7 +1,7 @@
 - type: log
   enabled: true
   paths:
-    - /var/log/tomcat/catalina.out
+    - /var/log/dspace/*.jsonlog
   tags: ["dspace"]
   fields:
     "@type": applog
