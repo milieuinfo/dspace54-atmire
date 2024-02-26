@@ -317,6 +317,8 @@ BytecodeSecurity TrustSigned
 BytecodeTimeout 60000
 PidFile /var/run/clamav/clamd.pid
 OnAccessMaxFileSize 5M
+TCPSocket 3310
+TCPAddr 127.0.0.1
 EOF
 
 /bin/systemctl start clamav-freshclam.service
