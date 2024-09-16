@@ -20,6 +20,7 @@ import org.dspace.eperson.EPerson;
 import org.dspace.handle.HandleManager;
 import org.dspace.storage.rdbms.DatabaseManager;
 import org.dspace.storage.rdbms.TableRowIterator;
+import org.elasticsearch.common.jackson.dataformat.yaml.snakeyaml.scanner.Constant;
 
 import javax.mail.MessagingException;
 import java.io.*;
@@ -127,7 +128,7 @@ public class ItemExport
                 logAndPrintMessage("Error, item cannot be found: " + myIDString, Level.ERROR);
             }
         }
-        else
+        else if(myType == Constants.COLLECTION)
         {
             if (myIDString.indexOf('/') != -1)
             {
@@ -210,7 +211,7 @@ public class ItemExport
         // now validate the args
         if (myType == -1)
         {
-            System.out.println("type must be either COLLECTION or ITEM (-h for help)");
+            System.out.println("type must be either COLLECTION, ITEM or SITE (-h for help)");
             System.exit(1);
         }
 
@@ -226,7 +227,7 @@ public class ItemExport
             System.exit(1);
         }
 
-        if (myIDString == null)
+        if (myIDString == null && myType != Constants.SITE)
         {
             System.out.println("ID must be set to either a database ID or a handle (-h for help)");
             System.exit(1);
@@ -255,6 +256,9 @@ public class ItemExport
             else if ("COLLECTION".equals(typeString))
             {
                 myType = Constants.COLLECTION;
+            }
+            else if("SITE".equals(typeString)){
+                myType = Constants.SITE;
             }
         }
 
@@ -293,7 +297,7 @@ public class ItemExport
     private Options createOptions() {
         Options options = new Options();
 
-        options.addOption("t", "type", true, "type: COLLECTION or ITEM");
+        options.addOption("t", "type", true, "type: COLLECTION, ITEM or SITE");
         options.addOption("i", "id", true, "ID or handle of thing to export");
         options.addOption("d", "dest", true, "destination where you want items to go");
         options.addOption("m", "migrate", false, "export for migration (remove handle and metadata that will be re-created in new system)");
@@ -316,10 +320,14 @@ public class ItemExport
                 myItems.add(myItem.getID());
                 items = new ItemIterator(c, myItems);
             }
-            else
+            else if(mycollection != null)
             {
                 logAndPrintMessage("Exporting from collection: " + myIDString,Level.INFO);
                 items = getItemsIterator(mycollection, dateFile, c);
+            }
+            else {
+                logAndPrintMessage("Exporting all items",Level.INFO);
+                items = getAllItemsIterator(dateFile, c);
             }
             exportAsZip(c, items, destDirName, zipFileName, seqStart, migrate, handleBasedDirectoryStructure);
         }
@@ -330,7 +338,7 @@ public class ItemExport
                 // it's only a single item
                 exportItem(c, myItem, destDirName, seqStart, migrate, handleBasedDirectoryStructure);
             }
-            else
+            else if (mycollection != null)
             {
                 logAndPrintMessage("Exporting from collection: " + myIDString, Level.INFO);
 
@@ -346,6 +354,21 @@ public class ItemExport
                     {
                         i.close();
                     }
+                }
+            }
+            else {
+                logAndPrintMessage("Exporting all items", Level.INFO);
+
+                // it's a collection, so do a bunch of items
+                ItemIterator i = getAllItemsIterator(dateFile, c);
+
+                try
+                {
+                    exportItem(c, i, destDirName, seqStart, migrate, handleBasedDirectoryStructure);
+                }
+                finally
+                {
+                    i.close();
                 }
             }
         }
@@ -373,6 +396,44 @@ public class ItemExport
         TableRowIterator rows;
         try {
             rows = DatabaseManager.queryTable(context, "item", myQuery, mycollection.getID(), new Timestamp(lastDate.getTime()));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return new ItemIterator(context, rows);
+    }
+
+    private static ItemIterator getAllItemsIterator(DateFile dateFile, Context context)
+        throws SQLException {
+        ItemIterator items;
+        Date lastDate = dateFile.getLastDate();
+        if (lastDate != DateFile.NO_DATE) {
+            items = getAllItemsIterator(lastDate, context);
+        } else {
+            items = getAllItemsIterator(context);
+        }
+        return items;
+    }
+
+    private static ItemIterator getAllItemsIterator(Date lastDate, Context context) {
+        String myQuery = "SELECT item.* FROM item WHERE item.in_archive='1' AND item.last_modified > ? ";
+
+        TableRowIterator rows;
+        try {
+            rows = DatabaseManager.queryTable(context, "item", myQuery, new Timestamp(lastDate.getTime()));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return new ItemIterator(context, rows);
+    }
+
+    private static ItemIterator getAllItemsIterator(Context context) {
+        String myQuery = "SELECT item.* FROM item WHERE item.in_archive='1' ";
+
+        TableRowIterator rows;
+        try {
+            rows = DatabaseManager.queryTable(context, "item", myQuery);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
