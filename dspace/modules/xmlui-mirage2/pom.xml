@@ -25,8 +25,8 @@
     <!-- Versions of build dependencies to be auto-installed when "mirage2.deps.included=true" -->
     <sass.version>3.7.2</sass.version>
     <compass.version>1.0.3</compass.version>
-    <node.version>11.9.0</node.version>
-    <npm.version>6.7.0</npm.version>
+    <node.version>6.5.0</node.version>
+    <yarn.version>0.21.3</yarn.version>
     <!-- picked up by gem-maven-plugin -->
     <jruby.version>9.1.17.0</jruby.version>
 </properties>
@@ -160,7 +160,6 @@
                         <directory>${project.build.directory}/themes</directory>
                         <targetPath>themes</targetPath>
                         <excludes>
-                            <exclude>**/node_modules/**</exclude>
                             <exclude>**/.sass-cache/**</exclude>
                             <exclude>**/.tmp/**</exclude>
                         </excludes>
@@ -275,7 +274,7 @@
                                         </plugin>
                                         <goal>exec</goal>
                                         <configuration>
-                                            <executable>npm</executable>
+                                            <executable>yarn</executable>
                                             <arguments>
                                                 <argument>install</argument>
                                             </arguments>
@@ -436,12 +435,13 @@
                                             <groupId>com.github.eirslett</groupId>
                                             <artifactId>frontend-maven-plugin</artifactId>
                                         </plugin>
-                                        <goal>install-node-and-npm</goal>
+                                        <goal>install-node-and-yarn</goal>
                                         <!--<phase>process-resources</phase>-->
                                         <configuration>
                                             <workingDirectory>${project.build.directory}/themes/@item@</workingDirectory>
                                             <nodeVersion>v${node.version}</nodeVersion>
-                                            <npmVersion>${npm.version}</npmVersion>
+                                            <!--yarn needs the 'v' before the version, otherwise frontend-maven-plugin can't download it-->
+                                                <yarnVersion>v${yarn.version}</yarnVersion>
                                             <nodeDownloadRoot>${acd.repository.node.dist.url}</nodeDownloadRoot>
                                             <npmDownloadRoot>${acd.repository.npm.dist.url}</npmDownloadRoot>
                                         </configuration>
@@ -452,7 +452,7 @@
                                             <groupId>com.github.eirslett</groupId>
                                             <artifactId>frontend-maven-plugin</artifactId>
                                         </plugin>
-                                        <goal>npm</goal>
+                                        <goal>yarn</goal>
                                         <!--<phase>prepare-package</phase>-->
                                         <configuration>
                                             <arguments>install</arguments>
@@ -497,6 +497,20 @@
                                             <execArgs>${project.build.directory}/rubygems/bin/compass compile -c
                                                 config-${grunt.environment}.rb
                                             </execArgs>
+                                            </configuration>
+                                        </pluginExecutor>
+                                        <pluginExecutor>
+                                            <!--<id>grunt</id>-->
+                                            <plugin>
+                                                <groupId>com.github.eirslett</groupId>
+                                                <artifactId>frontend-maven-plugin</artifactId>
+                                            </plugin>
+                                            <goal>grunt</goal>
+                                            <!--<phase>prepare-package</phase>-->
+                                            <configuration>
+                                                <arguments>postcss:${grunt.environment}
+                                                </arguments>
+                                                <workingDirectory>${project.build.directory}/themes/@item@</workingDirectory>
                                         </configuration>
                                     </pluginExecutor>
                                 </pluginExecutors>
