@@ -9,7 +9,8 @@
     "html5shiv": "3.7.3",
     "jquery": "~1.12.4",
     "jquery-ui-dist": "^1.12.1",
-    "respond.min.js": "1.4.2"
+    "respond.min.js": "1.4.2",
+    "font-awesome": "^4.7.0"
   },
   "devDependencies": {
     "bower": "1.7.9",
@@ -34,6 +35,6 @@
   "scripts": {
   },
   "engines": {
-    "node": ">=0.10.17 <0.11"
+    "node": ">=0.10.17"
   }
 }

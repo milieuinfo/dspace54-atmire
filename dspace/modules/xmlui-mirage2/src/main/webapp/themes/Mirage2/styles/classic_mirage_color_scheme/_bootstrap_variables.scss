@@ -7,8 +7,8 @@
  */
 // Preset Bootstrap variables
 // ----------------------
-$fa-font-path: "../vendor/fontawesome/fonts";
-@import "../vendor/fontawesome/scss/font-awesome";
+$fa-font-path: "../node_modules/font-awesome/fonts";
+@import "../node_modules/font-awesome/scss/font-awesome";
 
 $brand-primary: #333333 !default;
 
